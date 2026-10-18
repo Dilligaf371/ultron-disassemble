@@ -4543,6 +4543,38 @@ if proc:
       await refreshAllData(true);
     }
 
+    async function runProtocolGrammarSynth() {
+      showToast('🧬 SYNTHESIZING IMHEX (.HEXPAT) & WIRESHARK (.LUA) PROTOCOL GRAMMARS...');
+      const resp = await fetch('/api/v4/protocol-grammar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      state.protocolGrammar = await resp.json();
+      state.showGrammarPanel = true;
+      showToast(`🧬 PROTOCOL GRAMMAR READY: MAGIC ${state.protocolGrammar.inferred_magic || '0x0'}`);
+      if (state.mode === 'hex') {
+        await renderHexMode(document.getElementById('centerContent'), state.selectedAddress || state.overview?.entry_point || '0x100000000');
+      }
+    }
+
+    async function runCoverageFuzzer() {
+      showToast('⚡ RUNNING COVERAGE-GUIDED IN-MEMORY SNAPSHOT FUZZER (64 SEEDS)...');
+      const resp = await fetch('/api/v4/fuzzer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proc_address: state.selectedProcedure || null, iterations: 64 }),
+      });
+      state.fuzzerReport = await resp.json();
+      if (state.fuzzerReport.covered_blocks && state.timeTravelTrace) {
+        state.timeTravelTrace.visited_blocks = state.fuzzerReport.covered_blocks;
+      }
+      showToast(`⚡ FUZZER COMPLETE: ${state.fuzzerReport.coverage_pct || 0}% CFG SATURATION (${state.fuzzerReport.covered_blocks_count || 0} BLOCKS)`);
+      if (state.mode === 'emu' && state.currentDossier) {
+        await renderEmuMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
     async function renderHexMode(container, addr) {
       const resp = await fetch(`/api/hex?address=${encodeURIComponent(addr)}&length=512`);
       const data = await resp.json();
@@ -4550,15 +4582,36 @@ if proc:
         container.innerHTML = `<div style="padding:20px;">${escapeHtml(data.error)}</div>`;
         return;
       }
-      let html = `
-        <div style="padding:8px 14px; background:rgba(12,13,17,0.95); border-bottom:1px solid rgba(255,255,255,0.25); font-family:var(--font-fui); font-size:11px; display:flex; gap:14px; align-items:center;">
-          <span>SEGMENT: <strong style="color:var(--secondary)">${data.segment}</strong></span>
-          <span class="bt-procedure" style="padding:1px 7px;">PROCEDURE</span>
-          <span class="bt-code" style="padding:1px 7px;">CODE</span>
-          <span class="bt-ascii" style="padding:1px 7px;">ASCII</span>
-          <span class="bt-int64" style="padding:1px 7px;">INT64/PTR</span>
-          <span class="bt-undefined" style="padding:1px 7px;">UNDEFINED</span>
+      const pg = state.protocolGrammar || state.lastAutoPipelineReport?.protocol_grammar;
+      const grammarDrawer = (pg && state.showGrammarPanel) ? `
+        <div style="padding:10px 14px;background:rgba(12,15,22,0.96);border-bottom:1px solid var(--neon-cyan);display:grid;grid-template-columns:1fr 1fr;gap:12px;font-family:var(--font-code);font-size:10.5px;">
+          <div>
+            <div style="color:var(--neon-cyan);font-weight:700;margin-bottom:4px;">◈ IMHEX BINARY GRAMMAR (protocol_grammar.hexpat // Magic ${escapeHtml(pg.inferred_magic)})</div>
+            <pre style="margin:0;max-height:150px;overflow-y:auto;background:rgba(0,0,0,0.45);padding:8px;color:#d1fae5;">${escapeHtml(pg.hexpat_source || '')}</pre>
+          </div>
+          <div>
+            <div style="color:var(--emerald);font-weight:700;margin-bottom:4px;display:flex;justify-content:space-between;">
+              <span>◈ WIRESHARK LUA DISSECTOR (wireshark_dissector.lua)</span>
+              <button class="fui-btn" style="padding:1px 7px;font-size:9px;" onclick="state.showGrammarPanel=false; renderHexMode(document.getElementById('centerContent'), '${escapeHtml(addr)}')">HIDE</button>
+            </div>
+            <pre style="margin:0;max-height:150px;overflow-y:auto;background:rgba(0,0,0,0.45);padding:8px;color:#e0f2fe;">${escapeHtml(pg.wireshark_lua_source || '')}</pre>
+          </div>
         </div>
+      ` : '';
+
+      let html = `
+        <div style="padding:8px 14px; background:rgba(12,13,17,0.95); border-bottom:1px solid rgba(255,255,255,0.25); font-family:var(--font-fui); font-size:11px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; gap:12px; align-items:center;">
+            <span>SEGMENT: <strong style="color:var(--secondary)">${data.segment}</strong></span>
+            <span class="bt-procedure" style="padding:1px 7px;">PROCEDURE</span>
+            <span class="bt-code" style="padding:1px 7px;">CODE</span>
+            <span class="bt-ascii" style="padding:1px 7px;">ASCII</span>
+            <span class="bt-int64" style="padding:1px 7px;">INT64/PTR</span>
+            <span class="bt-undefined" style="padding:1px 7px;">UNDEFINED</span>
+          </div>
+          <button class="fui-btn cyan-glow" style="padding:3px 10px;font-size:9.5px;" onclick="runProtocolGrammarSynth()">🧬 SYNTHESIZE PROTOCOL GRAMMAR (.HEXPAT + WIRESHARK LUA)</button>
+        </div>
+        ${grammarDrawer}
         <table class="hex-table"><tbody>
       `;
       (data.rows || []).forEach(r => {
@@ -4636,12 +4689,40 @@ if proc:
         </div>
       ` : '';
 
+      const fuzzerPanelHtml = state.fuzzerReport ? `
+        <div class="fui-module" style="grid-column:1 / -1;border-color:var(--emerald);">
+          <div class="fui-module-title">
+            <span>⚡ IN-MEMORY COVERAGE-GUIDED SNAPSHOT FUZZER // ${escapeHtml(state.fuzzerReport.procedure || 'proc')} (${state.fuzzerReport.iterations_executed || 64} EXECS)</span>
+            <span class="hud-tag">CFG SATURATION: ${state.fuzzerReport.coverage_pct ?? 0}% (${state.fuzzerReport.covered_blocks_count ?? 0}/${state.fuzzerReport.total_basic_blocks ?? 1} BLOCKS)</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:var(--font-code);font-size:10.5px;">
+            <div>
+              <div style="color:var(--neon-cyan);margin-bottom:4px;">DISCOVERED COVERAGE CORPUS SEEDS:</div>
+              ${(state.fuzzerReport.interesting_corpus || []).slice(0, 5).map(c => `
+                <div style="padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  #${c.iteration}: <code>arg0=${c.input_arg0}</code>, <code>arg1=${c.input_arg1}</code> → ret=<code>${c.return_value}</code> (${c.blocks_reached} BBs)
+                </div>
+              `).join('')}
+            </div>
+            <div>
+              <div style="color:var(--tertiary);margin-bottom:4px;">BOUNDARY EDGE-CASE PROBES:</div>
+              ${(state.fuzzerReport.boundary_edge_cases || []).slice(0, 5).map(ec => `
+                <div style="padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+                  [${escapeHtml(ec.seed_class)}] <code>arg0=${ec.arg0}</code> → PC <code>${ec.final_pc}</code>, ret=<code>${ec.return_reg}</code>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      ` : '';
+
       container.innerHTML = `
         <div style="padding:10px 16px;background:rgba(12,13,17,0.95);border-bottom:1px solid rgba(255,255,255,0.3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
             <button class="fui-btn primary-glow" onclick="emuStep('step')">▶ STEP INTO [F7]</button>
             <button class="fui-btn cyan-glow" onclick="emuStep('run')">⏩ RUN TO RET [F9]</button>
             <button class="fui-btn" onclick="emuStep('reset')">↺ RESET CPU</button>
+            <button class="fui-btn cyan-glow" onclick="runCoverageFuzzer()">⚡ FUZZ FUNCTION (64 SEEDS)</button>
             <button class="fui-btn primary-glow" onclick="runLiveLldbTelemetry()">🔴 LIVE LLDB TELEMETRY</button>
             <span style="font-family:var(--font-fui);font-size:11px;color:var(--text-mid);margin-left:4px;">
               INJECT X0/RDI: <input id="emuInitX0" class="fui-input" value="0x100008000" style="width:105px;padding:2px 6px;text-transform:none;" />
@@ -4656,6 +4737,7 @@ if proc:
         </div>
         <div class="emu-layout">
           ${lldbPanelHtml}
+          ${fuzzerPanelHtml}
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="fui-module">
               <div class="fui-module-title"><span>LIVE INSTRUCTION STREAM // PC = ${emu.pc}</span></div>
@@ -4953,19 +5035,27 @@ if proc:
         showToast('SELECT A SECONDARY TARGET BINARY FOR BINDIFF');
         return;
       }
-      showToast(`⚖ BINDIFF EN COURS CONTRE : ${targetPath.split('/').pop()}…`);
-      const resp = await fetch('/api/bindiff', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target_path: targetPath, path: targetPath, second_path: targetPath }),
-      });
+      showToast(`⚖ RUNNING BINDIFF & 1-DAY PATCH ROOT-CAUSE DIFF AGAINST: ${targetPath.split('/').pop()}…`);
+      const [resp, patchResp] = await Promise.all([
+        fetch('/api/bindiff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target_path: targetPath, path: targetPath, second_path: targetPath }),
+        }),
+        fetch('/api/v4/patch-diff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target_path: targetPath }),
+        }),
+      ]);
       const res = await resp.json();
+      state.patchDiffReport = await patchResp.json();
       if (res.error) {
         showToast('BINDIFF ERROR: ' + res.error);
         return;
       }
       state.binDiffReport = res;
-      showToast(`⚖ BINDIFF COMPLETE // OVERALL SIMILARITY: ${res.overall_similarity_pct ?? res.similarity_pct ?? res.overall_similarity ?? 0}%`);
+      showToast(`⚖ BINDIFF & PATCH ROOT-CAUSE COMPLETE // SIMILARITY: ${res.overall_similarity_pct ?? res.similarity_pct ?? res.overall_similarity ?? 0}%`);
       if (state.mode === 'resuite') {
         await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
       }
@@ -5031,7 +5121,7 @@ if proc:
             const pPath = typeof p === 'string' ? p : (p.path || p.filename || p.name);
             const pMeta = typeof p === 'object'
               ? `${p.binary_name || p.format || ''} ${p.labels_count !== undefined ? `• ${p.labels_count} labels` : ''} ${p.comments_count !== undefined ? `• ${p.comments_count} notes` : ''} ${p.breakpoints_count !== undefined ? `• ${p.breakpoints_count} BPs` : ''} ${p.size_bytes ? `(${p.size_bytes}B)` : ''}`.trim()
-              : 'Base persistante .ultron';
+              : 'Persistent .ultron database';
             return `
               <div class="list-item" style="padding:6px 10px;background:rgba(10,11,14,0.8);margin-bottom:4px;border:1px solid rgba(255,255,255,0.18);">
                 <div style="overflow:hidden;">
@@ -5049,7 +5139,7 @@ if proc:
       const defaultDiffTarget = bd?.target_path || bd?.secondary_binary || (presets[1]?.path || presets[0]?.path || '/bin/ls');
       const presetOptsHtml = presets.map(p => `<option value="${escapeHtml(p.path)}" ${p.path === defaultDiffTarget ? 'selected' : ''}>${escapeHtml(p.label)} (${escapeHtml(p.path)})</option>`).join('');
 
-      let bindiffBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Select a secondary target binary and click <strong>⚖ RUN BINDIFF</strong> to compare CFG topology, instruction hashes, and basic block deltas.</div>`;
+      let bindiffBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Select a secondary target binary and click <strong>⚖ RUN BINDIFF</strong> to compare CFG topology, instruction hashes, basic block deltas, and 1-Day Security Patch Root-Cause C diffs.</div>`;
       if (bd && !bd.error) {
         const rawSim = bd.overall_similarity_pct ?? bd.similarity_pct ?? bd.overall_similarity ?? bd.similarity_score ?? (bd.similarity !== undefined ? Math.round(bd.similarity * 100) : 0);
         const simPct = Number(rawSim).toFixed(1);
@@ -5084,6 +5174,17 @@ if proc:
           `;
         }).join('');
 
+        const patchRootCausesHtml = (state.patchDiffReport?.root_causes || []).slice(0, 6).map(rc => `
+          <div style="padding:6px 10px;border-top:1px solid rgba(0,242,255,0.22);font-family:var(--font-code);font-size:10.5px;background:rgba(0,242,255,0.05);">
+            <div style="display:flex;justify-content:space-between;">
+              <strong style="color:var(--neon-cyan);">🛡️ 1-DAY PATCH ROOT-CAUSE // ${escapeHtml(rc.procedure)} (${escapeHtml(rc.address_v1)} → ${escapeHtml(rc.address_v2)})</strong>
+              <span style="color:var(--tertiary);">${escapeHtml(rc.root_cause_classification)}</span>
+            </div>
+            ${(rc.removed_c_lines || []).map(l => `<div style="color:var(--primary);">- ${escapeHtml(l)}</div>`).join('')}
+            ${(rc.added_c_lines || []).map(l => `<div style="color:var(--emerald);">+ ${escapeHtml(l)}</div>`).join('')}
+          </div>
+        `).join('');
+
         bindiffBodyHtml = `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(10,11,14,0.85);border:1px solid rgba(255,255,255,0.22);">
             <div>
@@ -5100,6 +5201,7 @@ if proc:
           <div style="max-height:175px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);">
             <table class="asm-table"><tbody>${rowsHtml || '<tr><td colspan="5" style="padding:8px;color:var(--text-mid);">No differences detected.</td></tr>'}</tbody></table>
           </div>
+          ${patchRootCausesHtml}
         `;
       }
 

@@ -4,10 +4,10 @@
 - **Container Format**: `Mach-O 64-bit`
 - **Architecture**: `ARM64 (AArch64) (arm64)` (64-bit)
 - **Entry Point**: `0x100000f3c`
-- **Procedures Recovered**: `34`
+- **Procedures Recovered**: `33`
 - **Instructions Disassembled**: `572`
 - **Strings Extracted**: `37`
-- **FLIRT / WARP Library Matches**: `27`
+- **FLIRT / WARP Library Matches**: `28`
 - **Security Risk Assessment**: `0 / 100 (LOW)`
 - **Output Directory**: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample`
 
@@ -24,8 +24,7 @@
 
 | Entry Address | Name / Demangled | Size (B) | Basic Blocks | Section |
 |---|---|---|---|---|
-| `0x100000a18` | `-[UltronSentinelCore initWithKey:rounds:]` | 8 | 1 | `__TEXT:__text` |
-| `0x100000a20` | `sub_100000a20` | 264 | 1 | `__TEXT:__text` |
+| `0x100000a18` | `-[UltronSentinelCore initWithKey:rounds:]` | 272 | 4 | `__TEXT:__text` |
 | `0x100000b28` | `-[UltronSentinelCore decryptPayload:length:]` | 232 | 11 | `__TEXT:__text` |
 | `0x100000c10` | `+[UltronSentinelCore sentinelProtocolVersion]` | 28 | 1 | `__TEXT:__text` |
 | `0x100000c2c` | `-[UltronSentinelCore securityLevel]` | 28 | 1 | `__TEXT:__text` |
@@ -49,6 +48,7 @@
 | `0x1000011d8` | `flirt_dyld_stub_binder_trampoline_11d8` | 12 | 1 | `__TEXT:__stubs` |
 | `0x1000011e4` | `flirt_dyld_stub_binder_trampoline_11e4` | 12 | 1 | `__TEXT:__stubs` |
 | `0x1000011f0` | `flirt_dyld_stub_binder_trampoline_11f0` | 12 | 1 | `__TEXT:__stubs` |
+| `0x1000011fc` | `flirt_dyld_stub_binder_trampoline_11fc` | 12 | 1 | `__TEXT:__stubs` |
 
 ## 3. AI Semantic Decompilation (C23 & Rust)
 
@@ -66,11 +66,13 @@
 
 ```smt2
 ; ─── ULTRON v3.0 SYMBOLIC EXECUTION & Z3 SMT-LIB2 SOLVER ───
-; Procedure: -[UltronSentinelCore initWithKey:rounds:] (0x100000a18) -> Target: 0x100000a1c
+; Procedure: -[UltronSentinelCore initWithKey:rounds:] (0x100000a18) -> Target: 0x100000b24
 (set-logic QF_BV)
 (declare-const arg0 (_ BitVec 64))
 (declare-const arg1 (_ BitVec 64))
 (declare-const arg2 (_ BitVec 64))
+; @ 0x100000a7c: 0x7ffeffc0 == 0
+(assert (= #x000000007ffeffc0 #x0000000000000000))
 (check-sat)
 (get-model)
 ```
@@ -106,10 +108,10 @@
 ## 6. Autonomous Compilable Reconstruction & Final Boss Telemetry
 
 - **Project Directory**: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/reconstructed_project`
-- **Clang Compilation (`clang -O2 -std=c17`)**: **VERIFIED & COMPILED** (53728 bytes)
-- **Live Binary Execution Verification**: `[ULTRON RECONSTRUCTED BINARY] Target: ultron_objc_sample | Format: Mach-O 64-bit | Procs: 34
-[ULTRON] Executed entry subroutine '-[UltronSentinelCore initWithKey:rounds:]' (@ 0x100000a18) -> 0x100001a1a004c5`
-- **Time-Travel Execution Trace**: `3 steps (100.0% CFG block coverage)`
+- **Clang Compilation (`clang -O2 -std=c17`)**: **VERIFIED & COMPILED** (53760 bytes)
+- **Live Binary Execution Verification**: `[ULTRON RECONSTRUCTED BINARY] Target: ultron_objc_sample | Format: Mach-O 64-bit | Procs: 33
+[ULTRON] Executed entry subroutine '-[UltronSentinelCore initWithKey:rounds:]' (@ 0x100000a18) -> 0x100001a1a004ce`
+- **Time-Travel Execution Trace**: `48 steps (75.0% CFG block coverage)`
 - **Auto-Recovered Memory Structs (`recovered_structs.h`)**: `1 structs synthesized`
 - **Inter-Procedural Taint Chains (`Source -> Sink`)**: `9 data-flow paths audited`
 - **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `14 structural fingerprints indexed`

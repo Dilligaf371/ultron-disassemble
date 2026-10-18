@@ -14,15 +14,6 @@ state = state.rotate_left(5) ^ (arg2.wrapping_add(i));
 state
 }
 
-/// Reconstructed from `sub_100000a20` @ `0x100000a20`
-pub fn re_sub_100000a20(arg0: u64, arg1: u64, arg2: u64) -> u64 {
-let mut state = arg0 ^ 0x100000a20;
-for i in 0..(arg1 & 0x0f) {
-state = state.rotate_left(5) ^ (arg2.wrapping_add(i));
-}
-state
-}
-
 /// Reconstructed from `-[UltronSentinelCore decryptPayload:length:]` @ `0x100000b28`
 pub fn re_UltronSentinelCore_decryptPayload_length(arg0: u64, arg1: u64, arg2: u64) -> u64 {
 let mut state = arg0 ^ 0x100000b28;
@@ -140,6 +131,15 @@ state = state.rotate_left(5) ^ (arg2.wrapping_add(i));
 state
 }
 
+/// Reconstructed from `flirt_dyld_stub_binder_trampoline_1178` @ `0x100001178`
+pub fn re_flirt_dyld_stub_binder_trampoline_1178(arg0: u64, arg1: u64, arg2: u64) -> u64 {
+let mut state = arg0 ^ 0x100001178;
+for i in 0..(arg1 & 0x0f) {
+state = state.rotate_left(5) ^ (arg2.wrapping_add(i));
+}
+state
+}
+
 fn main() {
-println!("[ULTRON RUST RECONSTRUCTION] Target: ultron_objc_sample (34 procedures)");
+println!("[ULTRON RUST RECONSTRUCTION] Target: ultron_objc_sample (33 procedures)");
 }

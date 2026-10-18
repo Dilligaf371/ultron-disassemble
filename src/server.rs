@@ -96,6 +96,9 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/v4/auto-structs", post(api_v4_auto_structs))
         .route("/api/v4/live-lldb", post(api_v4_live_lldb))
         .route("/api/v4/neural-vault", post(api_v4_neural_vault))
+        .route("/api/v4/fuzzer", post(api_v4_fuzzer))
+        .route("/api/v4/patch-diff", post(api_v4_patch_diff))
+        .route("/api/v4/protocol-grammar", post(api_v4_protocol_grammar))
         .route("/api/mcp", post(api_mcp_rpc))
         .route("/api/ultron-voice", get(api_ultron_voice))
         .route("/api/voice/ultron-active.mp3", get(api_voice_active))
@@ -1592,13 +1595,15 @@ async fn api_auto_pipeline(
         }
     }
 
-    // Stage 6 (Legendary & Final Boss Engine): Compilable Project Reconstruction, De-obfuscation, Time-Travel Trace, Auto-Struct Recovery, Inter-Procedural Taint Audit & Neural Symbol Vault
+    // Stage 6 (Legendary, Final Boss & God-Tier Engine): Compilable Project Reconstruction, De-obfuscation, Time-Travel Trace, Auto-Struct Recovery, Inter-Procedural Taint Audit, Neural Symbol Vault, Coverage Fuzzer & Protocol Grammar (.hexpat + Wireshark Lua)
     let neural_vault = UltronLegendEngine::sync_neural_symbol_vault(&mut doc);
     let auto_structs = UltronLegendEngine::recover_auto_structs(&mut doc, &abs_out_dir);
     let taint_audit = UltronLegendEngine::run_interprocedural_taint_audit(&doc);
     let reconstruction = UltronLegendEngine::reconstruct_compilable_project(&doc, &abs_out_dir);
     let deobfuscation = UltronLegendEngine::deobfuscate_and_verify(&doc);
     let time_travel_trace = UltronLegendEngine::build_time_travel_trace(&doc, Some(entry_addr));
+    let fuzzer_report = UltronLegendEngine::run_coverage_guided_fuzzer(&doc, Some(entry_addr), 64);
+    let protocol_grammar = UltronLegendEngine::synthesize_protocol_grammar(&doc, &abs_out_dir);
 
     let compiled_ok = reconstruction
         .get("compiled_ok")
@@ -1632,14 +1637,24 @@ async fn api_auto_pipeline(
         .get("total_vault_signatures")
         .and_then(|v| v.as_u64())
         .unwrap_or(0);
+    let fuzz_cov = fuzzer_report
+        .get("coverage_pct")
+        .and_then(|v| v.as_f64())
+        .unwrap_or(0.0);
+    let inferred_magic = protocol_grammar
+        .get("inferred_magic")
+        .and_then(|v| v.as_str())
+        .unwrap_or("0x554c5452");
 
     report_md.push_str(&format!(
-        "\n## 6. Autonomous Compilable Reconstruction & Final Boss Telemetry\n\n\
+        "\n## 6. Autonomous Compilable Reconstruction & God-Tier Telemetry\n\n\
          - **Project Directory**: `{}`\n\
          - **Clang Compilation (`clang -O2 -std=c17`)**: **{}** ({} bytes)\n\
          - **Live Binary Execution Verification**: `{}`\n\
          - **Time-Travel Execution Trace**: `{} steps ({:.1}% CFG block coverage)`\n\
+         - **In-Memory Coverage-Guided Fuzzer (`64 seeds`)**: `{:.1}% CFG saturation`\n\
          - **Auto-Recovered Memory Structs (`recovered_structs.h`)**: `{} structs synthesized`\n\
+         - **Protocol & File Grammar (`protocol_grammar.hexpat` + `wireshark_dissector.lua`)**: `Magic {}`\n\
          - **Inter-Procedural Taint Chains (`Source -> Sink`)**: `{} data-flow paths audited`\n\
          - **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `{} structural fingerprints indexed`\n",
         reconstruction
@@ -1651,7 +1666,9 @@ async fn api_auto_pipeline(
         if exec_verif.is_empty() { "OK" } else { exec_verif },
         trace_steps,
         cov_pct,
+        fuzz_cov,
         auto_structs_count,
+        inferred_magic,
         taint_chains_count,
         vault_total
     ));
@@ -1683,6 +1700,8 @@ async fn api_auto_pipeline(
         "auto_structs": auto_structs,
         "taint_audit": taint_audit,
         "neural_vault": neural_vault,
+        "fuzzer_report": fuzzer_report,
+        "protocol_grammar": protocol_grammar,
     });
     let json_path = abs_out_dir.join("analysis_dossier.json");
     let _ = std::fs::write(
@@ -1694,6 +1713,8 @@ async fn api_auto_pipeline(
     let recon_bin_path = abs_out_dir.join("reconstructed_project").join("reconstructed_bin");
     let recon_rs_path = abs_out_dir.join("reconstructed_project").join("src").join("main.rs");
     let structs_h_path = abs_out_dir.join("recovered_structs.h");
+    let hexpat_path = abs_out_dir.join("protocol_grammar.hexpat");
+    let lua_path = abs_out_dir.join("wireshark_dissector.lua");
 
     let output_files = vec![
         json!({ "name": "REPORT.md", "label": "Executive & Technical Report (Markdown)", "path": report_path.to_string_lossy(), "bytes": report_md.len() }),
@@ -1703,6 +1724,8 @@ async fn api_auto_pipeline(
         json!({ "name": "reconstructed_bin", "label": "Compiled & Signed Native Executable", "path": recon_bin_path.to_string_lossy(), "bytes": compiled_size }),
         json!({ "name": "src/main.rs", "label": "Idiomatic Cargo Rust Reconstruction", "path": recon_rs_path.to_string_lossy(), "bytes": std::fs::metadata(&recon_rs_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "recovered_structs.h", "label": "Auto-Inferred Memory Structs Header", "path": structs_h_path.to_string_lossy(), "bytes": std::fs::metadata(&structs_h_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "protocol_grammar.hexpat", "label": "ImHex Binary Format Grammar", "path": hexpat_path.to_string_lossy(), "bytes": std::fs::metadata(&hexpat_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "wireshark_dissector.lua", "label": "Wireshark Network Protocol Dissector", "path": lua_path.to_string_lossy(), "bytes": std::fs::metadata(&lua_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "analysis_dossier.json", "label": "Structured Telemetry Dossier (JSON)", "path": json_path.to_string_lossy(), "bytes": std::fs::metadata(&json_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "frida_hook.js", "label": "Dynamic Frida Instrumentation Script", "path": frida_path.to_string_lossy(), "bytes": frida_code.len() }),
         json!({ "name": "lldb_trace.py", "label": "Automated LLDB Trace Script", "path": lldb_path.to_string_lossy(), "bytes": lldb_code.len() }),
@@ -1738,6 +1761,8 @@ async fn api_auto_pipeline(
         "auto_structs": auto_structs,
         "taint_audit": taint_audit,
         "neural_vault": neural_vault,
+        "fuzzer_report": fuzzer_report,
+        "protocol_grammar": protocol_grammar,
     }))
 }
 
@@ -1849,6 +1874,50 @@ async fn api_v4_live_lldb(
 async fn api_v4_neural_vault(State(state): State<Arc<AppState>>) -> Json<Value> {
     let mut doc = state.doc.lock().unwrap();
     Json(UltronLegendEngine::sync_neural_symbol_vault(&mut doc))
+}
+
+#[derive(Deserialize)]
+struct FuzzerReq {
+    proc_address: Option<String>,
+    iterations: Option<usize>,
+}
+
+async fn api_v4_fuzzer(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<FuzzerReq>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let addr = req.proc_address.and_then(|s| parse_addr(&s));
+    let iters = req.iterations.unwrap_or(64);
+    Json(UltronLegendEngine::run_coverage_guided_fuzzer(&doc, addr, iters))
+}
+
+#[derive(Deserialize)]
+struct PatchDiffReq {
+    target_path: Option<String>,
+    arch: Option<String>,
+}
+
+async fn api_v4_patch_diff(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<PatchDiffReq>,
+) -> Json<Value> {
+    let doc_a = state.doc.lock().unwrap();
+    let second_path = req
+        .target_path
+        .filter(|s| !s.trim().is_empty())
+        .unwrap_or_else(|| doc_a.file_path.clone());
+    let arch = req.arch.unwrap_or_else(|| doc_a.cpu_subfamily.clone());
+    match UltronBinaryLoader::load(&second_path, &arch) {
+        Ok(doc_b) => Json(UltronLegendEngine::analyze_security_patch_diff(&doc_a, &doc_b)),
+        Err(e) => Json(json!({ "error": format!("Failed to load comparison binary '{}': {}", second_path, e) })),
+    }
+}
+
+async fn api_v4_protocol_grammar(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::synthesize_protocol_grammar(&doc, &abs_out_dir))
 }
 
 
