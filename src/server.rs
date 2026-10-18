@@ -1106,7 +1106,7 @@ async fn api_mcp_rpc(
 }
 
 async fn api_ultron_voice() -> impl IntoResponse {
-    let wav_path = "/tmp/ultron_rea_voice_v3.wav";
+    let wav_path = "/tmp/ultron_rea_voice_v4.wav";
     if !Path::new(wav_path).exists() {
         let status = std::process::Command::new("/usr/bin/say")
             .args([
@@ -1117,7 +1117,7 @@ async fn api_ultron_voice() -> impl IntoResponse {
                 "--data-format=LEI16@22050",
                 "-o",
                 wav_path,
-                "Ultron active. [[slnc 180]] Protocol R E A, ready to proceed.",
+                "Ultron active. [[slnc 180]] R E A protocol ready to proceed. [[slnc 220]] Ultron, [[slnc 120]] disassemble.",
             ])
             .status();
         if status.map(|s| !s.success()).unwrap_or(true) {
@@ -1128,7 +1128,7 @@ async fn api_ultron_voice() -> impl IntoResponse {
                     "--data-format=LEI16@22050",
                     "-o",
                     wav_path,
-                    "Ultron active. Protocol R E A, ready to proceed.",
+                    "Ultron active. R E A protocol ready to proceed. Ultron, disassemble.",
                 ])
                 .status();
         }

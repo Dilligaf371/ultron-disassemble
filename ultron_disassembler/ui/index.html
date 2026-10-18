@@ -1184,7 +1184,7 @@
 
     <div class="launch-top-bar launch-minimal-chrome" id="launchTopChrome">
       <span>ULTRON // v3.0.0 OMNI-CORE</span>
-      <span style="color:#ffffff;font-weight:500;">PROTOCOL REA // READY TO PROCEED</span>
+      <span style="color:#ffffff;font-weight:500;">ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE</span>
       <span id="launchClockText">T+00:00:00.00 // TELEMETRY NOMINAL</span>
     </div>
 
@@ -1205,7 +1205,7 @@
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;justify-content:center;">
           <span id="neuralPulseDot" style="width:6px;height:6px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
           <span id="neuralActivityText" style="font-family:var(--font-code);font-size:10px;color:var(--text-mid);letter-spacing:1.4px;">
-            SINGULARITY ONLINE // PROTOCOL REA
+            SINGULARITY ONLINE // REA PROTOCOL
           </span>
           <button class="fui-btn" id="launchCloudToggleBtn" style="padding:3px 9px;font-size:9.5px;" title="Activer/Désactiver le nuage de particules 3D [Raccourci: P]" onclick="event.stopPropagation(); toggle3DCloud()">
             ☁ 3D CLOUD: ON
@@ -1247,7 +1247,7 @@
 
     <div class="launch-bottom-bar launch-minimal-chrome" id="launchBottomChrome">
       <span>STATUS: <strong style="color:var(--emerald);">ULTRON ACTIVE // NOMINAL</strong></span>
-      <span>PROTOCOL: <strong style="color:#ffffff;">REA READY TO PROCEED</strong></span>
+      <span>PROTOCOL: <strong style="color:#ffffff;">REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE</strong></span>
       <span>BUILD: <strong style="color:var(--text-mid);">v3.0.0 OPEN-SOURCE RUST EDITION</strong></span>
     </div>
   </div>
@@ -1589,7 +1589,7 @@ if proc:
           Open-Source Multi-Architecture Disassembler, Optimizing SSA Decompiler,<br/>Z3 Symbolic Solver, AI Code Rewriter, REA &amp; MCP Server in Rust.
         </div>
         <div style="font-family: var(--font-fui); font-size: 10.5px; color: var(--text-mid); border: 1px solid var(--border-hairline); padding: 6px 14px; background: rgba(255,255,255,0.03);">
-          STATUS: <span style="color: var(--emerald);">ULTRON ACTIVE — PROTOCOL REA READY TO PROCEED</span>
+          STATUS: <span style="color: var(--emerald);">ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE</span>
         </div>
       </div>
     </div>
@@ -1813,7 +1813,7 @@ if proc:
       showToast(on ? '3D PARTICLE CLOUD (60 FPS) : ENABLED' : '3D PARTICLE CLOUD (60 FPS) : DISABLED');
     }
 
-    /* ─── ULTRON VOICE ANNOUNCEMENT ENGINE ("Ultron active. Protocol REA ready to proceed.") ─── */
+    /* ─── ULTRON VOICE ANNOUNCEMENT ENGINE ("ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE") ─── */
     function typeVoiceSubtitle(text) {
       const el = document.getElementById('launchVoiceCaption');
       if (!el) return;
@@ -1833,7 +1833,7 @@ if proc:
       try {
         if (!('speechSynthesis' in window)) return false;
         window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance('Ultron active. Protocol R E A, ready to proceed.');
+        const utter = new SpeechSynthesisUtterance('Ultron active. R E A protocol ready to proceed. Ultron, disassemble.');
         utter.lang = 'en-US';
         utter.pitch = 0.52;
         utter.rate = 0.86;
@@ -1852,8 +1852,8 @@ if proc:
     async function playUltronGenesisVoice(force = false) {
       if (neuralCloudState.voicePlayed && !force) return;
       neuralCloudState.voicePlayed = true;
-      typeVoiceSubtitle('ULTRON ACTIVE — PROTOCOL REA READY TO PROCEED');
-      triggerNeuralActivity(1.45, 'ULTRON ACTIVE // PROTOCOL REA');
+      typeVoiceSubtitle('ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE');
+      triggerNeuralActivity(1.45, 'ULTRON ACTIVE // REA PROTOCOL');
 
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
