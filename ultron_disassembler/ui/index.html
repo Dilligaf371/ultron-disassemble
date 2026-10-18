@@ -4429,11 +4429,14 @@ if proc:
           <span>ENGINE: <strong style="color:var(--secondary);">${escapeHtml(langBadge)}</strong></span>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="fui-btn ${!isAi ? 'primary-glow' : ''}" style="padding:3px 9px;font-size:9.5px;" onclick="switchSplitDecompToSsa()">SSA C</button>
+            <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runZeroGotoDecompiler()">🔥 ZERO-GOTO AST (PHOENIX)</button>
             <button class="fui-btn ${isAi && state.aiRewriteLang === 'c23' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('c23')">🧠 AI C23</button>
             <button class="fui-btn ${isAi && state.aiRewriteLang === 'rust' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('rust')">🦀 AI RUST</button>
             <button class="fui-btn ${isAi && state.aiRewriteLang === 'swift' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('swift')">🦅 AI SWIFT</button>
             <button class="fui-btn ${state.cPatchEditorOpen ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="toggleCPatchEditor()">✏️ EDIT C TO PATCH BINARY</button>
             <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runAutoStructRecovery()">🧩 AUTO-STRUCTS</button>
+            <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runCppRttiReconstruction()">🏛️ C++ RTTI / VTABLES</button>
+            <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runOsTypePropagation()">📚 OS .TIL TYPES</button>
             <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="solveSymbolicPathTo(state.selectedAddress)">🔮 SOLVE SYMBOLIC PATH</button>
             <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="toggleSplitViewMode()">⚡ SPLIT VIEW [V]</button>
           </div>
@@ -4471,7 +4474,27 @@ if proc:
         </div>
       ` : '';
 
-      container.innerHTML = `${toolbarHtml}${patchDrawerHtml}${autoStructBanner}<pre class="pseudocode-pre">${buildInteractiveDecompHtml(code, d)}</pre>`;
+      const cppRttiBanner = state.cppRttiReport?.hpp_source && state.showCppRttiBanner ? `
+        <div style="padding:10px 16px;background:rgba(199,125,255,0.08);border-bottom:1px solid rgba(199,125,255,0.38);font-family:var(--font-code);font-size:11px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <strong style="color:#e9d5ff;">🏛️ C++ RTTI &amp; VTABLE CLASS HIERARCHY (${state.cppRttiReport.classes_reconstructed} CLASSES / ${state.cppRttiReport.virtual_dispatch_sites} VIRTUAL CALLS → cpp_classes.hpp)</strong>
+            <button class="fui-btn" style="padding:2px 8px;font-size:9px;" onclick="state.showCppRttiBanner=false; renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);">HIDE</button>
+          </div>
+          <pre style="margin:0;max-height:140px;overflow-y:auto;color:#f3e8ff;font-size:10.5px;">${escapeHtml(state.cppRttiReport.hpp_source)}</pre>
+        </div>
+      ` : '';
+
+      const osTilBanner = state.typePropReport?.header_source && state.showOsTilBanner ? `
+        <div style="padding:10px 16px;background:rgba(16,185,129,0.08);border-bottom:1px solid rgba(16,185,129,0.38);font-family:var(--font-code);font-size:11px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <strong style="color:var(--emerald);">📚 OS .TIL TYPE PROPAGATION (${state.typePropReport.typed_procedures_count} TYPED PROCS / ${state.typePropReport.os_til_database_size} OS SIGNATURES → typed_signatures.h)</strong>
+            <button class="fui-btn" style="padding:2px 8px;font-size:9px;" onclick="state.showOsTilBanner=false; renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);">HIDE</button>
+          </div>
+          <pre style="margin:0;max-height:140px;overflow-y:auto;color:#d1fae5;font-size:10.5px;">${escapeHtml(state.typePropReport.header_source)}</pre>
+        </div>
+      ` : '';
+
+      container.innerHTML = `${toolbarHtml}${patchDrawerHtml}${autoStructBanner}${cppRttiBanner}${osTilBanner}<pre class="pseudocode-pre">${buildInteractiveDecompHtml(code, d)}</pre>`;
     }
 
     function toggleCPatchEditor() {
@@ -4515,6 +4538,56 @@ if proc:
       state.showAutoStructsBanner = true;
       showToast(`🧩 RECOVERED ${state.autoStructs.recovered_count || 0} MEMORY STRUCTS → recovered_structs.h`);
       await refreshAllData(true);
+    }
+
+    async function runCppRttiReconstruction() {
+      showToast('🏛️ RECONSTRUCTING C++ RTTI, VTABLES & VIRTUAL DISPATCH HIERARCHY...');
+      const resp = await fetch('/api/v4/cpp-rtti', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      state.cppRttiReport = await resp.json();
+      state.showCppRttiBanner = true;
+      showToast(`🏛️ C++ RTTI COMPLETE: ${state.cppRttiReport.classes_reconstructed || 0} CLASSES → cpp_classes.hpp`);
+      if (state.currentDossier) {
+        renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function runOsTypePropagation() {
+      showToast('📚 PROPAGATING POSIX / DARWIN / FOUNDATION OS .TIL TYPE SIGNATURES...');
+      const resp = await fetch('/api/v4/type-propagation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      state.typePropReport = await resp.json();
+      state.showOsTilBanner = true;
+      showToast(`📚 OS .TIL PROPAGATION: ${state.typePropReport.typed_procedures_count || 0} TYPED PROCS → typed_signatures.h`);
+      if (state.currentDossier) {
+        renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function runZeroGotoDecompiler() {
+      showToast('🔥 RUNNING PHOENIX POST-DOMINATOR ZERO-GOTO STRUCTURAL DECOMPILER...');
+      const resp = await fetch('/api/v4/zero-goto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proc_address: state.selectedProcedure || null }),
+      });
+      const res = await resp.json();
+      if (res.structured_c_source) {
+        state.aiRewriteData = {
+          language: 'PHOENIX ZERO-GOTO C23',
+          rewritten_code: res.structured_c_source,
+        };
+      }
+      showToast(`🔥 ZERO-GOTO AST READY (${res.remaining_gotos ?? 0} REMAINING GOTOS, ${res.basic_blocks_count ?? 0} REGIONS)`);
+      if (state.currentDossier) {
+        renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);
+      }
     }
 
     async function runLiveLldbTelemetry() {
