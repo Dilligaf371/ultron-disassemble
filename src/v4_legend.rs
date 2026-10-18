@@ -1192,8 +1192,8 @@ impl UltronLegendEngine {
             let s1 = dictionary_seeds[(iter_idx * 3 + 1) % dictionary_seeds.len()];
 
             let mut emu = UltronMicroEmulator::new(&doc.cpu_subfamily, start_addr);
-            emu.set_reg(reg0, s0);
-            emu.set_reg(reg1, s1);
+            emu.regs.insert(reg0.to_string(), s0);
+            emu.regs.insert(reg1.to_string(), s1);
 
             let mut run_blocks: BTreeSet<String> = BTreeSet::new();
             let mut discovered_new_block = false;
@@ -1218,7 +1218,8 @@ impl UltronLegendEngine {
                 emu.step(doc);
             }
 
-            let ret_val = emu.get_reg(reg0);
+            let ret_val = emu.regs.get(reg0).copied().unwrap_or(0);
+            let halt_str = if emu.halted { "HALTED (RET)" } else { "STEP_LIMIT" };
             if discovered_new_block || iter_idx < 4 {
                 interesting_corpus.push(json!({
                     "iteration": iter_idx,
@@ -1226,7 +1227,7 @@ impl UltronLegendEngine {
                     "input_arg1": format!("0x{:x}", s1),
                     "return_value": format!("0x{:x}", ret_val),
                     "blocks_reached": run_blocks.len(),
-                    "halt_reason": emu.halt_reason,
+                    "halt_reason": halt_str,
                     "new_coverage": discovered_new_block,
                 }));
             }
@@ -1239,7 +1240,7 @@ impl UltronLegendEngine {
                     "arg1": format!("0x{:x}", s1),
                     "final_pc": format!("0x{:x}", emu.pc),
                     "return_reg": format!("0x{:x}", ret_val),
-                    "status": emu.halt_reason,
+                    "status": halt_str,
                 }));
             }
         }
