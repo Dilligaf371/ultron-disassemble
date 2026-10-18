@@ -81,6 +81,7 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/v3/crash-dump", post(api_v3_crash_dump))
         .route("/api/v3/observe-calls", post(api_v3_observe_calls))
         .route("/api/mcp", post(api_mcp_rpc))
+        .route("/api/ultron-voice", get(api_ultron_voice))
         .layer(CorsLayer::permissive())
         .with_state(shared);
 
@@ -1104,4 +1105,34 @@ async fn api_mcp_rpc(
     Json(resp)
 }
 
-
+async fn api_ultron_voice() -> impl IntoResponse {
+    let wav_path = "/tmp/ultron_rea_voice_v3.wav";
+    if !Path::new(wav_path).exists() {
+        let status = std::process::Command::new("/usr/bin/say")
+            .args([
+                "-v",
+                "Daniel",
+                "-r",
+                "142",
+                "--data-format=LEI16@22050",
+                "-o",
+                wav_path,
+                "Ultron active. [[slnc 180]] Protocol R E A, ready to proceed.",
+            ])
+            .status();
+        if status.map(|s| !s.success()).unwrap_or(true) {
+            let _ = std::process::Command::new("/usr/bin/say")
+                .args([
+                    "-r",
+                    "142",
+                    "--data-format=LEI16@22050",
+                    "-o",
+                    wav_path,
+                    "Ultron active. Protocol R E A, ready to proceed.",
+                ])
+                .status();
+        }
+    }
+    let bytes = std::fs::read(wav_path).unwrap_or_default();
+    ([(axum::http::header::CONTENT_TYPE, "audio/wav")], bytes)
+}

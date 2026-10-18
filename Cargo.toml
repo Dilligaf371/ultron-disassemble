@@ -1,8 +1,8 @@
 [package]
 name = "ultron-disassemble"
-version = "2.0.0"
+version = "3.0.0"
 edition = "2021"
-description = "ULTRON DISASSEMBLE v2.0 — Native Rust Avengers-Class Binary Disassembler, SSA Decompiler, CPU Micro-Emulator, Security Auditor & LLVM Patcher"
+description = "ULTRON DISASSEMBLE v3.0 — Open-Source Multi-Architecture Binary Disassembler, Optimizing SSA Decompiler, Symbolic Z3 Solver, AI Decompiler & MCP Server in Rust"
 license = "MIT"
 
 [[bin]]

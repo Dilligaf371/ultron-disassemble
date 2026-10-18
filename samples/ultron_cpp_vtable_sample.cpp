@@ -34,15 +34,15 @@ public:
     }
 };
 
-class VibraniumPrimeCore : public SentinelTelemetryUnit {
+class TitaniumPrimeCore : public SentinelTelemetryUnit {
 public:
     uint64_t resonance_key;
 
     __attribute__((noinline))
-    VibraniumPrimeCore(uint64_t id, uint32_t sector, uint64_t key)
+    TitaniumPrimeCore(uint64_t id, uint32_t sector, uint64_t key)
         : SentinelTelemetryUnit(id, sector), resonance_key(key) {}
 
-    ~VibraniumPrimeCore() override = default;
+    ~TitaniumPrimeCore() override = default;
 
     __attribute__((noinline))
     uint64_t computeSignature(uint64_t seed) override {
@@ -56,7 +56,7 @@ public:
 
     __attribute__((noinline))
     const char* unitDesignation() override {
-        return "ULTRON-VIBRANIUM-PRIME-CORE-MK9";
+        return "ULTRON-TITANIUM-PRIME-CORE-MK9";
     }
 
     __attribute__((noinline))
@@ -110,7 +110,7 @@ uint64_t execute_tactical_switch(int opcode, uint64_t payload) {
 __attribute__((noinline))
 SentinelTelemetryUnit* create_telemetry_unit(int kind, uint64_t id, uint32_t sector) {
     if (kind > 1) {
-        return new VibraniumPrimeCore(id, sector, 0xA5A5F0F012345678ULL);
+        return new TitaniumPrimeCore(id, sector, 0xA5A5F0F012345678ULL);
     }
     return new SentinelTelemetryUnit(id, sector);
 }

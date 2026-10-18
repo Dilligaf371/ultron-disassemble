@@ -100,7 +100,7 @@ int main(int argc, const char *argv[]) {
     @autoreleasepool {
         UltronSentinelCore *sentinel = [[UltronSentinelCore alloc] initWithKey:0x554C54524F4E3031ULL rounds:10];
         sentinel.securityLevel = 9;
-        const uint8_t sample_payload[] = "ULTRON_VIBRANIUM_CORE_AUTH_VECTOR";
+        const uint8_t sample_payload[] = "ULTRON_TELEMETRY_CORE_AUTH_VECTOR";
         uint64_t digest = 0;
         if ([sentinel respondsToSelector:@selector(decryptPayload:length:)]) {
             digest = [sentinel decryptPayload:sample_payload length:sizeof(sample_payload) - 1];

@@ -135,7 +135,7 @@ enum Commands {
         #[arg(long, default_value = "arm64")]
         arch: String,
     },
-    /// Launch the AAA Avengers Holographic Web UI & REST API Server
+    /// Launch the Minimalist Telemetry Web UI & REST API Server
     Ui {
         #[arg(default_value = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample")]
         path: String,

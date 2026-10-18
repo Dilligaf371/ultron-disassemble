@@ -82,7 +82,7 @@
     "4294970524": "@selector(decryptPayload:length:)",
     "4294970640": "objc_msgSend -> -[UltronSentinelCore coreName]",
     "4294969908": "ClassRef: UltronSentinelCore",
-    "4294970500": "\"ULTRON_VIBRANIUM_CORE_AUTH_VECTOR\"",
+    "4294970500": "\"ULTRON_TELEMETRY_CORE_AUTH_VECTOR\"",
     "4294970620": "ClassRef: UltronSentinelCore",
     "4294970656": "objc_msgSend -> -[UltronSentinelCore securityLevel]",
     "4294970492": "objc_msgSend -> -[UltronSentinelCore setSecurityLevel:]",

@@ -3,63 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ULTRON DISASSEMBLE // MARVEL VFX HOLOGRAPHIC FUI</title>
+  <title>ULTRON // PROTOCOL REA — TELEMETRY &amp; REVERSE ENGINEERING</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* ULTRON SENTINEL PRIME PALETTE (Territory Studio / Avengers: Age of Ultron FUI) */
-      --bg-void: #020101;
-      --bg-glass: rgba(5, 7, 12, 0.54);
-      --bg-glass-heavy: rgba(3, 5, 10, 0.78);
-      --bg-elevated: rgba(8, 12, 20, 0.62);
-      --primary: #ff1e38;
-      --primary-rgb: 255, 30, 56;
-      --secondary: #00f0ff;
-      --secondary-rgb: 0, 240, 255;
-      --tertiary: #ff9e00;
-      --tertiary-rgb: 255, 158, 0;
-      --emerald: #00ff9d;
-      --violet: #c77dff;
-      --text-hi: #f0f8ff;
-      --text-mid: #89aecf;
-      --text-lo: #415d78;
-      --font-display: "Orbitron", sans-serif;
-      --font-fui: "Share Tech Mono", "JetBrains Mono", monospace;
-      --font-tech: "Rajdhani", sans-serif;
+      /* ULTRA-MINIMALIST SPACEX TELEMETRY PALETTE (Pure Black / Graphite / Titanium White) */
+      --bg-void: #000000;
+      --bg-glass: rgba(10, 11, 14, 0.78);
+      --bg-glass-heavy: rgba(6, 7, 9, 0.94);
+      --bg-elevated: rgba(17, 19, 24, 0.88);
+      --border-hairline: rgba(255, 255, 255, 0.09);
+      --border-active: rgba(255, 255, 255, 0.32);
+      --primary: #f4f5f7;
+      --primary-rgb: 244, 245, 247;
+      --secondary: #9ca3af;
+      --secondary-rgb: 156, 163, 175;
+      --tertiary: #f59e0b;
+      --tertiary-rgb: 245, 158, 11;
+      --emerald: #10b981;
+      --violet: #cbd5e1;
+      --text-hi: #f3f4f6;
+      --text-mid: #8b929e;
+      --text-lo: #4b5260;
+      --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-fui: "JetBrains Mono", "SF Mono", monospace;
+      --font-tech: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
       --font-code: "JetBrains Mono", "SF Mono", monospace;
     }
 
-    body.jarvis-mode {
-      /* J.A.R.V.I.S. / STARK HUD PALETTE (Cantina Creative / Avengers: Endgame) */
-      --primary: #ffb703;
-      --primary-rgb: 255, 183, 3;
-      --secondary: #00f0ff;
-      --secondary-rgb: 0, 240, 255;
-      --tertiary: #fb5607;
-      --tertiary-rgb: 251, 86, 7;
+    body.slate-mode {
+      /* HIGH-CONTRAST GRAPHITE SLATE MODE */
+      --bg-glass: rgba(16, 18, 23, 0.86);
+      --primary: #ffffff;
+      --primary-rgb: 255, 255, 255;
+      --secondary: #cbd5e1;
+      --secondary-rgb: 203, 213, 225;
+      --tertiary: #fb923c;
+      --tertiary-rgb: 251, 146, 60;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Custom Razor-Thin Sci-Fi Scrollbars */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: rgba(2, 4, 9, 0.6); }
+    /* Minimalist Hairline Scrollbars */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #050507; }
     ::-webkit-scrollbar-thumb {
-      background: rgba(var(--secondary-rgb), 0.35);
-      border-radius: 0;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 2px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(var(--primary-rgb), 0.85);
-      box-shadow: 0 0 8px var(--primary);
+      background: rgba(255, 255, 255, 0.38);
     }
 
     body {
       background-color: var(--bg-void);
       color: var(--text-hi);
       font-family: var(--font-tech);
-      font-size: 13.5px;
+      font-size: 13px;
       height: 100vh;
       width: 100vw;
       overflow: hidden;
@@ -67,17 +69,18 @@
       flex-direction: column;
       user-select: none;
       position: relative;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Layer 0: Pure Deep Black Gradient Backdrop */
+    /* Layer 0: Pure Pitch Black Backdrop */
     .vfx-backdrop {
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 45%, #0c0906 0%, #050403 52%, #000000 100%);
+      background: radial-gradient(ellipse at 50% 45%, #08080a 0%, #030304 55%, #000000 100%);
       z-index: 0;
     }
 
-    /* Layer 1: Live 60FPS HTML5 Procedural FUI Canvas */
+    /* Layer 1: Live 60FPS 3D Particle Cloud Canvas */
     #fuiCanvas {
       position: fixed;
       inset: 0;
@@ -87,122 +90,74 @@
       z-index: 1;
     }
 
-    /* Layer 2: Pure Cinema Vignette Overlay (No Grid) */
+    /* Layer 2: Subtle Vignette Overlay */
     .fui-lens-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 990;
-      background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.72) 100%);
+      background: radial-gradient(circle at 50% 50%, transparent 65%, rgba(0, 0, 0, 0.65) 100%);
     }
 
-    @keyframes spinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes spinCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
     @keyframes flowPacket { to { stroke-dashoffset: -32; } }
-    @keyframes laserSweep {
-      0% { top: -10%; opacity: 0; }
-      15% { opacity: 0.9; }
-      85% { opacity: 0.9; }
-      100% { top: 105%; opacity: 0; }
-    }
     @keyframes pulseBeacon {
-      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--primary), 0 0 18px var(--primary); }
-      50% { opacity: 0.35; box-shadow: 0 0 2px var(--primary); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
     }
 
-    /* ─── TOP HOLOGRAPHIC COMMAND BRIDGE ─── */
+    /* ─── TOP MINIMALIST TELEMETRY BAR (SPACEX STYLE) ─── */
     .command-bridge {
       position: relative;
       z-index: 10;
-      height: 68px;
-      margin: 6px 10px 0 10px;
-      background: linear-gradient(180deg, rgba(8, 14, 26, 0.88) 0%, rgba(4, 8, 16, 0.78) 100%);
-      backdrop-filter: blur(16px) saturate(160%);
-      border: 1px solid rgba(var(--secondary-rgb), 0.32);
-      border-top: 2px solid var(--primary);
-      box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.85),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        0 0 25px rgba(var(--primary-rgb), 0.22);
-      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      height: 54px;
+      margin: 0;
+      background: rgba(6, 7, 9, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 18px;
-      gap: 12px;
+      padding: 0 16px;
+      gap: 10px;
       flex-shrink: 0;
-    }
-
-    /* Decorative FUI Telemetry Tick Ruler under Bridge */
-    .command-bridge::after {
-      content: "SYS.CORE.01 // ARCH.MATRIX.64 // MEM.LOCK.ACTIVE // TELEMETRY.STREAM.98.4GHZ //SYNAPSE.ONLINE";
-      position: absolute;
-      bottom: 2px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--font-fui);
-      font-size: 8.5px;
-      letter-spacing: 2.5px;
-      color: rgba(var(--secondary-rgb), 0.45);
-      pointer-events: none;
-      white-space: nowrap;
     }
 
     .bridge-cluster {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 6px;
     }
 
-    /* Reactor Brand Pod */
+    /* Minimal Brand Pod */
     .reactor-pod {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       cursor: pointer;
-      padding: 5px 14px 5px 7px;
-      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.22) 0%, rgba(var(--secondary-rgb), 0.06) 100%);
-      border: 1px solid rgba(var(--primary-rgb), 0.55);
-      clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 11px, 100% 100%, 11px 100%, 0 calc(100% - 11px));
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
+      padding: 4px 12px 4px 6px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
+      transition: border-color 0.18s ease, background 0.18s ease;
     }
     .reactor-pod:hover {
-      border-color: var(--secondary);
-      box-shadow: 0 0 24px rgba(var(--primary-rgb), 0.55), inset 0 0 14px rgba(var(--secondary-rgb), 0.25);
-      transform: scale(1.02);
+      border-color: var(--border-active);
+      background: rgba(255, 255, 255, 0.05);
     }
     .reactor-orb {
       position: relative;
-      width: 46px;
-      height: 46px;
-      min-width: 46px;
-      min-height: 46px;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      min-height: 32px;
       flex-shrink: 0;
       border-radius: 50%;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle, rgba(255, 130, 15, 0.28) 0%, #030201 78%);
-      border: 1px solid rgba(255, 155, 25, 0.65);
-      box-shadow: 0 0 18px rgba(255, 115, 0, 0.45), inset 0 0 10px rgba(255, 150, 20, 0.25);
-    }
-    .reactor-orb img {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--secondary);
-      box-shadow: 0 0 15px var(--primary);
-    }
-    .reactor-ring-svg {
-      position: absolute;
-      inset: 0;
-      width: 46px;
-      height: 46px;
-      animation: spinCW 10s linear infinite;
-      pointer-events: none;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
     .pod-titles {
       display: flex;
@@ -211,148 +166,151 @@
     }
     .pod-code {
       font-family: var(--font-fui);
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: var(--secondary);
+      font-size: 8.5px;
+      letter-spacing: 1.6px;
+      color: var(--text-mid);
     }
     .pod-name {
       font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: 2.2px;
-      color: #fff;
-      text-shadow: 0 0 12px rgba(var(--primary-rgb), 0.85);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: #ffffff;
     }
-    .pod-name span { color: var(--primary); }
+    .pod-name span {
+      color: var(--text-mid);
+      font-weight: 300;
+    }
 
-    /* Bespoke FUI Buttons & Selects */
+    /* Ultra-Clean SpaceX Buttons & Selects */
     .fui-btn, .fui-select, .fui-input {
-      background: linear-gradient(180deg, rgba(12, 22, 38, 0.82) 0%, rgba(6, 12, 22, 0.92) 100%);
+      background: rgba(18, 20, 25, 0.85);
       color: var(--text-hi);
-      border: 1px solid rgba(var(--secondary-rgb), 0.35);
-      padding: 7px 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
+      padding: 5px 10px;
       font-family: var(--font-fui);
-      font-size: 11.5px;
-      letter-spacing: 1.1px;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
       outline: none;
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-      transition: all 0.16s ease;
+      transition: all 0.14s ease;
       position: relative;
       cursor: pointer;
     }
     .fui-select {
       appearance: none;
       -webkit-appearance: none;
-      padding-right: 26px;
+      padding-right: 22px;
       background-image:
-        linear-gradient(45deg, transparent 50%, var(--secondary) 50%),
-        linear-gradient(135deg, var(--secondary) 50%, transparent 50%),
-        linear-gradient(180deg, rgba(12, 22, 38, 0.82) 0%, rgba(6, 12, 22, 0.92) 100%);
-      background-position: calc(100% - 13px) 50%, calc(100% - 8px) 50%, 0 0;
-      background-size: 5px 5px, 5px 5px, 100% 100%;
+        linear-gradient(45deg, transparent 50%, var(--text-mid) 50%),
+        linear-gradient(135deg, var(--text-mid) 50%, transparent 50%);
+      background-position: calc(100% - 11px) 50%, calc(100% - 6px) 50%;
+      background-size: 4px 4px, 4px 4px;
       background-repeat: no-repeat;
-      color: var(--secondary);
+      color: var(--text-hi);
     }
     .fui-btn:hover, .fui-select:hover {
-      border-color: var(--primary);
-      color: #fff;
-      box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.45), inset 0 0 10px rgba(var(--primary-rgb), 0.2);
-      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.38);
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
     }
     .fui-btn.primary-glow {
-      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.38) 0%, rgba(var(--primary-rgb), 0.12) 100%);
-      border-color: var(--primary);
-      color: #fff;
-      box-shadow: 0 0 14px rgba(var(--primary-rgb), 0.35);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
+    .fui-btn.primary-glow:hover {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
     }
     .fui-btn.cyan-glow {
-      background: linear-gradient(135deg, rgba(var(--secondary-rgb), 0.25) 0%, rgba(var(--secondary-rgb), 0.06) 100%);
-      border-color: var(--secondary);
-      color: var(--secondary);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: var(--text-hi);
     }
 
-    /* 4-Mode Center Tactical Reticle Switcher */
+    /* Center Mode Switcher */
     .reticle-modes {
       display: flex;
-      background: rgba(3, 6, 12, 0.92);
-      border: 1px solid rgba(var(--secondary-rgb), 0.38);
-      padding: 4px;
-      gap: 5px;
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-      box-shadow: inset 0 0 18px rgba(var(--secondary-rgb), 0.12);
+      background: #050507;
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
+      padding: 2px;
+      gap: 2px;
     }
     .reticle-tab {
       background: transparent;
       border: 1px solid transparent;
+      border-radius: 1px;
       color: var(--text-mid);
-      padding: 6px 14px;
+      padding: 5px 11px;
       font-family: var(--font-display);
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 1.4px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+      transition: all 0.15s ease;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .reticle-tab .tab-idx {
       font-family: var(--font-fui);
-      font-size: 9.5px;
-      color: var(--secondary);
-      opacity: 0.7;
+      font-size: 9px;
+      color: var(--text-lo);
     }
     .reticle-tab:hover {
-      color: #fff;
-      background: rgba(var(--secondary-rgb), 0.08);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.04);
     }
     .reticle-tab.active {
-      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.85) 0%, rgba(var(--primary-rgb), 0.32) 100%);
-      border-color: #fff;
-      color: #fff;
-      box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.65);
-      text-shadow: 0 0 8px #000;
+      background: #ffffff;
+      border-color: #ffffff;
+      color: #000000;
+      font-weight: 600;
     }
-    .reticle-tab.active .tab-idx { color: #fff; opacity: 1; }
+    .reticle-tab.active .tab-idx { color: #4b5260; }
 
-    /* ─── TELEMETRY & ENTROPY HORIZON BAR ─── */
+    /* ─── TELEMETRY HORIZON BAR ─── */
     .horizon-bar {
       position: relative;
       z-index: 10;
-      height: 32px;
-      margin: 5px 10px 0 10px;
-      background: rgba(5, 9, 17, 0.82);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      height: 28px;
+      background: rgba(5, 6, 8, 0.9);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       align-items: center;
-      padding: 0 14px;
+      padding: 0 16px;
       gap: 16px;
       font-family: var(--font-fui);
-      font-size: 11px;
+      font-size: 10.5px;
+      color: var(--text-mid);
       flex-shrink: 0;
     }
     .beacon-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: var(--secondary);
-      letter-spacing: 1px;
+      color: var(--text-mid);
+      letter-spacing: 0.8px;
       white-space: nowrap;
     }
     .beacon-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--primary);
-      animation: pulseBeacon 1.6s infinite;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--emerald);
+      animation: pulseBeacon 2s infinite;
     }
     .seg-horizon-map {
       flex: 1;
-      height: 15px;
-      background: rgba(2, 4, 8, 0.95);
-      border: 1px solid rgba(var(--secondary-rgb), 0.32);
+      height: 12px;
+      background: #050507;
+      border: 1px solid var(--border-hairline);
+      border-radius: 1px;
       display: flex;
       overflow: hidden;
       position: relative;
@@ -363,129 +321,115 @@
       align-items: center;
       justify-content: center;
       font-family: var(--font-fui);
-      font-size: 9.5px;
-      letter-spacing: 1px;
-      color: #fff;
+      font-size: 8.5px;
+      letter-spacing: 0.8px;
+      color: #d1d5db;
       cursor: pointer;
-      border-right: 1px solid rgba(0,0,0,0.8);
-      text-shadow: 0 1px 3px #000;
+      border-right: 1px solid #000000;
       transition: filter 0.15s;
     }
-    .seg-slice:hover { filter: brightness(1.4); }
+    .seg-slice:hover { filter: brightness(1.3); }
 
-    /* ─── 3D CURVED HOLOGRAPHIC COCKPIT WORKSPACE ─── */
+    /* ─── MINIMALIST 3-COLUMN TELEMETRY WORKSPACE ─── */
     .cockpit-stage {
       position: relative;
       z-index: 10;
       flex: 1;
       display: grid;
-      grid-template-columns: 325px 1fr 365px;
-      gap: 10px;
-      padding: 8px 10px 10px 10px;
+      grid-template-columns: 310px 1fr 350px;
+      gap: 8px;
+      padding: 8px;
       overflow: hidden;
       perspective: 1900px;
     }
 
     .fui-wing-left, .fui-center-core, .fui-wing-right {
       background: var(--bg-glass);
-      backdrop-filter: blur(3px) saturate(135%);
-      border: 1px solid rgba(var(--secondary-rgb), 0.30);
-      box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.72),
-        inset 0 0 30px rgba(255, 130, 15, 0.04);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       position: relative;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     body.curved-3d .fui-wing-left {
-      transform: rotateY(4.2deg) translateZ(-6px);
+      transform: rotateY(3deg) translateZ(-4px);
       transform-origin: left center;
     }
     body.curved-3d .fui-wing-right {
-      transform: rotateY(-4.2deg) translateZ(-6px);
+      transform: rotateY(-3deg) translateZ(-4px);
       transform-origin: right center;
-    }
-
-    /* Corner Crosshair Reticles (+) on FUI Panels */
-    .fui-wing-left::before, .fui-center-core::before, .fui-wing-right::before {
-      content: "+";
-      position: absolute;
-      top: 3px;
-      right: 6px;
-      font-family: var(--font-fui);
-      font-size: 11px;
-      color: var(--primary);
-      pointer-events: none;
-      z-index: 25;
     }
 
     .wing-header {
       padding: 8px 12px;
-      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.20) 0%, rgba(6, 12, 22, 0.9) 100%);
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.28);
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-display);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 1.5px;
-      color: var(--secondary);
+      color: var(--text-hi);
+      text-transform: uppercase;
     }
     .wing-header span.serial {
       font-family: var(--font-fui);
       font-size: 9px;
-      color: var(--text-mid);
+      font-weight: 400;
+      color: var(--text-lo);
     }
 
     /* Left Navigator Wing */
     .nav-matrix-tabs {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      background: rgba(3, 6, 12, 0.92);
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.25);
+      background: rgba(5, 6, 8, 0.85);
+      border-bottom: 1px solid var(--border-hairline);
     }
     .nav-matrix-tab {
-      padding: 9px 4px;
+      padding: 8px 4px;
       text-align: center;
       font-family: var(--font-display);
       font-size: 9.5px;
-      font-weight: 700;
+      font-weight: 500;
       letter-spacing: 1px;
       color: var(--text-mid);
       cursor: pointer;
       border-bottom: 2px solid transparent;
-      transition: all 0.15s;
+      transition: all 0.14s;
     }
-    .nav-matrix-tab:hover { color: #fff; }
+    .nav-matrix-tab:hover { color: #ffffff; }
     .nav-matrix-tab.active {
-      color: var(--secondary);
-      border-bottom-color: var(--primary);
-      background: linear-gradient(180deg, transparent 0%, rgba(var(--primary-rgb), 0.18) 100%);
-      text-shadow: 0 0 8px var(--secondary);
+      color: #ffffff;
+      font-weight: 600;
+      border-bottom-color: #ffffff;
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .sidebar-search {
       padding: 8px;
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.22);
-      background: rgba(4, 8, 16, 0.75);
+      border-bottom: 1px solid var(--border-hairline);
+      background: rgba(5, 6, 8, 0.65);
     }
     .sidebar-search input {
       width: 100%;
-      background: rgba(2, 5, 10, 0.9);
-      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      background: #050608;
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       color: var(--text-hi);
       padding: 6px 10px;
       font-family: var(--font-fui);
-      font-size: 11.5px;
+      font-size: 11px;
       outline: none;
     }
     .sidebar-search input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.35);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     .sidebar-list {
@@ -496,23 +440,20 @@
     }
     .list-item {
       padding: 6px 11px;
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       gap: 8px;
-      transition: all 0.12s;
+      transition: background 0.1s;
     }
     .list-item:hover {
-      background: rgba(var(--primary-rgb), 0.14);
-      border-left: 3px solid var(--primary);
-      padding-left: 14px;
+      background: rgba(255, 255, 255, 0.05);
     }
     .list-item.selected {
-      background: linear-gradient(90deg, rgba(var(--secondary-rgb), 0.22) 0%, transparent 100%);
-      border-left: 3px solid var(--secondary);
-      box-shadow: inset 0 0 14px rgba(var(--secondary-rgb), 0.15);
+      background: rgba(255, 255, 255, 0.09);
+      border-left: 2px solid #ffffff;
     }
     .list-item-name {
       white-space: nowrap;
@@ -520,46 +461,45 @@
       text-overflow: ellipsis;
       color: var(--text-hi);
     }
-    .list-item-name.objc { color: var(--violet); font-weight: 600; }
-    .list-item-name.stub { color: var(--tertiary); }
+    .list-item-name.objc { color: #e2e8f0; font-weight: 600; }
+    .list-item-name.stub { color: var(--text-mid); }
     .list-item-addr {
       font-family: var(--font-fui);
-      color: var(--secondary);
+      color: var(--text-mid);
       font-size: 10.5px;
       flex-shrink: 0;
     }
 
-    /* ─── CENTER HOLOGRAPHIC STAGE ─── */
+    /* ─── CENTER TELEMETRY VIEWPORT ─── */
     .proc-hud-banner {
-      padding: 9px 16px;
-      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.22) 0%, rgba(6, 12, 22, 0.92) 50%, rgba(var(--secondary-rgb), 0.16) 100%);
-      border-bottom: 1px solid rgba(var(--primary-rgb), 0.5);
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-fui);
-      font-size: 12px;
+      font-size: 11.5px;
       flex-shrink: 0;
     }
     .proc-banner-title {
       font-family: var(--font-code);
-      color: var(--secondary);
-      font-weight: 700;
-      font-size: 13.5px;
-      text-shadow: 0 0 12px rgba(var(--secondary-rgb), 0.55);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 13px;
     }
 
     .decompiler-bar {
       padding: 7px 16px;
-      background: rgba(4, 9, 18, 0.94);
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.25);
+      background: rgba(8, 9, 12, 0.94);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       align-items: center;
       gap: 16px;
       font-family: var(--font-fui);
-      font-size: 11px;
-      color: var(--secondary);
-      letter-spacing: 0.8px;
+      font-size: 10.5px;
+      color: var(--text-mid);
+      letter-spacing: 0.5px;
     }
     .decompiler-bar label {
       display: flex;
@@ -580,51 +520,49 @@
       width: 100%;
       border-collapse: collapse;
       font-family: var(--font-code);
-      font-size: 12.2px;
+      font-size: 12px;
       line-height: 1.6;
     }
     .asm-row {
       cursor: pointer;
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.04);
-      transition: background 0.1s;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      transition: background 0.08s;
     }
-    .asm-row:hover { background: rgba(var(--primary-rgb), 0.14); }
+    .asm-row:hover { background: rgba(255, 255, 255, 0.04); }
     .asm-row.selected {
-      background: rgba(var(--secondary-rgb), 0.18);
-      outline: 1px solid var(--secondary);
-      box-shadow: inset 0 0 18px rgba(var(--secondary-rgb), 0.25);
+      background: rgba(255, 255, 255, 0.09);
+      outline: 1px solid rgba(255, 255, 255, 0.28);
     }
     .asm-row td {
       padding: 2.5px 12px;
       white-space: nowrap;
       vertical-align: top;
     }
-    .col-addr { font-family: var(--font-fui); color: var(--text-mid); width: 115px; user-select: text; }
-    .col-bytes { font-family: var(--font-fui); color: var(--text-lo); width: 125px; font-size: 11px; }
-    .col-mnem { color: var(--secondary); font-weight: 700; width: 92px; text-shadow: 0 0 8px rgba(var(--secondary-rgb), 0.45); }
-    .col-mnem.branch { color: var(--tertiary); text-shadow: 0 0 8px rgba(var(--tertiary-rgb), 0.5); }
-    .col-mnem.call { color: var(--violet); text-shadow: 0 0 8px rgba(199, 125, 255, 0.5); }
-    .col-mnem.ret { color: var(--primary); text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.7); }
-    .col-ops { color: var(--text-hi); user-select: text; }
-    .col-comment { color: var(--emerald); font-style: italic; user-select: text; }
+    .col-addr { font-family: var(--font-fui); color: var(--text-lo); width: 115px; user-select: text; }
+    .col-bytes { font-family: var(--font-fui); color: #3f4450; width: 125px; font-size: 11px; }
+    .col-mnem { color: #ffffff; font-weight: 600; width: 92px; }
+    .col-mnem.branch { color: var(--tertiary); }
+    .col-mnem.call { color: #cbd5e1; }
+    .col-mnem.ret { color: #f87171; }
+    .col-ops { color: #d1d5db; user-select: text; }
+    .col-comment { color: var(--text-mid); font-style: italic; user-select: text; }
     .asm-label-row td {
       padding-top: 12px;
       padding-bottom: 4px;
       font-family: var(--font-fui);
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.6);
-      border-bottom: 1px dashed rgba(var(--primary-rgb), 0.32);
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid var(--border-hairline);
     }
     .clickable-sym {
-      color: var(--secondary);
-      border-bottom: 1px dotted var(--secondary);
+      color: #e2e8f0;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.35);
       cursor: pointer;
     }
     .clickable-sym:hover {
-      color: #fff;
-      text-shadow: 0 0 10px var(--secondary);
+      color: #ffffff;
+      border-bottom-color: #ffffff;
     }
 
     /* Synchronized Register / Variable Token Highlight */
@@ -632,21 +570,19 @@
       cursor: pointer;
       padding: 0 2px;
       border-radius: 2px;
-      transition: all 0.12s;
+      transition: all 0.1s;
     }
     .reg-tok:hover {
-      background: rgba(var(--secondary-rgb), 0.2);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
     }
     .reg-tok.hl-active {
-      background: rgba(var(--primary-rgb), 0.45);
-      color: #fff;
-      outline: 1px solid var(--secondary);
-      box-shadow: 0 0 12px var(--primary), 0 0 6px var(--secondary);
-      font-weight: 700;
+      background: #ffffff;
+      color: #000000;
+      font-weight: 600;
     }
 
-    /* CPU Emulator & Neural Audit Dashboards */
+    /* CPU Emulator & Security Audit Dashboards */
     .emu-layout {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -659,8 +595,9 @@
       gap: 6px;
     }
     .emu-reg-card {
-      background: rgba(3, 8, 16, 0.9);
-      border: 1px solid rgba(var(--secondary-rgb), 0.22);
+      background: rgba(10, 11, 14, 0.9);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 5px 9px;
       display: flex;
       justify-content: space-between;
@@ -669,9 +606,8 @@
       font-size: 11.5px;
     }
     .emu-reg-card.modified {
-      border-color: var(--primary);
-      background: rgba(var(--primary-rgb), 0.22);
-      box-shadow: 0 0 14px rgba(var(--primary-rgb), 0.45);
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
     }
     .audit-layout {
       display: flex;
@@ -685,45 +621,46 @@
       gap: 8px;
     }
     .mitigation-card {
-      background: rgba(3, 8, 16, 0.9);
-      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      background: rgba(10, 11, 14, 0.9);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 8px 10px;
       text-align: center;
       font-family: var(--font-fui);
       font-size: 11px;
     }
     .entropy-track {
-      height: 8px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-hairline);
       overflow: hidden;
       width: 160px;
     }
 
-    /* Mode 07: Reverse Engineering Suite 4-Quadrant Command Deck */
+    /* Mode 07: Reverse Engineering Suite */
     .resuite-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      padding: 14px;
+      gap: 12px;
+      padding: 12px;
     }
     .resuite-panel {
-      background: rgba(4, 9, 18, 0.88);
-      border: 1px solid rgba(var(--secondary-rgb), 0.30);
-      border-top: 2px solid var(--primary);
+      background: rgba(10, 11, 14, 0.9);
+      border: 1px solid var(--border-hairline);
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 2px;
       padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       position: relative;
-      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), inset 0 0 18px rgba(var(--secondary-rgb), 0.05);
     }
     .resuite-code-box {
       width: 100%;
-      background: #02050b;
-      color: var(--emerald);
-      border: 1px solid rgba(var(--secondary-rgb), 0.32);
+      background: #050507;
+      color: #d1d5db;
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 8px 10px;
       font-family: var(--font-code);
       font-size: 11px;
@@ -735,25 +672,21 @@
     }
     .bp-dot {
       display: inline-block;
-      color: #ff1e38;
-      text-shadow: 0 0 8px #ff1e38, 0 0 16px #ff1e38;
-      font-size: 11.5px;
+      color: #ef4444;
+      font-size: 11px;
       margin-right: 5px;
-      animation: pulseBeacon 1.5s infinite;
     }
     .asm-row.has-bp {
-      background: rgba(255, 30, 56, 0.14);
-      border-left: 3px solid #ff1e38;
+      background: rgba(239, 68, 68, 0.12);
+      border-left: 2px solid #ef4444;
     }
     .vtable-badge {
-      color: var(--violet);
-      font-weight: 700;
-      text-shadow: 0 0 8px rgba(199, 125, 255, 0.45);
+      color: #e2e8f0;
+      font-weight: 600;
     }
     .dwarf-badge {
       color: var(--emerald);
-      font-weight: 700;
-      text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+      font-weight: 600;
     }
 
     /* Synchronized Split-View (ASM <-> Decompiler / AI Rewrite) */
@@ -763,7 +696,7 @@
       height: 100%;
       width: 100%;
       overflow: hidden;
-      background: rgba(2, 5, 11, 0.78);
+      background: rgba(6, 7, 9, 0.85);
     }
     .split-pane-left, .split-pane-right {
       display: flex;
@@ -772,12 +705,12 @@
       overflow: hidden;
     }
     .split-pane-left {
-      border-right: 1px solid rgba(var(--secondary-rgb), 0.35);
+      border-right: 1px solid var(--border-hairline);
     }
     .split-pane-header {
       padding: 7px 12px;
-      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.22) 0%, rgba(4, 9, 18, 0.95) 100%);
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.3);
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -797,12 +730,13 @@
       padding: 1px 6px;
       font-size: 9px;
       font-family: var(--font-fui);
-      background: rgba(199, 125, 255, 0.22);
-      border: 1px solid var(--violet);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 2px;
+      color: #ffffff;
       cursor: pointer;
       margin-left: 8px;
-      transition: opacity 0.14s, transform 0.14s;
+      transition: opacity 0.14s;
       vertical-align: middle;
     }
     .asm-row:hover .solve-here-btn,
@@ -810,76 +744,72 @@
       opacity: 1;
     }
     .solve-here-btn:hover {
-      background: var(--violet);
-      color: #000;
-      box-shadow: 0 0 10px var(--violet);
+      background: #ffffff;
+      color: #000000;
     }
     .decomp-line {
       display: block;
       padding: 1px 10px;
-      border-left: 3px solid transparent;
-      transition: background 0.12s, border-color 0.12s;
+      border-left: 2px solid transparent;
+      transition: background 0.1s, border-color 0.1s;
       cursor: pointer;
       white-space: pre-wrap;
     }
     .decomp-line:hover {
-      background: rgba(var(--secondary-rgb), 0.10);
+      background: rgba(255, 255, 255, 0.04);
     }
     .decomp-line.hl-sync {
-      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.28) 0%, rgba(var(--secondary-rgb), 0.12) 100%);
-      border-left-color: var(--secondary);
-      box-shadow: inset 0 0 12px rgba(var(--secondary-rgb), 0.2);
+      background: rgba(255, 255, 255, 0.09);
+      border-left-color: #ffffff;
     }
     .asm-row.hl-sync {
-      background: rgba(var(--secondary-rgb), 0.22) !important;
-      border-left: 3px solid var(--secondary);
+      background: rgba(255, 255, 255, 0.09) !important;
+      border-left: 2px solid #ffffff;
     }
 
     /* Mode 08: OMNI-V3 4-Quadrant Command Deck */
     .omniv3-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      padding: 14px;
+      gap: 12px;
+      padding: 12px;
     }
     .omniv3-panel {
-      background: rgba(4, 9, 18, 0.90);
-      border: 1px solid rgba(var(--secondary-rgb), 0.32);
-      border-top: 2px solid var(--secondary);
+      background: rgba(10, 11, 14, 0.9);
+      border: 1px solid var(--border-hairline);
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 2px;
       padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 9px;
       position: relative;
-      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.68), inset 0 0 18px rgba(var(--secondary-rgb), 0.06);
     }
 
     /* Pseudo-Code Decompiler View */
     .pseudocode-pre {
-      padding: 22px 26px;
+      padding: 20px 24px;
       font-family: var(--font-code);
-      font-size: 13px;
-      line-height: 1.72;
+      font-size: 12.5px;
+      line-height: 1.7;
       color: var(--text-hi);
       user-select: text;
       white-space: pre-wrap;
     }
-    .kw { color: var(--primary); font-weight: 700; text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5); }
-    .str { color: var(--emerald); }
-    .cmt { color: var(--text-mid); font-style: italic; }
-    .lbl { color: var(--tertiary); font-weight: 700; }
+    .kw { color: #ffffff; font-weight: 600; }
+    .str { color: #a7f3d0; }
+    .cmt { color: var(--text-lo); font-style: italic; }
+    .lbl { color: var(--tertiary); font-weight: 600; }
 
-    /* CFG Neural Topology Canvas */
+    /* CFG Topology Canvas */
     .cfg-wrapper {
       width: 100%;
       height: 100%;
       overflow: auto;
       position: relative;
       background:
-        radial-gradient(circle at 50% 50%, rgba(var(--secondary-rgb), 0.08) 0%, transparent 70%),
-        radial-gradient(rgba(var(--secondary-rgb), 0.22) 1px, transparent 1px);
-      background-size: 100% 100%, 24px 24px;
+        radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
     .cfg-edge-animated {
       stroke-dasharray: 10 6;
@@ -887,23 +817,23 @@
     }
     .cfg-minimap {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
-      width: 215px;
-      height: 150px;
-      background: rgba(3, 7, 14, 0.92);
-      border: 1px solid var(--secondary);
-      box-shadow: 0 0 25px rgba(var(--secondary-rgb), 0.32);
+      bottom: 14px;
+      right: 14px;
+      width: 210px;
+      height: 145px;
+      background: rgba(8, 9, 12, 0.94);
+      border: 1px solid var(--border-active);
+      border-radius: 2px;
       z-index: 20;
       padding: 7px;
       pointer-events: none;
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
     }
     .cfg-minimap-title {
       font-family: var(--font-display);
       font-size: 9px;
-      color: var(--secondary);
-      letter-spacing: 1.2px;
+      font-weight: 600;
+      color: var(--text-mid);
+      letter-spacing: 1px;
       margin-bottom: 4px;
     }
 
@@ -921,13 +851,13 @@
       text-align: center;
       margin-right: 2px;
     }
-    .bt-code { color: var(--secondary); background: rgba(var(--secondary-rgb), 0.12); }
-    .bt-procedure { color: #fff; background: rgba(var(--primary-rgb), 0.48); font-weight: 700; box-shadow: 0 0 8px var(--primary); }
-    .bt-ascii { color: var(--emerald); background: rgba(0, 255, 157, 0.12); }
-    .bt-int64, .bt-int32, .bt-int16, .bt-int8 { color: var(--violet); background: rgba(199, 125, 255, 0.14); }
+    .bt-code { color: #d1d5db; background: rgba(255, 255, 255, 0.05); }
+    .bt-procedure { color: #000000; background: #ffffff; font-weight: 600; }
+    .bt-ascii { color: var(--emerald); background: rgba(16, 185, 129, 0.08); }
+    .bt-int64, .bt-int32, .bt-int16, .bt-int8 { color: #cbd5e1; background: rgba(203, 213, 225, 0.08); }
     .bt-undefined { color: var(--text-lo); }
 
-    /* ─── RIGHT TELEMETRY WING (FUI GAUGES, OSCILLOSCOPE & INSPECTORS) ─── */
+    /* ─── RIGHT TELEMETRY WING ─── */
     .fui-wing-right-scroll {
       flex: 1;
       overflow-y: auto;
@@ -938,104 +868,97 @@
     }
 
     .fui-module {
-      background: rgba(4, 9, 18, 0.84);
-      border: 1px solid rgba(var(--secondary-rgb), 0.26);
+      background: rgba(12, 13, 17, 0.85);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 10px 12px;
       position: relative;
-      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    }
-    .fui-module::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 34px;
-      height: 2px;
-      background: var(--primary);
-      box-shadow: 0 0 10px var(--primary);
     }
     .fui-module-title {
       font-family: var(--font-display);
       font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 1.4px;
-      color: var(--secondary);
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: var(--text-mid);
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.15);
-      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border-hairline);
+      padding-bottom: 5px;
+      text-transform: uppercase;
     }
     .hud-tag {
-      background: rgba(var(--primary-rgb), 0.24);
-      color: var(--primary);
-      border: 1px solid var(--primary);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-hi);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 2px;
       padding: 1px 6px;
       font-family: var(--font-fui);
-      font-size: 9.5px;
+      font-size: 9px;
     }
 
-    /* Circular FUI Gauges Row */
+    /* Circular Telemetry Gauges Row */
     .gauges-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
       text-align: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .gauge-box {
-      background: rgba(2, 5, 11, 0.75);
-      border: 1px solid rgba(var(--secondary-rgb), 0.16);
+      background: rgba(5, 6, 8, 0.8);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .gauge-svg { width: 54px; height: 54px; transform: rotate(-90deg); }
+    .gauge-svg { width: 50px; height: 50px; transform: rotate(-90deg); }
     .gauge-label {
       font-family: var(--font-fui);
       font-size: 8.5px;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       color: var(--text-mid);
       margin-top: 3px;
     }
 
     .kv-grid {
       display: grid;
-      grid-template-columns: 98px 1fr;
+      grid-template-columns: 96px 1fr;
       row-gap: 4px;
       column-gap: 8px;
-      font-size: 11.5px;
+      font-size: 11px;
     }
-    .kv-key { font-family: var(--font-fui); color: var(--text-mid); font-size: 10px; letter-spacing: 0.8px; }
+    .kv-key { font-family: var(--font-fui); color: var(--text-lo); font-size: 9.5px; letter-spacing: 0.6px; }
     .kv-val { font-family: var(--font-code); color: var(--text-hi); word-break: break-all; user-select: text; font-size: 11px; }
 
     .xref-pill {
       display: inline-block;
-      background: rgba(var(--secondary-rgb), 0.09);
-      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 2px 7px;
       font-family: var(--font-fui);
-      font-size: 10.5px;
-      color: var(--secondary);
+      font-size: 10px;
+      color: var(--text-hi);
       margin: 2px 3px 2px 0;
       cursor: pointer;
-      transition: all 0.14s;
+      transition: all 0.12s;
     }
     .xref-pill:hover {
-      background: var(--primary);
-      border-color: #fff;
-      color: #fff;
-      box-shadow: 0 0 12px var(--primary);
+      background: #ffffff;
+      border-color: #ffffff;
+      color: #000000;
     }
 
     /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(1, 3, 7, 0.82);
-      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1043,27 +966,26 @@
     }
     .modal-backdrop.open { display: flex; }
     .modal {
-      background: linear-gradient(160deg, rgba(8, 14, 26, 0.98) 0%, rgba(4, 7, 14, 0.99) 100%);
-      border: 1px solid var(--secondary);
-      border-top: 2px solid var(--primary);
+      background: #090a0d;
+      border: 1px solid var(--border-active);
+      border-radius: 2px;
       width: 640px;
       max-width: 94vw;
-      box-shadow: 0 0 50px rgba(var(--secondary-rgb), 0.28), 0 0 30px rgba(var(--primary-rgb), 0.2);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
       overflow: hidden;
-      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
     }
     .modal-header {
       padding: 12px 16px;
-      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.28) 0%, rgba(var(--secondary-rgb), 0.1) 100%);
-      border-bottom: 1px solid rgba(var(--primary-rgb), 0.45);
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-hairline);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-display);
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: #fff;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      color: #ffffff;
     }
     .modal-body {
       padding: 16px;
@@ -1073,9 +995,10 @@
     }
     .modal-body textarea {
       width: 100%;
-      background: #03060c;
+      background: #040507;
       color: var(--text-hi);
-      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
       padding: 10px;
       font-family: var(--font-code);
       font-size: 12px;
@@ -1087,21 +1010,20 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(5, 10, 19, 0.96);
-      color: var(--secondary);
-      border: 1px solid var(--primary);
-      box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.6);
-      padding: 9px 22px;
-      font-family: var(--font-display);
+      background: #0a0b0e;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 2px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+      padding: 8px 20px;
+      font-family: var(--font-fui);
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       display: none;
       z-index: 998;
-      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
     }
 
-    /* ─── AVENGERS AAA CINEMATIC LAUNCH PORTAL ─── */
+    /* ─── SPACEX MINIMALIST SINGULARITY LAUNCH PORTAL ─── */
     #launchPortal {
       position: fixed;
       inset: 0;
@@ -1109,29 +1031,20 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: radial-gradient(circle at 50% 48%, rgba(8, 16, 32, 0.72) 0%, rgba(1, 3, 8, 0.97) 75%);
-      backdrop-filter: blur(14px);
+      background: #000000;
       overflow: hidden;
-      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #launchPortal.portal-hidden {
       opacity: 0;
-      transform: scale(1.08);
       pointer-events: none;
     }
     .launch-bg-art {
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(255, 115, 0, 0.14) 0%, rgba(255, 65, 0, 0.05) 26%, transparent 56%),
-        radial-gradient(ellipse at 50% 48%, #0c0805 0%, #040302 52%, #000000 100%);
+      background: #000000;
       pointer-events: none;
       z-index: 0;
-    }
-    body.jarvis-mode .launch-bg-art {
-      background:
-        radial-gradient(circle at 50% 42%, rgba(255, 150, 10, 0.16) 0%, rgba(255, 90, 0, 0.06) 28%, transparent 58%),
-        radial-gradient(ellipse at 50% 48%, #0d0904 0%, #040302 52%, #000000 100%);
     }
     #launchCanvas {
       position: absolute;
@@ -1141,6 +1054,15 @@
       pointer-events: none;
       z-index: 1;
     }
+    .launch-minimal-chrome {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 1.1s ease, transform 1.1s ease;
+    }
+    .launch-minimal-chrome.chrome-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
     .launch-top-bar, .launch-bottom-bar {
       position: relative;
       z-index: 3;
@@ -1148,474 +1070,388 @@
       justify-content: space-between;
       align-items: center;
       padding: 14px 32px;
-      background: rgba(3, 7, 15, 0.86);
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.32);
+      background: rgba(0, 0, 0, 0.75);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       font-family: var(--font-fui);
-      font-size: 11px;
+      font-size: 10.5px;
       letter-spacing: 1.8px;
       color: var(--text-mid);
     }
     .launch-bottom-bar {
       border-bottom: none;
-      border-top: 1px solid rgba(var(--primary-rgb), 0.45);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .launch-grid {
+    .launch-center-stage {
       position: relative;
       z-index: 3;
       flex: 1;
-      display: grid;
-      grid-template-columns: 370px 1fr 410px;
-      gap: 26px;
-      padding: 22px 36px;
-      align-items: center;
-      max-width: 1680px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .launch-panel {
-      background: linear-gradient(165deg, rgba(6, 12, 24, 0.9) 0%, rgba(2, 5, 11, 0.94) 100%);
-      border: 1px solid rgba(var(--secondary-rgb), 0.34);
-      border-top: 2px solid var(--primary);
-      padding: 16px 18px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.85), inset 0 0 28px rgba(var(--secondary-rgb), 0.06);
-      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-    }
-    .launch-panel-title {
-      font-family: var(--font-display);
-      font-size: 10.5px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--secondary);
-      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.22);
-      padding-bottom: 7px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .launch-center-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      position: relative;
+      padding: 20px;
     }
     .launch-reactor-hub {
       position: relative;
-      width: 390px;
-      height: 390px;
+      width: 420px;
+      height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       cursor: pointer;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .launch-reactor-hub:hover {
-      transform: scale(1.05);
     }
     #core3dCanvas {
-      width: 390px;
-      height: 390px;
+      width: 420px;
+      height: 420px;
       display: block;
     }
-    .launch-hero-title {
-      font-family: var(--font-display);
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: 5px;
-      color: #fff;
-      text-shadow: 0 0 28px rgba(var(--primary-rgb), 0.85), 0 0 60px rgba(var(--secondary-rgb), 0.35);
-      line-height: 1.08;
-    }
-    .launch-hero-title span {
-      color: var(--primary);
-    }
-    .launch-hero-sub {
+    .launch-voice-caption {
       font-family: var(--font-fui);
       font-size: 12px;
       letter-spacing: 3.5px;
-      color: var(--secondary);
-      margin-top: 6px;
+      color: #ffffff;
+      min-height: 20px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .launch-hero-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 10px;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .launch-hero-title span {
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+    .launch-hero-sub {
+      font-family: var(--font-fui);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--text-lo);
       margin-bottom: 22px;
+      text-transform: uppercase;
     }
     .launch-ignite-btn {
       position: relative;
-      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.42) 0%, rgba(var(--secondary-rgb), 0.22) 100%);
-      border: 2px solid var(--primary);
-      color: #fff;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 2px;
+      color: #ffffff;
       font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 900;
+      font-size: 11.5px;
+      font-weight: 500;
       letter-spacing: 3px;
-      padding: 15px 42px;
+      padding: 12px 36px;
       cursor: pointer;
-      box-shadow: 0 0 38px rgba(var(--primary-rgb), 0.65), inset 0 0 22px rgba(var(--secondary-rgb), 0.35);
-      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       text-transform: uppercase;
     }
     .launch-ignite-btn:hover {
-      transform: translateY(-2px) scale(1.03);
-      border-color: var(--secondary);
-      box-shadow: 0 0 60px var(--primary), 0 0 40px var(--secondary);
-      text-shadow: 0 0 12px #fff;
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
     }
     .target-deck-card {
-      background: rgba(3, 8, 18, 0.88);
-      border: 1px solid rgba(var(--secondary-rgb), 0.25);
-      padding: 9px 12px;
-      margin-bottom: 7px;
+      background: rgba(12, 13, 16, 0.9);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2px;
+      padding: 7px 10px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.15s;
+      transition: all 0.14s;
     }
     .target-deck-card:hover, .target-deck-card.active {
-      border-color: var(--primary);
-      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.24) 0%, rgba(var(--secondary-rgb), 0.08) 100%);
-      box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.35);
-    }
-    .protocol-switch-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .protocol-card {
-      padding: 10px;
-      border: 1px solid rgba(var(--secondary-rgb), 0.3);
-      background: rgba(2, 6, 13, 0.85);
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
-    }
-    .protocol-card.active {
-      border-color: var(--primary);
-      background: rgba(var(--primary-rgb), 0.22);
-      box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.45);
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
     }
   </style>
 </head>
-<body class="curved-3d">
+<body>
 
-  <!-- ─── AVENGERS AAA CINEMATIC LAUNCH PORTAL ─── -->
+  <!-- ─── MINIMALIST SINGULARITY & HALO LAUNCH PAGE ─── -->
   <div id="launchPortal">
     <div class="launch-bg-art"></div>
     <canvas id="launchCanvas"></canvas>
 
-    <div class="launch-top-bar">
-      <span>◈ STARK / SOKOVIA DEFENSE NETWORK // SATELLITE LINK: ACTIVE</span>
-      <span style="color:var(--secondary);font-weight:700;">CLEARANCE LEVEL 10 // AVENGERS INITIATIVE</span>
-      <span id="launchClockText">T+00:00:00.00 // ORBITAL LOCK</span>
+    <div class="launch-top-bar launch-minimal-chrome" id="launchTopChrome">
+      <span>ULTRON // v3.0.0 OMNI-CORE</span>
+      <span style="color:#ffffff;font-weight:500;">PROTOCOL REA // READY TO PROCEED</span>
+      <span id="launchClockText">T+00:00:00.00 // TELEMETRY NOMINAL</span>
     </div>
 
-    <div class="launch-grid">
-      <!-- Left Column: Neural Boot Sequence & System Telemetry -->
-      <div class="launch-panel">
-        <div class="launch-panel-title">
-          <span>01 // NEURAL CORE INITIALIZATION</span>
-          <span class="hud-tag">ONLINE</span>
-        </div>
-        <div id="launchBootLog" style="font-family:var(--font-code);font-size:11px;line-height:1.65;color:var(--text-hi);height:215px;overflow-y:auto;background:rgba(1,3,8,0.75);padding:10px;border:1px solid rgba(0,240,255,0.18);margin-bottom:12px;"></div>
-
-        <div class="launch-panel-title" style="margin-top:8px;">
-          <span>02 // SUBSYSTEM CAPABILITIES</span>
-          <span style="color:var(--emerald);font-size:9.5px;">8 MODULES READY</span>
-        </div>
-        <div class="kv-grid" style="font-size:11px;row-gap:6px;">
-          <span class="kv-key">DISASSEMBLER</span><span class="kv-val" style="color:var(--secondary);">Capstone AArch64 / x86_64</span>
-          <span class="kv-key">DECOMPILER</span><span class="kv-val" style="color:var(--emerald);">SSA + Phi (φ) + ObjC AST</span>
-          <span class="kv-key">LLVM FORGE</span><span class="kv-val" style="color:var(--primary);">libLLVMServices.dylib</span>
-          <span class="kv-key">CPU EMULATOR</span><span class="kv-val" style="color:var(--tertiary);">Live Step-Into + 64KB Stack</span>
-          <span class="kv-key">SECURITY AUDIT</span><span class="kv-val">CWE Sinks + S-Box + Entropy</span>
-          <span class="kv-key">RE SUITE 07</span><span class="kv-val" style="color:var(--violet);">.ULTRON + BinDiff + Frida/LLDB</span>
-          <span class="kv-key">OMNI-V3 08</span><span class="kv-val" style="color:#00f2ff;">Symbolic Z3 + AI + REA + MCP</span>
-        </div>
+    <div class="launch-center-stage">
+      <!-- Singularity Particle + Halo -> 3D Spherical Particle Cloud -->
+      <div class="launch-reactor-hub" id="launchCloudHub" title="Cliquer ou glisser pour interagir avec la singularité 3D • Double-clic pour ouvrir l'interface">
+        <canvas id="core3dCanvas" width="840" height="840"></canvas>
       </div>
 
-      <!-- Center Stage: Interactive & Process-Reactive Volumetric Orange Spherical Particle Cloud -->
-      <div class="launch-center-stage">
-        <div class="launch-reactor-hub" id="launchCloudHub" title="Glisser pour orbiter en 3D • Cliquer pour onde de choc synaptique • Double-clic pour lancer">
-          <canvas id="core3dCanvas" width="780" height="780"></canvas>
-        </div>
+      <!-- Voice Announcement Subtitle Readout -->
+      <div class="launch-voice-caption" id="launchVoiceCaption"></div>
 
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:4px 14px;border-radius:20px;background:rgba(255,120,0,0.08);border:1px solid rgba(255,145,0,0.32);">
-          <span id="neuralPulseDot" style="width:8px;height:8px;border-radius:50%;background:#ff9500;box-shadow:0 0 10px #ff9500;display:inline-block;"></span>
-          <span id="neuralActivityText" style="font-family:var(--font-code);font-size:10.5px;color:#ffb84d;letter-spacing:1.6px;">
-            NEURAL CORE: HARMONIC STANDBY // INTERACTIVE 3D CLOUD
+      <!-- Minimalist SpaceX Controls (Fade in after Singularity & Halo appear) -->
+      <div class="launch-minimal-chrome" id="launchCenterChrome" style="display:flex;flex-direction:column;align-items:center;max-width:660px;width:100%;">
+        <h1 class="launch-hero-title">ULTRON <span>DISASSEMBLE</span></h1>
+        <div class="launch-hero-sub">MULTI-ARCH DISASSEMBLER • OPTIMIZING SSA • SYMBOLIC Z3 • AI • MCP</div>
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;justify-content:center;">
+          <span id="neuralPulseDot" style="width:6px;height:6px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
+          <span id="neuralActivityText" style="font-family:var(--font-code);font-size:10px;color:var(--text-mid);letter-spacing:1.4px;">
+            SINGULARITY ONLINE // PROTOCOL REA
           </span>
-          <button class="fui-btn" style="padding:2px 8px;font-size:9px;border-color:rgba(255,150,0,0.5);color:#ffb84d;" onclick="event.stopPropagation(); triggerProcessBurst()">
-            ⚡ PULSE PROCESS
-          </button>
-          <button class="fui-btn" id="launchCloudToggleBtn" style="padding:2px 8px;font-size:9px;border-color:rgba(0,242,255,0.55);color:#00f2ff;" title="Activer/Désactiver le nuage de particules sphérique 3D temps réel 60 FPS [Raccourci: P]" onclick="event.stopPropagation(); toggle3DCloud()">
+          <button class="fui-btn" id="launchCloudToggleBtn" style="padding:3px 9px;font-size:9.5px;" title="Activer/Désactiver le nuage de particules 3D [Raccourci: P]" onclick="event.stopPropagation(); toggle3DCloud()">
             ☁ 3D CLOUD: ON
           </button>
+          <button class="fui-btn" style="padding:3px 9px;font-size:9.5px;" title="Réécouter l'annonce vocale d'initialisation Ultron" onclick="event.stopPropagation(); replayGenesisSequence()">
+            🔊 VOICE: ULTRON ACTIVE
+          </button>
         </div>
 
-        <div style="font-family:var(--font-fui);font-size:11px;color:var(--primary);letter-spacing:4px;margin-bottom:4px;" id="launchProtocolBanner">
-          PROTOCOL MK-LXXXV // SENTINEL PRIME
-        </div>
-        <h1 class="launch-hero-title">ULTRON <span>DISASSEMBLE</span></h1>
-        <div class="launch-hero-sub">AVENGERS-CLASS BINARY DISASSEMBLER • SSA DECOMPILER • NEURAL AUDITOR</div>
-
-        <button class="launch-ignite-btn" onclick="igniteUltronWorkspace()">
-          ⬢ ENGAGE DISASSEMBLE // LAUNCH COCKPIT
-        </button>
-        <div style="margin-top:10px;font-family:var(--font-fui);font-size:10.5px;color:var(--text-mid);letter-spacing:1.5px;">
-          SURVOLER / GLISSER LE NUAGE 3D • <strong style="color:#00f2ff;">[P]</strong> CLOUD ON/OFF • <strong style="color:#ff9d00;">[ENTRÉE]</strong> POUR LANCER LE COCKPIT
-        </div>
-      </div>
-
-      <!-- Right Column: Protocol Matrix & Mission Target Binary Selector -->
-      <div class="launch-panel">
-        <div class="launch-panel-title">
-          <span>03 // SELECT AI HOLOGRAPHIC MATRIX</span>
-        </div>
-        <div class="protocol-switch-grid">
-          <div class="protocol-card active" id="protoCardUltron" onclick="selectLaunchProtocol(false)">
-            <div style="font-family:var(--font-display);font-size:11px;font-weight:800;color:#ff1a35;">ULTRON PRIME</div>
-            <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:3px;">SOKOVIA CRIMSON // VIBRANIUM</div>
-          </div>
-          <div class="protocol-card" id="protoCardJarvis" onclick="selectLaunchProtocol(true)">
-            <div style="font-family:var(--font-display);font-size:11px;font-weight:800;color:#ffb703;">J.A.R.V.I.S. MK-85</div>
-            <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:3px;">STARK GOLD // ARC CYAN</div>
-          </div>
-        </div>
-
-        <div class="launch-panel-title">
-          <span>04 // SELECT MISSION BINARY TARGET</span>
-          <span class="hud-tag" id="launchSelectedArchBadge">AARCH64</span>
-        </div>
-        <div id="launchTargetDeck" style="max-height:175px;overflow-y:auto;margin-bottom:10px;"></div>
-
-        <div style="display:flex;gap:6px;margin-top:8px;">
-          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin binaire (.app, .framework, .dylib, ELF, PE, .wasm, .asar, .evm, .dex)…" />
-          <select id="launchArchSelect" class="fui-select" onchange="document.getElementById('launchSelectedArchBadge').textContent=this.value.toUpperCase()">
+        <!-- Compact Target Selector Row -->
+        <div style="display:flex;gap:6px;width:100%;max-width:560px;margin-bottom:16px;">
+          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Target binary (.app, Mach-O, ELF, PE, .wasm, .asar, .evm, .dex)…" />
+          <select id="launchArchSelect" class="fui-select" onchange="const b=document.getElementById('launchSelectedArchBadge'); if(b) b.textContent=this.value.toUpperCase()">
             <option value="arm64">ARM64</option>
             <option value="arm32">ARM32</option>
             <option value="x86_64">X86_64</option>
             <option value="x86">X86 (32-BIT)</option>
             <option value="wasm32">WASM32</option>
-            <option value="evm">ARCH // ETHEREUM EVM</option>
-            <option value="dex">ARCH // ANDROID DEX</option>
-            <option value="asar">ARCH // ELECTRON ASAR</option>
+            <option value="evm">EVM</option>
+            <option value="dex">DEX</option>
+            <option value="asar">ASAR</option>
           </select>
+          <span class="hud-tag" id="launchSelectedArchBadge" style="display:none;">AARCH64</span>
+        </div>
+
+        <!-- Compact Preset Pills -->
+        <div id="launchTargetDeck" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:6px;width:100%;max-width:560px;max-height:92px;overflow-y:auto;margin-bottom:20px;"></div>
+
+        <div id="launchBootLog" style="display:none;"></div>
+
+        <button class="launch-ignite-btn" onclick="igniteUltronWorkspace()">
+          PROCEED TO WORKSPACE
+        </button>
+        <div style="margin-top:10px;font-family:var(--font-fui);font-size:9.5px;color:var(--text-lo);letter-spacing:1.4px;">
+          [P] 3D PARTICLE CLOUD ON/OFF • [ENTER] PROCEED
         </div>
       </div>
     </div>
 
-    <div class="launch-bottom-bar">
-      <span>STATUS: <strong style="color:var(--emerald);">ALL SYSTEMS NOMINAL // NO STRINGS ON ME</strong></span>
-      <span>ENGINE: <strong style="color:var(--secondary);">MULTI-ARCH MACH-O/ELF/PE/WASM/EVM/DEX/ASAR // OBJC 2.0 // DOMINATOR LOOP SSA</strong></span>
-      <span>VERSION: <strong style="color:var(--primary);">3.0.0 OMNI-CORE RUST EDITION (MCP + REA + SYMBOLIC Z3 + AI)</strong></span>
+    <div class="launch-bottom-bar launch-minimal-chrome" id="launchBottomChrome">
+      <span>STATUS: <strong style="color:var(--emerald);">ULTRON ACTIVE // NOMINAL</strong></span>
+      <span>PROTOCOL: <strong style="color:#ffffff;">REA READY TO PROCEED</strong></span>
+      <span>BUILD: <strong style="color:var(--text-mid);">v3.0.0 OPEN-SOURCE RUST EDITION</strong></span>
     </div>
   </div>
 
-  <!-- Layer 0: Nano Banana 8K VFX Backdrop -->
+  <!-- Layer 0: Pitch-Black Backdrop -->
   <div class="vfx-backdrop"></div>
 
-  <!-- Layer 1: Live 60FPS Procedural Hollywood FUI Canvas (3D Gyroscope + Telemetry Particles) -->
+  <!-- Layer 1: Live 60FPS 3D Spherical Particle Cloud -->
   <canvas id="fuiCanvas"></canvas>
 
-  <!-- Layer 2: Anamorphic Scanline & Vignette Overlay -->
+  <!-- Layer 2: Subtle Vignette Overlay -->
   <div class="fui-lens-overlay"></div>
 
-  <!-- ─── TOP HOLOGRAPHIC COMMAND BRIDGE ─── -->
+  <!-- ─── TOP MINIMALIST COMMAND BAR ─── -->
   <header class="command-bridge">
     <div class="bridge-cluster">
-      <div class="reactor-pod" onclick="playChirp(880, 0.08); showLaunchPortal()" title="Retourner au Launch Portal Avengers">
+      <div class="reactor-pod" onclick="playChirp(880, 0.05); showLaunchPortal()" title="Retourner à l'écran de lancement">
         <div class="reactor-orb">
-          <canvas id="headerOrbCanvas" width="110" height="110" style="width:46px;height:46px;display:block;"></canvas>
+          <canvas id="headerOrbCanvas" width="80" height="80" style="width:32px;height:32px;display:block;"></canvas>
         </div>
         <div class="pod-titles">
-          <span class="pod-code" id="hudThemeLabel">SENTINEL PRIME // MK-LXXXV</span>
-          <span class="pod-name">ULTRON <span>DISASSEMBLE</span></span>
+          <span class="pod-code" id="hudThemeLabel">PROTOCOL // REA</span>
+          <span class="pod-name">ULTRON <span>v3.0</span></span>
         </div>
       </div>
 
       <select id="presetSelect" class="fui-select" title="Cibles binaires pré-configurées"></select>
       <select id="archSelect" class="fui-select" title="Architecture CPU">
-        <option value="arm64">ARCH // AARCH64</option>
-        <option value="arm32">ARCH // ARM32</option>
-        <option value="x86_64">ARCH // X86_64</option>
-        <option value="x86">ARCH // X86 (32-BIT)</option>
-        <option value="wasm32">ARCH // WASM32</option>
-        <option value="evm">ARCH // ETHEREUM EVM</option>
-        <option value="dex">ARCH // ANDROID DEX</option>
-        <option value="asar">ARCH // ELECTRON ASAR</option>
+        <option value="arm64">ARM64</option>
+        <option value="arm32">ARM32</option>
+        <option value="x86_64">X86_64</option>
+        <option value="x86">X86</option>
+        <option value="wasm32">WASM32</option>
+        <option value="evm">EVM</option>
+        <option value="dex">DEX</option>
+        <option value="asar">ASAR</option>
       </select>
-      <button class="fui-btn cyan-glow" onclick="playChirp(660, 0.06); showLaunchPortal()">⬢ LAUNCH DECK</button>
     </div>
 
-    <!-- 8-Mode Tactical Matrix Switcher -->
+    <!-- 8-Mode Minimalist Switcher -->
     <div class="reticle-modes">
-      <button class="reticle-tab active" id="mode-asm" onclick="playChirp(520, 0.05); setMode('asm')">
-        <span class="tab-idx">01</span> ASM MATRIX
+      <button class="reticle-tab active" id="mode-asm" onclick="playChirp(520, 0.04); setMode('asm')">
+        <span class="tab-idx">01</span> ASM
       </button>
-      <button class="reticle-tab" id="mode-cfg" onclick="playChirp(620, 0.05); setMode('cfg')">
-        <span class="tab-idx">02</span> NEURAL CFG
+      <button class="reticle-tab" id="mode-cfg" onclick="playChirp(620, 0.04); setMode('cfg')">
+        <span class="tab-idx">02</span> CFG
       </button>
-      <button class="reticle-tab" id="mode-pseudo" onclick="playChirp(720, 0.05); setMode('pseudo')">
+      <button class="reticle-tab" id="mode-pseudo" onclick="playChirp(720, 0.04); setMode('pseudo')">
         <span class="tab-idx">03</span> DECOMPILER
       </button>
-      <button class="reticle-tab" id="mode-hex" onclick="playChirp(820, 0.05); setMode('hex')">
-        <span class="tab-idx">04</span> HEX GRID
+      <button class="reticle-tab" id="mode-hex" onclick="playChirp(820, 0.04); setMode('hex')">
+        <span class="tab-idx">04</span> HEX
       </button>
-      <button class="reticle-tab" id="mode-emu" onclick="playChirp(880, 0.06); setMode('emu')">
-        <span class="tab-idx">05</span> CPU EMULATOR
+      <button class="reticle-tab" id="mode-emu" onclick="playChirp(880, 0.04); setMode('emu')">
+        <span class="tab-idx">05</span> EMULATOR
       </button>
-      <button class="reticle-tab" id="mode-audit" onclick="playChirp(940, 0.06); setMode('audit')">
-        <span class="tab-idx">06</span> NEURAL &amp; AUDIT
+      <button class="reticle-tab" id="mode-audit" onclick="playChirp(940, 0.04); setMode('audit')">
+        <span class="tab-idx">06</span> AUDIT
       </button>
-      <button class="reticle-tab" id="mode-resuite" onclick="playChirp(980, 0.06); setMode('resuite')">
+      <button class="reticle-tab" id="mode-resuite" onclick="playChirp(980, 0.04); setMode('resuite')">
         <span class="tab-idx">07</span> RE SUITE
       </button>
-      <button class="reticle-tab" id="mode-omniv3" onclick="playChirp(1040, 0.06); setMode('omniv3')">
+      <button class="reticle-tab" id="mode-omniv3" onclick="playChirp(1040, 0.04); setMode('omniv3')">
         <span class="tab-idx">08</span> OMNI-V3
       </button>
     </div>
 
-    <!-- Tactical Operations & Cockpit Controls -->
+    <!-- Minimalist Operations & Controls -->
     <div class="bridge-cluster">
-      <button class="fui-btn cyan-glow" id="splitViewBtn" onclick="toggleSplitViewMode()" title="Vue Scindée Synchronisée ASM ↔ Decompiler ↔ AI Rewrite [Raccourci: V]">⚡ SPLIT</button>
-      <button class="fui-btn cyan-glow" onclick="navigateBack()" title="Retour à la fonction précédente (Échap)">◀ ESC</button>
+      <button class="fui-btn cyan-glow" id="splitViewBtn" onclick="toggleSplitViewMode()" title="Vue Scindée Synchronisée ASM ↔ Decompiler ↔ AI Rewrite [Raccourci: V]">SPLIT [V]</button>
+      <button class="fui-btn" onclick="navigateBack()" title="Retour à la fonction précédente (Échap)">◀ ESC</button>
       <button class="fui-btn" onclick="promptRename()" title="Renommer symbole (N)">RENAME [N]</button>
       <button class="fui-btn" onclick="promptComment()" title="Annoter adresse (;)">NOTE [;]</button>
       <button class="fui-btn" onclick="openStructModal()" title="Éditeur de Structures C (T)">STRUCT [T]</button>
       <button class="fui-btn" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)" title="Basculer Breakpoint sur l'adresse sélectionnée (B)">BP [B]</button>
-      <button class="fui-btn cyan-glow" onclick="setMode('resuite')" title="Projets .ultron, BinDiff, Frida/LLDB &amp; FLIRT">💾 .ULTRON</button>
       <button class="fui-btn" onclick="demangleAllAction()" title="Démangler tous les symboles C++ / Swift / Rust">DEMANGLE</button>
-      <button class="fui-btn primary-glow" onclick="playChirp(740, 0.07); openAssemblerModal()" title="Assembleur LLVM Live (A)">LLVM FORGE [A]</button>
-      <button class="fui-btn cyan-glow" onclick="exportPatchedBinaryAction()" title="Exporter le binaire patché sur disque (+ codesign macOS)">EXPORT BIN</button>
-      <button class="fui-btn" onclick="invertJumpAction()" title="Inverser saut conditionnel">INVERT JMP</button>
+      <button class="fui-btn" onclick="openAssemblerModal()" title="Assembleur LLVM Live (A)">LLVM [A]</button>
+      <button class="fui-btn" onclick="exportPatchedBinaryAction()" title="Exporter le binaire patché sur disque">EXPORT</button>
+      <button class="fui-btn" onclick="invertJumpAction()" title="Inverser saut conditionnel">INV JMP</button>
       <button class="fui-btn" onclick="nopInstructionAction()" title="Neutraliser instruction (NOP)">NOP</button>
       <button class="fui-btn" onclick="undoAction()" id="undoBtn" title="Annuler">↶</button>
       <button class="fui-btn" onclick="redoAction()" id="redoBtn" title="Rétablir">↷</button>
-      <button class="fui-btn cyan-glow" onclick="playChirp(680, 0.07); openPythonModal()" title="Console Python Scripting">PY-CORE</button>
-      <button class="fui-btn cyan-glow" onclick="toggle3DCloud()" id="cloud3DBtn" title="Activer/Désactiver le nuage de particules sphérique 3D temps réel 60 FPS [Raccourci: P]">☁ 3D CLOUD: ON</button>
-      <button class="fui-btn" onclick="toggle3DCockpit()" id="cockpit3DBtn" title="Activer/Désactiver la courbure 3D du casque HUD">3D HUD: ON</button>
-      <button class="fui-btn" onclick="toggleJarvisMode()" id="themeToggleBtn" title="Basculer entre ULTRON (Rouge/Cyan) et J.A.R.V.I.S. (Or/Cyan)">J.A.R.V.I.S.</button>
-      <button class="fui-btn primary-glow" onclick="playChirp(920, 0.06); openCommandPalette()" title="Recherche Tactique (⌘K)">⌘K</button>
+      <button class="fui-btn" onclick="openPythonModal()" title="Console Python Scripting">PY</button>
+      <button class="fui-btn primary-glow" onclick="toggle3DCloud()" id="cloud3DBtn" title="Activer/Désactiver le nuage de particules 3D temps réel 60 FPS [Raccourci: P]">☁ 3D CLOUD: ON</button>
+      <button class="fui-btn" onclick="toggle3DCockpit()" id="cockpit3DBtn" title="Activer/Désactiver l'inclinaison 3D des panneaux" style="display:none;">3D: FLAT</button>
+      <button class="fui-btn" onclick="toggleContrastMode()" id="themeToggleBtn" title="Basculer le contraste Carbon / Graphite">CONTRAST</button>
+      <button class="fui-btn primary-glow" onclick="openCommandPalette()" title="Recherche Rapide (⌘K)">⌘K</button>
     </div>
   </header>
 
   <!-- ─── TELEMETRY & ENTROPY HORIZON BAR ─── -->
   <div class="horizon-bar">
-    <span class="beacon-pill"><span class="beacon-dot"></span><span id="docSummaryText">SYNCHRONIZING NEURAL TELEMETRY…</span></span>
-    <div class="seg-horizon-map" id="segmentMapBar" title="Carte mémoire des segments (cliquer pour verrouiller)"></div>
-    <span class="beacon-pill">VECTOR LOCK: <strong id="cursorStatusText" style="color: var(--primary);">0x100000000</strong></span>
+    <span class="beacon-pill"><span class="beacon-dot"></span><span id="docSummaryText">SYNCHRONIZING TELEMETRY…</span></span>
+    <div class="seg-horizon-map" id="segmentMapBar" title="Carte mémoire des segments"></div>
+    <span class="beacon-pill">CURSOR: <strong id="cursorStatusText" style="color: #ffffff;">0x100000000</strong></span>
   </div>
 
-  <!-- ─── 3D CURVED HOLOGRAPHIC COCKPIT WORKSPACE ─── -->
+  <!-- ─── MINIMALIST 3-COLUMN WORKSPACE ─── -->
   <main class="cockpit-stage">
-    <!-- LEFT WING: TACTICAL NAVIGATOR -->
+    <!-- LEFT WING: NAVIGATOR -->
     <aside class="fui-wing-left">
       <div class="wing-header">
-        <span>SECTOR // NAVIGATOR</span>
-        <span class="serial">WING.L // 01</span>
+        <span>NAVIGATOR</span>
+        <span class="serial">SYS.01</span>
       </div>
       <div class="nav-matrix-tabs">
-        <div class="nav-matrix-tab active" id="tab-procs" onclick="playChirp(480, 0.04); setSidebarTab('procs')">PROCS</div>
-        <div class="nav-matrix-tab" id="tab-strings" onclick="playChirp(520, 0.04); setSidebarTab('strings')">STRINGS</div>
-        <div class="nav-matrix-tab" id="tab-symbols" onclick="playChirp(560, 0.04); setSidebarTab('symbols')">SYMBOLS</div>
-        <div class="nav-matrix-tab" id="tab-segments" onclick="playChirp(600, 0.04); setSidebarTab('segments')">SEGS</div>
+        <div class="nav-matrix-tab active" id="tab-procs" onclick="setSidebarTab('procs')">PROCS</div>
+        <div class="nav-matrix-tab" id="tab-strings" onclick="setSidebarTab('strings')">STRINGS</div>
+        <div class="nav-matrix-tab" id="tab-symbols" onclick="setSidebarTab('symbols')">SYMBOLS</div>
+        <div class="nav-matrix-tab" id="tab-segments" onclick="setSidebarTab('segments')">SEGS</div>
       </div>
       <div class="sidebar-search">
-        <input type="text" id="sidebarSearchInput" placeholder="SEARCH SUBROUTINE / STRING / HEX…" oninput="filterSidebarList()" />
+        <input type="text" id="sidebarSearchInput" placeholder="Filter subroutines, strings, symbols…" oninput="filterSidebarList()" />
       </div>
       <div class="sidebar-list" id="sidebarListContainer"></div>
     </aside>
 
-    <!-- CENTER CORE: PRIMARY HOLOGRAPHIC VIEWPORT -->
+    <!-- CENTER CORE: PRIMARY VIEWPORT -->
     <section class="fui-center-core">
       <div class="proc-hud-banner">
         <div>
-          <span style="color: var(--primary); font-family: var(--font-display); font-size: 9.5px; letter-spacing: 1.5px; margin-right: 8px;">ACTIVE TARGET //</span>
+          <span style="color: var(--text-lo); font-family: var(--font-fui); font-size: 9.5px; letter-spacing: 1px; margin-right: 8px;">TARGET //</span>
           <span class="proc-banner-title" id="bannerProcName">EntryPoint</span>
           <span style="color: var(--text-mid); margin-left: 10px;" id="bannerProcSig"></span>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <button class="fui-btn primary-glow" onclick="triggerQuickNeuralRename()" title="Auto-analyse et renommage sémantique par Ultron Neural Core" style="padding: 3px 9px; font-size: 9.5px;">⚡ NEURAL AUTO-RENAME</button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="fui-btn" onclick="triggerQuickNeuralRename()" title="Auto-analyse et renommage sémantique" style="padding: 3px 9px; font-size: 9.5px;">AUTO-RENAME</button>
           <span id="bannerProcMeta" style="color: var(--text-mid);"></span>
-          <select id="syntaxSelect" class="fui-select" onchange="changeSyntax(this.value)" style="padding: 3px 24px 3px 8px; font-size: 10.5px;">
-            <option value="intel">SYNTAX // INTEL</option>
-            <option value="att">SYNTAX // AT&amp;T</option>
+          <select id="syntaxSelect" class="fui-select" onchange="changeSyntax(this.value)" style="padding: 3px 22px 3px 8px; font-size: 10px;">
+            <option value="intel">INTEL</option>
+            <option value="att">AT&amp;T</option>
           </select>
         </div>
       </div>
 
-      <!-- Decompiler Neural Passes Bar -->
+      <!-- Decompiler Passes Bar -->
       <div class="decompiler-bar" id="decompilerOptionsBar" style="display: none;">
-        <strong style="font-family: var(--font-display); font-size: 9.5px; color: var(--primary);">NEURAL PASSES:</strong>
-        <label><input type="checkbox" id="optSsaForm" onchange="reloadCurrentProcedure()" /> <span style="color:var(--tertiary);font-weight:700;">SSA FORM + PHI (φ) NODES</span></label>
-        <label><input type="checkbox" id="optRewriteObjc" checked onchange="reloadCurrentProcedure()" /> OBJC REWRITE (<code>[recv sel:arg]</code>)</label>
-        <label><input type="checkbox" id="optInlineStrings" checked onchange="reloadCurrentProcedure()" /> INLINE STRINGS &amp; SELECTORS</label>
-        <label><input type="checkbox" id="optStructureCF" checked onchange="reloadCurrentProcedure()" /> COMBING REGION STRUCTURING</label>
-        <label><input type="checkbox" id="optHidePrologue" checked onchange="reloadCurrentProcedure()" /> STRIP PROLOGUE/EPILOGUE</label>
+        <strong style="font-family: var(--font-display); font-size: 9.5px; color: #ffffff;">PASSES:</strong>
+        <label><input type="checkbox" id="optSsaForm" onchange="reloadCurrentProcedure()" /> <span style="color:#ffffff;font-weight:600;">SSA + PHI (φ)</span></label>
+        <label><input type="checkbox" id="optRewriteObjc" checked onchange="reloadCurrentProcedure()" /> OBJC (<code>[recv sel:arg]</code>)</label>
+        <label><input type="checkbox" id="optInlineStrings" checked onchange="reloadCurrentProcedure()" /> INLINE STRINGS</label>
+        <label><input type="checkbox" id="optStructureCF" checked onchange="reloadCurrentProcedure()" /> STRUCTURED CFG</label>
+        <label><input type="checkbox" id="optHidePrologue" checked onchange="reloadCurrentProcedure()" /> STRIP PROLOGUE</label>
       </div>
 
       <div class="view-container" id="centerContent"></div>
 
-      <!-- Floating CFG Radar MiniMap -->
+      <!-- Floating CFG MiniMap -->
       <div class="cfg-minimap" id="cfgMinimap" style="display: none;">
-        <div class="cfg-minimap-title">NEURAL TOPOLOGY RADAR // LIVE</div>
-        <svg id="cfgMinimapSvg" width="198" height="118" viewBox="0 0 800 500"></svg>
+        <div class="cfg-minimap-title">TOPOLOGY MINIMAP</div>
+        <svg id="cfgMinimapSvg" width="194" height="115" viewBox="0 0 800 500"></svg>
       </div>
     </section>
 
-    <!-- RIGHT WING: HOLOGRAPHIC TELEMETRY & QUANTUM INSPECTOR -->
+    <!-- RIGHT WING: TELEMETRY & INSPECTOR -->
     <aside class="fui-wing-right">
       <div class="wing-header">
-        <span>TELEMETRY // DIAGNOSTICS</span>
-        <span class="serial">WING.R // 02</span>
+        <span>TELEMETRY</span>
+        <span class="serial">SYS.02</span>
       </div>
       <div class="fui-wing-right-scroll">
-        <!-- Sentinel Prime Hologram Showcase + Live Harmonic Oscilloscope -->
+        <!-- Minimalist 3D Particle Cloud Monitor + Oscilloscope -->
         <div class="fui-module" style="padding: 0; overflow: hidden; cursor: pointer;" onclick="triggerProcessBurst(); openModal('aboutModal')">
-          <div style="position: relative; height: 132px; width: 100%; overflow: hidden; background: radial-gradient(circle at 50% 45%, rgba(255, 125, 10, 0.18) 0%, rgba(180, 45, 0, 0.06) 45%, #020101 100%);">
-            <canvas id="wingCloudCanvas" width="660" height="264" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
-            <canvas id="waveCanvas" width="330" height="44" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 44px; pointer-events: none; opacity: 0.92;"></canvas>
-            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2,2,4,0.02) 0%, rgba(2,2,4,0.72) 100%); display: flex; flex-direction: column; justify-content: space-between; padding: 8px 11px; pointer-events: none;">
+          <div style="position: relative; height: 120px; width: 100%; overflow: hidden; background: #030304;">
+            <canvas id="wingCloudCanvas" width="660" height="240" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+            <canvas id="waveCanvas" width="330" height="40" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; pointer-events: none; opacity: 0.75;"></canvas>
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.75) 100%); display: flex; flex-direction: column; justify-content: space-between; padding: 8px 11px; pointer-events: none;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-family: var(--font-fui); font-size: 9px; color: #ffaa2b; letter-spacing: 1.5px;">NEURAL.CLOUD // MK-85</span>
-                <span class="hud-tag" id="wingNeuralBadge" style="background: rgba(255,155,0,0.18); color: #ffb84d; border-color: #ff9500;">SYNAPTIC LIVE</span>
+                <span style="font-family: var(--font-fui); font-size: 9px; color: var(--text-mid); letter-spacing: 1.2px;">PARTICLE CORE // 60 FPS</span>
+                <span class="hud-tag" id="wingNeuralBadge">NOMINAL</span>
               </div>
               <div>
-                <div style="font-family: var(--font-display); font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 1.6px; text-shadow: 0 0 10px #ff8800;">NEURAL CONSCIOUSNESS MATRIX</div>
-                <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-mid); letter-spacing: 1.2px;" id="wingProcessSub">LLVMSERVICES • SSA DECOMPILER • EMU</div>
+                <div style="font-family: var(--font-display); font-size: 10.5px; font-weight: 600; color: #ffffff; letter-spacing: 1.4px;">PROTOCOL REA // TELEMETRY</div>
+                <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-mid); letter-spacing: 1px;" id="wingProcessSub">SSA • Z3 • AI • MCP</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 3 Radial FUI Telemetry Gauges -->
+        <!-- 3 Minimalist Telemetry Gauges -->
         <div class="fui-module">
           <div class="fui-module-title">
-            <span>QUANTUM TELEMETRY RINGS</span>
-            <span style="font-family: var(--font-fui); font-size: 9px; color: var(--primary);">REALTIME</span>
+            <span>METRICS</span>
+            <span style="font-family: var(--font-fui); font-size: 8.5px; color: var(--text-lo);">LIVE</span>
           </div>
           <div class="gauges-row">
             <div class="gauge-box">
               <svg class="gauge-svg" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="3"></circle>
-                <circle id="gaugeArc1" cx="18" cy="18" r="15" fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="78, 100" stroke-linecap="round"></circle>
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2.5"></circle>
+                <circle id="gaugeArc1" cx="18" cy="18" r="15" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="78, 100" stroke-linecap="round"></circle>
               </svg>
               <span class="gauge-label" id="gaugeText1">ENTROPY 78%</span>
             </div>
             <div class="gauge-box">
               <svg class="gauge-svg" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="3"></circle>
-                <circle id="gaugeArc2" cx="18" cy="18" r="15" fill="none" stroke="var(--secondary)" stroke-width="3" stroke-dasharray="92, 100" stroke-linecap="round"></circle>
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2.5"></circle>
+                <circle id="gaugeArc2" cx="18" cy="18" r="15" fill="none" stroke="#9ca3af" stroke-width="2.5" stroke-dasharray="92, 100" stroke-linecap="round"></circle>
               </svg>
-              <span class="gauge-label" id="gaugeText2">SYNAPSE 92%</span>
+              <span class="gauge-label" id="gaugeText2">COVERAGE 92%</span>
             </div>
             <div class="gauge-box">
               <svg class="gauge-svg" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="3"></circle>
-                <circle id="gaugeArc3" cx="18" cy="18" r="15" fill="none" stroke="var(--emerald)" stroke-width="3" stroke-dasharray="64, 100" stroke-linecap="round"></circle>
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2.5"></circle>
+                <circle id="gaugeArc3" cx="18" cy="18" r="15" fill="none" stroke="#10b981" stroke-width="2.5" stroke-dasharray="64, 100" stroke-linecap="round"></circle>
               </svg>
               <span class="gauge-label" id="gaugeText3">CFG DENSITY</span>
             </div>
@@ -1625,7 +1461,7 @@
         <!-- Target Lock Address Module -->
         <div class="fui-module">
           <div class="fui-module-title">
-            <span>TARGET LOCK // ADDRESS</span>
+            <span>ADDRESS INSPECTOR</span>
             <span id="icByteTypeBadge" class="hud-tag">CODE</span>
           </div>
           <div class="kv-grid">
@@ -1633,64 +1469,64 @@
             <span class="kv-key">DECIMAL</span><span class="kv-val" id="icAddrDec">-</span>
             <span class="kv-key">FILE OFFSET</span><span class="kv-val" id="icFileOff">-</span>
             <span class="kv-key">SEG / SECT</span><span class="kv-val" id="icSegSec">-</span>
-            <span class="kv-key">DESIGNATION</span><span class="kv-val" id="icLabelName" style="color: var(--tertiary);">-</span>
+            <span class="kv-key">SYMBOL</span><span class="kv-val" id="icLabelName" style="color: #ffffff;">-</span>
           </div>
         </div>
 
         <!-- Subroutine Dossier Module -->
         <div class="fui-module">
-          <div class="fui-module-title"><span>SUBROUTINE DOSSIER</span></div>
+          <div class="fui-module-title"><span>SUBROUTINE</span></div>
           <div class="kv-grid" style="margin-bottom: 8px;">
             <span class="kv-key">ENTRY POINT</span><span class="kv-val" id="icProcEntry">-</span>
             <span class="kv-key">FRAME SIZE</span><span class="kv-val" id="icProcSize">-</span>
             <span class="kv-key">CFG NODES</span><span class="kv-val" id="icProcBBs">-</span>
           </div>
-          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">INBOUND CALLERS :</div>
+          <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-lo); margin-bottom: 4px;">CALLERS :</div>
           <div id="icCallersList" style="margin-bottom: 8px;"></div>
-          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">OUTBOUND CALLEES :</div>
+          <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-lo); margin-bottom: 4px;">CALLEES :</div>
           <div id="icCalleesList"></div>
         </div>
 
-        <!-- Synaptic XREFs Module -->
+        <!-- XREFs Module -->
         <div class="fui-module">
-          <div class="fui-module-title"><span>SYNAPTIC XREF MATRIX</span></div>
-          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">XREFS IN (TO TARGET) :</div>
+          <div class="fui-module-title"><span>CROSS-REFERENCES</span></div>
+          <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-lo); margin-bottom: 4px;">XREFS TO :</div>
           <div id="icXrefsTo" style="margin-bottom: 8px;"></div>
-          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">XREFS OUT (FROM TARGET) :</div>
+          <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-lo); margin-bottom: 4px;">XREFS FROM :</div>
           <div id="icXrefsFrom"></div>
         </div>
 
-        <!-- Quantum Data Inspector -->
+        <!-- Data Inspector -->
         <div class="fui-module">
-          <div class="fui-module-title"><span>QUANTUM DATA INSPECTOR</span></div>
+          <div class="fui-module-title"><span>DATA VALUES</span></div>
           <div class="kv-grid">
             <span class="kv-key">UINT8 / INT8</span><span class="kv-val" id="diInt8">-</span>
             <span class="kv-key">UINT16 LE</span><span class="kv-val" id="diU16">-</span>
             <span class="kv-key">UINT32 LE</span><span class="kv-val" id="diU32">-</span>
             <span class="kv-key">UINT64 LE</span><span class="kv-val" id="diU64">-</span>
-            <span class="kv-key">ASCII STREAM</span><span class="kv-val" id="diAscii" style="color: var(--emerald);">-</span>
+            <span class="kv-key">ASCII</span><span class="kv-val" id="diAscii" style="color: var(--emerald);">-</span>
           </div>
         </div>
 
-        <!-- Chrono Navigation Vector -->
+        <!-- Navigation History -->
         <div class="fui-module">
-          <div class="fui-module-title"><span>CHRONO-NAVIGATION VECTOR</span></div>
+          <div class="fui-module-title"><span>HISTORY</span></div>
           <div id="icNavHistory"></div>
         </div>
       </div>
     </aside>
   </main>
 
-  <!-- ─── HOLOGRAPHIC MODALS ─── -->
+  <!-- ─── MINIMALIST MODALS ─── -->
   <div class="modal-backdrop" id="assemblerModal">
     <div class="modal">
       <div class="modal-header">
-        <span>ULTRON LLVM FORGE // LLVMSERVICE_ASSEMBLE_UNCHECKED</span>
+        <span>LLVM ASSEMBLER // LIVE PATCH</span>
         <button class="fui-btn" onclick="closeModal('assemblerModal')">✕</button>
       </div>
       <div class="modal-body">
-        <div style="font-size: 12.5px; color: var(--text-mid);">
-          Compile des instructions ARM64 / x86_64 en code machine via le noyau LLVM natif (<code>libLLVMServices.dylib</code>) et injecte le patch en mémoire.
+        <div style="font-size: 12px; color: var(--text-mid);">
+          Compile des instructions ARM64 / x86_64 en code machine via <code>libLLVMServices.dylib</code> et applique le patch en mémoire.
         </div>
         <div style="display: flex; gap: 8px;">
           <input type="text" id="asmInputInstr" class="fui-input" value="mov x0, #0x1" style="flex: 1; text-transform: none;" placeholder="ex: mov x0, #0x2a ou nop" />
@@ -1700,13 +1536,13 @@
           </select>
         </div>
         <div style="display: flex; gap: 10px; align-items: center;">
-          <label style="font-family: var(--font-fui); font-size: 11px; display: flex; align-items: center; gap: 6px;">
-            <input type="checkbox" id="asmPatchCheck" /> PATCH TARGET ADDRESS :
+          <label style="font-family: var(--font-fui); font-size: 10.5px; display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="asmPatchCheck" /> PATCH ADDRESS :
           </label>
           <input type="text" id="asmPatchAddr" class="fui-input" style="width: 150px; text-transform: none;" />
-          <button class="fui-btn primary-glow" onclick="runAssemblerModal()">FORGE &amp; ASSEMBLE</button>
+          <button class="fui-btn primary-glow" onclick="runAssemblerModal()">ASSEMBLE</button>
         </div>
-        <pre id="asmOutputPre" style="background: #03060c; padding: 12px; border: 1px solid rgba(var(--secondary-rgb),0.3); font-family: var(--font-code); font-size: 12px; color: var(--emerald); min-height: 76px;"></pre>
+        <pre id="asmOutputPre" style="background: #040507; padding: 12px; border: 1px solid var(--border-hairline); font-family: var(--font-code); font-size: 11.5px; color: var(--emerald); min-height: 76px;"></pre>
       </div>
     </div>
   </div>
@@ -1714,12 +1550,12 @@
   <div class="modal-backdrop" id="pythonModal">
     <div class="modal" style="width: 750px;">
       <div class="modal-header">
-        <span>ULTRON PYTHON NEURAL SCRIPTING CONSOLE</span>
+        <span>PYTHON SCRIPTING CONSOLE</span>
         <button class="fui-btn" onclick="closeModal('pythonModal')">✕</button>
       </div>
       <div class="modal-body">
         <textarea id="pythonScriptCode" rows="10">doc = Document.getCurrentDocument()
-print("[ULTRON CORE] Document:", doc.getDocumentName(), "| Entry:", hex(doc.getEntryPoint()))
+print("[ULTRON] Document:", doc.getDocumentName(), "| Entry:", hex(doc.getEntryPoint()))
 seg = doc.getCurrentSegment()
 print("[SEGMENT]", seg.getName(), "| Start:", hex(seg.getStartingAddress()), "| Size:", seg.getLength())
 proc = doc.getCurrentProcedure()
@@ -1729,41 +1565,31 @@ if proc:
     print(proc.decompile())
 </textarea>
         <div style="display: flex; justify-content: flex-end; gap: 8px;">
-          <button class="fui-btn primary-glow" onclick="runPythonScript()">EXECUTE NEURAL SCRIPT</button>
+          <button class="fui-btn primary-glow" onclick="runPythonScript()">RUN SCRIPT</button>
         </div>
-        <pre id="pythonOutputPre" style="background: #03060c; padding: 12px; border: 1px solid rgba(var(--secondary-rgb),0.3); font-family: var(--font-code); font-size: 11.5px; max-height: 220px; overflow: auto; color: var(--secondary);"></pre>
+        <pre id="pythonOutputPre" style="background: #040507; padding: 12px; border: 1px solid var(--border-hairline); font-family: var(--font-code); font-size: 11.5px; max-height: 220px; overflow: auto; color: var(--text-hi);"></pre>
       </div>
     </div>
   </div>
 
   <div class="modal-backdrop" id="aboutModal">
-    <div class="modal" style="width: 560px; text-align: center;">
+    <div class="modal" style="width: 520px; text-align: center;">
       <div class="modal-header">
-        <span>SYSTEM DOSSIER // ULTRON DISASSEMBLE</span>
+        <span>SYSTEM INFORMATION // ULTRON v3.0</span>
         <button class="fui-btn" onclick="closeModal('aboutModal')">✕</button>
       </div>
-      <div style="position: relative; width: 100%; height: 210px; overflow: hidden; border-bottom: 1px solid var(--primary); background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.25) 0%, rgba(var(--secondary-rgb), 0.08) 45%, #010308 100%); display: flex; align-items: center; justify-content: center;">
-        <svg viewBox="0 0 220 220" width="175" height="175">
-          <circle cx="110" cy="110" r="92" fill="none" stroke="rgba(0,240,255,0.28)" stroke-width="1" stroke-dasharray="4 6" />
-          <circle cx="110" cy="110" r="72" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-dasharray="28 12 6 12" />
-          <circle cx="110" cy="110" r="50" fill="none" stroke="var(--secondary)" stroke-width="1.2" stroke-dasharray="14 8" />
-          <polygon points="110,48 164,140 56,140" fill="none" stroke="rgba(255,26,53,0.45)" stroke-width="1" />
-          <polygon points="110,172 164,80 56,80" fill="none" stroke="rgba(0,240,255,0.45)" stroke-width="1" />
-          <circle cx="110" cy="110" r="18" fill="rgba(255,26,53,0.25)" stroke="#fff" stroke-width="1.5" />
-        </svg>
-      </div>
-      <div class="modal-body" style="align-items: center; padding: 14px 24px 28px 24px;">
-        <div style="font-family: var(--font-display); font-size: 25px; font-weight: 900; letter-spacing: 2.5px; color: #fff; text-shadow: 0 0 18px var(--primary);">
-          ULTRON <span style="color: var(--primary);">DISASSEMBLE</span>
+      <div class="modal-body" style="align-items: center; padding: 28px 24px;">
+        <div style="font-family: var(--font-display); font-size: 22px; font-weight: 300; letter-spacing: 6px; color: #ffffff; margin-bottom: 4px;">
+          ULTRON <span style="font-weight: 600; color: var(--text-mid);">DISASSEMBLE</span>
         </div>
-        <div style="font-family: var(--font-fui); font-size: 11px; color: var(--secondary); letter-spacing: 2.5px; margin-bottom: 6px;">
-          "NO STRINGS ON ME" // PROTOCOL v3.0.0 OMNI-CORE
+        <div style="font-family: var(--font-fui); font-size: 10.5px; color: var(--text-mid); letter-spacing: 2.5px; margin-bottom: 14px;">
+          PROTOCOL REA // OPEN-SOURCE v3.0.0 OMNI-CORE
         </div>
-        <div style="font-size: 14.5px; font-weight: 600; color: var(--text-hi); line-height: 1.45; margin-bottom: 10px;">
-          Avengers-Class macOS Disassembler,<br/>Z3 Symbolic Solver, AI Decompiler, REA &amp; MCP Server
+        <div style="font-size: 13px; color: var(--text-hi); line-height: 1.5; margin-bottom: 14px;">
+          Open-Source Multi-Architecture Disassembler, Optimizing SSA Decompiler,<br/>Z3 Symbolic Solver, AI Code Rewriter, REA &amp; MCP Server in Rust.
         </div>
-        <div style="font-family: var(--font-fui); font-size: 11px; color: var(--text-mid); border: 1px solid rgba(var(--secondary-rgb),0.35); padding: 6px 16px; background: rgba(var(--secondary-rgb),0.06);">
-          STATUS: <span style="color: var(--emerald);">3.0.0 OMNI-CORE RUST EDITION (MCP + REA + SYMBOLIC Z3 + AI)</span>
+        <div style="font-family: var(--font-fui); font-size: 10.5px; color: var(--text-mid); border: 1px solid var(--border-hairline); padding: 6px 14px; background: rgba(255,255,255,0.03);">
+          STATUS: <span style="color: var(--emerald);">ULTRON ACTIVE — PROTOCOL REA READY TO PROCEED</span>
         </div>
       </div>
     </div>
@@ -1772,7 +1598,7 @@ if proc:
   <div class="modal-backdrop" id="structModal">
     <div class="modal" style="width: 620px;">
       <div class="modal-header">
-        <span>C STRUCT / TYPE FORGE // OFFSET RESOLVER [T]</span>
+        <span>C STRUCT / TYPE DEFINITIONS [T]</span>
         <button class="fui-btn" onclick="closeModal('structModal')">✕</button>
       </div>
       <div class="modal-body">
@@ -1789,44 +1615,44 @@ if proc:
 0x18:uint32_t:payload_length
 0x20:uint64_t:crypto_nonce</textarea>
         <div style="display: flex; justify-content: flex-end; gap: 8px;">
-          <button class="fui-btn primary-glow" onclick="saveStructModal()">REGISTER STRUCT &amp; RE-DECOMPILE</button>
+          <button class="fui-btn primary-glow" onclick="saveStructModal()">SAVE STRUCT &amp; RE-DECOMPILE</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Objective-C 2.0 @interface Header Preview & Method/Ivar Inspector Modal -->
+  <!-- Objective-C 2.0 @interface Header Preview Modal -->
   <div class="modal-backdrop" id="objcClassModal">
     <div class="modal" style="width: 820px; max-width: 95vw;">
       <div class="modal-header">
-        <span id="objcModalTitle">OBJC 2.0 RUNTIME // @INTERFACE HEADER INSPECTOR</span>
+        <span id="objcModalTitle">OBJC 2.0 RUNTIME // @INTERFACE INSPECTOR</span>
         <div style="display:flex;gap:8px;align-items:center;">
-          <button class="fui-btn cyan-glow" id="objcModalExportStructBtn" style="padding:4px 10px;font-size:10px;">⚙ IMPORT IVARS TO STRUCT FORGE</button>
+          <button class="fui-btn" id="objcModalExportStructBtn" style="padding:4px 10px;font-size:10px;">IMPORT IVARS TO STRUCT</button>
           <button class="fui-btn" onclick="closeModal('objcClassModal')">✕</button>
         </div>
       </div>
       <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
-        <div id="objcModalMetaBar" style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.28);font-family:var(--font-fui);font-size:11px;"></div>
+        <div id="objcModalMetaBar" style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--border-hairline);font-family:var(--font-fui);font-size:11px;"></div>
         <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:12px;">
           <div class="fui-module" style="padding:10px;">
             <div class="fui-module-title">
-              <span>SYNTHESIZED @INTERFACE HEADER PREVIEW</span>
-              <span class="hud-tag">CLICK METHODS TO DECOMPILE</span>
+              <span>SYNTHESIZED @INTERFACE HEADER</span>
+              <span class="hud-tag">CLICK METHOD TO DECOMPILE</span>
             </div>
-            <pre id="objcModalHeaderPre" style="background:#02050b;padding:12px;border:1px solid rgba(0,240,255,0.22);font-family:var(--font-code);font-size:11.8px;line-height:1.65;max-height:360px;overflow:auto;white-space:pre-wrap;user-select:text;"></pre>
+            <pre id="objcModalHeaderPre" style="background:#040507;padding:12px;border:1px solid var(--border-hairline);font-family:var(--font-code);font-size:11.5px;line-height:1.65;max-height:360px;overflow:auto;white-space:pre-wrap;user-select:text;"></pre>
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div class="fui-module" style="padding:10px;flex:1;">
               <div class="fui-module-title">
-                <span>DISPATCH TABLE // METHODS (IMP)</span>
-                <span id="objcModalMethodCount" style="color:var(--secondary);font-family:var(--font-fui);">0</span>
+                <span>METHODS (IMP)</span>
+                <span id="objcModalMethodCount" style="color:var(--text-hi);font-family:var(--font-fui);">0</span>
               </div>
               <div id="objcModalMethodsList" style="max-height:175px;overflow-y:auto;font-family:var(--font-code);font-size:11px;"></div>
             </div>
             <div class="fui-module" style="padding:10px;flex:1;">
               <div class="fui-module-title">
-                <span>INSTANCE VARIABLES // IVAR OFFSETS</span>
-                <span id="objcModalIvarCount" style="color:var(--tertiary);font-family:var(--font-fui);">0</span>
+                <span>IVAR OFFSETS</span>
+                <span id="objcModalIvarCount" style="color:var(--text-mid);font-family:var(--font-fui);">0</span>
               </div>
               <div id="objcModalIvarsList" style="max-height:145px;overflow-y:auto;font-family:var(--font-code);font-size:11px;"></div>
             </div>
@@ -1839,7 +1665,7 @@ if proc:
   <div class="modal-backdrop" id="paletteModal">
     <div class="modal">
       <div class="modal-header">
-        <span>TACTICAL TARGET LOCATOR // ⌘K</span>
+        <span>QUICK LOCATOR // ⌘K</span>
         <button class="fui-btn" onclick="closeModal('paletteModal')">✕</button>
       </div>
       <div class="modal-body">
@@ -1885,8 +1711,8 @@ if proc:
       observedCallsReport: null,
       mcpToolsReport: null,
       hoveredAsmAddr: null,
-      jarvisMode: false,
-      curved3D: true,
+      slateMode: false,
+      curved3D: false,
       mouseX: window.innerWidth / 2,
       mouseY: window.innerHeight / 2,
     };
@@ -1932,11 +1758,11 @@ if proc:
 
     /* ─── UNIFIED INTERACTIVE & PROCESS-REACTIVE 3D ORANGE SPHERICAL PARTICLE CLOUD ENGINE ─── */
     const neuralCloudState = {
-      enabled: true,          // Toggle 60 FPS 3D Holographic Particle Cloud ON / OFF
-      energy: 0.35,           // Current smoothed synaptic activity level (0.0 = idle, 1.8 = peak process storm)
+      enabled: true,          // Toggle 60 FPS 3D Spherical Particle Cloud ON / OFF
+      energy: 0.35,           // Current smoothed synaptic activity level
       targetEnergy: 0.15,     // Target baseline or active process energy
       activeRequests: 0,      // Count of in-flight backend processes
-      processName: 'HARMONIC STANDBY',
+      processName: 'STANDBY',
       rotX: 0.22,
       rotY: 0.0,
       velX: 0.0,
@@ -1944,13 +1770,17 @@ if proc:
       dragging: false,
       lastMouseX: 0,
       lastMouseY: 0,
-      normMouseX: 0,          // -1..1 across screen
-      normMouseY: 0,          // -1..1 across screen
-      localHoverX: 0,         // Cursor position relative to sphere center
+      normMouseX: 0,
+      normMouseY: 0,
+      localHoverX: 0,
       localHoverY: 0,
       localHoverActive: false,
-      shockwaveRadius: -1,    // Expanding spherical shockwave on click/process start
+      shockwaveRadius: -1,
       shockwaveStrength: 0,
+      genesisTime: 0,         // Time since Launch Page singularity genesis started (seconds)
+      voicePlayed: false,
+      voicePendingUnlock: false,
+      rawVoiceBytes: null,
       sprites: null,
       cloudParticles: null,
       ambientDust: null,
@@ -1958,18 +1788,17 @@ if proc:
 
     function toggle3DCloud() {
       neuralCloudState.enabled = !neuralCloudState.enabled;
-      playChirp(neuralCloudState.enabled ? 880 : 420, 0.07);
+      playChirp(neuralCloudState.enabled ? 880 : 420, 0.05);
       const on = neuralCloudState.enabled;
       const topBtn = document.getElementById('cloud3DBtn');
       if (topBtn) {
         topBtn.textContent = on ? '☁ 3D CLOUD: ON' : '☁ 3D CLOUD: OFF';
-        topBtn.classList.toggle('cyan-glow', on);
+        topBtn.classList.toggle('primary-glow', on);
       }
       const launchBtn = document.getElementById('launchCloudToggleBtn');
       if (launchBtn) {
         launchBtn.textContent = on ? '☁ 3D CLOUD: ON' : '☁ 3D CLOUD: OFF';
-        launchBtn.style.color = on ? '#00f2ff' : '#8a99ad';
-        launchBtn.style.borderColor = on ? 'rgba(0,242,255,0.55)' : 'rgba(138,153,173,0.35)';
+        launchBtn.style.color = on ? '#ffffff' : '#6b7280';
       }
       if (!on) {
         ['fuiCanvas', 'core3dCanvas', 'headerOrbCanvas', 'wingCloudCanvas', 'launchCanvas'].forEach(id => {
@@ -1981,8 +1810,150 @@ if proc:
         });
       }
       updateNeuralActivityHud();
-      showToast(on ? 'Nuage Holographique 3D (60 FPS) : ACTIVÉ' : 'Nuage Holographique 3D (60 FPS) : DÉSACTIVÉ (Mode Économie GPU)');
+      showToast(on ? '3D PARTICLE CLOUD (60 FPS) : ENABLED' : '3D PARTICLE CLOUD (60 FPS) : DISABLED');
     }
+
+    /* ─── ULTRON VOICE ANNOUNCEMENT ENGINE ("Ultron active. Protocol REA ready to proceed.") ─── */
+    function typeVoiceSubtitle(text) {
+      const el = document.getElementById('launchVoiceCaption');
+      if (!el) return;
+      el.textContent = '';
+      let idx = 0;
+      if (window.__ultronSubtitleTimer) clearInterval(window.__ultronSubtitleTimer);
+      window.__ultronSubtitleTimer = setInterval(() => {
+        idx++;
+        el.textContent = text.slice(0, idx);
+        if (idx >= text.length) {
+          clearInterval(window.__ultronSubtitleTimer);
+        }
+      }, 36);
+    }
+
+    function speakFallbackWebSpeech() {
+      try {
+        if (!('speechSynthesis' in window)) return false;
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance('Ultron active. Protocol R E A, ready to proceed.');
+        utter.lang = 'en-US';
+        utter.pitch = 0.52;
+        utter.rate = 0.86;
+        utter.volume = 1.0;
+        const voices = window.speechSynthesis.getVoices() || [];
+        const preferred = voices.find(v => /Daniel|Alex|Fred|Aaron|Arthur|Google UK English Male|Reed/i.test(v.name) && /en/i.test(v.lang))
+          || voices.find(v => /en/i.test(v.lang));
+        if (preferred) utter.voice = preferred;
+        window.speechSynthesis.speak(utter);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function playUltronGenesisVoice(force = false) {
+      if (neuralCloudState.voicePlayed && !force) return;
+      neuralCloudState.voicePlayed = true;
+      typeVoiceSubtitle('ULTRON ACTIVE — PROTOCOL REA READY TO PROCEED');
+      triggerNeuralActivity(1.45, 'ULTRON ACTIVE // PROTOCOL REA');
+
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') {
+          try { await audioCtx.resume(); } catch (e) {}
+        }
+
+        // If browser blocked AudioContext before user gesture, queue immediate playback on first gesture & try Web Speech
+        if (audioCtx.state === 'suspended') {
+          neuralCloudState.voicePendingUnlock = true;
+          speakFallbackWebSpeech();
+          return;
+        }
+
+        neuralCloudState.voicePendingUnlock = false;
+        const now = audioCtx.currentTime;
+
+        // 1. Subtle Singularity Halo Sub-Bass Drone (55Hz -> 73Hz)
+        const drone = audioCtx.createOscillator();
+        const droneGain = audioCtx.createGain();
+        drone.type = 'sine';
+        drone.frequency.setValueAtTime(52, now);
+        drone.frequency.exponentialRampToValueAtTime(74, now + 2.4);
+        droneGain.gain.setValueAtTime(0.001, now);
+        droneGain.gain.linearRampToValueAtTime(0.08, now + 0.35);
+        droneGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+        drone.connect(droneGain);
+        droneGain.connect(audioCtx.destination);
+        drone.start(now);
+        drone.stop(now + 2.85);
+
+        // 2. Fetch & Decode Native Synthesized Voice WAV + Deep Dual-Pitch Ultron DSP
+        if (!neuralCloudState.rawVoiceBytes) {
+          const resp = await fetch('/api/ultron-voice');
+          if (resp.ok) {
+            neuralCloudState.rawVoiceBytes = await resp.arrayBuffer();
+          }
+        }
+
+        if (neuralCloudState.rawVoiceBytes && neuralCloudState.rawVoiceBytes.byteLength > 256) {
+          const copyBuf = neuralCloudState.rawVoiceBytes.slice(0);
+          const audioBuf = await audioCtx.decodeAudioData(copyBuf);
+          const t0 = audioCtx.currentTime + 0.05;
+
+          // Low-shelf bass boost for deep resonant chest timbre
+          const bassBoost = audioCtx.createBiquadFilter();
+          bassBoost.type = 'lowshelf';
+          bassBoost.frequency.value = 160;
+          bassBoost.gain.value = 7.5;
+          bassBoost.connect(audioCtx.destination);
+
+          // Primary Deep Layer (0.87x pitch)
+          const srcMain = audioCtx.createBufferSource();
+          const gainMain = audioCtx.createGain();
+          srcMain.buffer = audioBuf;
+          srcMain.playbackRate.value = 0.87;
+          gainMain.gain.value = 0.95;
+          srcMain.connect(gainMain);
+          gainMain.connect(bassBoost);
+          srcMain.start(t0);
+
+          // Sub-Harmonic Metallic Double Layer (0.75x pitch + 16ms delay)
+          const srcSub = audioCtx.createBufferSource();
+          const gainSub = audioCtx.createGain();
+          srcSub.buffer = audioBuf;
+          srcSub.playbackRate.value = 0.75;
+          gainSub.gain.value = 0.36;
+          srcSub.connect(gainSub);
+          gainSub.connect(bassBoost);
+          srcSub.start(t0 + 0.016);
+        } else {
+          speakFallbackWebSpeech();
+        }
+      } catch (e) {
+        speakFallbackWebSpeech();
+      }
+    }
+
+    function replayGenesisSequence() {
+      neuralCloudState.genesisTime = 0.0;
+      neuralCloudState.voicePlayed = false;
+      ['launchTopChrome', 'launchCenterChrome', 'launchBottomChrome'].forEach(id => {
+        document.getElementById(id)?.classList.remove('chrome-visible');
+      });
+      const cap = document.getElementById('launchVoiceCaption');
+      if (cap) cap.textContent = '';
+      setTimeout(() => playUltronGenesisVoice(true), 650);
+    }
+
+    // Unlock audio on first pointer/key interaction if browser autoplay policy suspended AudioContext
+    (function setupGestureVoiceUnlock() {
+      const unlock = () => {
+        if (neuralCloudState.voicePendingUnlock) {
+          neuralCloudState.voicePendingUnlock = false;
+          playUltronGenesisVoice(true);
+        }
+      };
+      window.addEventListener('pointerdown', unlock, { passive: true });
+      window.addEventListener('keydown', unlock, { passive: true });
+    })();
 
     function initCloudResources() {
       if (neuralCloudState.sprites) return;
@@ -2104,22 +2075,20 @@ if proc:
       }
       neuralCloudState.cloudParticles = cloudParticles;
 
-      // Full-screen wide-field drifting orange ambient embers for #fuiCanvas
-      neuralCloudState.ambientDust = Array.from({ length: 280 }, (_, idx) => ({
+      neuralCloudState.ambientDust = Array.from({ length: 180 }, (_, idx) => ({
         x: Math.random(),
         y: Math.random(),
         z: 0.2 + Math.random() * 0.8,
-        vx: (Math.random() - 0.5) * 0.00035,
-        vy: (Math.random() - 0.5) * 0.00035,
-        size: idx % 14 === 0 ? (22 + Math.random() * 32) : (3.5 + Math.random() * 7.5),
+        vx: (Math.random() - 0.5) * 0.00028,
+        vy: (Math.random() - 0.5) * 0.00028,
+        size: idx % 14 === 0 ? (20 + Math.random() * 28) : (3.0 + Math.random() * 6.5),
         spriteIdx: idx % 14 === 0 ? 3 : (idx % 3 === 0 ? 0 : 1),
-        alpha: idx % 14 === 0 ? 0.16 : (0.22 + Math.random() * 0.42),
+        alpha: idx % 14 === 0 ? 0.14 : (0.18 + Math.random() * 0.35),
         phase: Math.random() * Math.PI * 2,
       }));
     }
 
-    // Trigger Process Activity Surge (called automatically by fetch interceptor, UI actions, CPU Emulator, Decompiler, etc.)
-    function triggerNeuralActivity(intensity = 1.15, label = 'NEURAL COMPUTATION') {
+    function triggerNeuralActivity(intensity = 1.15, label = 'COMPUTATION') {
       neuralCloudState.energy = Math.min(1.85, Math.max(neuralCloudState.energy, intensity));
       neuralCloudState.processName = label;
       neuralCloudState.shockwaveRadius = 12;
@@ -2128,18 +2097,18 @@ if proc:
     }
 
     function triggerProcessBurst() {
-      playChirp(780, 0.09);
+      playChirp(780, 0.06);
       const labels = [
-        'SSA DECOMPILER // PHI (φ) SOLVER ACTIVE',
-        'CAPSTONE AARCH64 // FULL BINARY SCAN',
-        'LLVM FORGE // ASSEMBLING MACHINE CODE',
-        'CPU MICRO-EMULATOR // 64KB STACK TRACE',
-        'SECURITY AUDITOR // CWE & ENTROPY MATRIX',
-        'Z3 SYMBOLIC SOLVER // SMT-LIB2 PATH MODEL',
-        'AI NEURAL REWRITER // IDIOMATIC C23/RUST/SWIFT',
+        'SSA DECOMPILER // PHI (φ) SOLVER',
+        'CAPSTONE AARCH64 // BINARY SCAN',
+        'LLVM ASSEMBLER // MACHINE CODE',
+        'CPU MICRO-EMULATOR // 64KB STACK',
+        'SECURITY AUDITOR // CWE & ENTROPY',
+        'Z3 SYMBOLIC SOLVER // SMT-LIB2',
+        'PROTOCOL REA // EVIDENCE LEDGER',
       ];
       const pick = labels[Math.floor(Math.random() * labels.length)];
-      triggerNeuralActivity(1.65, pick);
+      triggerNeuralActivity(1.5, pick);
     }
 
     function updateNeuralActivityHud() {
@@ -2152,52 +2121,49 @@ if proc:
 
       if (txt) {
         txt.textContent = isBusy
-          ? `⚡ PROCESS ACTIVE: ${neuralCloudState.processName} // LOAD ${loadPct}%`
-          : `NEURAL CORE: HARMONIC STANDBY // LOAD ${loadPct}%`;
-        txt.style.color = isBusy ? '#fff2bd' : '#ffb84d';
+          ? `ACTIVE: ${neuralCloudState.processName} // ${loadPct}%`
+          : `PROTOCOL REA // STANDBY ${loadPct}%`;
+        txt.style.color = isBusy ? '#ffffff' : '#8b929e';
       }
       if (dot) {
-        dot.style.background = isBusy ? '#ffffff' : '#ff9500';
-        dot.style.boxShadow = isBusy ? '0 0 16px #ffffff, 0 0 28px #ff8800' : '0 0 10px #ff9500';
+        dot.style.background = isBusy ? '#ffffff' : '#f59e0b';
       }
       if (wingBadge) {
-        wingBadge.textContent = isBusy ? `⚡ ${loadPct}% LOAD` : 'SYNAPTIC LIVE';
-        wingBadge.style.borderColor = isBusy ? '#fff2bd' : '#ff9500';
+        wingBadge.textContent = isBusy ? `${loadPct}% LOAD` : 'NOMINAL';
       }
       if (wingSub && isBusy) {
         wingSub.textContent = neuralCloudState.processName;
       }
     }
 
-    // Intercept all backend API processes so the Orange Particle Cloud reacts automatically to real system activity
     (function hookFetchForNeuralCloud() {
       if (window.__ultronFetchHooked) return;
       window.__ultronFetchHooked = true;
       const origFetch = window.fetch.bind(window);
       window.fetch = async function (...args) {
         const url = String(args[0] || '');
-        let label = 'NEURAL BUS I/O';
-        if (url.includes('/api/procedure/')) label = 'SSA DECOMPILER & CFG SOLVER';
-        else if (url.includes('/api/emulate')) label = 'CPU MICRO-EMULATOR EXECUTION';
-        else if (url.includes('/api/audit')) label = 'CWE & CRYPTO S-BOX AUDIT';
-        else if (url.includes('/api/neural')) label = 'NEURAL AUTO-CLASSIFIER';
-        else if (url.includes('/api/open')) label = 'MACH-O / ELF BINARY LOADER';
-        else if (url.includes('/api/assemble')) label = 'LLVM FORGE ASSEMBLER';
-        else if (url.includes('/api/script')) label = 'PYTHON NEURAL SCRIPT ENGINE';
+        let label = 'TELEMETRY I/O';
+        if (url.includes('/api/procedure/')) label = 'SSA DECOMPILER & CFG';
+        else if (url.includes('/api/emulate')) label = 'CPU MICRO-EMULATOR';
+        else if (url.includes('/api/audit')) label = 'CWE & CRYPTO AUDIT';
+        else if (url.includes('/api/neural')) label = 'HEURISTIC CLASSIFIER';
+        else if (url.includes('/api/open')) label = 'BINARY LOADER';
+        else if (url.includes('/api/assemble')) label = 'LLVM ASSEMBLER';
+        else if (url.includes('/api/script')) label = 'PYTHON SCRIPT ENGINE';
         else if (url.includes('/api/export')) label = 'BINARY PATCH & CODESIGN';
-        else if (url.includes('/api/procedures')) label = 'SYMBOL DEMANGLER & INDEXER';
-        else if (url.includes('/api/project')) label = '.ULTRON PERSISTENT DATABASE I/O';
-        else if (url.includes('/api/bindiff')) label = 'BINDIFF STRUCTURAL CFG COMPARATOR';
-        else if (url.includes('/api/debug')) label = 'FRIDA & LLDB DYNAMIC BRIDGE';
-        else if (url.includes('/api/flirt')) label = 'FLIRT / WARP SIGNATURE SCANNER';
-        else if (url.includes('/api/v3/symbolic-solve')) label = 'Z3 SYMBOLIC EXECUTION SOLVER';
-        else if (url.includes('/api/v3/ai-decompile')) label = 'AI SEMANTIC DECOMPILER REWRITE';
-        else if (url.includes('/api/v3/callgraph')) label = 'GLOBAL CALL GRAPH SYNTHESIS';
-        else if (url.includes('/api/v3/inspect-artifact')) label = 'REA MULTI-ARTIFACT INSPECTOR';
-        else if (url.includes('/api/v3/decode-bytecode')) label = 'EVM / DEX / CIL BYTECODE DECODER';
-        else if (url.includes('/api/v3/crash-dump')) label = 'CRASH DUMP FORENSICS ENGINE';
-        else if (url.includes('/api/v3/observe-calls')) label = 'LLDB LIVE NATIVE CALL OBSERVER';
-        else if (url.includes('/api/mcp')) label = 'MCP JSON-RPC 2.0 SERVER BRIDGE';
+        else if (url.includes('/api/procedures')) label = 'SYMBOL DEMANGLER';
+        else if (url.includes('/api/project')) label = '.ULTRON DATABASE I/O';
+        else if (url.includes('/api/bindiff')) label = 'BINDIFF CFG COMPARATOR';
+        else if (url.includes('/api/debug')) label = 'FRIDA & LLDB BRIDGE';
+        else if (url.includes('/api/flirt')) label = 'FLIRT SIGNATURE SCAN';
+        else if (url.includes('/api/v3/symbolic-solve')) label = 'Z3 SYMBOLIC SOLVER';
+        else if (url.includes('/api/v3/ai-decompile')) label = 'AI SEMANTIC REWRITE';
+        else if (url.includes('/api/v3/callgraph')) label = 'GLOBAL CALL GRAPH';
+        else if (url.includes('/api/v3/inspect-artifact')) label = 'REA ARTIFACT INSPECTOR';
+        else if (url.includes('/api/v3/decode-bytecode')) label = 'EVM / DEX / CIL DECODER';
+        else if (url.includes('/api/v3/crash-dump')) label = 'CRASH DUMP FORENSICS';
+        else if (url.includes('/api/v3/observe-calls')) label = 'LLDB CALL OBSERVER';
+        else if (url.includes('/api/mcp')) label = 'MCP JSON-RPC 2.0';
 
         neuralCloudState.activeRequests++;
         triggerNeuralActivity(1.35, label);
@@ -2209,8 +2175,8 @@ if proc:
       };
     })();
 
-    // Core renderer that draws the 3D Spherical Orange Particle Cloud on any target canvas & scale
-    function renderOrangeSphereToCanvas(targetCtx, w, h, scaleRadius, particleStride, timeSec, opacityMul, interactiveCursor) {
+    // Core renderer that draws the 3D Spherical Orange Particle Cloud (with optional Singularity + Halo Genesis factor)
+    function renderOrangeSphereToCanvas(targetCtx, w, h, scaleRadius, particleStride, timeSec, opacityMul, interactiveCursor, genesisExpand = 1.0) {
       if (!targetCtx || !neuralCloudState.sprites) return;
       const scx = w * 0.5;
       const scy = h * 0.5;
@@ -2221,19 +2187,51 @@ if proc:
       targetCtx.save();
       targetCtx.globalCompositeOperation = 'lighter';
 
-      // 1. Volumetric Orange Core Singularity Glow
+      // 1. Volumetric Core Singularity & Halo Glow
       const breathe = 1.0 + (0.035 + energy * 0.065) * Math.sin(timeSec * (2.0 + energy * 2.5));
-      const glowR = scaleRadius * 1.32 * breathe;
-      const coreGlow = targetCtx.createRadialGradient(scx, scy, scaleRadius * 0.02, scx, scy, glowR);
-      const coreAlpha = Math.min(0.45, (0.22 + energy * 0.16) * opacityMul);
-      coreGlow.addColorStop(0.0, `rgba(255, 185, 65, ${coreAlpha})`);
-      coreGlow.addColorStop(0.28, `rgba(255, 100, 12, ${coreAlpha * 0.58})`);
-      coreGlow.addColorStop(0.64, `rgba(215, 45, 0, ${coreAlpha * 0.22})`);
+      const glowR = scaleRadius * (0.28 + 1.04 * genesisExpand) * breathe;
+      const coreGlow = targetCtx.createRadialGradient(scx, scy, scaleRadius * 0.01, scx, scy, glowR);
+      const coreAlpha = Math.min(0.55, (0.26 + energy * 0.16) * opacityMul);
+      coreGlow.addColorStop(0.0, `rgba(255, 240, 210, ${coreAlpha})`);
+      coreGlow.addColorStop(0.22, `rgba(255, 165, 45, ${coreAlpha * 0.72})`);
+      coreGlow.addColorStop(0.55, `rgba(225, 75, 5, ${coreAlpha * 0.25})`);
       coreGlow.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
       targetCtx.fillStyle = coreGlow;
       targetCtx.beginPath();
       targetCtx.arc(scx, scy, glowR, 0, Math.PI * 2);
       targetCtx.fill();
+
+      // If in Singularity / Halo genesis phase, draw the central luminous particle & concentric halo rings
+      if (genesisExpand < 0.99) {
+        const singAlpha = (1.0 - genesisExpand * 0.75) * opacityMul;
+        const haloR1 = (24 + Math.sin(timeSec * 3.2) * 5 + genesisExpand * scaleRadius * 0.65);
+        const haloR2 = (46 + ((timeSec * 38) % 95));
+
+        // Concentric Halo Ring 1
+        targetCtx.strokeStyle = `rgba(255, 175, 65, ${0.42 * singAlpha})`;
+        targetCtx.lineWidth = 1.2;
+        targetCtx.beginPath();
+        targetCtx.arc(scx, scy, haloR1, 0, Math.PI * 2);
+        targetCtx.stroke();
+
+        // Expanding Halo Pulse Ring 2
+        const pulseFade = Math.max(0, 1 - (haloR2 - 46) / 95);
+        targetCtx.strokeStyle = `rgba(255, 255, 255, ${0.28 * pulseFade * singAlpha})`;
+        targetCtx.lineWidth = 1.0;
+        targetCtx.beginPath();
+        targetCtx.arc(scx, scy, haloR2, 0, Math.PI * 2);
+        targetCtx.stroke();
+
+        // Central Singularity Particle Point
+        const ptSize = 18 + Math.sin(timeSec * 6) * 3;
+        targetCtx.globalAlpha = Math.min(1, singAlpha * 1.2);
+        targetCtx.drawImage(sprites[0], scx - ptSize * 0.5, scy - ptSize * 0.5, ptSize, ptSize);
+      }
+
+      if (genesisExpand <= 0.01) {
+        targetCtx.restore();
+        return;
+      }
 
       // 2. 3D Rotation + Interactive Mouse Tilt + Process Activity Acceleration
       const fov = scaleRadius * 2.35;
@@ -2241,13 +2239,12 @@ if proc:
       const baseRotX = neuralCloudState.rotX + neuralCloudState.normMouseY * 0.35;
       const baseRotZ = Math.cos(timeSec * 0.15) * (0.14 + energy * 0.12);
 
-      // Traveling 3D Synaptic Pulse Waves (accelerate when processes are active)
       const waveSpeed = 1.35 + energy * 3.2;
       const waveX = Math.cos(timeSec * waveSpeed);
       const waveY = Math.sin(timeSec * waveSpeed * 0.82);
       const waveZ = Math.sin(timeSec * waveSpeed * 0.64);
 
-      const radiusRatio = scaleRadius / 240;
+      const radiusRatio = (scaleRadius / 240) * genesisExpand;
       const shockR = neuralCloudState.shockwaveRadius;
 
       for (let i = 0; i < cloudParticles.length; i += particleStride) {
@@ -2259,14 +2256,12 @@ if proc:
         const cosX = Math.cos(rx), sinX = Math.sin(rx);
         const cosZ = Math.cos(baseRotZ), sinZ = Math.sin(baseRotZ);
 
-        // Organic 3D harmonic turbulence amplified by active processes
         const turbAmp = 1.0 + energy * 1.85;
         const turb =
           (Math.sin(timeSec * (p.freq + energy * 2.2) + p.theta * 3.0 + p.phase) * 8.5 +
             Math.cos(timeSec * (1.2 + energy * 1.8) - p.phi * 4.0) * 6.0) *
           turbAmp;
 
-        // Spherical shockwave displacement when a process or click triggers
         let shockBoost = 0;
         if (shockR > 0) {
           const distShock = Math.abs(p.baseR - shockR);
@@ -2277,7 +2272,6 @@ if proc:
 
         const r = (p.baseR + turb + shockBoost * 26) * radiusRatio * breathe;
 
-        // Tangential vortex swirl amplified by process activity
         const tang = Math.sin(timeSec * (1.4 + energy * 2.5) + p.phase) * (0.045 + energy * 0.065);
         const ux = p.nx - p.ny * tang;
         const uy = p.ny + p.nx * tang;
@@ -2287,7 +2281,6 @@ if proc:
         const vy = uy * r;
         const vz = uz * r;
 
-        // Rotate Y, X, Z
         const x1 = vx * cosY - vz * sinY;
         const z1 = vx * sinY + vz * cosY;
         const y2 = vy * cosX - z1 * sinX;
@@ -2299,7 +2292,6 @@ if proc:
         let sx = scx + x3 * persp;
         let sy = scy + y3 * persp;
 
-        // Interactive cursor electromagnetic vortex repulsion/swirl
         let cursorFlare = 0;
         if (interactiveCursor && neuralCloudState.localHoverActive) {
           const dx = sx - neuralCloudState.localHoverX;
@@ -2310,26 +2302,25 @@ if proc:
             const d = Math.sqrt(d2);
             const f = (1 - d / maxR);
             cursorFlare = f * 0.85;
-            // Swirl + radial push
             sx += (dx / d) * f * 18 * persp - (dy / d) * f * 14 * persp;
             sy += (dy / d) * f * 18 * persp + (dx / d) * f * 14 * persp;
           }
         }
 
-        // Synaptic wave firing intensity
         const dotWave = ux * waveX + uy * waveY + uz * waveZ;
         const thresh = Math.max(0.25, 0.65 - energy * 0.25);
         const synapticBoost = dotWave > thresh ? (dotWave - thresh) * (1.85 + energy * 1.2) : 0;
 
         const depthNorm = Math.max(0.18, Math.min(1.18, (scaleRadius * 1.15 - z2) / (scaleRadius * 2.1)));
         const dofBlur = p.layer === 3 ? 1.0 : (1.0 + Math.abs(z2 + scaleRadius * 0.18) / (scaleRadius * 1.45));
-        const drawSize = p.baseSize * radiusRatio * persp * dofBlur * (1 + shockBoost * 0.35 + cursorFlare * 0.4);
+        const drawSize = p.baseSize * (scaleRadius / 240) * (0.35 + 0.65 * genesisExpand) * persp * dofBlur * (1 + shockBoost * 0.35 + cursorFlare * 0.4);
 
         const finalAlpha = Math.min(
           1.0,
           (p.alpha * depthNorm + synapticBoost * 0.48 + shockBoost * 0.55 + cursorFlare * 0.6) *
             (1.0 + energy * 0.38) *
-            opacityMul
+            opacityMul *
+            Math.min(1, genesisExpand * 1.35)
         );
 
         if (finalAlpha > 0.02) {
@@ -2362,7 +2353,6 @@ if proc:
       }
       window.addEventListener('resize', resize);
 
-      // Global interactive pointer physics (tilts & ripples the 3D orange cloud everywhere)
       window.addEventListener('mousemove', (e) => {
         state.mouseX = e.clientX;
         state.mouseY = e.clientY;
@@ -2372,7 +2362,6 @@ if proc:
         neuralCloudState.normMouseX = nx;
         neuralCloudState.normMouseY = ny;
 
-        // Subtle kinetic energy boost when moving mouse rapidly
         if (dv > 0.015) {
           neuralCloudState.energy = Math.min(1.4, neuralCloudState.energy + dv * 0.45);
         }
@@ -2389,8 +2378,7 @@ if proc:
         }
       });
 
-      window.addEventListener('mousedown', (e) => {
-        // Trigger subtle synaptic ripple on any workspace click
+      window.addEventListener('mousedown', () => {
         if (neuralCloudState.shockwaveRadius <= 0) {
           neuralCloudState.shockwaveRadius = 15;
           neuralCloudState.shockwaveStrength = 0.65;
@@ -2404,7 +2392,6 @@ if proc:
       function frame() {
         t += 0.016;
 
-        // Update smoothed process energy & rotation physics
         const targetE = neuralCloudState.activeRequests > 0 ? 1.45 : neuralCloudState.targetEnergy;
         neuralCloudState.energy += (targetE - neuralCloudState.energy) * 0.045;
         const speedBoost = 1.0 + neuralCloudState.energy * 2.85;
@@ -2424,19 +2411,18 @@ if proc:
           updateNeuralActivityHud();
         }
 
-        // 1. FULL-SURFACE WORKSPACE BACKGROUND (#fuiCanvas): Giant 3D Orange Spherical Particle Cloud + Wide-Field Orange Embers
+        // 1. WORKSPACE BACKGROUND (#fuiCanvas): 3D Spherical Particle Cloud + Ambient Dust
         if (bgCtx && bgCanvas) {
           const bw = bgCanvas.width;
           const bh = bgCanvas.height;
           bgCtx.clearRect(0, 0, bw, bh);
 
           if (neuralCloudState.enabled) {
-            // Wide-field drifting orange ambient dust across 100% of the screen surface
             bgCtx.save();
             bgCtx.globalCompositeOperation = 'lighter';
             const dust = neuralCloudState.ambientDust;
             const sprites = neuralCloudState.sprites;
-            const driftMul = 1.0 + neuralCloudState.energy * 3.5;
+            const driftMul = 1.0 + neuralCloudState.energy * 3.0;
 
             for (let i = 0; i < dust.length; i++) {
               const d = dust[i];
@@ -2447,56 +2433,45 @@ if proc:
               if (d.y < -0.05) d.y = 1.05;
               if (d.y > 1.05) d.y = -0.05;
 
-              const px = (d.x + neuralCloudState.normMouseX * 0.018 * d.z) * bw;
-              const py = (d.y + neuralCloudState.normMouseY * 0.018 * d.z) * bh;
-              const pulse = 0.65 + 0.35 * Math.sin(t * 2.2 + d.phase);
-              bgCtx.globalAlpha = Math.min(0.85, d.alpha * pulse * (0.85 + neuralCloudState.energy * 0.5));
-              const sz = d.size * (1.0 + neuralCloudState.energy * 0.25);
+              const px = (d.x + neuralCloudState.normMouseX * 0.015 * d.z) * bw;
+              const py = (d.y + neuralCloudState.normMouseY * 0.015 * d.z) * bh;
+              const pulse = 0.65 + 0.35 * Math.sin(t * 2.0 + d.phase);
+              bgCtx.globalAlpha = Math.min(0.65, d.alpha * pulse * (0.75 + neuralCloudState.energy * 0.4));
+              const sz = d.size * (1.0 + neuralCloudState.energy * 0.2);
               bgCtx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
             }
             bgCtx.restore();
 
-            // Giant 3D Volumetric Orange Spherical Particle Cloud spanning the background of the entire workspace
-            const bgSphereRadius = Math.min(bw, bh) * 0.44;
-            renderOrangeSphereToCanvas(bgCtx, bw, bh, bgSphereRadius, 2, t, 0.72, false);
+            const bgSphereRadius = Math.min(bw, bh) * 0.42;
+            renderOrangeSphereToCanvas(bgCtx, bw, bh, bgSphereRadius, 2, t, 0.62, false, 1.0);
           }
         }
 
-        // 2. TOP-LEFT HEADER EMBLEM (#headerOrbCanvas): Miniature 3D Orange Spherical Particle Cloud
+        // 2. TOP-LEFT HEADER EMBLEM (#headerOrbCanvas)
         if (orbCtx && orbCanvas) {
           orbCtx.clearRect(0, 0, orbCanvas.width, orbCanvas.height);
           if (neuralCloudState.enabled) {
-            renderOrangeSphereToCanvas(orbCtx, orbCanvas.width, orbCanvas.height, 44, 6, t * 1.25, 1.15, false);
+            renderOrangeSphereToCanvas(orbCtx, orbCanvas.width, orbCanvas.height, 32, 6, t * 1.2, 1.1, false, 1.0);
           }
         }
 
-        // 3. RIGHT TELEMETRY WING (#wingCloudCanvas): Dedicated 3D Orange Spherical Particle Cloud
+        // 3. RIGHT TELEMETRY WING (#wingCloudCanvas)
         if (wingCtx && wingCanvas) {
           wingCtx.clearRect(0, 0, wingCanvas.width, wingCanvas.height);
           if (neuralCloudState.enabled) {
-            renderOrangeSphereToCanvas(wingCtx, wingCanvas.width, wingCanvas.height, 108, 3, t * 1.1, 1.05, false);
+            renderOrangeSphereToCanvas(wingCtx, wingCanvas.width, wingCanvas.height, 98, 3, t * 1.05, 1.0, false, 1.0);
           }
         }
 
-        // 4. RIGHT WING HARMONIC OSCILLOSCOPE (#waveCanvas)
+        // 4. RIGHT WING OSCILLOSCOPE (#waveCanvas)
         if (wctx && waveCanvas) {
           wctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
-          const ampBoost = 1.0 + neuralCloudState.energy * 1.4;
-          wctx.lineWidth = 1.6;
-          wctx.strokeStyle = '#ff9500';
+          const ampBoost = 1.0 + neuralCloudState.energy * 1.3;
+          wctx.lineWidth = 1.2;
+          wctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
           wctx.beginPath();
           for (let x = 0; x < waveCanvas.width; x += 3) {
-            const y = 22 + Math.sin(x * 0.045 + t * (5 + neuralCloudState.energy * 6)) * 8 * ampBoost * Math.sin(x * 0.01 + t * 2);
-            if (x === 0) wctx.moveTo(x, y);
-            else wctx.lineTo(x, y);
-          }
-          wctx.stroke();
-
-          wctx.strokeStyle = '#ffd27d';
-          wctx.lineWidth = 1.1;
-          wctx.beginPath();
-          for (let x = 0; x < waveCanvas.width; x += 3) {
-            const y = 22 + Math.cos(x * 0.065 - t * (4 + neuralCloudState.energy * 5)) * 5 * ampBoost;
+            const y = 20 + Math.sin(x * 0.045 + t * (4 + neuralCloudState.energy * 5)) * 6 * ampBoost * Math.sin(x * 0.01 + t * 1.8);
             if (x === 0) wctx.moveTo(x, y);
             else wctx.lineTo(x, y);
           }
@@ -2512,31 +2487,17 @@ if proc:
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const now = audioCtx.currentTime;
-        const bass = audioCtx.createOscillator();
-        const bGain = audioCtx.createGain();
-        bass.type = 'sawtooth';
-        bass.frequency.setValueAtTime(55, now);
-        bass.frequency.exponentialRampToValueAtTime(220, now + 0.48);
-        bGain.gain.setValueAtTime(0.06, now);
-        bGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
-        bass.connect(bGain);
-        bGain.connect(audioCtx.destination);
-        bass.start(now);
-        bass.stop(now + 0.55);
-
-        [440, 660, 880, 1320].forEach((f, idx) => {
-          const osc = audioCtx.createOscillator();
-          const g = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(f * 0.8, now + idx * 0.04);
-          osc.frequency.exponentialRampToValueAtTime(f, now + 0.35 + idx * 0.04);
-          g.gain.setValueAtTime(0.025, now + idx * 0.04);
-          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
-          osc.connect(g);
-          g.connect(audioCtx.destination);
-          osc.start(now + idx * 0.04);
-          osc.stop(now + 0.56);
-        });
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.exponentialRampToValueAtTime(440, now + 0.28);
+        g.gain.setValueAtTime(0.04, now);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.34);
       } catch (e) {}
     }
 
@@ -2552,31 +2513,6 @@ if proc:
       window.addEventListener('resize', resizeL);
       resizeL();
 
-      // Animated Neural Boot Log that pulses the Orange Spherical Particle Cloud on each subsystem init
-      const bootLines = [
-        ['[00.012s] INITIALIZING STARK/SOKOVIA QUANTUM BUS...', 'QUANTUM BUS INIT'],
-        ['[00.048s] LOADING NATIVE LLVM CORE: libLLVMServices.dylib [OK]', 'LLVM CORE LOAD'],
-        ['[00.095s] MOUNTING CAPSTONE MULTI-ARCH (ARM64/ARM32/X86/WASM/EVM/DEX) [OK]', 'CAPSTONE MOUNT'],
-        ['[00.142s] CALIBRATING DOMINATOR LOOP SSA & PHI (φ) SOLVER [OK]', 'SSA PHI CALIBRATION'],
-        ['[00.189s] INITIALIZING Z3 SYMBOLIC ENGINE & AI REWRITER (C23/RUST/SWIFT) [OK]', 'Z3 & AI ENGINE'],
-        ['[00.234s] MOUNTING REA MULTI-ARTIFACT (.ASAR/.EVM/.DEX) & MCP SERVER [OK]', 'REA & MCP READY'],
-        ['[00.280s] BIOMETRIC CLEARANCE VERIFIED: LEVEL 10 AVENGER', 'BIOMETRIC LOCK'],
-        ['[00.315s] ULTRON DISASSEMBLE v3.0 OMNI-CORE READY FOR DEPLOYMENT.', 'SYSTEMS NOMINAL'],
-      ];
-      const bootBox = document.getElementById('launchBootLog');
-      if (bootBox) {
-        bootBox.innerHTML = '';
-        bootLines.forEach(([line, procLabel], idx) => {
-          setTimeout(() => {
-            const div = document.createElement('div');
-            div.innerHTML = line.replace('[OK]', '<span style="color:var(--emerald);font-weight:700;">[OK]</span>');
-            bootBox.appendChild(div);
-            bootBox.scrollTop = bootBox.scrollHeight;
-            triggerNeuralActivity(1.15, procLabel);
-          }, idx * 140);
-        });
-      }
-
       const c3d = document.getElementById('core3dCanvas');
       const c3ctx = c3d ? c3d.getContext('2d') : null;
       const hub = document.getElementById('launchCloudHub');
@@ -2585,7 +2521,7 @@ if proc:
         hub.addEventListener('mouseenter', () => {
           state.coreHover = true;
           neuralCloudState.localHoverActive = true;
-          triggerNeuralActivity(0.75, 'INTERACTIVE CORTEX PROBE');
+          triggerNeuralActivity(0.75, 'SINGULARITY PROBE');
         });
         hub.addEventListener('mouseleave', () => {
           state.coreHover = false;
@@ -2604,8 +2540,8 @@ if proc:
           neuralCloudState.dragging = true;
           neuralCloudState.lastMouseX = e.clientX;
           neuralCloudState.lastMouseY = e.clientY;
-          triggerNeuralActivity(1.35, 'SYNAPTIC SHOCKWAVE PULSE');
-          playChirp(680, 0.06);
+          triggerNeuralActivity(1.35, 'SINGULARITY PULSE');
+          playChirp(680, 0.05);
         });
         window.addEventListener('mouseup', () => {
           neuralCloudState.dragging = false;
@@ -2615,34 +2551,62 @@ if proc:
         });
       }
 
-      let lt = 0;
+      // Schedule Singularity -> Halo -> Ultron Voice ("Ultron active. Protocol REA ready to proceed.") -> Chrome Reveal
+      neuralCloudState.genesisTime = 0;
+      setTimeout(() => {
+        playUltronGenesisVoice(false);
+      }, 950);
+
+      let chromeRevealed = false;
       function renderLaunchFrame() {
-        lt += 0.016;
+        neuralCloudState.genesisTime += 0.016;
+        const gt = neuralCloudState.genesisTime;
         const portal = document.getElementById('launchPortal');
         if (portal && !portal.classList.contains('portal-hidden')) {
           lctx.clearRect(0, 0, lCanvas.width, lCanvas.height);
 
-          if (neuralCloudState.enabled) {
-            // Render ambient drifting orange embers across the entire Launch Portal background surface (#launchCanvas)
-            lctx.save();
-            lctx.globalCompositeOperation = 'lighter';
-            const dust = neuralCloudState.ambientDust;
-            const sprites = neuralCloudState.sprites;
-            for (let i = 0; i < dust.length; i++) {
-              const d = dust[i];
-              const px = (d.x + neuralCloudState.normMouseX * 0.02 * d.z) * lCanvas.width;
-              const py = (d.y + neuralCloudState.normMouseY * 0.02 * d.z) * lCanvas.height;
-              const pulse = 0.6 + 0.4 * Math.sin(lt * 2.4 + d.phase);
-              lctx.globalAlpha = Math.min(0.8, d.alpha * pulse * 0.85);
-              const sz = d.size * (1.0 + neuralCloudState.energy * 0.3);
-              lctx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
-            }
-            lctx.restore();
+          // Phase 1 (0.0s -> 0.35s): Pure pitch black screen
+          // Phase 2 (0.35s -> 1.75s): Single central particle + breathing halo
+          // Phase 3 (1.75s -> 3.55s): Smooth expansion into full 3D spherical particle cloud
+          let genesisExpand = 0.0;
+          if (gt > 1.75) {
+            const p = Math.min(1.0, (gt - 1.75) / 1.8);
+            genesisExpand = 1.0 - Math.pow(1.0 - p, 3);
+          }
 
-            // Render flagship 4,400-particle 3D Volumetric Orange Spherical Cloud on #core3dCanvas
+          if (gt > 2.15 && !chromeRevealed) {
+            chromeRevealed = true;
+            ['launchTopChrome', 'launchCenterChrome', 'launchBottomChrome'].forEach(id => {
+              document.getElementById(id)?.classList.add('chrome-visible');
+            });
+          } else if (gt < 1.0 && chromeRevealed) {
+            chromeRevealed = false;
+          }
+
+          if (neuralCloudState.enabled && gt > 0.3) {
+            const fadeIn = Math.min(1.0, (gt - 0.3) / 0.7);
+
+            // Ambient embers fade in only as the 3D cloud expands
+            if (genesisExpand > 0.1) {
+              lctx.save();
+              lctx.globalCompositeOperation = 'lighter';
+              const dust = neuralCloudState.ambientDust;
+              const sprites = neuralCloudState.sprites;
+              for (let i = 0; i < dust.length; i++) {
+                const d = dust[i];
+                const px = (d.x + neuralCloudState.normMouseX * 0.018 * d.z) * lCanvas.width;
+                const py = (d.y + neuralCloudState.normMouseY * 0.018 * d.z) * lCanvas.height;
+                const pulse = 0.6 + 0.4 * Math.sin(gt * 2.2 + d.phase);
+                lctx.globalAlpha = Math.min(0.6, d.alpha * pulse * genesisExpand * 0.75);
+                const sz = d.size * (1.0 + neuralCloudState.energy * 0.25);
+                lctx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
+              }
+              lctx.restore();
+            }
+
             if (c3ctx && c3d) {
               c3ctx.clearRect(0, 0, c3d.width, c3d.height);
-              renderOrangeSphereToCanvas(c3ctx, c3d.width, c3d.height, 240, 1, lt, 1.0, true);
+              renderOrangeSphereToCanvas(c3ctx, c3d.width, c3d.height, 240, 1, gt, fadeIn, true, genesisExpand);
             }
           } else if (c3ctx && c3d) {
             c3ctx.clearRect(0, 0, c3d.width, c3d.height);
@@ -2650,7 +2614,7 @@ if proc:
 
           const clk = document.getElementById('launchClockText');
           if (clk) {
-            clk.textContent = `T+00:00:${lt.toFixed(2).padStart(5, '0')} // ORBITAL LOCK`;
+            clk.textContent = `T+00:00:${gt.toFixed(2).padStart(5, '0')} // TELEMETRY NOMINAL`;
           }
         }
         requestAnimationFrame(renderLaunchFrame);
@@ -2658,18 +2622,9 @@ if proc:
       requestAnimationFrame(renderLaunchFrame);
     }
 
-    function selectLaunchProtocol(useJarvis) {
-      playChirp(useJarvis ? 920 : 540, 0.07);
-      if (state.jarvisMode !== useJarvis) {
-        toggleJarvisMode();
-      }
-      document.getElementById('protoCardUltron')?.classList.toggle('active', !useJarvis);
-      document.getElementById('protoCardJarvis')?.classList.toggle('active', useJarvis);
-      const banner = document.getElementById('launchProtocolBanner');
-      if (banner) {
-        banner.textContent = useJarvis
-          ? 'PROTOCOL MK-LXXXV // J.A.R.V.I.S. TACTICAL CORE'
-          : 'PROTOCOL MK-LXXXV // ULTRON SENTINEL PRIME';
+    function selectLaunchProtocol(useAlt) {
+      if (state.slateMode !== useAlt) {
+        toggleContrastMode();
       }
     }
 
@@ -2682,17 +2637,18 @@ if proc:
         const card = document.createElement('div');
         card.className = 'target-deck-card' + (isCur ? ' active' : '');
         card.innerHTML = `
-          <div>
-            <div style="font-family:var(--font-code);font-size:11.5px;font-weight:700;color:#fff;">${escapeHtml(p.label)}</div>
-            <div style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">${escapeHtml(p.path)}</div>
+          <div style="overflow:hidden;text-align:left;">
+            <div style="font-family:var(--font-code);font-size:10.5px;font-weight:600;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.label)}</div>
+            <div style="font-family:var(--font-fui);font-size:9px;color:var(--text-lo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.path)}</div>
           </div>
           <span class="hud-tag">${p.arch.toUpperCase()}</span>
         `;
         card.onclick = () => {
-          playChirp(740, 0.05);
+          playChirp(740, 0.04);
           document.getElementById('launchCustomPathInput').value = p.path;
           document.getElementById('launchArchSelect').value = p.arch;
-          document.getElementById('launchSelectedArchBadge').textContent = p.arch.toUpperCase();
+          const badge = document.getElementById('launchSelectedArchBadge');
+          if (badge) badge.textContent = p.arch.toUpperCase();
           deck.querySelectorAll('.target-deck-card').forEach(c => c.classList.remove('active'));
           card.classList.add('active');
         };
@@ -2709,7 +2665,7 @@ if proc:
       if (customPath && customPath !== state.overview?.file_path) {
         await openBinary(customPath, arch);
       } else {
-        showToast('ULTRON DISASSEMBLE COCKPIT ONLINE // ALL NEURAL SYSTEMS ENGAGED');
+        showToast('ULTRON ACTIVE // PROTOCOL REA WORKSPACE READY');
       }
     }
 
@@ -2718,6 +2674,7 @@ if proc:
       if (portal) {
         renderLaunchTargetDeck();
         portal.classList.remove('portal-hidden');
+        replayGenesisSequence();
       }
     }
 
@@ -2731,19 +2688,20 @@ if proc:
     function toggle3DCockpit() {
       state.curved3D = !state.curved3D;
       document.body.classList.toggle('curved-3d', state.curved3D);
-      document.getElementById('cockpit3DBtn').textContent = state.curved3D ? '3D HUD: ON' : '3D HUD: FLAT';
-      playChirp(state.curved3D ? 840 : 440, 0.07);
+      const btn = document.getElementById('cockpit3DBtn');
+      if (btn) btn.textContent = state.curved3D ? '3D: ON' : '3D: FLAT';
+      playChirp(state.curved3D ? 840 : 440, 0.05);
     }
 
-    function toggleJarvisMode() {
-      state.jarvisMode = !state.jarvisMode;
-      document.body.classList.toggle('jarvis-mode', state.jarvisMode);
-      document.getElementById('hudThemeLabel').textContent = state.jarvisMode
-        ? 'J.A.R.V.I.S. TACTICAL // MK-LXXXV'
-        : 'SENTINEL PRIME // MK-LXXXV';
-      document.getElementById('themeToggleBtn').textContent = state.jarvisMode ? 'ULTRON' : 'J.A.R.V.I.S.';
-      playChirp(state.jarvisMode ? 960 : 520, 0.09);
-      showToast(state.jarvisMode ? 'J.A.R.V.I.S. HOLOGRAPHIC MATRIX ONLINE' : 'ULTRON SENTINEL PROTOCOL ENGAGED');
+    function toggleContrastMode() {
+      state.slateMode = !state.slateMode;
+      document.body.classList.toggle('slate-mode', state.slateMode);
+      const lbl = document.getElementById('hudThemeLabel');
+      if (lbl) lbl.textContent = state.slateMode ? 'PROTOCOL // GRAPHITE' : 'PROTOCOL // REA';
+      const btn = document.getElementById('themeToggleBtn');
+      if (btn) btn.textContent = state.slateMode ? 'CARBON' : 'GRAPHITE';
+      playChirp(state.slateMode ? 820 : 520, 0.05);
+      showToast(state.slateMode ? 'THEME: HIGH-CONTRAST GRAPHITE' : 'THEME: PURE CARBON BLACK');
       if (state.mode === 'cfg' && state.currentDossier) {
         renderCfgMode(document.getElementById('centerContent'), state.currentDossier);
       }
@@ -2785,11 +2743,11 @@ if proc:
     function navigateBack() {
       if (state.navHistory.length > 0) {
         const prev = state.navHistory.pop();
-        playChirp(460, 0.05);
-        showToast(`CHRONO-JUMP BACK → ${prev}`);
+        playChirp(460, 0.04);
+        showToast(`BACK → ${prev}`);
         loadProcedure(prev, false);
       } else {
-        showToast('NAVIGATION STACK AT ORIGIN');
+        showToast('NAVIGATION AT ORIGIN');
       }
     }
 
@@ -2840,8 +2798,8 @@ if proc:
     }
 
     async function openBinary(path, arch = 'arm64') {
-      playChirp(620, 0.08);
-      showToast(`SCANNING BINARY TARGET: ${path.split('/').pop()} [${arch.toUpperCase()}]…`);
+      playChirp(620, 0.05);
+      showToast(`LOADING TARGET: ${path.split('/').pop()} [${arch.toUpperCase()}]…`);
       const resp = await fetch('/api/open', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2862,7 +2820,7 @@ if proc:
       state.symbolicSolveResult = null;
       state.globalCallGraph = null;
       await refreshAllData(false);
-      showToast(`TARGET LOCKED: ${data.procedure_count} SUBROUTINES // ${data.instruction_count} INSTRUCTIONS`);
+      showToast(`TARGET LOADED: ${data.procedure_count} PROCS // ${data.instruction_count} INSTRS`);
     }
 
     function openCustomPathPrompt() {
@@ -2879,10 +2837,10 @@ if proc:
       const bar = document.getElementById('segmentMapBar');
       bar.innerHTML = '';
       const colors = {
-        '__TEXT': 'linear-gradient(90deg, #ff1e38, #b80d24)',
-        '__DATA_CONST': 'linear-gradient(90deg, #7b2cbf, #5a189a)',
-        '__DATA': 'linear-gradient(90deg, #00b4d8, #0077b6)',
-        '__LINKEDIT': 'linear-gradient(90deg, #ff8a00, #cc6d00)',
+        '__TEXT': '#374151',
+        '__DATA_CONST': '#27272a',
+        '__DATA': '#1f2937',
+        '__LINKEDIT': '#18181b',
       };
       const validSegs = (ov.segments || []).filter(s => s.name !== '__PAGEZERO' && s.length > 0);
       const totalLen = validSegs.reduce((acc, s) => acc + s.length, 0) || 1;
@@ -2890,7 +2848,7 @@ if proc:
         const div = document.createElement('div');
         div.className = 'seg-slice';
         div.style.width = `${Math.max(10, (s.length / totalLen) * 100)}%`;
-        div.style.background = colors[s.name] || '#1e293b';
+        div.style.background = colors[s.name] || '#1e2028';
         div.textContent = `${s.name} (${(s.length / 1024).toFixed(0)}K)`;
         div.onclick = () => selectAddress(s.start);
         bar.appendChild(div);
@@ -2957,7 +2915,7 @@ if proc:
             const superCls = c.super_class || c.superclass || 'NSObject';
             const allMethods = c.methods || [...(c.instance_methods || []), ...(c.class_methods || [])];
             const methodCount = allMethods.length;
-            row.innerHTML = `<span class="list-item-name" style="color:#00f2ff;font-weight:700;">[@INTERFACE] ${escapeHtml(c.name)} : ${escapeHtml(superCls)}</span><span class="list-item-addr">${c.ivars ? c.ivars.length : 0} ivars / ${methodCount}m</span>`;
+            row.innerHTML = `<span class="list-item-name" style="color:#e5e7eb;font-weight:700;">[@INTERFACE] ${escapeHtml(c.name)} : ${escapeHtml(superCls)}</span><span class="list-item-addr">${c.ivars ? c.ivars.length : 0} ivars / ${methodCount}m</span>`;
             row.onclick = () => {
               playChirp(780, 0.05);
               openObjcClassModal(c);
@@ -3403,7 +3361,7 @@ if proc:
 
       const symRes = state.symbolicSolveResult;
       const symBanner = symRes && !symRes.error
-        ? `<div style="padding:8px 12px;background:linear-gradient(90deg,rgba(0,255,157,0.12),rgba(4,9,18,0.95));border-bottom:1px solid var(--emerald);font-family:var(--font-code);font-size:11px;">
+        ? `<div style="padding:8px 12px;background:linear-gradient(90deg,rgba(0,255,157,0.12),rgba(12,13,17,0.95));border-bottom:1px solid var(--emerald);font-family:var(--font-code);font-size:11px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <strong style="color:var(--emerald);">🔮 Z3 SYMBOLIC PATH TO ${escapeHtml(String(symRes.target_address || state.selectedAddress))} [${escapeHtml(String(symRes.status || 'SATISFIABLE'))}]</strong>
               <div style="display:flex;gap:6px;">
@@ -3485,9 +3443,9 @@ if proc:
           const dst = coords[succAddr];
           if (!dst) return;
           const isBackEdge = dst.y <= src.y;
-          let color = '#00f0ff';
+          let color = '#e5e7eb';
           if (b.then_successor === succAddr) color = '#00ff9d';
-          else if (b.else_successor === succAddr) color = '#ff1e38';
+          else if (b.else_successor === succAddr) color = '#f3f4f6';
           if (isBackEdge) color = '#ff9e00';
 
           const x1 = src.x + src.w / 2;
@@ -3515,15 +3473,15 @@ if proc:
           const opShort = (ins.formatted_op_str || ins.op_str).slice(0, 38);
           insText += `
             <text x="${c.x + 12}" y="${ty}" fill="#4f6d8a" font-size="10.5">${ins.address}</text>
-            <text x="${c.x + 96}" y="${ty}" fill="#00f0ff" font-weight="700" font-size="11">${escapeHtml(ins.mnemonic)}</text>
+            <text x="${c.x + 96}" y="${ty}" fill="#e5e7eb" font-weight="700" font-size="11">${escapeHtml(ins.mnemonic)}</text>
             <text x="${c.x + 160}" y="${ty}" fill="#f0f8ff" font-size="11">${escapeHtml(opShort)}</text>
           `;
         });
         nodesSvg += `
           <g onclick="playChirp(640,0.04); selectAddress('${b.from}')" style="cursor:pointer;">
-            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="rgba(5,10,20,0.94)" stroke="#00f0ff" stroke-opacity="0.5" stroke-width="1.5" />
-            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="24" fill="rgba(255,30,56,0.25)" />
-            <text x="${c.x + 12}" y="${c.y + 16}" fill="#ff1e38" font-weight="700" font-size="11">◈ NODE #${b.index} // ${b.from} → ${b.to}</text>
+            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="rgba(12,13,17,0.94)" stroke="#e5e7eb" stroke-opacity="0.5" stroke-width="1.5" />
+            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="24" fill="rgba(255,255,255,0.25)" />
+            <text x="${c.x + 12}" y="${c.y + 16}" fill="#f3f4f6" font-weight="700" font-size="11">◈ NODE #${b.index} // ${b.from} → ${b.to}</text>
             ${insText}
           </g>
         `;
@@ -3542,7 +3500,7 @@ if proc:
       mini.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
       mini.innerHTML = edgesSvg + blocks.map(b => {
         const c = coords[b.from];
-        return `<rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="#ff1e38" opacity="0.65" />`;
+        return `<rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="#f3f4f6" opacity="0.65" />`;
       }).join('');
     }
 
@@ -3553,7 +3511,7 @@ if proc:
         : (d.pseudocode || '// NO DECOMPILED TELEMETRY');
       const langBadge = isAi ? String(state.aiRewriteData.language || state.aiRewriteLang || 'c23').toUpperCase() : 'SSA C';
       const toolbarHtml = `
-        <div style="padding:7px 16px;background:rgba(3,8,16,0.92);border-bottom:1px solid rgba(0,240,255,0.22);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--font-fui);font-size:10.5px;">
+        <div style="padding:7px 16px;background:rgba(10,11,14,0.92);border-bottom:1px solid rgba(255,255,255,0.22);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--font-fui);font-size:10.5px;">
           <span>ENGINE: <strong style="color:var(--secondary);">${escapeHtml(langBadge)}</strong></span>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="fui-btn ${!isAi ? 'primary-glow' : ''}" style="padding:3px 9px;font-size:9.5px;" onclick="switchSplitDecompToSsa()">SSA C</button>
@@ -3576,7 +3534,7 @@ if proc:
         return;
       }
       let html = `
-        <div style="padding:8px 14px; background:rgba(4,9,18,0.95); border-bottom:1px solid rgba(0,240,255,0.25); font-family:var(--font-fui); font-size:11px; display:flex; gap:14px; align-items:center;">
+        <div style="padding:8px 14px; background:rgba(12,13,17,0.95); border-bottom:1px solid rgba(255,255,255,0.25); font-family:var(--font-fui); font-size:11px; display:flex; gap:14px; align-items:center;">
           <span>SEGMENT: <strong style="color:var(--secondary)">${data.segment}</strong></span>
           <span class="bt-procedure" style="padding:1px 7px;">PROCEDURE</span>
           <span class="bt-code" style="padding:1px 7px;">CODE</span>
@@ -3626,7 +3584,7 @@ if proc:
       `).join('');
 
       const stackRows = (emu.stack || []).map(s => `
-        <div style="display:flex;justify-content:space-between;font-family:var(--font-code);font-size:11px;padding:3px 6px;border-bottom:1px solid rgba(0,240,255,0.08);">
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-code);font-size:11px;padding:3px 6px;border-bottom:1px solid rgba(255,255,255,0.08);">
           <span style="color:var(--tertiary);">${s.offset} (${s.address})</span>
           <span style="color:var(--text-hi);">${s.value}</span>
         </div>
@@ -3644,7 +3602,7 @@ if proc:
       }).join('');
 
       const traceRows = (emu.trace || []).slice().reverse().map(t => `
-        <div style="font-family:var(--font-code);font-size:11px;padding:3px 6px;border-bottom:1px solid rgba(0,240,255,0.08);">
+        <div style="font-family:var(--font-code);font-size:11px;padding:3px 6px;border-bottom:1px solid rgba(255,255,255,0.08);">
           <span style="color:var(--text-mid);">#${t.step} [${t.address}]</span>
           <strong style="color:var(--secondary);margin-left:6px;">${escapeHtml(t.mnemonic)} ${escapeHtml(t.op_str)}</strong>
           ${t.note ? `<span style="color:var(--emerald);margin-left:8px;">// ${escapeHtml(t.note)}</span>` : ''}
@@ -3652,7 +3610,7 @@ if proc:
       `).join('');
 
       container.innerHTML = `
-        <div style="padding:10px 16px;background:rgba(4,9,18,0.95);border-bottom:1px solid rgba(0,240,255,0.3);display:flex;justify-content:space-between;align-items:center;">
+        <div style="padding:10px 16px;background:rgba(12,13,17,0.95);border-bottom:1px solid rgba(255,255,255,0.3);display:flex;justify-content:space-between;align-items:center;">
           <div style="display:flex;gap:10px;align-items:center;">
             <button class="fui-btn primary-glow" onclick="emuStep('step')">▶ STEP INTO [F7]</button>
             <button class="fui-btn cyan-glow" onclick="emuStep('run')">⏩ RUN TO RET [F9]</button>
@@ -3765,7 +3723,7 @@ if proc:
       }).join('');
 
       const cryptoHtml = (audit.crypto_constants || []).map(c => `
-        <div style="padding:4px 8px;border-bottom:1px solid rgba(0,240,255,0.1);font-family:var(--font-code);font-size:11.5px;display:flex;justify-content:space-between;">
+        <div style="padding:4px 8px;border-bottom:1px solid rgba(255,255,255,0.1);font-family:var(--font-code);font-size:11.5px;display:flex;justify-content:space-between;">
           <span style="color:var(--tertiary);font-weight:700;">◈ ${escapeHtml(c.name)} (${escapeHtml(c.category)})</span>
           <span class="clickable-sym" onclick="selectAddress('${c.address}'); setMode('hex');">${c.address} [${c.segment},${c.section}]</span>
         </div>
@@ -3774,7 +3732,7 @@ if proc:
       container.innerHTML = `
         <div class="audit-layout">
           <!-- Neural Function Synthesizer Card -->
-          <div class="fui-module" style="border-color:var(--primary);background:linear-gradient(90deg,rgba(255,26,53,0.14),rgba(4,9,18,0.92));">
+          <div class="fui-module" style="border-color:var(--primary);background:linear-gradient(90deg,rgba(255,26,53,0.14),rgba(12,13,17,0.92));">
             <div class="fui-module-title">
               <span>ULTRON NEURAL SUBROUTINE SYNTHESIS // ${escapeHtml(nr.procedure)} (${nr.address})</span>
               <button class="fui-btn primary-glow" onclick="triggerQuickNeuralRename()">⚡ APPLY NEURAL AUTO-RENAME &amp; SIGNATURE</button>
@@ -4014,7 +3972,7 @@ if proc:
               ? `${p.binary_name || p.format || ''} ${p.labels_count !== undefined ? `• ${p.labels_count} labels` : ''} ${p.comments_count !== undefined ? `• ${p.comments_count} notes` : ''} ${p.breakpoints_count !== undefined ? `• ${p.breakpoints_count} BPs` : ''} ${p.size_bytes ? `(${p.size_bytes}B)` : ''}`.trim()
               : 'Base persistante .ultron';
             return `
-              <div class="list-item" style="padding:6px 10px;background:rgba(2,6,14,0.8);margin-bottom:4px;border:1px solid rgba(0,240,255,0.18);">
+              <div class="list-item" style="padding:6px 10px;background:rgba(10,11,14,0.8);margin-bottom:4px;border:1px solid rgba(255,255,255,0.18);">
                 <div style="overflow:hidden;">
                   <div style="color:#fff;font-weight:700;font-size:11.5px;">◈ ${escapeHtml(pName)}</div>
                   <div style="color:var(--text-mid);font-size:10px;font-family:var(--font-fui);">${escapeHtml(pMeta)}</div>
@@ -4066,7 +4024,7 @@ if proc:
         }).join('');
 
         bindiffBodyHtml = `
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(2,6,14,0.85);border:1px solid rgba(0,240,255,0.22);">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(10,11,14,0.85);border:1px solid rgba(255,255,255,0.22);">
             <div>
               <span style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">SIMILARITÉ GLOBALE :</span>
               <strong style="color:var(--emerald);font-size:14px;margin-left:6px;">${simPct}%</strong>
@@ -4074,11 +4032,11 @@ if proc:
             <div style="display:flex;gap:6px;font-family:var(--font-fui);font-size:10px;">
               <span class="hud-tag" style="border-color:var(--emerald);color:var(--emerald);background:rgba(0,255,157,0.12);">IDENTICAL: ${cntIdentical}</span>
               <span class="hud-tag" style="border-color:var(--tertiary);color:var(--tertiary);background:rgba(255,158,0,0.12);">MODIFIED: ${cntModified}</span>
-              <span class="hud-tag" style="border-color:var(--secondary);color:var(--secondary);background:rgba(0,240,255,0.12);">ADDED: ${cntAdded}</span>
-              <span class="hud-tag" style="border-color:var(--primary);color:var(--primary);background:rgba(255,30,56,0.12);">REMOVED: ${cntRemoved}</span>
+              <span class="hud-tag" style="border-color:var(--secondary);color:var(--secondary);background:rgba(255,255,255,0.12);">ADDED: ${cntAdded}</span>
+              <span class="hud-tag" style="border-color:var(--primary);color:var(--primary);background:rgba(255,255,255,0.12);">REMOVED: ${cntRemoved}</span>
             </div>
           </div>
-          <div style="max-height:175px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);">
+          <div style="max-height:175px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);">
             <table class="asm-table"><tbody>${rowsHtml || '<tr><td colspan="5" style="padding:8px;color:var(--text-mid);">Aucune différence détectée.</td></tr>'}</tbody></table>
           </div>
         `;
@@ -4092,7 +4050,7 @@ if proc:
       const bpArray = Array.from(state.breakpoints);
       const bpPillsHtml = bpArray.length > 0
         ? bpArray.map(bp => `
-            <span class="xref-pill" style="border-color:#ff1e38;color:#fff;background:rgba(255,30,56,0.22);" title="Cliquer pour sauter vers ${escapeHtml(bp)} • Double-clic pour supprimer" onclick="selectAddress('${escapeHtml(bp)}'); setMode('asm');" ondblclick="event.stopPropagation(); toggleBreakpoint('${escapeHtml(bp)}')">
+            <span class="xref-pill" style="border-color:#f3f4f6;color:#fff;background:rgba(255,255,255,0.22);" title="Cliquer pour sauter vers ${escapeHtml(bp)} • Double-clic pour supprimer" onclick="selectAddress('${escapeHtml(bp)}'); setMode('asm');" ondblclick="event.stopPropagation(); toggleBreakpoint('${escapeHtml(bp)}')">
               <span class="bp-dot" style="margin-right:3px;">●</span>${escapeHtml(bp)}
             </span>
           `).join('')
@@ -4212,7 +4170,7 @@ if proc:
                 <textarea id="reLldbEditor" class="resuite-code-box" style="color:var(--secondary);" readonly>${escapeHtml(lldbCode)}</textarea>
               </div>
             </div>
-            <div style="border-top:1px solid rgba(0,240,255,0.2);padding-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div style="border-top:1px solid rgba(255,255,255,0.2);padding-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
               <div style="font-family:var(--font-fui);font-size:10.5px;color:var(--text-mid);">
                 BREAKPOINTS ACTIFS (${bpArray.length}) : ${bpPillsHtml}
               </div>
@@ -4229,15 +4187,15 @@ if proc:
               <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runFlirtScanAction()">🔍 SCANNER SIGNATURES STATIQUES (FLIRT / WARP)</button>
             </div>
             <div style="font-family:var(--font-display);font-size:9.5px;color:var(--emerald);letter-spacing:1px;">SIGNATURES DE BIBLIOTHÈQUES STATIQUES (FLIRT / WARP) :</div>
-            <div style="max-height:85px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);background:rgba(2,5,11,0.75);">
+            <div style="max-height:85px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);background:rgba(8,9,12,0.75);">
               ${flirtHtml}
             </div>
             <div style="font-family:var(--font-display);font-size:9.5px;color:var(--violet);letter-spacing:1px;">TABLES DE MÉTHODES VIRTUELLES POLYMORPHIQUES C++ (VTABLES &amp; RTTI) :</div>
-            <div style="max-height:105px;overflow-y:auto;border:1px solid rgba(199,125,255,0.22);background:rgba(2,5,11,0.75);">
+            <div style="max-height:105px;overflow-y:auto;border:1px solid rgba(199,125,255,0.22);background:rgba(8,9,12,0.75);">
               ${cppHtml}
             </div>
             <div style="font-family:var(--font-display);font-size:9.5px;color:var(--secondary);letter-spacing:1px;">UNITÉS DE COMPILATION DWARF (DEBUG INFO &amp; SOURCE LINES) :</div>
-            <div style="max-height:70px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);background:rgba(2,5,11,0.75);">
+            <div style="max-height:70px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);background:rgba(8,9,12,0.75);">
               ${dwarfHtml}
             </div>
           </div>
@@ -4470,7 +4428,7 @@ if proc:
         }
 
         symHtml = `
-          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(0,255,157,0.28);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;">
+          <div style="background:rgba(10,11,14,0.88);border:1px solid rgba(0,255,157,0.28);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <span style="color:var(--emerald);font-weight:700;">◈ Z3 SOLVER STATUS : ${escapeHtml(String(sym.status || (sym.satisfiable !== false ? 'SATISFIABLE' : 'UNSAT')))}</span>
               <span class="hud-tag">${escapeHtml(String(sym.target_address || defaultTargetAddr))}</span>
@@ -4506,7 +4464,7 @@ if proc:
         const aiCode = ai.rewritten_code || ai.code || ai.source || '';
         const semVars = ai.semantic_variables || ai.variable_renames || ai.inferred_variables || [];
         aiHtml = `
-          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(199,125,255,0.32);padding:8px 10px;display:flex;flex-direction:column;gap:6px;">
+          <div style="background:rgba(10,11,14,0.88);border:1px solid rgba(199,125,255,0.32);padding:8px 10px;display:flex;flex-direction:column;gap:6px;">
             <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-fui);font-size:10px;">
               <span style="color:var(--violet);font-weight:700;">🧠 AI IDIOMATIC REWRITE // ${escapeHtml(String(ai.language || state.aiRewriteLang).toUpperCase())}</span>
               <button class="fui-btn" style="padding:1px 7px;font-size:9px;" onclick="copyReSuiteText('omniAiCodeBox', 'CODE AI REWRITE')">📋 COPIER</button>
@@ -4529,9 +4487,9 @@ if proc:
       const cgHubs = cg.top_hubs || cg.hub_procedures || [...cgNodes].sort((a, b) => ((b.degree ?? ((b.in_degree || 0) + (b.out_degree || 0))) - (a.degree ?? ((a.in_degree || 0) + (a.out_degree || 0))))).slice(0, 12);
 
       const catColorMap = {
-        ENTRY: '#ff1e38',
+        ENTRY: '#f3f4f6',
         OBJC_METHOD: '#c77dff',
-        CPP_METHOD: '#00f0ff',
+        CPP_METHOD: '#e5e7eb',
         CRYPTO_KERNEL: '#ff9e00',
         SUBROUTINE: '#00ff9d',
       };
@@ -4556,7 +4514,7 @@ if proc:
         const t = nodeCoords[dstKey];
         if (!s || !t) return '';
         const isRec = srcKey === dstKey || e.is_recursive;
-        const col = isRec ? '#ff1e38' : 'rgba(0, 240, 255, 0.48)';
+        const col = isRec ? '#f3f4f6' : 'rgba(255, 255, 255, 0.48)';
         return `<line x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}" stroke="${col}" stroke-width="1.4" stroke-dasharray="${isRec ? '3 3' : ''}" />`;
       }).join('');
 
@@ -4601,7 +4559,7 @@ if proc:
         const ipcList = art.ipc_channels || art.ipc_handlers || [];
         const secFlags = art.security_flags || art.electron_security || {};
         reaBodyHtml = `
-          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(0,240,255,0.28);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;">
+          <div style="background:rgba(10,11,14,0.88);border:1px solid rgba(255,255,255,0.28);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <strong style="color:var(--secondary);">📦 ${escapeHtml(art.format || art.artifact_type || 'ELECTRON ASAR ARCHIVE')}</strong>
               <span class="hud-tag">${files.length} FILES // ${ipcList.length} IPC CHANNELS</span>
@@ -4625,7 +4583,7 @@ if proc:
                 const fPath = typeof f === 'object' ? (f.path || f.name) : String(f);
                 const fSize = typeof f === 'object' && f.size !== undefined ? ` (${f.size}B)` : '';
                 const fPreview = typeof f === 'object' && f.preview ? ` — ${String(f.preview).slice(0, 70)}` : '';
-                return `<div style="padding:2px 0;border-bottom:1px solid rgba(0,240,255,0.08);color:#fff;">📄 <strong>${escapeHtml(fPath)}</strong><span style="color:var(--secondary);">${escapeHtml(fSize)}</span><span style="color:var(--text-mid);font-size:10px;">${escapeHtml(fPreview)}</span></div>`;
+                return `<div style="padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.08);color:#fff;">📄 <strong>${escapeHtml(fPath)}</strong><span style="color:var(--secondary);">${escapeHtml(fSize)}</span><span style="color:var(--text-mid);font-size:10px;">${escapeHtml(fPreview)}</span></div>`;
               }).join('')}
             </div>
           </div>
@@ -4635,7 +4593,7 @@ if proc:
         const dalvikMethods = bc.methods || bc.dalvik_methods || bc.classes || [];
         const insns = bc.instructions || bc.opcodes || bc.disassembly || [];
         reaBodyHtml = `
-          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(199,125,255,0.3);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;">
+          <div style="background:rgba(10,11,14,0.88);border:1px solid rgba(199,125,255,0.3);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <strong style="color:var(--violet);">🧬 BYTECODE // ${escapeHtml(bc.format || bc.architecture || 'VM')}</strong>
               <span class="hud-tag">${insns.length} OPCODES</span>
@@ -4683,7 +4641,7 @@ if proc:
         const regs = crash.registers || crash.arm64_registers || crash.thread_state || {};
         const frames = crash.backtrace || crash.frames || crash.stack_frames || [];
         crashHtml = `
-          <div style="background:rgba(255,30,56,0.08);border:1px solid rgba(255,30,56,0.4);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;">
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.4);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <strong style="color:var(--primary);">💥 ${escapeHtml(crash.exception_type || crash.signal || 'EXC_BAD_ACCESS (SIGSEGV)')} // THREAD #${crash.faulting_thread ?? 0}</strong>
               <span class="hud-tag">PC=${escapeHtml(String(regs.pc || crash.pc || '0x0'))} FAR=${escapeHtml(String(regs.far || crash.far || '0x0'))}</span>
@@ -4706,7 +4664,7 @@ if proc:
       if (obs && !obs.error) {
         const calls = obs.observed_calls || obs.calls || obs.events || [];
         obsHtml = `
-          <div style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.3);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;max-height:95px;overflow-y:auto;">
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.3);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;max-height:95px;overflow-y:auto;">
             <div style="color:var(--secondary);font-weight:700;margin-bottom:3px;">🐞 LLDB LIVE OBSERVED CALLS (${calls.length}) :</div>
             ${calls.slice(0, 10).map(c => `
               <div style="color:#fff;padding:1px 0;">
@@ -4730,7 +4688,7 @@ if proc:
               <code style="color:var(--secondary);font-size:9.5px;">ultron-disassemble-rs mcp</code>
             </div>
             <div style="display:flex;gap:4px;flex-wrap:wrap;">
-              ${tools.map(t => `<span class="hud-tag" style="border-color:var(--secondary);color:var(--secondary);background:rgba(0,240,255,0.1);" title="${escapeHtml(t.description || '')}">${escapeHtml(t.name)}</span>`).join('')}
+              ${tools.map(t => `<span class="hud-tag" style="border-color:var(--secondary);color:var(--secondary);background:rgba(255,255,255,0.1);" title="${escapeHtml(t.description || '')}">${escapeHtml(t.name)}</span>`).join('')}
             </div>
             ${ledger.length > 0 ? `<div style="margin-top:4px;color:var(--tertiary);font-size:10px;">EVIDENCE LEDGER: ${ledger.length} cryptographic provenance records</div>` : ''}
           </div>
@@ -4767,20 +4725,20 @@ if proc:
             <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-fui);font-size:10px;color:var(--text-mid);flex-wrap:wrap;gap:6px;">
               <span>NODES: <strong style="color:#fff;">${cgNodes.length}</strong> • EDGES: <strong style="color:var(--secondary);">${cgEdges.length}</strong> • CYCLES: <strong style="color:var(--primary);">${cgCycles.length}</strong></span>
               <div style="display:flex;gap:6px;">
-                <span style="color:#ff1e38;">● ENTRY</span>
+                <span style="color:#f3f4f6;">● ENTRY</span>
                 <span style="color:#c77dff;">● OBJC_METHOD</span>
-                <span style="color:#00f0ff;">● CPP_METHOD</span>
+                <span style="color:#e5e7eb;">● CPP_METHOD</span>
                 <span style="color:#ff9e00;">● CRYPTO_KERNEL</span>
                 <span style="color:#00ff9d;">● SUBROUTINE</span>
               </div>
             </div>
-            <div style="background:rgba(2,5,12,0.92);border:1px solid rgba(0,240,255,0.22);overflow:hidden;">
+            <div style="background:rgba(8,9,12,0.92);border:1px solid rgba(255,255,255,0.22);overflow:hidden;">
               <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}">
                 ${cgEdgesSvg}
                 ${cgNodesSvg}
               </svg>
             </div>
-            <div style="max-height:115px;overflow-y:auto;border:1px solid rgba(0,240,255,0.16);">
+            <div style="max-height:115px;overflow-y:auto;border:1px solid rgba(255,255,255,0.16);">
               <table class="asm-table">
                 <tbody>
                   ${hubRowsHtml || '<tr><td colspan="5" style="padding:6px;color:var(--text-mid);">Cliquez sur 🕸 GÉNÉRER GRAPHE D\'APPELS GLOBAL</td></tr>'}
@@ -4826,7 +4784,7 @@ if proc:
             ${obsHtml}
             ${mcpHtml}
             ${(!crashHtml && !obsHtml && !mcpHtml) ? `
-              <div style="color:var(--text-mid);font-size:11px;padding:6px;background:rgba(2,6,14,0.65);border:1px solid rgba(0,240,255,0.15);">
+              <div style="color:var(--text-mid);font-size:11px;padding:6px;background:rgba(10,11,14,0.65);border:1px solid rgba(255,255,255,0.15);">
                 <div>• <strong>💥 ANALYSER CRASH DUMP</strong> : Décode les rapports macOS <code>.ips</code> &amp; <code>ELF Core</code> (thread fautif, signal <code>EXC_BAD_ACCESS</code>, registres ARM64 <code>pc/lr/sp/far</code>, backtrace symboliquée).</div>
                 <div style="margin-top:4px;">• <strong>🐞 OBSERVER APPELS NATIFS LIVE</strong> : Trace les appels de fonctions et snapshots de registres en direct via LLDB.</div>
                 <div style="margin-top:4px;">• <strong>🔌 SERVEUR MCP NATIF</strong> : Serveur JSON-RPC 2.0 (<code>ultron-disassemble-rs mcp</code> / <code>POST /api/mcp</code>) exposant 20 outils REA et le grand livre de preuves (Evidence Ledger).</div>
@@ -4931,7 +4889,7 @@ if proc:
       document.getElementById('objcModalMetaBar').innerHTML = `
         <div>
           <span style="color:var(--text-mid);">CLASS META:</span>
-          <strong style="color:#00f2ff;margin-left:6px;">${escapeHtml(cls.name)}</strong>
+          <strong style="color:#e5e7eb;margin-left:6px;">${escapeHtml(cls.name)}</strong>
           <span style="color:var(--text-mid);margin:0 6px;">:</span>
           <span style="color:var(--violet);">${escapeHtml(superCls)}</span>
           <span style="color:var(--tertiary);margin-left:8px;">${protoBadge}</span>
@@ -4948,7 +4906,7 @@ if proc:
       const protoStr = protocols.length ? ` &lt;<span style="color:var(--tertiary);">${escapeHtml(protocols.join(', '))}</span>&gt;` : '';
       const hdrLines = [];
       hdrLines.push(`<span class="cmt">// Reconstructed from Mach-O __objc_classlist / class_ro_t @ ${escapeHtml(clsAddr)} (Instance Size: ${instSize} bytes)</span>`);
-      hdrLines.push(`<span class="kw">@interface</span> <span style="color:#00f2ff;font-weight:700;">${escapeHtml(cls.name)}</span> : <span style="color:var(--violet);font-weight:700;">${escapeHtml(superCls)}</span>${protoStr} {`);
+      hdrLines.push(`<span class="kw">@interface</span> <span style="color:#e5e7eb;font-weight:700;">${escapeHtml(cls.name)}</span> : <span style="color:var(--violet);font-weight:700;">${escapeHtml(superCls)}</span>${protoStr} {`);
       if (ivars.length === 0) {
         hdrLines.push(`    <span class="cmt">// No direct instance variables declared</span>`);
       } else {
@@ -4982,7 +4940,7 @@ if proc:
         mListEl.innerHTML = '<div style="color:var(--text-lo);padding:6px;">No methods found in class_ro_t</div>';
       } else {
         mListEl.innerHTML = methods.map(m => {
-          const badgeColor = m.isClass ? 'var(--tertiary)' : '#00f2ff';
+          const badgeColor = m.isClass ? 'var(--tertiary)' : '#e5e7eb';
           const safeFull = `${m.isClass ? '+' : '-'}[${cls.name} ${m.name}]`;
           return `
             <div class="list-item" style="padding:5px 8px;" onclick="jumpToObjcMethod('${escapeHtml(m.impHex)}', '${escapeHtml(safeFull)}')" title="Cliquer pour décompiler ${escapeHtml(safeFull)} (${escapeHtml(m.impHex)})">
