@@ -1,0 +1,23 @@
+[package]
+name = "ultron-disassemble"
+version = "2.0.0"
+edition = "2021"
+description = "ULTRON DISASSEMBLE v2.0 — Native Rust Avengers-Class Binary Disassembler, SSA Decompiler, CPU Micro-Emulator, Security Auditor & LLVM Patcher"
+license = "MIT"
+
+[[bin]]
+name = "ultron-disassemble-rs"
+path = "src/main.rs"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+goblin = "0.8"
+capstone = "0.12"
+clap = { version = "4", features = ["derive"] }
+libloading = "0.8"
+hex = "0.4"
+anyhow = "1"
+tower-http = { version = "0.5", features = ["cors"] }
