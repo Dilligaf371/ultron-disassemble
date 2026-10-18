@@ -1760,146 +1760,146 @@
     {
       "address": "0x10000116c",
       "address_u64": 4294971756,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_116c",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_10000116c",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_116c",
+      "was_stripped": false
     },
     {
       "address": "0x100001178",
       "address_u64": 4294971768,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_1178",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_100001178",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_1178",
+      "was_stripped": false
     },
     {
       "address": "0x100001184",
       "address_u64": 4294971780,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_1184",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_100001184",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_1184",
+      "was_stripped": false
     },
     {
       "address": "0x100001190",
       "address_u64": 4294971792,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_1190",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_100001190",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_1190",
+      "was_stripped": false
     },
     {
       "address": "0x10000119c",
       "address_u64": 4294971804,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_119c",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_10000119c",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_119c",
+      "was_stripped": false
     },
     {
       "address": "0x1000011a8",
       "address_u64": 4294971816,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11a8",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011a8",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11a8",
+      "was_stripped": false
     },
     {
       "address": "0x1000011b4",
       "address_u64": 4294971828,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11b4",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011b4",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11b4",
+      "was_stripped": false
     },
     {
       "address": "0x1000011c0",
       "address_u64": 4294971840,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11c0",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011c0",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11c0",
+      "was_stripped": false
     },
     {
       "address": "0x1000011d8",
       "address_u64": 4294971864,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11d8",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011d8",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11d8",
+      "was_stripped": false
     },
     {
       "address": "0x1000011e4",
       "address_u64": 4294971876,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11e4",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011e4",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11e4",
+      "was_stripped": false
     },
     {
       "address": "0x1000011f0",
       "address_u64": 4294971888,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11f0",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011f0",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11f0",
+      "was_stripped": false
     },
     {
       "address": "0x1000011fc",
       "address_u64": 4294971900,
-      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11fc",
+      "applied_symbol": "dyld_stub_binder_trampoline",
       "category": "Dynamic Linker",
       "confidence": 98,
       "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
       "flirt_name": "dyld_stub_binder_trampoline",
       "library": "libdyld.dylib",
-      "old_name": "sub_1000011fc",
-      "was_stripped": true
+      "old_name": "flirt_dyld_stub_binder_trampoline_11fc",
+      "was_stripped": false
     },
     {
       "address": "0x100001220",

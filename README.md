@@ -39,4 +39,25 @@ cargo build --release
 
 # Assemble ARM64 / x86_64 machine instructions
 ./target/release/ultron-disassemble-rs assemble "mov x0, #0x2a" --arch arm64
+
+# Run as a standalone JSON-RPC 2.0 MCP Server (20 REA-compatible tools)
+./target/release/ultron-disassemble-rs mcp
 ```
+
+---
+
+## 1-Click Autonomous Disassembly & Report Pipeline
+
+Selecting any target binary or `.app` bundle via **`📂 SELECT FILE…`**, **Drag & Drop**, or **`⚡ DISASSEMBLE`** automatically runs the **5-Stage Autonomous Pipeline (`POST /api/auto-pipeline`)**:
+
+1. **Multi-Arch Loader & Disassembly**: Resolves macOS `.app/Contents/MacOS/` bundles, Mach-O, ELF, PE, `.wasm`, `.dex`, `.evm`, and `.asar` archives, recovering procedures, CFG basic blocks, Objective-C 2.0 metadata, C++ VTables, and DWARF units.
+2. **Optimizing SSA Decompilation & AI Semantic Rewriter**: Lifts procedures into SSA form, structures `if/else/while/switch` ASTs, and synthesizes idiomatic **C23** and **Rust** code.
+3. **Security Audit & FLIRT/WARP Signatures**: Evaluates binary mitigations (`PIE`, `Stack Canary`, `ARC`, `W^X`), computes Shannon entropy, and matches stripped library functions.
+4. **Z3 Symbolic Execution & Global Call Graph**: Generates formal **SMT-LIB2 (Z3)** path models, inter-procedural call graphs, and dynamic **Frida** / **LLDB** scripts.
+5. **Automated Output Generation (`outputs/<target>/`)**: Writes 6 ready-to-use artifacts on disk:
+   - `REPORT.md` — Executive & Technical Reverse Engineering Report
+   - `disassembly.asm` — Full annotated assembly listing
+   - `decompiled.c` — Optimizing SSA & AI C23/Rust source code
+   - `analysis_dossier.json` — Complete JSON telemetry dossier
+   - `frida_hook.js` & `lldb_trace.py` — Dynamic instrumentation scripts
+

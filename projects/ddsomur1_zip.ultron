@@ -1,0 +1,45 @@
+{
+  "version": "2.3.0",
+  "name": "ddsomur1_zip",
+  "binary_path": "/Users/gilles/Downloads/ddsomur1.zip",
+  "arch": "arm64",
+  "saved_at": "2026-10-18T15:44:40Z",
+  "renames": {
+    "4294967296": "sub_100000000"
+  },
+  "comments": {},
+  "custom_structs": [
+    {
+      "name": "UltronContext",
+      "size": 64,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "isa_vtable",
+          "field_type": "void *"
+        },
+        {
+          "offset": 8,
+          "name": "session_flags",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "target_buffer",
+          "field_type": "char *"
+        },
+        {
+          "offset": 24,
+          "name": "payload_length",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 32,
+          "name": "crypto_nonce",
+          "field_type": "uint64_t"
+        }
+      ]
+    }
+  ],
+  "breakpoints": []
+}
