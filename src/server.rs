@@ -1,3 +1,6 @@
+use crate::advanced_re::{
+    UltronBinDiffEngine, UltronDynamicDebugBridge, UltronFlirtEngine, UltronProjectManager,
+};
 use crate::assembler::UltronLlvmAssembler;
 use crate::decompiler::{DecompileOptions, UltronDecompiler};
 use crate::disassembler::UltronDisassemblerEngine;
@@ -53,12 +56,19 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/export-binary", post(api_export_binary))
         .route("/api/demangle", post(api_demangle))
         .route("/api/script", post(api_script))
+        .route("/api/project/list", get(api_project_list))
+        .route("/api/project/save", post(api_project_save))
+        .route("/api/project/load", post(api_project_load))
+        .route("/api/bindiff", post(api_bindiff))
+        .route("/api/debug/script", get(api_debug_script))
+        .route("/api/debug/breakpoint", post(api_debug_breakpoint))
+        .route("/api/flirt/scan", post(api_flirt_scan))
         .layer(CorsLayer::permissive())
         .with_state(shared);
 
     let bind_addr = format!("{}:{}", host, port);
     println!("╔══════════════════════════════════════════════════════════════════════╗");
-    println!("║  ULTRON DISASSEMBLE v2.0 (NATIVE RUST ENGINE) ONLINE                 ║");
+    println!("║  ULTRON DISASSEMBLE v2.3 (NATIVE RUST FULL RE SUITE) ONLINE          ║");
     println!("║  URL : http://{:<54}║", bind_addr);
     println!("╚══════════════════════════════════════════════════════════════════════╝");
 
@@ -117,10 +127,11 @@ async fn api_overview(State(state): State<Arc<AppState>>) -> Json<Value> {
         .collect();
 
     let presets = build_presets_list();
+    let bp_hex: Vec<String> = doc.breakpoints.iter().map(|b| format!("0x{:x}", b)).collect();
 
     Json(json!({
         "open": true,
-        "engine": "Rust Native 2.0 (Goblin + Capstone + Axum)",
+        "engine": "Rust Native 2.3 (Full RE Suite: SSA + ObjC/C++/Swift + DWARF + BinDiff + Frida/LLDB)",
         "document": doc_name,
         "file_path": doc.file_path,
         "format": doc.format_name,
@@ -131,6 +142,10 @@ async fn api_overview(State(state): State<Arc<AppState>>) -> Json<Value> {
         "procedure_count": doc.procedures.len(),
         "instruction_count": doc.instructions.len(),
         "string_count": doc.string_entries.len(),
+        "chained_fixups_count": doc.chained_fixups_count,
+        "cpp_classes": doc.cpp_classes,
+        "dwarf_compile_units": doc.dwarf_compile_units,
+        "breakpoints": bp_hex,
         "segments": segments,
         "presets": presets,
     }))
@@ -141,6 +156,11 @@ fn build_presets_list() -> Vec<Value> {
         json!({
             "label": "Ultron ObjC 2.0 + Nested Loops (Mach-O)",
             "path": "samples/ultron_objc_sample",
+            "arch": "arm64"
+        }),
+        json!({
+            "label": "Ultron C++17 VTable + DWARF + Switch (Mach-O)",
+            "path": "samples/ultron_cpp_vtable_sample",
             "arch": "arm64"
         }),
         json!({
@@ -373,6 +393,8 @@ async fn api_symbols(State(state): State<Arc<AppState>>) -> Json<Value> {
         "types": types,
         "objc_classes": doc.objc_classes,
         "swift_types": doc.swift_types,
+        "cpp_classes": doc.cpp_classes,
+        "dwarf_compile_units": doc.dwarf_compile_units,
     }))
 }
 
@@ -764,3 +786,157 @@ async fn api_script(
     );
     Json(json!({ "output": output }))
 }
+
+async fn api_project_list() -> Json<Value> {
+    let projects = UltronProjectManager::list_projects();
+    Json(json!({ "projects": projects }))
+}
+
+#[derive(Deserialize)]
+struct ProjectReq {
+    name: Option<String>,
+    project_name: Option<String>,
+    path: Option<String>,
+}
+
+async fn api_project_save(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<ProjectReq>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let proj_name = req
+        .name
+        .or(req.project_name)
+        .or(req.path)
+        .unwrap_or_else(|| "ultron_project".to_string());
+    match UltronProjectManager::save_project(&doc, &proj_name, &doc.breakpoints) {
+        Ok(saved_path) => Json(json!({
+            "ok": true,
+            "path": saved_path,
+            "name": proj_name,
+        })),
+        Err(e) => Json(json!({ "error": e })),
+    }
+}
+
+async fn api_project_load(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<ProjectReq>,
+) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let target = req
+        .path
+        .or(req.name)
+        .or(req.project_name)
+        .unwrap_or_else(|| "ultron_project".to_string());
+    match UltronProjectManager::load_project(&mut doc, &target) {
+        Ok(proj) => {
+            doc.breakpoints = proj.breakpoints.clone();
+            let bp_hex: Vec<String> = doc.breakpoints.iter().map(|b| format!("0x{:x}", b)).collect();
+            Json(json!({
+                "ok": true,
+                "name": proj.name,
+                "saved_at": proj.saved_at,
+                "breakpoints": bp_hex,
+                "renames_restored": proj.renames.len(),
+                "comments_restored": proj.comments.len(),
+                "structs_restored": proj.custom_structs.len(),
+            }))
+        }
+        Err(e) => Json(json!({ "error": e })),
+    }
+}
+
+#[derive(Deserialize)]
+struct BinDiffReq {
+    target_path: Option<String>,
+    path: Option<String>,
+    second_path: Option<String>,
+    arch: Option<String>,
+}
+
+async fn api_bindiff(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<BinDiffReq>,
+) -> Json<Value> {
+    let target_path = req
+        .target_path
+        .or(req.path)
+        .or(req.second_path)
+        .unwrap_or_default();
+    if target_path.trim().is_empty() {
+        return Json(json!({ "error": "Missing target_path for BinDiff" }));
+    }
+    let arch = req.arch.unwrap_or_else(|| {
+        state.doc.lock().unwrap().cpu_subfamily.clone()
+    });
+    match UltronBinaryLoader::load(&target_path, &arch) {
+        Ok(doc_b) => {
+            let doc_a = state.doc.lock().unwrap();
+            Json(UltronBinDiffEngine::diff_binaries(&doc_a, &doc_b))
+        }
+        Err(e) => Json(json!({ "error": format!("Failed to load secondary binary '{}': {}", target_path, e) })),
+    }
+}
+
+async fn api_debug_script(
+    State(state): State<Arc<AppState>>,
+    Query(params): Query<HashMap<String, String>>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let addr = params
+        .get("addr")
+        .or_else(|| params.get("address"))
+        .and_then(|s| parse_addr(s))
+        .unwrap_or(doc.entry_point);
+    Json(UltronDynamicDebugBridge::generate_debug_scripts(
+        &doc,
+        addr,
+        &doc.breakpoints,
+    ))
+}
+
+#[derive(Deserialize)]
+struct BreakpointReq {
+    address: Option<String>,
+    addr: Option<String>,
+}
+
+async fn api_debug_breakpoint(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<BreakpointReq>,
+) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let raw = req.address.or(req.addr).unwrap_or_default();
+    let Some(addr) = parse_addr(&raw) else {
+        return Json(json!({ "error": "Invalid address" }));
+    };
+    let enabled = if let Some(pos) = doc.breakpoints.iter().position(|&x| x == addr) {
+        doc.breakpoints.remove(pos);
+        false
+    } else {
+        doc.breakpoints.push(addr);
+        doc.breakpoints.sort_unstable();
+        true
+    };
+    let bp_hex: Vec<String> = doc.breakpoints.iter().map(|b| format!("0x{:x}", b)).collect();
+    Json(json!({
+        "ok": true,
+        "address": format!("0x{:x}", addr),
+        "enabled": enabled,
+        "breakpoints": bp_hex,
+    }))
+}
+
+async fn api_flirt_scan(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let matches = UltronFlirtEngine::scan_and_apply_flirt(&mut doc);
+    Json(json!({
+        "ok": true,
+        "matched_count": matches.len(),
+        "matches": matches,
+        "cpp_classes": doc.cpp_classes,
+        "dwarf_compile_units": doc.dwarf_compile_units,
+    }))
+}
+

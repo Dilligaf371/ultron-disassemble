@@ -1,6 +1,6 @@
 use crate::disassembler::UltronDisassemblerEngine;
 use crate::types::{
-    BinaryDocument, ObjCClassInfo, ObjCIvarInfo, ObjCMethodInfo, ObjCPropertyInfo,
+    BinaryDocument, CppClassInfo, ObjCClassInfo, ObjCIvarInfo, ObjCMethodInfo, ObjCPropertyInfo,
     UltronBasicBlock, UltronDisassembledFile, UltronInstruction, UltronProcedure, UltronSection,
     UltronSegment, UltronStringEntry, UltronStructDef, UltronStructField,
 };
@@ -83,7 +83,9 @@ impl UltronBinaryLoader {
             Self::extract_strings(&mut doc);
             Self::parse_objc_metadata(&mut doc);
             Self::parse_swift_metadata(&mut doc);
+            Self::parse_cpp_rtti_and_vtables(&mut doc);
             UltronDisassemblerEngine::analyze(&mut doc);
+            Self::parse_dwarf_metadata(&mut doc);
             return Ok(doc);
         }
 
@@ -107,7 +109,9 @@ impl UltronBinaryLoader {
             Self::parse_objc_metadata(&mut doc);
             Self::parse_swift_metadata(&mut doc);
         }
+        Self::parse_cpp_rtti_and_vtables(&mut doc);
         UltronDisassemblerEngine::analyze(&mut doc);
+        Self::parse_dwarf_metadata(&mut doc);
         Ok(doc)
     }
 
@@ -215,9 +219,55 @@ impl UltronBinaryLoader {
             });
         }
 
-        // Symbols
+        // Symbols & STABS DWARF compile unit / function line entries
+        let mut current_so_dir = String::new();
+        let mut current_so_file = String::new();
         for sym in macho.symbols() {
             if let Ok((name, nlist)) = sym {
+                if nlist.is_stab() {
+                    // N_SO (0x64) = source file / dir, N_SOL (0x84) = #include file, N_FUN (0x24) = function
+                    match nlist.n_type {
+                        0x64 | 0x84 => {
+                            let trimmed = name.trim();
+                            if trimmed.is_empty() {
+                                // End of compile unit N_SO
+                            } else if trimmed.ends_with('/') {
+                                current_so_dir = trimmed.to_string();
+                            } else {
+                                current_so_file = trimmed.to_string();
+                                let full_cu = if !current_so_dir.is_empty() && !trimmed.starts_with('/') {
+                                    format!("{}{}", current_so_dir, trimmed)
+                                } else {
+                                    trimmed.to_string()
+                                };
+                                if !doc.dwarf_compile_units.contains(&full_cu) {
+                                    doc.dwarf_compile_units.push(full_cu);
+                                }
+                            }
+                        }
+                        0x24 => {
+                            if !name.is_empty() && nlist.n_value != 0 {
+                                doc.labels.entry(nlist.n_value).or_insert_with(|| name.to_string());
+                                let src_basename = if !current_so_file.is_empty() {
+                                    Path::new(&current_so_file)
+                                        .file_name()
+                                        .and_then(|s| s.to_str())
+                                        .unwrap_or(&current_so_file)
+                                        .to_string()
+                                } else {
+                                    "compile_unit".to_string()
+                                };
+                                let demangled_fn = Self::demangle_cpp_symbol(name);
+                                doc.dwarf_lines.insert(
+                                    nlist.n_value,
+                                    format!("{}:{}", src_basename, demangled_fn),
+                                );
+                            }
+                        }
+                        _ => {}
+                    }
+                    continue;
+                }
                 if !name.is_empty() && nlist.n_value != 0 {
                     doc.labels.insert(nlist.n_value, name.to_string());
                     if nlist.is_global() {
@@ -253,6 +303,32 @@ impl UltronBinaryLoader {
                 }
             }
         }
+
+        // Count ARM64e / LC_DYLD_CHAINED_FIXUPS pointer slots with high tag bits
+        let mut fixups_count = 0usize;
+        for seg in &doc.segments {
+            if matches!(
+                seg.name.as_str(),
+                "__DATA_CONST" | "__DATA" | "__AUTH_CONST" | "__AUTH"
+            ) {
+                for sec in &seg.sections {
+                    for chunk in sec.data.chunks_exact(8) {
+                        let raw_ptr = u64::from_le_bytes(chunk.try_into().unwrap());
+                        if raw_ptr != 0
+                            && raw_ptr != u64::MAX
+                            && (raw_ptr & 0xffff_ff00_0000_0000) != 0
+                        {
+                            let is_bind = (raw_ptr & 0x8000_0000_0000_0000) != 0;
+                            let norm = doc.normalize_ptr(raw_ptr);
+                            if is_bind || doc.get_section_at(norm).is_some() {
+                                fixups_count += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        doc.chained_fixups_count = fixups_count;
 
         Ok(doc)
     }
@@ -1784,6 +1860,7 @@ impl UltronBinaryLoader {
         doc
     }
 
+    #[allow(dead_code)]
     fn parse_wasm(path: &str, raw_bytes: &[u8]) -> UltronDisassembledFile {
         Self::load_wasm(path, raw_bytes)
     }
@@ -1932,5 +2009,545 @@ impl UltronBinaryLoader {
             }
         }
         doc.string_entries = entries;
+    }
+
+    pub fn demangle_cpp_type_name(raw: &str) -> String {
+        let mut rest = raw.trim().trim_start_matches('_');
+        for prefix in ["ZTV", "ZTI", "ZTS"] {
+            if let Some(stripped) = rest.strip_prefix(prefix) {
+                rest = stripped;
+                break;
+            }
+        }
+        let is_nested = rest.starts_with('N');
+        if is_nested {
+            rest = &rest[1..];
+        }
+        let mut parts = Vec::new();
+        while !rest.is_empty() && !rest.starts_with('E') {
+            let num_end = rest.find(|c: char| !c.is_ascii_digit()).unwrap_or(0);
+            if num_end == 0 {
+                break;
+            }
+            let Ok(len) = rest[..num_end].parse::<usize>() else { break };
+            rest = &rest[num_end..];
+            if len == 0 || rest.len() < len {
+                break;
+            }
+            parts.push(rest[..len].to_string());
+            rest = &rest[len..];
+            if !is_nested {
+                break;
+            }
+        }
+        if parts.is_empty() {
+            raw.trim_start_matches('_').to_string()
+        } else {
+            parts.join("::")
+        }
+    }
+
+    pub fn demangle_cpp_symbol(sym: &str) -> String {
+        let s = sym.trim();
+        let clean = s.trim_start_matches('_');
+        let Some(mut rest) = clean.strip_prefix('Z') else {
+            return clean.to_string();
+        };
+        let is_nested = rest.starts_with('N');
+        if is_nested {
+            rest = &rest[1..];
+        }
+        // Optional 'K' (const method)
+        let is_const = if is_nested && rest.starts_with('K') {
+            rest = &rest[1..];
+            true
+        } else {
+            false
+        };
+        let mut parts = Vec::new();
+        let mut dtor_tag: Option<&'static str> = None;
+        let mut ctor_tag: Option<&'static str> = None;
+
+        while !rest.is_empty() && !rest.starts_with('E') {
+            if is_nested && (rest.starts_with("D0") || rest.starts_with("D1") || rest.starts_with("D2")) {
+                dtor_tag = match &rest[..2] {
+                    "D0" => Some("deleting dtor"),
+                    "D1" => Some("complete dtor"),
+                    _ => Some("base dtor"),
+                };
+                rest = &rest[2..];
+                break;
+            }
+            if is_nested && (rest.starts_with("C1") || rest.starts_with("C2")) {
+                ctor_tag = Some("ctor");
+                rest = &rest[2..];
+                break;
+            }
+            let num_end = rest.find(|c: char| !c.is_ascii_digit()).unwrap_or(0);
+            if num_end == 0 {
+                break;
+            }
+            let Ok(len) = rest[..num_end].parse::<usize>() else { break };
+            rest = &rest[num_end..];
+            if len == 0 || rest.len() < len {
+                break;
+            }
+            parts.push(rest[..len].to_string());
+            rest = &rest[len..];
+            if !is_nested {
+                break;
+            }
+        }
+        if parts.is_empty() {
+            return s.to_string();
+        }
+        if let Some(last_cls) = parts.last().cloned() {
+            if dtor_tag.is_some() {
+                parts.push(format!("~{}", last_cls));
+            } else if ctor_tag.is_some() {
+                parts.push(last_cls);
+            }
+        }
+        if rest.starts_with('E') {
+            rest = &rest[1..];
+        }
+        let mut params = Vec::new();
+        let chars: Vec<char> = rest.chars().collect();
+        let mut i = 0usize;
+        while i < chars.len() {
+            match chars[i] {
+                'v' => {}
+                'i' => params.push("int"),
+                'j' => params.push("uint32_t"),
+                'l' => params.push("int64_t"),
+                'm' | 'y' => params.push("uint64_t"),
+                'x' => params.push("int64_t"),
+                'c' | 'a' => params.push("char"),
+                'h' => params.push("uint8_t"),
+                's' => params.push("int16_t"),
+                't' => params.push("uint16_t"),
+                'b' => params.push("bool"),
+                'f' => params.push("float"),
+                'd' => params.push("double"),
+                'P' => {
+                    if i + 1 < chars.len() && chars[i + 1] == 'K' {
+                        params.push("const void *");
+                        i += 2;
+                        continue;
+                    } else {
+                        params.push("void *");
+                    }
+                }
+                _ => {}
+            }
+            i += 1;
+        }
+        let const_suffix = if is_const { " const" } else { "" };
+        if let Some(tag) = dtor_tag {
+            format!("{}({}){} [{}]", parts.join("::"), params.join(", "), const_suffix, tag)
+        } else {
+            format!("{}({}){}", parts.join("::"), params.join(", "), const_suffix)
+        }
+    }
+
+    /// C++ `vtable` & Itanium RTTI Reconstructor (`parse_cpp_rtti_and_vtables`):
+    /// Scans `_ZTV...` (vtables), `_ZTI...` (typeinfo), `_ZTS...` (typeinfo strings), and `__DATA_CONST` /
+    /// `__const` / `.rodata` pointer tables to reconstruct polymorphic C++ classes and register `VTable_<Class>` structs.
+    pub fn parse_cpp_rtti_and_vtables(doc: &mut UltronDisassembledFile) {
+        let mut ztv_symbols: BTreeMap<u64, String> = BTreeMap::new();
+        let mut zti_symbols: BTreeMap<u64, String> = BTreeMap::new();
+        let mut zts_symbols: BTreeMap<u64, String> = BTreeMap::new();
+
+        for (&addr, name) in &doc.labels {
+            let clean = name.trim_start_matches('_');
+            if clean.starts_with("ZTV") && !clean.contains("cxxabiv1") {
+                ztv_symbols.insert(addr, name.clone());
+            } else if clean.starts_with("ZTI") && !clean.contains("cxxabiv1") {
+                zti_symbols.insert(addr, name.clone());
+            } else if clean.starts_with("ZTS") && !clean.contains("cxxabiv1") {
+                zts_symbols.insert(addr, name.clone());
+            }
+        }
+
+        // Map ZTI address -> demangled class name
+        let mut zti_to_class_name: BTreeMap<u64, String> = BTreeMap::new();
+        for (&zti_addr, zti_sym) in &zti_symbols {
+            let mut cls_name = Self::demangle_cpp_type_name(zti_sym);
+            // Also check ZTI + 0x08 -> ZTS string pointer
+            if let Some(raw_zts_ptr) = doc.read_u64_le(zti_addr + 8) {
+                if (raw_zts_ptr & 0x8000_0000_0000_0000) == 0 {
+                    let zts_ptr = doc.normalize_ptr(raw_zts_ptr);
+                    if let Some(zts_str) = doc.read_cstring(zts_ptr) {
+                        let from_str = Self::demangle_cpp_type_name(&zts_str);
+                        if !from_str.is_empty() {
+                            cls_name = from_str;
+                        }
+                    } else if let Some(zts_lbl) = zts_symbols.get(&zts_ptr) {
+                        let from_lbl = Self::demangle_cpp_type_name(zts_lbl);
+                        if !from_lbl.is_empty() {
+                            cls_name = from_lbl;
+                        }
+                    }
+                }
+            }
+            zti_to_class_name.insert(zti_addr, cls_name);
+        }
+
+        let mut cpp_classes = Vec::new();
+        let mut covered_vtable_addrs = std::collections::BTreeSet::new();
+        let mut discovered_method_labels: Vec<(u64, String)> = Vec::new();
+
+        for (&vtable_addr, ztv_sym) in &ztv_symbols {
+            let mut demangled_cls = Self::demangle_cpp_type_name(ztv_sym);
+            let mut typeinfo_addr_val = 0u64;
+            let mut base_class = String::new();
+
+            // Itanium ABI vtable header: +0x00 = offset_to_top, +0x08 = rtti_ptr (_ZTI...)
+            if let Some(raw_rtti) = doc.read_u64_le(vtable_addr + 8) {
+                if raw_rtti != 0 && (raw_rtti & 0x8000_0000_0000_0000) == 0 {
+                    let rtti_ptr = doc.normalize_ptr(raw_rtti);
+                    if doc.get_section_at(rtti_ptr).is_some() {
+                        typeinfo_addr_val = rtti_ptr;
+                        if let Some(rtti_cls) = zti_to_class_name.get(&rtti_ptr) {
+                            if !rtti_cls.is_empty() {
+                                demangled_cls = rtti_cls.clone();
+                            }
+                        }
+                        // Check if __si_class_type_info has a base_type pointer at rtti_ptr + 0x10
+                        let base_slot_addr = rtti_ptr + 16;
+                        if !doc.labels.contains_key(&base_slot_addr) {
+                            if let Some(raw_base_zti) = doc.read_u64_le(base_slot_addr) {
+                                if raw_base_zti != 0 && (raw_base_zti & 0x8000_0000_0000_0000) == 0 {
+                                    let base_zti = doc.normalize_ptr(raw_base_zti);
+                                    if let Some(base_name) = zti_to_class_name.get(&base_zti) {
+                                        base_class = base_name.clone();
+                                    } else if let Some(base_lbl) = doc.labels.get(&base_zti) {
+                                        if base_lbl.contains("ZTI") {
+                                            base_class = Self::demangle_cpp_type_name(base_lbl);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if typeinfo_addr_val == 0 {
+                // Fallback: match _ZTI symbol with same demangled class name
+                for (&zti_addr, cls_name) in &zti_to_class_name {
+                    if cls_name == &demangled_cls {
+                        typeinfo_addr_val = zti_addr;
+                        break;
+                    }
+                }
+            }
+
+            // Read virtual method function pointers starting at vtable_addr + 0x10
+            let mut virtual_methods = Vec::new();
+            let mut vtable_fields = vec![
+                UltronStructField {
+                    offset: 0x00,
+                    name: "offset_to_top".to_string(),
+                    field_type: "int64_t".to_string(),
+                },
+                UltronStructField {
+                    offset: 0x08,
+                    name: "rtti_typeinfo".to_string(),
+                    field_type: "const std::type_info *".to_string(),
+                },
+            ];
+
+            let mut slot_off = 16u64;
+            covered_vtable_addrs.insert(vtable_addr);
+            covered_vtable_addrs.insert(vtable_addr + 8);
+
+            while slot_off < 16 + 64 * 8 {
+                let slot_addr = vtable_addr + slot_off;
+                if slot_off > 16 && doc.labels.contains_key(&slot_addr) {
+                    break;
+                }
+                let Some(raw_fn) = doc.read_u64_le(slot_addr) else { break };
+                if raw_fn == 0 || (raw_fn & 0x8000_0000_0000_0000) != 0 {
+                    break;
+                }
+                let fn_addr = doc.normalize_ptr(raw_fn);
+                let is_code_target = doc
+                    .get_section_at(fn_addr)
+                    .map(|sec| sec.is_code)
+                    .unwrap_or(false);
+                if !is_code_target {
+                    break;
+                }
+
+                covered_vtable_addrs.insert(slot_addr);
+                let raw_sym = doc
+                    .labels
+                    .get(&fn_addr)
+                    .cloned()
+                    .unwrap_or_else(|| format!("vfunc_{:x}", fn_addr));
+                let demangled_fn = Self::demangle_cpp_symbol(&raw_sym);
+                if !doc.labels.contains_key(&fn_addr) {
+                    discovered_method_labels.push((
+                        fn_addr,
+                        format!("{}::vfunc_{}", demangled_cls, (slot_off - 16) / 8),
+                    ));
+                }
+
+                let short_field = demangled_fn
+                    .split('(')
+                    .next()
+                    .unwrap_or(&demangled_fn)
+                    .rsplit("::")
+                    .next()
+                    .unwrap_or("vfunc")
+                    .replace('~', "dtor_");
+                let field_name = if vtable_fields.iter().any(|f| f.name == short_field) {
+                    format!("{}_{}", short_field, (slot_off - 16) / 8)
+                } else {
+                    short_field
+                };
+
+                vtable_fields.push(UltronStructField {
+                    offset: slot_off,
+                    name: field_name,
+                    field_type: format!("void * /* {} */", demangled_fn),
+                });
+
+                virtual_methods.push(format!("{} @ 0x{:x}", demangled_fn, fn_addr));
+                slot_off += 8;
+            }
+
+            let struct_name = format!(
+                "VTable_{}",
+                demangled_cls.replace("::", "_")
+            );
+            doc.structs.insert(
+                struct_name.clone(),
+                UltronStructDef {
+                    name: struct_name,
+                    size: slot_off,
+                    fields: vtable_fields,
+                },
+            );
+
+            cpp_classes.push(CppClassInfo {
+                name: ztv_sym.clone(),
+                demangled_name: demangled_cls,
+                vtable_address: format!("0x{:x}", vtable_addr),
+                typeinfo_address: if typeinfo_addr_val != 0 {
+                    format!("0x{:x}", typeinfo_addr_val)
+                } else {
+                    "0x0".to_string()
+                },
+                base_class,
+                virtual_methods,
+            });
+        }
+
+        // Heuristic scan of __DATA_CONST / __const / .rodata for stripped vtables if none had _ZTV symbols
+        if cpp_classes.is_empty() {
+            let mut candidate_tables = Vec::new();
+            for seg in &doc.segments {
+                for sec in &seg.sections {
+                    if matches!(
+                        sec.name.as_str(),
+                        "__const" | ".rodata" | ".data.rel.ro"
+                    ) && sec.data.len() >= 32
+                    {
+                        let mut off = 0usize;
+                        while off + 24 <= sec.data.len() {
+                            let slot_addr = sec.start_address + off as u64;
+                            if covered_vtable_addrs.contains(&slot_addr) {
+                                off += 8;
+                                continue;
+                            }
+                            let top = u64::from_le_bytes(sec.data[off..off + 8].try_into().unwrap());
+                            let rtti_raw = u64::from_le_bytes(sec.data[off + 8..off + 16].try_into().unwrap());
+                            let fn0_raw = u64::from_le_bytes(sec.data[off + 16..off + 24].try_into().unwrap());
+                            if top == 0 && rtti_raw != 0 && fn0_raw != 0 && (fn0_raw & 0x8000_0000_0000_0000) == 0 {
+                                let fn0 = doc.normalize_ptr(fn0_raw);
+                                if doc.get_section_at(fn0).map(|s| s.is_code).unwrap_or(false) {
+                                    let mut methods = Vec::new();
+                                    let mut cur = off + 16;
+                                    while cur + 8 <= sec.data.len() {
+                                        let raw_p = u64::from_le_bytes(sec.data[cur..cur + 8].try_into().unwrap());
+                                        if raw_p == 0 || (raw_p & 0x8000_0000_0000_0000) != 0 {
+                                            break;
+                                        }
+                                        let fp = doc.normalize_ptr(raw_p);
+                                        if !doc.get_section_at(fp).map(|s| s.is_code).unwrap_or(false) {
+                                            break;
+                                        }
+                                        methods.push(fp);
+                                        cur += 8;
+                                    }
+                                    if methods.len() >= 2 {
+                                        candidate_tables.push((slot_addr, doc.normalize_ptr(rtti_raw), methods));
+                                        off = cur;
+                                        continue;
+                                    }
+                                }
+                            }
+                            off += 8;
+                        }
+                    }
+                }
+            }
+            for (idx, (vt_addr, rtti_addr, methods)) in candidate_tables.into_iter().enumerate() {
+                let cls_name = format!(" PolymorphicClass_{}", idx).trim().to_string();
+                let mut vmethods = Vec::new();
+                let mut vfields = vec![
+                    UltronStructField {
+                        offset: 0x00,
+                        name: "offset_to_top".to_string(),
+                        field_type: "int64_t".to_string(),
+                    },
+                    UltronStructField {
+                        offset: 0x08,
+                        name: "rtti_typeinfo".to_string(),
+                        field_type: "const std::type_info *".to_string(),
+                    },
+                ];
+                for (m_idx, m_addr) in methods.iter().enumerate() {
+                    let sym = doc
+                        .labels
+                        .get(m_addr)
+                        .map(|s| Self::demangle_cpp_symbol(s))
+                        .unwrap_or_else(|| format!("vfunc_{}", m_idx));
+                    vmethods.push(format!("{} @ 0x{:x}", sym, m_addr));
+                    vfields.push(UltronStructField {
+                        offset: 16 + (m_idx as u64) * 8,
+                        name: format!("vfunc_{}", m_idx),
+                        field_type: "void *".to_string(),
+                    });
+                }
+                let st_name = format!("VTable_{}", cls_name);
+                doc.structs.insert(
+                    st_name.clone(),
+                    UltronStructDef {
+                        name: st_name,
+                        size: 16 + (methods.len() as u64) * 8,
+                        fields: vfields,
+                    },
+                );
+                cpp_classes.push(CppClassInfo {
+                    name: format!("_ZTV{}", cls_name),
+                    demangled_name: cls_name,
+                    vtable_address: format!("0x{:x}", vt_addr),
+                    typeinfo_address: format!("0x{:x}", rtti_addr),
+                    base_class: String::new(),
+                    virtual_methods: vmethods,
+                });
+            }
+        }
+
+        for (fn_addr, lbl) in discovered_method_labels {
+            doc.labels.entry(fn_addr).or_insert(lbl);
+        }
+        doc.cpp_classes = cpp_classes;
+    }
+
+    /// DWARF Debug Metadata & Compile Unit Extractor (`parse_dwarf_metadata`):
+    /// Scans `__debug_str`, `__debug_line_str`, `.debug_str`, and STAB entries (`N_SO`, `N_SOL`, `N_FUN`)
+    /// to populate `doc.dwarf_compile_units`, map function addresses in `doc.dwarf_lines`, and annotate
+    /// procedure entry comments with `[DWARF CU: ...]`.
+    pub fn parse_dwarf_metadata(doc: &mut UltronDisassembledFile) {
+        let source_exts = [
+            ".c", ".cpp", ".cc", ".cxx", ".h", ".hpp", ".m", ".mm", ".rs", ".swift",
+        ];
+
+        // 1. Scan DWARF string sections (__debug_str, __debug_line_str, .debug_str, .debug_line_str)
+        for seg in &doc.segments {
+            for sec in &seg.sections {
+                if matches!(
+                    sec.name.as_str(),
+                    "__debug_str" | "__debug_line_str" | ".debug_str" | ".debug_line_str"
+                ) {
+                    let mut start = 0usize;
+                    for (i, &b) in sec.data.iter().enumerate() {
+                        if b == 0 {
+                            if i > start {
+                                if let Ok(s) = std::str::from_utf8(&sec.data[start..i]) {
+                                    let trimmed = s.trim();
+                                    if source_exts.iter().any(|ext| trimmed.ends_with(ext))
+                                        && !doc.dwarf_compile_units.contains(&trimmed.to_string())
+                                    {
+                                        doc.dwarf_compile_units.push(trimmed.to_string());
+                                    }
+                                }
+                            }
+                            start = i + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2. If dwarf_compile_units has entries, ensure all procedures have dwarf_lines mappings
+        let primary_cu_basename = doc
+            .dwarf_compile_units
+            .first()
+            .and_then(|cu| Path::new(cu).file_name())
+            .and_then(|s| s.to_str())
+            .map(|s| s.to_string());
+
+        if let Some(ref cu_base) = primary_cu_basename {
+            let proc_entries: Vec<(u64, String)> = doc
+                .procedures
+                .iter()
+                .map(|(&addr, p)| (addr, p.name.clone()))
+                .collect();
+            for (addr, pname) in proc_entries {
+                doc.dwarf_lines.entry(addr).or_insert_with(|| {
+                    format!("{}:{}", cu_base, Self::demangle_cpp_symbol(&pname))
+                });
+            }
+        }
+
+        // 3. Annotate procedure entry comments with [DWARF CU: ...]
+        let line_annotations: Vec<(u64, String)> = doc
+            .dwarf_lines
+            .iter()
+            .map(|(&addr, fl)| (addr, fl.clone()))
+            .collect();
+
+        for (addr, file_line) in line_annotations {
+            let tag = format!("[DWARF CU: {}]", file_line);
+            if let Some(ins) = doc.instructions.get_mut(&addr) {
+                if !ins.comment.contains("[DWARF CU:") {
+                    if ins.comment.is_empty() {
+                        ins.comment = tag.clone();
+                    } else {
+                        ins.comment = format!("{} | {}", ins.comment, tag);
+                    }
+                }
+            }
+            if let Some(proc) = doc.procedures.get_mut(&addr) {
+                if let Some(bb) = proc.basic_blocks.first_mut() {
+                    if let Some(first_ins) = bb.instructions.first_mut() {
+                        if first_ins.address == addr && !first_ins.comment.contains("[DWARF CU:") {
+                            if first_ins.comment.is_empty() {
+                                first_ins.comment = tag.clone();
+                            } else {
+                                first_ins.comment = format!("{} | {}", first_ins.comment, tag);
+                            }
+                        }
+                    }
+                }
+            }
+            let existing = doc.comments.get(&addr).cloned().unwrap_or_default();
+            if !existing.contains("[DWARF CU:") {
+                let merged = if existing.is_empty() {
+                    doc.instructions
+                        .get(&addr)
+                        .map(|i| i.comment.clone())
+                        .unwrap_or_else(|| tag.clone())
+                } else {
+                    format!("{} | {}", existing, tag)
+                };
+                doc.comments.insert(addr, merged);
+            }
+        }
     }
 }

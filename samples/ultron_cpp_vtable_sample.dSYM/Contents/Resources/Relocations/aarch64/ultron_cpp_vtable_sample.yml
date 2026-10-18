@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     'samples/ultron_cpp_vtable_sample'
+relocations:     []
+...

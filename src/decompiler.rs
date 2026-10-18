@@ -86,9 +86,487 @@ enum OpenRegion {
     },
 }
 
+#[derive(Debug, Clone)]
+pub struct SwitchDispatchInfo {
+    pub header_block: u64,
+    pub dispatch_reg: String,
+    pub is_jump_table: bool,
+    pub max_cases: Option<u64>,
+    pub default_target: Option<u64>,
+    pub case_targets: Vec<(u64, u64)>, // (case_value, target_addr)
+}
+
+#[derive(Debug, Clone)]
+pub struct StackBufferDecl {
+    pub name: String,
+    pub offset: u64,
+    pub is_fp_relative: bool,
+    pub estimated_size: u64,
+}
+
+/// Resolves standard C / POSIX / macOS / Objective-C / C++ SDK function signatures.
+/// Returns `Some((return_type, &[(param_name, param_type)]))`.
+pub fn resolve_sdk_call_signature(
+    callee_name: &str,
+) -> Option<(&'static str, &'static [(&'static str, &'static str)])> {
+    let clean = UltronDecompiler::normalize_callee_name(callee_name);
+    match clean.as_str() {
+        // Memory allocation & management
+        "malloc" => Some(("void*", &[("size", "size_t")])),
+        "calloc" => Some(("void*", &[("count", "size_t"), ("size", "size_t")])),
+        "realloc" => Some(("void*", &[("ptr", "void*"), ("size", "size_t")])),
+        "valloc" => Some(("void*", &[("size", "size_t")])),
+        "posix_memalign" => Some((
+            "int",
+            &[
+                ("memptr", "void**"),
+                ("alignment", "size_t"),
+                ("size", "size_t"),
+            ],
+        )),
+        "free" => Some(("void", &[("ptr", "void*")])),
+        // Memory operations
+        "memcpy" | "__memcpy_chk" => Some((
+            "void*",
+            &[("dst", "void*"), ("src", "const void*"), ("n", "size_t")],
+        )),
+        "memmove" | "__memmove_chk" => Some((
+            "void*",
+            &[("dst", "void*"), ("src", "const void*"), ("len", "size_t")],
+        )),
+        "memset" | "__memset_chk" => {
+            Some(("void*", &[("b", "void*"), ("c", "int"), ("len", "size_t")]))
+        }
+        "memcmp" => Some((
+            "int",
+            &[
+                ("s1", "const void*"),
+                ("s2", "const void*"),
+                ("n", "size_t"),
+            ],
+        )),
+        "memchr" => Some((
+            "void*",
+            &[("s", "const void*"), ("c", "int"), ("n", "size_t")],
+        )),
+        "bzero" => Some(("void", &[("s", "void*"), ("n", "size_t")])),
+        // String operations
+        "strlen" => Some(("size_t", &[("s", "const char*")])),
+        "strnlen" => Some(("size_t", &[("s", "const char*"), ("maxlen", "size_t")])),
+        "strcmp" => Some(("int", &[("s1", "const char*"), ("s2", "const char*")])),
+        "strncmp" => Some((
+            "int",
+            &[
+                ("s1", "const char*"),
+                ("s2", "const char*"),
+                ("n", "size_t"),
+            ],
+        )),
+        "strcasecmp" => Some(("int", &[("s1", "const char*"), ("s2", "const char*")])),
+        "strcpy" | "__strcpy_chk" => {
+            Some(("char*", &[("dst", "char*"), ("src", "const char*")]))
+        }
+        "strncpy" | "__strncpy_chk" => Some((
+            "char*",
+            &[("dst", "char*"), ("src", "const char*"), ("len", "size_t")],
+        )),
+        "strcat" | "__strcat_chk" => {
+            Some(("char*", &[("s1", "char*"), ("s2", "const char*")]))
+        }
+        "strdup" => Some(("char*", &[("s1", "const char*")])),
+        "strchr" | "strrchr" => Some(("char*", &[("s", "const char*"), ("c", "int")])),
+        "strstr" => Some((
+            "char*",
+            &[("haystack", "const char*"), ("needle", "const char*")],
+        )),
+        "strtol" | "strtoul" => Some((
+            "long",
+            &[
+                ("str", "const char*"),
+                ("endptr", "char**"),
+                ("base", "int"),
+            ],
+        )),
+        "atoi" => Some(("int", &[("str", "const char*")])),
+        // Formatted I/O & stdio
+        "printf" => Some(("int", &[("fmt", "const char*"), ("...", "va_list")])),
+        "fprintf" => Some((
+            "int",
+            &[
+                ("stream", "FILE*"),
+                ("fmt", "const char*"),
+                ("...", "va_list"),
+            ],
+        )),
+        "sprintf" | "__sprintf_chk" => Some((
+            "int",
+            &[("str", "char*"), ("fmt", "const char*"), ("...", "va_list")],
+        )),
+        "snprintf" | "__snprintf_chk" => Some((
+            "int",
+            &[
+                ("str", "char*"),
+                ("size", "size_t"),
+                ("fmt", "const char*"),
+                ("...", "va_list"),
+            ],
+        )),
+        "puts" => Some(("int", &[("s", "const char*")])),
+        "fputs" => Some(("int", &[("s", "const char*"), ("stream", "FILE*")])),
+        "fopen" => Some((
+            "FILE*",
+            &[("path", "const char*"), ("mode", "const char*")],
+        )),
+        "fread" => Some((
+            "size_t",
+            &[
+                ("ptr", "void*"),
+                ("size", "size_t"),
+                ("nitems", "size_t"),
+                ("stream", "FILE*"),
+            ],
+        )),
+        "fwrite" => Some((
+            "size_t",
+            &[
+                ("ptr", "const void*"),
+                ("size", "size_t"),
+                ("nitems", "size_t"),
+                ("stream", "FILE*"),
+            ],
+        )),
+        "fclose" => Some(("int", &[("stream", "FILE*")])),
+        "fseek" => Some((
+            "int",
+            &[("stream", "FILE*"), ("offset", "long"), ("whence", "int")],
+        )),
+        "ftell" => Some(("long", &[("stream", "FILE*")])),
+        "fflush" => Some(("int", &[("stream", "FILE*")])),
+        // POSIX file descriptors & VM
+        "open" => Some((
+            "int",
+            &[("path", "const char*"), ("oflag", "int"), ("mode", "mode_t")],
+        )),
+        "read" => Some((
+            "ssize_t",
+            &[("fd", "int"), ("buf", "void*"), ("nbyte", "size_t")],
+        )),
+        "write" => Some((
+            "ssize_t",
+            &[("fd", "int"), ("buf", "const void*"), ("nbyte", "size_t")],
+        )),
+        "close" => Some(("int", &[("fd", "int")])),
+        "lseek" => Some((
+            "off_t",
+            &[("fd", "int"), ("offset", "off_t"), ("whence", "int")],
+        )),
+        "stat" | "lstat" => Some(("int", &[("path", "const char*"), ("buf", "struct stat*")])),
+        "fstat" => Some(("int", &[("fd", "int"), ("buf", "struct stat*")])),
+        "mmap" => Some((
+            "void*",
+            &[
+                ("addr", "void*"),
+                ("len", "size_t"),
+                ("prot", "int"),
+                ("flags", "int"),
+            ],
+        )),
+        "munmap" => Some(("int", &[("addr", "void*"), ("len", "size_t")])),
+        "mprotect" => Some((
+            "int",
+            &[("addr", "void*"), ("len", "size_t"), ("prot", "int")],
+        )),
+        // Dynamic linker, Darwin & anti-debug / system calls
+        "dlopen" => Some(("void*", &[("path", "const char*"), ("mode", "int")])),
+        "dlsym" => Some(("void*", &[("handle", "void*"), ("symbol", "const char*")])),
+        "dlclose" => Some(("int", &[("handle", "void*")])),
+        "sysctl" => Some((
+            "int",
+            &[
+                ("name", "int*"),
+                ("namelen", "u_int"),
+                ("oldp", "void*"),
+                ("oldlenp", "size_t*"),
+            ],
+        )),
+        "sysctlbyname" => Some((
+            "int",
+            &[
+                ("name", "const char*"),
+                ("oldp", "void*"),
+                ("oldlenp", "size_t*"),
+                ("newp", "void*"),
+            ],
+        )),
+        "ptrace" => Some((
+            "int",
+            &[
+                ("request", "int"),
+                ("pid", "pid_t"),
+                ("addr", "caddr_t"),
+                ("data", "int"),
+            ],
+        )),
+        "getenv" => Some(("char*", &[("name", "const char*")])),
+        "getpid" => Some(("pid_t", &[])),
+        "getppid" => Some(("pid_t", &[])),
+        "getuid" => Some(("uid_t", &[])),
+        "isatty" => Some(("int", &[("fd", "int")])),
+        "sleep" => Some(("unsigned int", &[("seconds", "unsigned int")])),
+        "usleep" => Some(("int", &[("useconds", "useconds_t")])),
+        "exit" | "_exit" => Some(("void", &[("status", "int")])),
+        "abort" | "__stack_chk_fail" => Some(("void", &[])),
+        // Objective-C Runtime & Foundation
+        "objc_alloc_init" => Some(("id", &[("cls", "Class")])),
+        "objc_alloc" => Some(("id", &[("cls", "Class")])),
+        "objc_retain" | "objc_retainAutoreleasedReturnValue" | "objc_retainAutorelease" => {
+            Some(("id", &[("obj", "id")]))
+        }
+        "objc_release" => Some(("void", &[("obj", "id")])),
+        "objc_autorelease" | "objc_autoreleaseReturnValue" => Some(("id", &[("obj", "id")])),
+        "objc_autoreleasePoolPush" => Some(("void*", &[])),
+        "objc_autoreleasePoolPop" => Some(("void", &[("pool", "void*")])),
+        "objc_storeStrong" => Some(("void", &[("location", "id*"), ("obj", "id")])),
+        "objc_enumerationMutation" => Some(("void", &[("obj", "id")])),
+        "NSLog" => Some(("void", &[("format", "NSString*"), ("...", "va_list")])),
+        "dispatch_async" | "dispatch_sync" => Some((
+            "void",
+            &[("queue", "dispatch_queue_t"), ("block", "dispatch_block_t")],
+        )),
+        // C++ operator new / delete
+        "_Znwm" | "_Znam" => Some(("void*", &[("size", "size_t")])),
+        "_ZdlPv" | "_ZdaPv" => Some(("void", &[("ptr", "void*")])),
+        _ => None,
+    }
+}
+
 pub struct UltronDecompiler;
 
 impl UltronDecompiler {
+    pub fn resolve_sdk_call_signature(
+        callee_name: &str,
+    ) -> Option<(&'static str, &'static [(&'static str, &'static str)])> {
+        resolve_sdk_call_signature(callee_name)
+    }
+
+    pub fn normalize_callee_name(callee_name: &str) -> String {
+        let mut s = callee_name.trim();
+        for prefix in [
+            "imp___stubs__",
+            "sym.imp.",
+            "j__",
+            "j_",
+            "__stubs::",
+            "stubs::",
+        ] {
+            if let Some(rest) = s.strip_prefix(prefix) {
+                s = rest;
+            }
+        }
+        if let Some(idx) = s.find("@plt") {
+            s = &s[..idx];
+        }
+        // Preserve C++ mangled `_Z...` and `__stack_chk_fail`, strip single leading Mach-O `_` otherwise
+        if s.starts_with("_Z") || s.starts_with("__") {
+            s.to_string()
+        } else if let Some(rest) = s.strip_prefix('_') {
+            rest.to_string()
+        } else {
+            s.to_string()
+        }
+    }
+
+    /// Scans basic blocks to synthesize stack frame buffers (`sub xN, x29, #off` or `add xN, sp, #off`)
+    pub fn detect_stack_buffers(blocks: &[UltronBasicBlock], frame_size: u64) -> Vec<StackBufferDecl> {
+        let mut fp_offsets = BTreeSet::new();
+        let mut sp_offsets = BTreeSet::new();
+
+        for bb in blocks {
+            for ins in &bb.instructions {
+                if Self::is_prologue_or_epilogue(ins) {
+                    continue;
+                }
+                let m = ins.mnemonic.to_lowercase();
+                let ops: Vec<&str> = ins.op_str.split(',').map(|s| s.trim()).collect();
+                if (m == "sub" || m == "add") && ops.len() >= 3 {
+                    let base = ops[1].to_lowercase();
+                    if let Some(off) = Self::parse_imm_u64(ops[2]) {
+                        if off > 0 && off <= 0x4000 {
+                            if m == "sub" && (base == "x29" || base == "fp" || base == "rbp") {
+                                fp_offsets.insert(off);
+                            } else if m == "add" && (base == "sp" || base == "rsp") {
+                                sp_offsets.insert(off);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        let mut decls = Vec::new();
+        let fp_vec: Vec<u64> = fp_offsets.into_iter().collect();
+        for (i, &off) in fp_vec.iter().enumerate() {
+            let prev_off = if i > 0 { fp_vec[i - 1] } else { 0 };
+            let est_size = off.saturating_sub(prev_off).clamp(8, 256);
+            decls.push(StackBufferDecl {
+                name: format!("stack_buf_{:x}", off),
+                offset: off,
+                is_fp_relative: true,
+                estimated_size: est_size,
+            });
+        }
+
+        let sp_vec: Vec<u64> = sp_offsets.into_iter().collect();
+        for (i, &off) in sp_vec.iter().enumerate() {
+            let next_off = sp_vec
+                .get(i + 1)
+                .copied()
+                .unwrap_or_else(|| frame_size.max(off + 16));
+            let est_size = next_off.saturating_sub(off).clamp(8, 256);
+            decls.push(StackBufferDecl {
+                name: format!("stack_buf_{:x}", off),
+                offset: off,
+                is_fp_relative: false,
+                estimated_size: est_size,
+            });
+        }
+        decls
+    }
+
+    /// Detects ARM64 and x86_64 Switch / Jump-Table dispatches (Pattern A: computed jump, Pattern B: comparison cascade)
+    pub fn detect_switch_dispatches(
+        blocks: &[UltronBasicBlock],
+        ssa_form: bool,
+    ) -> BTreeMap<u64, SwitchDispatchInfo> {
+        let mut switches = BTreeMap::new();
+        let mut dummy_ssa = BTreeMap::new();
+
+        // Pattern A: Table-branch / computed jump (`adr` + `ldrb`/`ldrh`/`ldrsw` + `add` + `br xN`, or `jmp rax`)
+        for (idx, bb) in blocks.iter().enumerate() {
+            if let Some(last_ins) = bb.instructions.last() {
+                let m = last_ins.mnemonic.to_lowercase();
+                let op = last_ins.op_str.trim().to_lowercase();
+                let is_indirect_br = (m == "br" && (op.starts_with('x') || op.starts_with('r')))
+                    || (m == "jmp"
+                        && matches!(
+                            op.as_str(),
+                            "rax" | "rcx" | "rdx" | "rbx" | "rsi" | "rdi" | "r8" | "r9" | "r10"
+                        ));
+
+                if is_indirect_br {
+                    let mut dispatch_reg = Self::map_reg(&op, ssa_form, &mut dummy_ssa, false);
+                    let mut max_cases = None;
+                    let mut default_target = None;
+
+                    // Check current or preceding basic block for bounds check (`cmp wN, #max` + `b.hi`/`b.hs`/`ja` default_label)
+                    let search_start = idx.saturating_sub(1);
+                    for check_bb in &blocks[search_start..=idx] {
+                        for ins in &check_bb.instructions {
+                            let cm = ins.mnemonic.to_lowercase();
+                            let cops: Vec<&str> = ins.op_str.split(',').map(|s| s.trim()).collect();
+                            if cm == "cmp" && cops.len() >= 2 {
+                                if let Some(imm) = Self::parse_imm_u64(cops[1]) {
+                                    dispatch_reg =
+                                        Self::map_reg(cops[0], ssa_form, &mut dummy_ssa, false);
+                                    max_cases = Some(imm + 1);
+                                }
+                            }
+                            if matches!(
+                                cm.as_str(),
+                                "b.hi" | "b.hs" | "b.gt" | "b.ge" | "ja" | "jae" | "jg"
+                            ) {
+                                default_target = ins.branch_target;
+                            }
+                        }
+                    }
+
+                    switches.insert(
+                        bb.start_address,
+                        SwitchDispatchInfo {
+                            header_block: bb.start_address,
+                            dispatch_reg,
+                            is_jump_table: true,
+                            max_cases,
+                            default_target,
+                            case_targets: Vec::new(),
+                        },
+                    );
+                }
+            }
+        }
+
+        // Pattern B: Chained comparison cascade (`cmp reg, #imm1` / `b.eq`, `cmp reg, #imm2` / `b.eq`, or `tst`/`ands` + `csel`)
+        let mut reg_cases: BTreeMap<String, (u64, Vec<(u64, u64)>, Option<u64>)> = BTreeMap::new();
+        for bb in blocks {
+            let mut bb_cmp_reg: Option<String> = None;
+            let mut bb_cmp_imm: Option<u64> = None;
+            for ins in &bb.instructions {
+                let m = ins.mnemonic.to_lowercase();
+                let ops: Vec<&str> = ins.op_str.split(',').map(|s| s.trim()).collect();
+                if (m == "cmp" || m == "tst" || m == "ands") && ops.len() >= 2 {
+                    let r = Self::map_reg(ops[0], false, &mut dummy_ssa, false);
+                    let imm_str = if m == "ands" && ops.len() >= 3 {
+                        ops[2]
+                    } else {
+                        ops[1]
+                    };
+                    if let Some(imm) = Self::parse_imm_u64(imm_str) {
+                        bb_cmp_reg = Some(r);
+                        bb_cmp_imm = Some(imm);
+                    }
+                } else if m == "csel" && ops.len() >= 4 {
+                    if let (Some(ref r), Some(imm)) = (&bb_cmp_reg, bb_cmp_imm) {
+                        let entry =
+                            reg_cases
+                                .entry(r.clone())
+                                .or_insert((bb.start_address, Vec::new(), None));
+                        entry.1.push((imm, ins.address));
+                    }
+                } else if ins.is_branch {
+                    if let (Some(ref r), Some(imm)) = (&bb_cmp_reg, bb_cmp_imm) {
+                        if matches!(m.as_str(), "b.eq" | "je" | "jz" | "b.ne" | "jne" | "jnz") {
+                            if let Some(target) = ins.branch_target {
+                                let entry = reg_cases.entry(r.clone()).or_insert((
+                                    bb.start_address,
+                                    Vec::new(),
+                                    None,
+                                ));
+                                if !entry.1.iter().any(|(c, _)| *c == imm) {
+                                    entry.1.push((imm, target));
+                                }
+                            }
+                        } else if matches!(
+                            m.as_str(),
+                            "b.gt" | "b.hi" | "b.le" | "b.lt" | "jg" | "ja" | "jl"
+                        ) {
+                            if let Some( entry) = reg_cases.get_mut(r) {
+                                entry.2 = ins.branch_target;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (reg, (hdr_addr, cases, def_target)) in reg_cases {
+            if cases.len() >= 2 && !switches.contains_key(&hdr_addr) {
+                switches.insert(
+                    hdr_addr,
+                    SwitchDispatchInfo {
+                        header_block: hdr_addr,
+                        dispatch_reg: reg,
+                        is_jump_table: false,
+                        max_cases: Some(cases.len() as u64),
+                        default_target: def_target,
+                        case_targets: cases,
+                    },
+                );
+            }
+        }
+
+        switches
+    }
+
     pub fn decompile(
         doc: &UltronDisassembledFile,
         proc: &UltronProcedure,
@@ -101,10 +579,13 @@ impl UltronDecompiler {
             demangled
         ));
 
-        // 1. Compute Dominator Tree, Post-Dominator Tree & Natural Loops (arbitrary nesting depth)
+        // 1. Compute Dominator Tree, Post-Dominator Tree, Natural Loops, Switch Dispatches & Stack Buffers
         let doms = Self::compute_dominators(&proc.basic_blocks);
         let pdoms = Self::compute_post_dominators(&proc.basic_blocks);
         let loops = Self::detect_natural_loops(&proc.basic_blocks, &doms);
+        let switch_dispatches = Self::detect_switch_dispatches(&proc.basic_blocks, opts.ssa_form);
+        let stack_buffers =
+            Self::detect_stack_buffers(&proc.basic_blocks, proc.stack_frame_size);
 
         if proc.stack_frame_size > 0 || !loops.is_empty() || proc.basic_blocks.len() > 1 {
             out.push(format!(
@@ -140,6 +621,19 @@ impl UltronDecompiler {
             )
         };
         out.push(sig);
+
+        // Emit synthesized local stack buffer array declarations at the top of the function
+        for buf in &stack_buffers {
+            let rel_str = if buf.is_fp_relative {
+                format!("fp - 0x{:x}", buf.offset)
+            } else {
+                format!("sp + 0x{:x}", buf.offset)
+            };
+            out.push(format!(
+                "    uint8_t {}[{}]; // [{}]",
+                buf.name, buf.estimated_size, rel_str
+            ));
+        }
 
         let mut ssa_ver: BTreeMap<String, usize> = BTreeMap::new();
         let mut last_cmp_lhs = "r0".to_string();
@@ -235,6 +729,44 @@ impl UltronDecompiler {
                     out.push(format!(
                         "{}// [Block 0x{:x} | PostDom: {}]",
                         pad, bb.start_address, ipdom_str
+                    ));
+                }
+            }
+
+            // Emit Switch / Jump-Table header reconstruction if this basic block begins a switch dispatch
+            if let Some(sw) = switch_dispatches.get(&bb.start_address) {
+                let pad = "    ".repeat(indent_level);
+                if sw.is_jump_table {
+                    let def_str = sw
+                        .default_target
+                        .map(|d| format!("loc_{:x}", d))
+                        .unwrap_or_else(|| "default".to_string());
+                    let max_str = sw
+                        .max_cases
+                        .map(|m| format!("{} cases", m))
+                        .unwrap_or_else(|| "computed table".to_string());
+                    out.push(format!(
+                        "{}// [SWITCH DISPATCH DETECTED @ 0x{:x}: Jump-Table on {} ({}, default -> {})]",
+                        pad, sw.header_block, sw.dispatch_reg, max_str, def_str
+                    ));
+                } else {
+                    let case_summary: Vec<String> = sw
+                        .case_targets
+                        .iter()
+                        .map(|(val, tgt)| format!("case 0x{:x}: goto loc_{:x};", val, tgt))
+                        .collect();
+                    out.push(format!(
+                        "{}// [SWITCH DISPATCH DETECTED @ 0x{:x}: Multi-Way Cascade on {} ({} cases)]",
+                        pad,
+                        sw.header_block,
+                        sw.dispatch_reg,
+                        sw.case_targets.len()
+                    ));
+                    out.push(format!(
+                        "{}switch ({}) {{ {} }}",
+                        pad,
+                        sw.dispatch_reg,
+                        case_summary.join(" ")
                     ));
                 }
             }
@@ -805,6 +1337,7 @@ impl UltronDecompiler {
             .trim_start_matches('#')
             .trim_end_matches(']')
             .trim();
+        let clean = clean.split_whitespace().next().unwrap_or(clean);
         if let Some(h) = clean.strip_prefix("0x").or_else(|| clean.strip_prefix("0X")) {
             u64::from_str_radix(h, 16).ok()
         } else {
@@ -887,6 +1420,20 @@ impl UltronDecompiler {
             return Some(format!("return {};", ret_r));
         }
 
+        if m == "adr" && ops.len() >= 2 {
+            let dst = Self::map_reg(ops[0], opts.ssa_form, ssa_ver, true);
+            let dst_base = Self::base_reg_name(&dst);
+            let target_str = ops[1].trim_start_matches('#');
+            if let Some(addr) = Self::parse_imm_u64(target_str) {
+                if let Some(sym) = Self::resolve_address_symbol(doc, addr) {
+                    const_prop.insert(dst_base, sym.clone());
+                    return Some(format!("{} = {}; // adr 0x{:x}", dst, sym, addr));
+                }
+            }
+            const_prop.insert(dst_base, target_str.to_string());
+            return Some(format!("{} = {}; // jump-table / adr base", dst, target_str));
+        }
+
         if m == "mov" || m == "movz" {
             if ops.len() >= 2 {
                 let raw_rhs = ops[1].trim_start_matches('#');
@@ -913,7 +1460,10 @@ impl UltronDecompiler {
                 adrp_pages.remove(&dst_base);
 
                 let propagated = const_prop.get(&src_base).cloned().unwrap_or(src.clone());
-                const_prop.insert(dst_base, propagated);
+                const_prop.insert(dst_base, propagated.clone());
+                if propagated.starts_with("&stack_buf_") {
+                    return Some(format!("{} = {};", dst, propagated));
+                }
                 return Some(format!("{} = {};", dst, src));
             }
         }
@@ -950,12 +1500,33 @@ impl UltronDecompiler {
             return None;
         }
 
+        if m == "csel" && ops.len() >= 4 {
+            let dst = Self::map_reg(ops[0], opts.ssa_form, ssa_ver, true);
+            let t_reg = Self::map_reg(ops[1], opts.ssa_form, ssa_ver, false);
+            let f_reg = Self::map_reg(ops[2], opts.ssa_form, ssa_ver, false);
+            let cond_code = ops[3].to_lowercase();
+            let cmp_op = match cond_code.as_str() {
+                "eq" => "==",
+                "ne" => "!=",
+                "lt" | "lo" | "mi" => "<",
+                "le" | "ls" => "<=",
+                "gt" | "hi" => ">",
+                "ge" | "hs" | "pl" => ">=",
+                _ => "==",
+            };
+            return Some(format!(
+                "{} = ({} {} {}) ? {} : {};",
+                dst, last_cmp_lhs, cmp_op, last_cmp_rhs, t_reg, f_reg
+            ));
+        }
+
         if (m == "add"
             || m == "sub"
             || m == "subs"
             || m == "eor"
             || m == "xor"
             || m == "and"
+            || m == "ands"
             || m == "orr")
             && ops.len() >= 2
         {
@@ -969,6 +1540,32 @@ impl UltronDecompiler {
                     return Some(format!("{} = {};", dst, lit));
                 }
             }
+
+            // Stack Frame Buffer synthesis for `sub xN, x29, #offset` or `add xN, sp, #offset`
+            if ops.len() >= 3 {
+                let raw_base = ops[1].trim().to_lowercase();
+                if let Some(off) = Self::parse_imm_u64(ops[2]) {
+                    if off > 0 && off <= 0x4000 {
+                        if m == "sub" && (raw_base == "x29" || raw_base == "fp" || raw_base == "rbp") {
+                            let dst = Self::map_reg(ops[0], opts.ssa_form, ssa_ver, true);
+                            let dst_base = Self::base_reg_name(&dst);
+                            let buf_ref = format!("&stack_buf_{:x}", off);
+                            const_prop.insert(dst_base.clone(), buf_ref.clone());
+                            adrp_pages.remove(&dst_base);
+                            return Some(format!("{} = {}; // [fp - 0x{:x}]", dst, buf_ref, off));
+                        }
+                        if m == "add" && (raw_base == "sp" || raw_base == "rsp") {
+                            let dst = Self::map_reg(ops[0], opts.ssa_form, ssa_ver, true);
+                            let dst_base = Self::base_reg_name(&dst);
+                            let buf_ref = format!("&stack_buf_{:x}", off);
+                            const_prop.insert(dst_base.clone(), buf_ref.clone());
+                            adrp_pages.remove(&dst_base);
+                            return Some(format!("{} = {}; // [sp + 0x{:x}]", dst, buf_ref, off));
+                        }
+                    }
+                }
+            }
+
             let src1 = if ops.len() >= 3 {
                 Self::map_reg(ops[1], opts.ssa_form, ssa_ver, false)
             } else {
@@ -1006,10 +1603,10 @@ impl UltronDecompiler {
                 "add" => "+",
                 "sub" | "subs" => "-",
                 "eor" | "xor" => "^",
-                "and" => "&",
+                "and" | "ands" => "&",
                 _ => "|",
             };
-            if m == "subs" {
+            if m == "subs" || m == "ands" {
                 *last_cmp_lhs = dst.clone();
                 *last_cmp_rhs = "0".to_string();
             }
@@ -1032,8 +1629,18 @@ impl UltronDecompiler {
             return Some(format!("{} = {} {} {};", dst, src1, sym_op, src2));
         }
 
-        if (m == "ldr" || m == "ldrb" || m == "str" || m == "strb") && ops.len() >= 2 {
-            let is_load = m.starts_with("ldr");
+        if (m == "ldr"
+            || m == "ldrb"
+            || m == "ldrh"
+            || m == "ldrsw"
+            || m == "ldur"
+            || m == "str"
+            || m == "strb"
+            || m == "strh"
+            || m == "stur")
+            && ops.len() >= 2
+        {
+            let is_load = m.starts_with("ldr") || m.starts_with("ldur");
             let mem_expr = ops[1..].join(", ");
             let base_reg = ops[1].trim_start_matches('[').trim_end_matches(']').trim();
             let base_mapped = Self::map_reg(base_reg, opts.ssa_form, ssa_ver, false);
@@ -1065,12 +1672,24 @@ impl UltronDecompiler {
             }
 
             let mut resolved_access = format!("*({})", mem_expr);
-            if let Some(off_val) = parsed_off {
-                if off_val > 0 {
-                    if let Some((st_name, f_name, _f_type)) = doc.resolve_struct_field(off_val) {
-                        resolved_access = format!("(({} *){})->{}", st_name, base_mapped, f_name);
-                    } else if proc.name.starts_with("-[") && base_reg == "x0" {
-                        resolved_access = format!("self->ivar_0x{:x}", off_val);
+            if let Some(prop_ptr) = const_prop.get(&base_clean) {
+                if let Some(buf_name) = prop_ptr.strip_prefix('&') {
+                    if buf_name.starts_with("stack_buf_") {
+                        let idx_off = parsed_off.unwrap_or(0);
+                        resolved_access = format!("{}[0x{:x}]", buf_name, idx_off);
+                    }
+                }
+            }
+            if resolved_access.starts_with("*(") {
+                if let Some(off_val) = parsed_off {
+                    if off_val > 0 {
+                        if let Some((st_name, f_name, _f_type)) = doc.resolve_struct_field(off_val)
+                        {
+                            resolved_access =
+                                format!("(({} *){})->{}", st_name, base_mapped, f_name);
+                        } else if proc.name.starts_with("-[") && base_reg == "x0" {
+                            resolved_access = format!("self->ivar_0x{:x}", off_val);
+                        }
                     }
                 }
             }
@@ -1093,9 +1712,16 @@ impl UltronDecompiler {
             }
         }
 
-        if m == "cmp" && ops.len() >= 2 {
-            *last_cmp_lhs = Self::map_reg(ops[0], opts.ssa_form, ssa_ver, false);
-            *last_cmp_rhs = ops[1].trim_start_matches('#').to_string();
+        if (m == "cmp" || m == "tst") && ops.len() >= 2 {
+            let lhs = Self::map_reg(ops[0], opts.ssa_form, ssa_ver, false);
+            let rhs_raw = ops[1].trim_start_matches('#');
+            if m == "tst" {
+                *last_cmp_lhs = format!("({} & {})", lhs, rhs_raw);
+                *last_cmp_rhs = "0".to_string();
+            } else {
+                *last_cmp_lhs = lhs;
+                *last_cmp_rhs = rhs_raw.to_string();
+            }
             return None;
         }
 
@@ -1113,10 +1739,14 @@ impl UltronDecompiler {
             let r3_in = Self::map_reg("x3", opts.ssa_form, ssa_ver, false);
             let r0_out = Self::map_reg("x0", opts.ssa_form, ssa_ver, true);
 
-            let recv_expr = const_prop
+            let arg0_expr = const_prop
                 .get("r0")
                 .cloned()
                 .unwrap_or_else(|| r0_in.clone());
+            let arg1_expr = const_prop
+                .get("r1")
+                .cloned()
+                .unwrap_or_else(|| r1_in.clone());
             let arg2_expr = const_prop
                 .get("r2")
                 .cloned()
@@ -1147,9 +1777,9 @@ impl UltronDecompiler {
 
                 let colon_count = sel.matches(':').count();
                 let msg_expr = if colon_count == 0 {
-                    format!("[{} {}]", recv_expr, sel)
+                    format!("[{} {}]", arg0_expr, sel)
                 } else if colon_count == 1 {
-                    format!("[{} {}{}]", recv_expr, sel, arg2_expr)
+                    format!("[{} {}{}]", arg0_expr, sel, arg2_expr)
                 } else {
                     let parts: Vec<&str> = sel.split(':').filter(|p| !p.is_empty()).collect();
                     let args = [&arg2_expr, &arg3_expr];
@@ -1158,7 +1788,7 @@ impl UltronDecompiler {
                         let a = args.get(idx).map(|s| s.as_str()).unwrap_or("...");
                         segs.push(format!("{}:{}", part, a));
                     }
-                    format!("[{} {}]", recv_expr, segs.join(" "))
+                    format!("[{} {}]", arg0_expr, segs.join(" "))
                 };
 
                 const_prop.remove("r0");
@@ -1169,25 +1799,79 @@ impl UltronDecompiler {
             }
             if opts.rewrite_objc && raw_target.contains("objc_alloc_init") {
                 const_prop.remove("r0");
-                return Some(format!("{} = [[{} alloc] init];", r0_out, recv_expr));
+                return Some(format!(
+                    "{} = [[{} alloc] init]; // -> id",
+                    r0_out, arg0_expr
+                ));
             }
             if raw_target.contains("autoreleasePoolPush") {
                 return Some(
-                    "void *pool_ctx = objc_autoreleasePoolPush(); // @autoreleasepool {"
+                    "void *pool_ctx = objc_autoreleasePoolPush(); // -> void* (@autoreleasepool {)"
                         .to_string(),
                 );
             }
             if raw_target.contains("autoreleasePoolPop") {
-                return Some(format!("objc_autoreleasePoolPop({}); // }}", r0_in));
+                return Some(format!(
+                    "objc_autoreleasePoolPop(/* pool: void* */ {}); // -> void (}})",
+                    arg0_expr
+                ));
             }
-            if raw_target.contains("printf") {
-                return Some(format!("{} = printf({}, {});", r0_out, recv_expr, r1_in));
+
+            // Inter-Procedural SDK Type Propagation & Annotated Function Calls
+            if let Some((ret_ty, params)) = Self::resolve_sdk_call_signature(&raw_target) {
+                let clean_fn = Self::normalize_callee_name(&raw_target);
+                let arg_exprs = [&arg0_expr, &arg1_expr, &arg2_expr, &arg3_expr];
+                let mut annotated_args = Vec::new();
+                for (i, (p_name, p_ty)) in params.iter().enumerate() {
+                    let val = arg_exprs.get(i).map(|s| s.as_str()).unwrap_or("...");
+                    if *p_name == "..." {
+                        annotated_args.push(format!("/* ... */ {}", val));
+                    } else {
+                        annotated_args.push(format!("/* {}: {} */ {}", p_name, p_ty, val));
+                    }
+                }
+                const_prop.remove("r0");
+                if ret_ty == "void" {
+                    return Some(format!(
+                        "{}({}); // -> void",
+                        clean_fn,
+                        annotated_args.join(", ")
+                    ));
+                } else {
+                    return Some(format!(
+                        "{} = {}({}); // -> {}",
+                        r0_out,
+                        clean_fn,
+                        annotated_args.join(", "),
+                        ret_ty
+                    ));
+                }
             }
+
             const_prop.remove("r0");
-            return Some(format!("{} = {}({}, {});", r0_out, raw_target, recv_expr, r1_in));
+            return Some(format!(
+                "{} = {}({}, {});",
+                r0_out, raw_target, arg0_expr, arg1_expr
+            ));
         }
 
         if ins.is_branch {
+            let op_lower = ins.op_str.trim().to_lowercase();
+            // Computed Jump / Switch Table dispatch (`br x8`, `jmp rax`, etc.)
+            if (m == "br" && (op_lower.starts_with('x') || op_lower.starts_with('r')))
+                || (m == "jmp"
+                    && matches!(
+                        op_lower.as_str(),
+                        "rax" | "rcx" | "rdx" | "rbx" | "rsi" | "rdi" | "r8" | "r9" | "r10"
+                    ))
+            {
+                let target_reg = Self::map_reg(&op_lower, opts.ssa_form, ssa_ver, false);
+                return Some(format!(
+                    "switch ({}) {{ /* computed jump table via {} */ default: break; }}",
+                    last_cmp_lhs, target_reg
+                ));
+            }
+
             let target_lbl = ins
                 .branch_target
                 .map(|t| format!("loc_{:x}", t))
@@ -1243,3 +1927,4 @@ impl UltronDecompiler {
         ))
     }
 }
+

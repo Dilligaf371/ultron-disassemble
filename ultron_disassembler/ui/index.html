@@ -700,6 +700,62 @@
       width: 160px;
     }
 
+    /* Mode 07: Reverse Engineering Suite 4-Quadrant Command Deck */
+    .resuite-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+    }
+    .resuite-panel {
+      background: rgba(4, 9, 18, 0.88);
+      border: 1px solid rgba(var(--secondary-rgb), 0.30);
+      border-top: 2px solid var(--primary);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), inset 0 0 18px rgba(var(--secondary-rgb), 0.05);
+    }
+    .resuite-code-box {
+      width: 100%;
+      background: #02050b;
+      color: var(--emerald);
+      border: 1px solid rgba(var(--secondary-rgb), 0.32);
+      padding: 8px 10px;
+      font-family: var(--font-code);
+      font-size: 11px;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 148px;
+      outline: none;
+      user-select: text;
+    }
+    .bp-dot {
+      display: inline-block;
+      color: #ff1e38;
+      text-shadow: 0 0 8px #ff1e38, 0 0 16px #ff1e38;
+      font-size: 11.5px;
+      margin-right: 5px;
+      animation: pulseBeacon 1.5s infinite;
+    }
+    .asm-row.has-bp {
+      background: rgba(255, 30, 56, 0.14);
+      border-left: 3px solid #ff1e38;
+    }
+    .vtable-badge {
+      color: var(--violet);
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(199, 125, 255, 0.45);
+    }
+    .dwarf-badge {
+      color: var(--emerald);
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+    }
+
     /* Pseudo-Code Decompiler View */
     .pseudocode-pre {
       padding: 22px 26px;
@@ -1168,7 +1224,7 @@
 
         <div class="launch-panel-title" style="margin-top:8px;">
           <span>02 // SUBSYSTEM CAPABILITIES</span>
-          <span style="color:var(--emerald);font-size:9.5px;">6 MODULES READY</span>
+          <span style="color:var(--emerald);font-size:9.5px;">7 MODULES READY</span>
         </div>
         <div class="kv-grid" style="font-size:11px;row-gap:6px;">
           <span class="kv-key">DISASSEMBLER</span><span class="kv-val" style="color:var(--secondary);">Capstone AArch64 / x86_64</span>
@@ -1176,6 +1232,7 @@
           <span class="kv-key">LLVM FORGE</span><span class="kv-val" style="color:var(--primary);">libLLVMServices.dylib</span>
           <span class="kv-key">CPU EMULATOR</span><span class="kv-val" style="color:var(--tertiary);">Live Step-Into + 64KB Stack</span>
           <span class="kv-key">SECURITY AUDIT</span><span class="kv-val">CWE Sinks + S-Box + Entropy</span>
+          <span class="kv-key">RE SUITE 07</span><span class="kv-val" style="color:var(--violet);">.ULTRON + BinDiff + Frida/LLDB</span>
         </div>
       </div>
 
@@ -1287,7 +1344,7 @@
       <button class="fui-btn cyan-glow" onclick="playChirp(660, 0.06); showLaunchPortal()">⬢ LAUNCH DECK</button>
     </div>
 
-    <!-- 6-Mode Tactical Matrix Switcher -->
+    <!-- 7-Mode Tactical Matrix Switcher -->
     <div class="reticle-modes">
       <button class="reticle-tab active" id="mode-asm" onclick="playChirp(520, 0.05); setMode('asm')">
         <span class="tab-idx">01</span> ASM MATRIX
@@ -1307,6 +1364,9 @@
       <button class="reticle-tab" id="mode-audit" onclick="playChirp(940, 0.06); setMode('audit')">
         <span class="tab-idx">06</span> NEURAL &amp; AUDIT
       </button>
+      <button class="reticle-tab" id="mode-resuite" onclick="playChirp(980, 0.06); setMode('resuite')">
+        <span class="tab-idx">07</span> RE SUITE
+      </button>
     </div>
 
     <!-- Tactical Operations & Cockpit Controls -->
@@ -1315,6 +1375,8 @@
       <button class="fui-btn" onclick="promptRename()" title="Renommer symbole (N)">RENAME [N]</button>
       <button class="fui-btn" onclick="promptComment()" title="Annoter adresse (;)">NOTE [;]</button>
       <button class="fui-btn" onclick="openStructModal()" title="Éditeur de Structures C (T)">STRUCT [T]</button>
+      <button class="fui-btn" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)" title="Basculer Breakpoint sur l'adresse sélectionnée (B)">BP [B]</button>
+      <button class="fui-btn cyan-glow" onclick="setMode('resuite')" title="Projets .ultron, BinDiff, Frida/LLDB &amp; FLIRT">💾 .ULTRON</button>
       <button class="fui-btn" onclick="demangleAllAction()" title="Démangler tous les symboles C++ / Swift / Rust">DEMANGLE</button>
       <button class="fui-btn primary-glow" onclick="playChirp(740, 0.07); openAssemblerModal()" title="Assembleur LLVM Live (A)">LLVM FORGE [A]</button>
       <button class="fui-btn cyan-glow" onclick="exportPatchedBinaryAction()" title="Exporter le binaire patché sur disque (+ codesign macOS)">EXPORT BIN</button>
@@ -1682,24 +1744,51 @@ if proc:
   <script>
     let state = {
       overview: null,
+      presets: [],
       mode: 'asm',
       sidebarTab: 'procs',
       procedures: [],
       strings: [],
-      symbols: { imports: [], exports: [], objc_classes: [], swift_types: [], types: [] },
+      symbols: { imports: [], exports: [], objc_classes: [], swift_types: [], cpp_classes: [], dwarf_compile_units: [], types: [] },
       currentDossier: null,
       selectedAddress: null,
+      selectedAddr: null,
       selectedProcedure: null,
+      breakpoints: new Set(),
       navHistory: [],
       highlightedToken: null,
       emuState: null,
       auditData: null,
       neuralReport: null,
+      reSuiteProjects: [],
+      binDiffReport: null,
+      debugScripts: null,
+      flirtReport: null,
       jarvisMode: false,
       curved3D: true,
       mouseX: window.innerWidth / 2,
       mouseY: window.innerHeight / 2,
     };
+
+    function normAddrHex(addr) {
+      if (addr === null || addr === undefined) return '';
+      const s = String(addr).trim().toLowerCase();
+      if (!s) return '';
+      try {
+        if (s.startsWith('0x')) {
+          return '0x' + BigInt(s).toString(16);
+        }
+        if (/^\d+$/.test(s)) {
+          return '0x' + BigInt(s).toString(16);
+        }
+      } catch (e) {}
+      return s;
+    }
+
+    function hasBreakpoint(addr) {
+      const norm = normAddrHex(addr);
+      return state.breakpoints.has(norm) || state.breakpoints.has(String(addr || '').toLowerCase());
+    }
 
     /* ─── PROCEDURAL WEB AUDIO SCI-FI SOUND SYNTHESIZER ─── */
     let audioCtx = null;
@@ -1974,6 +2063,10 @@ if proc:
         else if (url.includes('/api/script')) label = 'PYTHON NEURAL SCRIPT ENGINE';
         else if (url.includes('/api/export')) label = 'BINARY PATCH & CODESIGN';
         else if (url.includes('/api/procedures')) label = 'SYMBOL DEMANGLER & INDEXER';
+        else if (url.includes('/api/project')) label = '.ULTRON PERSISTENT DATABASE I/O';
+        else if (url.includes('/api/bindiff')) label = 'BINDIFF STRUCTURAL CFG COMPARATOR';
+        else if (url.includes('/api/debug')) label = 'FRIDA & LLDB DYNAMIC BRIDGE';
+        else if (url.includes('/api/flirt')) label = 'FLIRT / WARP SIGNATURE SCANNER';
 
         neuralCloudState.activeRequests++;
         triggerNeuralActivity(1.35, label);
@@ -2548,6 +2641,7 @@ if proc:
         if (e.key === ';') { e.preventDefault(); promptComment(); }
         if (e.key === 't' || e.key === 'T') { e.preventDefault(); openStructModal(); }
         if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
+        if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleBreakpoint(state.selectedAddr || state.selectedAddress); }
         if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
         if (e.key === 'p' || e.key === 'P') { e.preventDefault(); toggle3DCloud(); }
         if (e.key === 'd' || e.key === 'D') { e.preventDefault(); setMode('pseudo'); }
@@ -2570,6 +2664,7 @@ if proc:
     async function refreshAllData(preserveProc = false) {
       const ovResp = await fetch('/api/overview');
       state.overview = await ovResp.json();
+      state.presets = state.overview.presets || [];
 
       const presetSel = document.getElementById('presetSelect');
       if (presetSel.options.length === 0 && state.overview.presets) {
@@ -2594,6 +2689,11 @@ if proc:
       state.procedures = (await procsResp.json()).items || [];
       state.strings = (await strsResp.json()).items || [];
       state.symbols = await symsResp.json();
+
+      const rawBps = state.overview?.breakpoints || state.symbols?.breakpoints || [];
+      state.breakpoints = new Set(
+        rawBps.map(b => normAddrHex(typeof b === 'object' ? (b.address || b.addr) : b)).filter(Boolean)
+      );
 
       renderOverviewBar();
       renderSidebarList();
@@ -2623,6 +2723,9 @@ if proc:
       state.selectedProcedure = null;
       state.navHistory = [];
       state.auditData = null;
+      state.binDiffReport = null;
+      state.debugScripts = null;
+      state.flirtReport = null;
       await refreshAllData(false);
       showToast(`TARGET LOCKED: ${data.procedure_count} SUBROUTINES // ${data.instruction_count} INSTRUCTIONS`);
     }
@@ -2726,6 +2829,55 @@ if proc:
             };
             container.appendChild(row);
           });
+        const cppList = state.symbols.cpp_classes || state.overview?.cpp_classes || [];
+        cppList
+          .filter(c => {
+            const label = `${c.demangled_name || ''} ${c.name || ''} ${c.vtable_address || ''}`.toLowerCase();
+            return !q || label.includes(q);
+          })
+          .forEach(c => {
+            const vfuncs = c.virtual_methods || c.methods || [];
+            const rawVtAddr = c.vtable_address ?? c.address ?? 'vtable';
+            const vtAddr = typeof rawVtAddr === 'number' ? '0x' + rawVtAddr.toString(16) : String(rawVtAddr);
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.title = `C++ Polymorphic VTable @ ${vtAddr} — Cliquer pour sauter vers la 1ère méthode virtuelle ou inspecter dans RE SUITE`;
+            row.innerHTML = `<span class="list-item-name vtable-badge">[C++ VTABLE] ${escapeHtml(c.demangled_name || c.name)} (${vfuncs.length} vfuncs)</span><span class="list-item-addr">${escapeHtml(vtAddr)}</span>`;
+            row.onclick = () => {
+              playChirp(820, 0.05);
+              if (vfuncs.length > 0) {
+                const firstVm = vfuncs[0];
+                const rawTarget = typeof firstVm === 'object' ? (firstVm.address ?? firstVm.target ?? firstVm.imp_address ?? firstVm.entry_point) : firstVm;
+                const targetHex = typeof rawTarget === 'number' ? '0x' + rawTarget.toString(16) : String(rawTarget || '');
+                if (targetHex && targetHex !== '0x0') {
+                  loadProcedure(targetHex);
+                  showToast(`C++ VTABLE [${c.demangled_name || c.name}] → ${targetHex}`);
+                  return;
+                }
+              }
+              setMode('resuite');
+            };
+            container.appendChild(row);
+          });
+        const dwarfList = state.symbols.dwarf_compile_units || state.overview?.dwarf_compile_units || [];
+        dwarfList
+          .filter(cu => {
+            const label = `${cu.name || ''} ${cu.producer || ''} ${cu.language || ''}`.toLowerCase();
+            return !q || label.includes(q);
+          })
+          .forEach(cu => {
+            const cuName = cu.name || cu.file || cu.compilation_dir || 'compile_unit';
+            const cuMeta = cu.language || `${(cu.line_mappings || cu.functions || []).length} lines`;
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.title = `DWARF Debug Compile Unit (${cu.producer || 'DWARF'}) — Cliquer pour ouvrir dans RE SUITE`;
+            row.innerHTML = `<span class="list-item-name dwarf-badge">[DWARF] ${escapeHtml(cuName)}</span><span class="list-item-addr">${escapeHtml(String(cuMeta))}</span>`;
+            row.onclick = () => {
+              playChirp(760, 0.05);
+              setMode('resuite');
+            };
+            container.appendChild(row);
+          });
         const swiftList = state.symbols.swift_types || [];
         swiftList
           .filter(s => {
@@ -2815,6 +2967,7 @@ if proc:
       state.currentDossier = data;
       state.selectedProcedure = data.procedure.entry_point;
       state.selectedAddress = data.procedure.entry_point;
+      state.selectedAddr = data.procedure.entry_point;
       state.emuState = null;
       state.neuralReport = null;
 
@@ -2848,9 +3001,10 @@ if proc:
         hex: 'QUANTUM HEX // MEMORY MATRIX',
         emu: 'CPU MICRO-EMULATOR // LIVE TRACE',
         audit: 'NEURAL & SECURITY AUDITOR',
+        resuite: 'RE SUITE // .ULTRON • BINDIFF • FRIDA • FLIRT',
       };
       triggerNeuralActivity(1.15, modeNames[mode] || 'MODE SWITCH');
-      ['asm', 'cfg', 'pseudo', 'hex', 'emu', 'audit'].forEach(m => {
+      ['asm', 'cfg', 'pseudo', 'hex', 'emu', 'audit', 'resuite'].forEach(m => {
         const el = document.getElementById('mode-' + m);
         if (el) el.classList.toggle('active', m === mode);
       });
@@ -2862,6 +3016,10 @@ if proc:
     async function renderCenterView() {
       const container = document.getElementById('centerContent');
       const d = state.currentDossier;
+      if (state.mode === 'resuite') {
+        await renderReSuite(container, d);
+        return;
+      }
       if (!d) return;
 
       if (state.mode === 'asm') {
@@ -2878,6 +3036,7 @@ if proc:
         await renderAuditMode(container, d);
       }
     }
+    const renderMainViewport = renderCenterView;
 
     /* ─── SYNCHRONIZED REGISTER / VARIABLE TOKEN HIGHLIGHTER ─── */
     const TOKEN_REGEX = /\b(x\d{1,2}|w\d{1,2}|r\d{1,2}(?:_\d+)?|sp|fp|lr|pc|xzr|wzr|rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|rip|var_[0-9a-fA-FmM]+|local_ctx_\d+|saved_ptr_\d+|acc_val_\d+)\b/g;
@@ -2902,10 +3061,12 @@ if proc:
 
     function renderAsmMode(container, d) {
       let html = `<table class="asm-table"><tbody>`;
-      html += `<tr class="asm-label-row"><td colspan="5">; ═══════════════ SUBROUTINE // ${escapeHtml(d.procedure.name)} (DOUBLE-CLICK CALLS TO JUMP, ESC TO RETURN) ═══════════════</td></tr>`;
-      if (d.local_variables && d.local_variables.length > 0) {
-        d.local_variables.forEach(v => {
-          html += `<tr><td class="col-addr">${d.procedure.entry_point}</td><td class="col-bytes"></td><td colspan="3" style="color:var(--secondary);">; [STACK FRAME] ${wrapInteractiveTokens(escapeHtml(v.name))}: [sp, #${v.displacement}] (${v.type})</td></tr>`;
+      html += `<tr class="asm-label-row"><td colspan="5">; ═══════════════ SUBROUTINE // ${escapeHtml(d.procedure.name)} (DOUBLE-CLICK CALLS TO JUMP, [B] BREAKPOINT, ESC TO RETURN) ═══════════════</td></tr>`;
+      const localVars = d.local_variables || d.procedure?.local_variables || [];
+      if (localVars.length > 0) {
+        localVars.forEach(v => {
+          const disp = v.displacement !== undefined ? v.displacement : v.offset;
+          html += `<tr><td class="col-addr">${d.procedure.entry_point}</td><td class="col-bytes"></td><td colspan="3" style="color:var(--secondary);">; [STACK FRAME] ${wrapInteractiveTokens(escapeHtml(v.name))}: [sp, #${disp}] (${v.type})</td></tr>`;
         });
       }
 
@@ -2917,19 +3078,23 @@ if proc:
         if (ins.comment) {
           html += `<tr><td class="col-addr">${ins.address}</td><td></td><td colspan="3" class="col-comment">; ${escapeHtml(ins.comment)}</td></tr>`;
         }
-        const mnemClass = ins.is_ret ? 'ret' : (ins.is_call ? 'call' : ((ins.is_cjmp || ins.is_ijmp) ? 'branch' : ''));
+        const mnemClass = (ins.is_ret || ins.is_return) ? 'ret' : (ins.is_call ? 'call' : ((ins.is_cjmp || ins.is_ijmp || ins.is_branch) ? 'branch' : ''));
         const isSel = state.selectedAddress === ins.address ? 'selected' : '';
-        let opsHtml = escapeHtml(ins.formatted_op_str || ins.op_str);
+        const isBp = hasBreakpoint(ins.address);
+        const bpBadge = isBp
+          ? `<span class="bp-dot" title="Breakpoint armé sur ${ins.address} (Cliquer ou [B] pour désarmer)" onclick="event.stopPropagation(); toggleBreakpoint('${ins.address}')">●</span>`
+          : '';
+        let opsHtml = escapeHtml(ins.formatted_op_str || ins.op_str || ins.operands || '');
         const jumpTarget = ins.call_target || ins.branch_target;
         if (jumpTarget) {
           opsHtml = `<span class="clickable-sym" title="Cliquer pour sauter vers ${jumpTarget} (Échap pour revenir)" onclick="event.stopPropagation(); playChirp(820,0.05); loadProcedure('${jumpTarget}')">${opsHtml}</span>`;
         } else {
           opsHtml = wrapInteractiveTokens(opsHtml);
         }
-        const cmt = ins.inline_comment ? `; ${escapeHtml(ins.inline_comment)}` : '';
+        const cmt = (ins.inline_comment || ins.comment) ? `; ${escapeHtml(ins.inline_comment || ins.comment)}` : '';
         html += `
-          <tr class="asm-row ${isSel}" data-addr="${ins.address}" onclick="playChirp(540,0.03); selectAddress('${ins.address}')" ondblclick="${jumpTarget ? `loadProcedure('${jumpTarget}')` : ''}">
-            <td class="col-addr">${ins.address}</td>
+          <tr class="asm-row ${isSel} ${isBp ? 'has-bp' : ''}" data-addr="${ins.address}" onclick="playChirp(540,0.03); selectAddress('${ins.address}')" ondblclick="${jumpTarget ? `loadProcedure('${jumpTarget}')` : `toggleBreakpoint('${ins.address}')`}">
+            <td class="col-addr" title="Cliquer pour sélectionner • [B] pour Breakpoint">${bpBadge}${ins.address}</td>
             <td class="col-bytes">${ins.bytes}</td>
             <td class="col-mnem ${mnemClass}">${escapeHtml(ins.mnemonic)}</td>
             <td class="col-ops">${opsHtml}</td>
@@ -2940,6 +3105,7 @@ if proc:
       html += `</tbody></table>`;
       container.innerHTML = html;
     }
+    const renderAsm = renderAsmMode;
 
     function renderCfgMode(container, d) {
       const blocks = d.basic_blocks || [];
@@ -3314,13 +3480,426 @@ if proc:
       `;
     }
 
+    /* ─── MODE 07: REVERSE ENGINEERING SUITE (.ULTRON DB, BINDIFF, FRIDA/LLDB BRIDGE, FLIRT/VTABLE/DWARF) ─── */
+    async function toggleBreakpoint(addr) {
+      const targetAddr = addr || state.selectedAddr || state.selectedAddress || state.selectedProcedure;
+      if (!targetAddr) {
+        showToast('SELECT AN INSTRUCTION ADDRESS FIRST');
+        return;
+      }
+      playChirp(890, 0.06);
+      const norm = normAddrHex(targetAddr);
+      try {
+        const resp = await fetch('/api/debug/breakpoint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address: String(targetAddr), addr: String(targetAddr) }),
+        });
+        const res = await resp.json();
+        if (Array.isArray(res.breakpoints)) {
+          state.breakpoints = new Set(
+            res.breakpoints.map(b => normAddrHex(typeof b === 'object' ? (b.address || b.addr) : b)).filter(Boolean)
+          );
+        } else if (typeof res.enabled === 'boolean' || typeof res.active === 'boolean') {
+          const on = res.enabled ?? res.active;
+          if (on) state.breakpoints.add(norm);
+          else state.breakpoints.delete(norm);
+        } else {
+          if (state.breakpoints.has(norm)) state.breakpoints.delete(norm);
+          else state.breakpoints.add(norm);
+        }
+      } catch (e) {
+        if (state.breakpoints.has(norm)) state.breakpoints.delete(norm);
+        else state.breakpoints.add(norm);
+      }
+
+      const armed = state.breakpoints.has(norm);
+      showToast(armed ? `🔴 BREAKPOINT ARMED @ ${norm}` : `⚪ BREAKPOINT CLEARED @ ${norm}`);
+
+      if (state.mode === 'asm' && state.currentDossier) {
+        renderAsmMode(document.getElementById('centerContent'), state.currentDossier);
+      } else if (state.mode === 'resuite') {
+        await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function loadUltronProjectList(silent = false) {
+      try {
+        const resp = await fetch('/api/project/list');
+        const data = await resp.json();
+        state.reSuiteProjects = data.projects || data.items || (Array.isArray(data) ? data : []);
+        if (!silent && state.mode === 'resuite') {
+          await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
+        }
+      } catch (e) {
+        state.reSuiteProjects = state.reSuiteProjects || [];
+      }
+    }
+
+    async function saveUltronProject() {
+      playChirp(920, 0.08);
+      const inp = document.getElementById('ultronProjectNameInput');
+      const rawName = (inp?.value || state.overview?.document || 'ultron_project').trim();
+      const resp = await fetch('/api/project/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: rawName, project_name: rawName, path: rawName }),
+      });
+      const res = await resp.json();
+      if (res.error) {
+        showToast('ERREUR SAUVEGARDE: ' + res.error);
+        return;
+      }
+      showToast(`💾 PROJET .ULTRON SAUVEGARDÉ : ${res.path || res.file || rawName}`);
+      await loadUltronProjectList(false);
+    }
+
+    async function loadUltronProject(nameOrPath) {
+      playChirp(860, 0.08);
+      const resp = await fetch('/api/project/load', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nameOrPath, path: nameOrPath, project_name: nameOrPath }),
+      });
+      const res = await resp.json();
+      if (res.error) {
+        showToast('ERREUR CHARGEMENT: ' + res.error);
+        return;
+      }
+      if (Array.isArray(res.breakpoints)) {
+        state.breakpoints = new Set(
+          res.breakpoints.map(b => normAddrHex(typeof b === 'object' ? (b.address || b.addr) : b)).filter(Boolean)
+        );
+      }
+      await refreshAllData(true);
+      showToast(`📂 PROJET .ULTRON CHARGÉ : ${nameOrPath} (Renommages, Notes, Structs & Breakpoints restaurés)`);
+    }
+
+    async function runBinDiffAction() {
+      playChirp(960, 0.09);
+      const targetPath = (document.getElementById('bindiffTargetInput')?.value || '').trim();
+      if (!targetPath) {
+        showToast('SÉLECTIONNEZ UNE CIBLE BINAIRE SECONDAIRE POUR BINDIFF');
+        return;
+      }
+      showToast(`⚖ BINDIFF EN COURS CONTRE : ${targetPath.split('/').pop()}…`);
+      const resp = await fetch('/api/bindiff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target_path: targetPath, path: targetPath, second_path: targetPath }),
+      });
+      const res = await resp.json();
+      if (res.error) {
+        showToast('ERREUR BINDIFF: ' + res.error);
+        return;
+      }
+      state.binDiffReport = res;
+      showToast(`⚖ BINDIFF TERMINÉ // SIMILARITÉ GLOBALE : ${res.overall_similarity_pct ?? res.similarity_pct ?? res.overall_similarity ?? 0}%`);
+      if (state.mode === 'resuite') {
+        await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function generateDebugScriptsAction(addrOverride) {
+      playChirp(910, 0.07);
+      const addr = addrOverride || state.selectedProcedure || state.selectedAddr || state.selectedAddress || state.overview?.entry_point || '0x100000000';
+      const resp = await fetch(`/api/debug/script?addr=${encodeURIComponent(addr)}&address=${encodeURIComponent(addr)}`);
+      const res = await resp.json();
+      state.debugScripts = res;
+      showToast(`⚡ SCRIPTS FRIDA & LLDB GÉNÉRÉS POUR ${addr}`);
+      if (state.mode === 'resuite') {
+        await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function runFlirtScanAction() {
+      playChirp(950, 0.08);
+      const resp = await fetch('/api/flirt/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apply_renames: true }),
+      });
+      const res = await resp.json();
+      state.flirtReport = res;
+      const matchCount = (res.matches || res.matched_functions || res.signatures || []).length || res.matched_count || 0;
+      showToast(`🔍 SCAN FLIRT / WARP TERMINÉ : ${matchCount} FONCTIONS IDENTIFIÉES`);
+      await refreshAllData(true);
+    }
+
+    function copyReSuiteText(elemId, label) {
+      const el = document.getElementById(elemId);
+      if (!el) return;
+      const text = el.value || el.textContent || '';
+      navigator.clipboard?.writeText(text);
+      playChirp(1040, 0.04);
+      showToast(`📋 ${label} COPIÉ DANS LE PRESSE-PAPIERS`);
+    }
+
+    async function renderReSuite(container, d) {
+      if (!container) container = document.getElementById('centerContent');
+      // Auto-fetch saved projects list and initial debug scripts on first visit
+      if (!state.reSuiteProjects || state.reSuiteProjects.length === 0) {
+        await loadUltronProjectList(true);
+      }
+      if (!state.debugScripts) {
+        try {
+          const targetAddr = state.selectedProcedure || state.selectedAddress || state.overview?.entry_point || '0x100000000';
+          const sResp = await fetch(`/api/debug/script?addr=${encodeURIComponent(targetAddr)}&address=${encodeURIComponent(targetAddr)}`);
+          state.debugScripts = await sResp.json();
+        } catch (e) {}
+      }
+
+      const defaultProjName = ((state.overview?.document || 'ultron_target').replace(/\.[^.]+$/, '')) + '.ultron';
+      const projects = state.reSuiteProjects || [];
+      const presets = state.presets?.length ? state.presets : (state.overview?.presets || []);
+
+      // Panel 1: .ULTRON Persistent Projects List HTML
+      const projectsListHtml = projects.length > 0
+        ? projects.map(p => {
+            const pName = typeof p === 'string' ? p : (p.name || p.filename || p.path || 'project.ultron');
+            const pPath = typeof p === 'string' ? p : (p.path || p.filename || p.name);
+            const pMeta = typeof p === 'object'
+              ? `${p.binary_name || p.format || ''} ${p.labels_count !== undefined ? `• ${p.labels_count} labels` : ''} ${p.comments_count !== undefined ? `• ${p.comments_count} notes` : ''} ${p.breakpoints_count !== undefined ? `• ${p.breakpoints_count} BPs` : ''} ${p.size_bytes ? `(${p.size_bytes}B)` : ''}`.trim()
+              : 'Base persistante .ultron';
+            return `
+              <div class="list-item" style="padding:6px 10px;background:rgba(2,6,14,0.8);margin-bottom:4px;border:1px solid rgba(0,240,255,0.18);">
+                <div style="overflow:hidden;">
+                  <div style="color:#fff;font-weight:700;font-size:11.5px;">◈ ${escapeHtml(pName)}</div>
+                  <div style="color:var(--text-mid);font-size:10px;font-family:var(--font-fui);">${escapeHtml(pMeta)}</div>
+                </div>
+                <button class="fui-btn cyan-glow" style="padding:4px 10px;font-size:10px;flex-shrink:0;" onclick="loadUltronProject('${escapeHtml(pPath)}')">📂 CHARGER</button>
+              </div>
+            `;
+          }).join('')
+        : `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Aucun projet <code>.ultron</code> sauvegardé. Cliquez sur <strong>💾 SAUVEGARDER PROJET (.ULTRON)</strong> pour persister vos renommages, commentaires, structures C et breakpoints.</div>`;
+
+      // Panel 2: BinDiff Report HTML
+      const bd = state.binDiffReport;
+      const defaultDiffTarget = bd?.target_path || bd?.secondary_binary || (presets[1]?.path || presets[0]?.path || '/bin/ls');
+      const presetOptsHtml = presets.map(p => `<option value="${escapeHtml(p.path)}" ${p.path === defaultDiffTarget ? 'selected' : ''}>${escapeHtml(p.label)} (${escapeHtml(p.path)})</option>`).join('');
+
+      let bindiffBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Sélectionnez un second binaire cible et lancez <strong>⚖ LANCER BINDIFF</strong> pour comparer les graphes CFG, hashes d'instructions et deltas de blocs basiques.</div>`;
+      if (bd && !bd.error) {
+        const rawSim = bd.overall_similarity_pct ?? bd.similarity_pct ?? bd.overall_similarity ?? bd.similarity_score ?? (bd.similarity !== undefined ? Math.round(bd.similarity * 100) : 0);
+        const simPct = Number(rawSim).toFixed(1);
+        const diffItems = bd.procedures || bd.diffs || bd.matches || bd.items || [
+          ...(bd.identical || []).map(x => ({ ...x, status: 'IDENTICAL' })),
+          ...(bd.modified || []).map(x => ({ ...x, status: 'MODIFIED' })),
+          ...(bd.added || []).map(x => ({ ...x, status: 'ADDED' })),
+          ...(bd.removed || []).map(x => ({ ...x, status: 'REMOVED' })),
+        ];
+        const cntIdentical = bd.identical_count ?? bd.summary?.identical ?? diffItems.filter(x => (x.status || x.kind || '').toUpperCase() === 'IDENTICAL').length;
+        const cntModified = bd.modified_count ?? bd.summary?.modified ?? diffItems.filter(x => (x.status || x.kind || '').toUpperCase() === 'MODIFIED').length;
+        const cntAdded = bd.added_count ?? bd.summary?.added ?? diffItems.filter(x => (x.status || x.kind || '').toUpperCase() === 'ADDED').length;
+        const cntRemoved = bd.removed_count ?? bd.summary?.removed ?? diffItems.filter(x => (x.status || x.kind || '').toUpperCase() === 'REMOVED').length;
+
+        const rowsHtml = diffItems.slice(0, 60).map(it => {
+          const st = String(it.status || it.kind || 'MODIFIED').toUpperCase();
+          const stColor = st === 'IDENTICAL' ? 'var(--emerald)' : (st === 'MODIFIED' ? 'var(--tertiary)' : (st === 'ADDED' ? 'var(--secondary)' : 'var(--primary)'));
+          const pName = it.primary_name || it.name || it.proc_a || it.secondary_name || 'sub';
+          const pAddr = it.primary_address || it.address || it.addr_a || it.secondary_address || '0x0';
+          const sPct = it.similarity_pct ?? it.similarity_score ?? (it.similarity !== undefined ? Math.round(it.similarity * 100) : 100);
+          const bbDelta = it.block_delta ?? it.bb_delta ?? 0;
+          const insDelta = it.instruction_delta ?? it.insn_delta ?? 0;
+          const fmtDelta = (n) => (n > 0 ? `+${n}` : `${n}`);
+          return `
+            <tr class="asm-row" onclick="loadProcedure('${escapeHtml(String(pAddr))}'); setMode('asm');" title="Cliquer pour ouvrir ${escapeHtml(pName)} @ ${escapeHtml(String(pAddr))}">
+              <td style="color:${stColor};font-weight:700;font-size:10.5px;">[${escapeHtml(st)}]</td>
+              <td style="color:#fff;font-weight:600;">${escapeHtml(pName)} <span style="color:var(--text-mid);font-size:10px;">(${escapeHtml(String(pAddr))})</span></td>
+              <td style="color:${stColor};font-weight:700;">${sPct}%</td>
+              <td style="color:var(--secondary);font-family:var(--font-fui);">ΔBB: ${fmtDelta(bbDelta)}</td>
+              <td style="color:var(--tertiary);font-family:var(--font-fui);">ΔINS: ${fmtDelta(insDelta)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        bindiffBodyHtml = `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(2,6,14,0.85);border:1px solid rgba(0,240,255,0.22);">
+            <div>
+              <span style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">SIMILARITÉ GLOBALE :</span>
+              <strong style="color:var(--emerald);font-size:14px;margin-left:6px;">${simPct}%</strong>
+            </div>
+            <div style="display:flex;gap:6px;font-family:var(--font-fui);font-size:10px;">
+              <span class="hud-tag" style="border-color:var(--emerald);color:var(--emerald);background:rgba(0,255,157,0.12);">IDENTICAL: ${cntIdentical}</span>
+              <span class="hud-tag" style="border-color:var(--tertiary);color:var(--tertiary);background:rgba(255,158,0,0.12);">MODIFIED: ${cntModified}</span>
+              <span class="hud-tag" style="border-color:var(--secondary);color:var(--secondary);background:rgba(0,240,255,0.12);">ADDED: ${cntAdded}</span>
+              <span class="hud-tag" style="border-color:var(--primary);color:var(--primary);background:rgba(255,30,56,0.12);">REMOVED: ${cntRemoved}</span>
+            </div>
+          </div>
+          <div style="max-height:175px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);">
+            <table class="asm-table"><tbody>${rowsHtml || '<tr><td colspan="5" style="padding:8px;color:var(--text-mid);">Aucune différence détectée.</td></tr>'}</tbody></table>
+          </div>
+        `;
+      }
+
+      // Panel 3: Dynamic Frida & LLDB Bridge + Active Breakpoints
+      const activeProcName = d?.procedure?.name || state.overview?.document || 'sub_target';
+      const activeProcAddr = state.selectedProcedure || state.selectedAddress || state.overview?.entry_point || '0x100000000';
+      const fridaCode = state.debugScripts?.frida_script || state.debugScripts?.frida || `// Auto-Generated Ultron Frida Interceptor for ${activeProcName} (${activeProcAddr})\nconst targetAddr = ptr("${activeProcAddr}");\nInterceptor.attach(targetAddr, {\n  onEnter(args) {\n    console.log("[ULTRON FRIDA] Entering ${activeProcName} @ " + targetAddr);\n    console.log("  x0/arg0 =", args[0], "x1/arg1 =", args[1]);\n  },\n  onLeave(retval) {\n    console.log("[ULTRON FRIDA] Leaving ${activeProcName} -> retval =", retval);\n  }\n});`;
+      const lldbCode = state.debugScripts?.lldb_script || state.debugScripts?.lldb || `# Auto-Generated Ultron LLDB Script for ${activeProcName} (${activeProcAddr})\nbreakpoint set --address ${activeProcAddr}\nbreakpoint command add 1\n  register read x0 x1 x2 lr sp pc\n  bt 5\n  continue\nDONE`;
+      const bpArray = Array.from(state.breakpoints);
+      const bpPillsHtml = bpArray.length > 0
+        ? bpArray.map(bp => `
+            <span class="xref-pill" style="border-color:#ff1e38;color:#fff;background:rgba(255,30,56,0.22);" title="Cliquer pour sauter vers ${escapeHtml(bp)} • Double-clic pour supprimer" onclick="selectAddress('${escapeHtml(bp)}'); setMode('asm');" ondblclick="event.stopPropagation(); toggleBreakpoint('${escapeHtml(bp)}')">
+              <span class="bp-dot" style="margin-right:3px;">●</span>${escapeHtml(bp)}
+            </span>
+          `).join('')
+        : `<span style="color:var(--text-lo);font-size:11px;">Aucun breakpoint actif (Appuyez sur [B] dans ASM MATRIX ou cliquez sur 🔴 BASCULER BP)</span>`;
+
+      // Panel 4: FLIRT / WARP Signatures, DWARF Compile Units & C++ Polymorphic VTables
+      const flirtMatches = state.flirtReport?.matches || state.flirtReport?.matched_functions || state.flirtReport?.signatures || [];
+      const dwarfUnits = state.symbols?.dwarf_compile_units || state.overview?.dwarf_compile_units || state.flirtReport?.dwarf_compile_units || [];
+      const cppClasses = state.symbols?.cpp_classes || state.overview?.cpp_classes || state.flirtReport?.cpp_classes || [];
+
+      const flirtHtml = flirtMatches.length > 0
+        ? flirtMatches.map(m => {
+            const mAddr = typeof m.address === 'number' ? '0x' + m.address.toString(16) : (m.address || '0x0');
+            const mConf = m.confidence !== undefined ? (m.confidence <= 1 ? Math.round(m.confidence * 100) : Math.round(m.confidence)) : 98;
+            return `
+              <div class="list-item" style="padding:4px 8px;" onclick="loadProcedure('${escapeHtml(String(mAddr))}'); setMode('asm');">
+                <span class="list-item-name" style="color:var(--emerald);font-weight:700;">[FLIRT] ${escapeHtml(m.signature_name || m.name || m.library_function)} <span style="color:var(--text-mid);font-weight:400;">(${escapeHtml(m.library || 'stdlib')})</span></span>
+                <span class="list-item-addr">${escapeHtml(String(mAddr))} • ${mConf}%</span>
+              </div>
+            `;
+          }).join('')
+        : `<div style="color:var(--text-mid);font-size:11px;padding:4px 6px;">Cliquez sur <strong>🔍 SCANNER SIGNATURES STATIQUES (FLIRT / WARP)</strong> pour identifier les routines standard strippées.</div>`;
+
+      const cppHtml = cppClasses.length > 0
+        ? cppClasses.map(c => {
+            const vfuncs = c.virtual_methods || c.methods || [];
+            const vtAddr = typeof c.vtable_address === 'number' ? '0x' + c.vtable_address.toString(16) : (c.vtable_address || c.address || 'vtable');
+            const vfuncPills = vfuncs.map((vf, idx) => {
+              const vfAddrRaw = typeof vf === 'object' ? (vf.address ?? vf.target ?? vf.imp_address ?? vf.entry_point) : vf;
+              const vfAddr = typeof vfAddrRaw === 'number' ? '0x' + vfAddrRaw.toString(16) : String(vfAddrRaw || '0x0');
+              const vfName = typeof vf === 'object' ? (vf.demangled_name || vf.demangled || vf.name || `vfunc_${idx}`) : `vfunc_${idx}`;
+              return `<span class="xref-pill" style="border-color:var(--violet);color:var(--violet);" onclick="loadProcedure('${escapeHtml(vfAddr)}'); setMode('pseudo');" title="Décompiler ${escapeHtml(vfName)} @ ${escapeHtml(vfAddr)}">[#${idx}] ${escapeHtml(vfName)} (${escapeHtml(vfAddr)})</span>`;
+            }).join('');
+            return `
+              <div style="padding:6px 8px;border-bottom:1px solid rgba(199,125,255,0.18);background:rgba(199,125,255,0.04);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span class="vtable-badge">[C++ VTABLE] ${escapeHtml(c.demangled_name || c.name)}</span>
+                  <span style="font-family:var(--font-fui);font-size:10.5px;color:var(--secondary);">${escapeHtml(String(vtAddr))} (${vfuncs.length} vfuncs)</span>
+                </div>
+                <div>${vfuncPills || '<span style="color:var(--text-lo);font-size:10.5px;">Aucune méthode virtuelle résolue</span>'}</div>
+              </div>
+            `;
+          }).join('')
+        : `<div style="color:var(--text-lo);font-size:11px;padding:4px 6px;">Aucune VTable C++ (__ZTV / __const) détectée dans cette cible.</div>`;
+
+      const dwarfHtml = dwarfUnits.length > 0
+        ? dwarfUnits.map(cu => {
+            const cuName = cu.name || cu.file || cu.compilation_dir || 'compile_unit';
+            const cuLang = cu.language || 'C/C++/Rust';
+            const cuProd = cu.producer || 'clang / llvm DWARF';
+            return `
+              <div style="padding:4px 8px;border-bottom:1px solid rgba(0,255,157,0.15);display:flex;justify-content:space-between;font-family:var(--font-code);font-size:11px;">
+                <span class="dwarf-badge">[DWARF CU] ${escapeHtml(cuName)} <span style="color:var(--text-mid);font-weight:400;">(${escapeHtml(cuProd)})</span></span>
+                <span style="color:var(--secondary);">${escapeHtml(cuLang)}</span>
+              </div>
+            `;
+          }).join('')
+        : `<div style="color:var(--text-lo);font-size:11px;padding:4px 6px;">Aucune section DWARF (__debug_info / .debug_line) embarquée.</div>`;
+
+      container.innerHTML = `
+        <div class="resuite-grid">
+          <!-- QUADRANT 1: PERSISTENT .ULTRON PROJECT DATABASE -->
+          <div class="resuite-panel">
+            <div class="fui-module-title">
+              <span>💾 PROJETS PERSISTANTS (.ULTRON DATABASE)</span>
+              <span class="hud-tag">${projects.length} SAVED</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="text" id="ultronProjectNameInput" class="fui-input" value="${escapeHtml(defaultProjName)}" style="flex:1;text-transform:none;" placeholder="Nom du fichier projet (.ultron)…" />
+              <button class="fui-btn primary-glow" onclick="saveUltronProject()">💾 SAUVEGARDER PROJET (.ULTRON)</button>
+              <button class="fui-btn" onclick="loadUltronProjectList(false)" title="Rafraîchir la liste des projets .ultron">↻</button>
+            </div>
+            <div style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">
+              BASE DE DONNÉES D'ANALYSE : Persiste les renommages de fonctions, notes tactiques, structures C et breakpoints matériels/logiciels.
+            </div>
+            <div style="max-height:195px;overflow-y:auto;">
+              ${projectsListHtml}
+            </div>
+          </div>
+
+          <!-- QUADRANT 2: BINDIFF STRUCTURAL CFG & HASH COMPARATOR -->
+          <div class="resuite-panel">
+            <div class="fui-module-title">
+              <span>⚖ COMPARATEUR STRUCTUREL BINDIFF (CFG &amp; HASH DIFFING)</span>
+              <span class="hud-tag">BINARY DIFF</span>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <select id="bindiffPresetSelect" class="fui-select" style="max-width:190px;" onchange="document.getElementById('bindiffTargetInput').value=this.value">
+                <option value="">-- PRESETS CIBLES --</option>
+                ${presetOptsHtml}
+              </select>
+              <input type="text" id="bindiffTargetInput" class="fui-input" value="${escapeHtml(defaultDiffTarget)}" style="flex:1;text-transform:none;" placeholder="Chemin du 2ème binaire à comparer…" />
+              <button class="fui-btn primary-glow" onclick="runBinDiffAction()">⚖ LANCER BINDIFF</button>
+            </div>
+            ${bindiffBodyHtml}
+          </div>
+
+          <!-- QUADRANT 3: LIVE FRIDA & LLDB DYNAMIC INSTRUMENTATION BRIDGE -->
+          <div class="resuite-panel">
+            <div class="fui-module-title">
+              <span>🐞 PONT DYNAMIQUE FRIDA &amp; LLDB (LIVE INSTRUMENTATION &amp; BREAKPOINTS)</span>
+              <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="generateDebugScriptsAction()">⚡ GÉNÉRER SCRIPTS FRIDA &amp; LLDB (PROCÉDURE ACTIVE)</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-family:var(--font-fui);font-size:10px;color:var(--secondary);">
+                  <span>FRIDA INTERCEPTOR / OBJC HOOKS</span>
+                  <button class="fui-btn" style="padding:2px 7px;font-size:9px;" onclick="copyReSuiteText('reFridaEditor', 'SCRIPT FRIDA')">📋 COPIER</button>
+                </div>
+                <textarea id="reFridaEditor" class="resuite-code-box" readonly>${escapeHtml(fridaCode)}</textarea>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-family:var(--font-fui);font-size:10px;color:var(--tertiary);">
+                  <span>LLDB (.LLDBINIT / PYTHON BRIDGE)</span>
+                  <button class="fui-btn" style="padding:2px 7px;font-size:9px;" onclick="copyReSuiteText('reLldbEditor', 'SCRIPT LLDB')">📋 COPIER</button>
+                </div>
+                <textarea id="reLldbEditor" class="resuite-code-box" style="color:var(--secondary);" readonly>${escapeHtml(lldbCode)}</textarea>
+              </div>
+            </div>
+            <div style="border-top:1px solid rgba(0,240,255,0.2);padding-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div style="font-family:var(--font-fui);font-size:10.5px;color:var(--text-mid);">
+                BREAKPOINTS ACTIFS (${bpArray.length}) : ${bpPillsHtml}
+              </div>
+              <button class="fui-btn primary-glow" style="padding:4px 10px;font-size:10px;" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)">
+                🔴 BASCULER BREAKPOINT @ ${escapeHtml(state.selectedAddress || activeProcAddr)} [B]
+              </button>
+            </div>
+          </div>
+
+          <!-- QUADRANT 4: FLIRT/WARP SIGNATURES, C++ VTABLES & DWARF DEBUG -->
+          <div class="resuite-panel">
+            <div class="fui-module-title">
+              <span>🧬 SIGNATURES FLIRT/WARP, C++ VTABLES &amp; DWARF DEBUG</span>
+              <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runFlirtScanAction()">🔍 SCANNER SIGNATURES STATIQUES (FLIRT / WARP)</button>
+            </div>
+            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--emerald);letter-spacing:1px;">SIGNATURES DE BIBLIOTHÈQUES STATIQUES (FLIRT / WARP) :</div>
+            <div style="max-height:85px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);background:rgba(2,5,11,0.75);">
+              ${flirtHtml}
+            </div>
+            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--violet);letter-spacing:1px;">TABLES DE MÉTHODES VIRTUELLES POLYMORPHIQUES C++ (VTABLES &amp; RTTI) :</div>
+            <div style="max-height:105px;overflow-y:auto;border:1px solid rgba(199,125,255,0.22);background:rgba(2,5,11,0.75);">
+              ${cppHtml}
+            </div>
+            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--secondary);letter-spacing:1px;">UNITÉS DE COMPILATION DWARF (DEBUG INFO &amp; SOURCE LINES) :</div>
+            <div style="max-height:70px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);background:rgba(2,5,11,0.75);">
+              ${dwarfHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     async function triggerQuickNeuralRename() {
       if (!state.selectedProcedure) return;
       playChirp(940, 0.08);
       const resp = await fetch('/api/neural/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ procedure: state.selectedProcedure, apply_rename: true }),
+        body: JSON.stringify({ procedure: state.selectedProcedure, address: state.selectedProcedure, apply_rename: true, auto_rename: true }),
       });
       const res = await resp.json();
       showToast(`NEURAL CORE RENAMED → ${res.suggested_name} [${res.category}]`);
@@ -3329,9 +3908,13 @@ if proc:
 
     async function demangleAllAction() {
       playChirp(860, 0.07);
-      const resp = await fetch('/api/demangle', { method: 'POST' });
+      const resp = await fetch('/api/demangle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol: state.selectedProcedure || '' }),
+      });
       const res = await resp.json();
-      showToast(`SYMBOL DEMANGLER: ${res.demangled_count} C++/SWIFT/RUST SYMBOLS DECODED`);
+      showToast(`SYMBOL DEMANGLER: ${res.demangled_count ?? 1} C++/SWIFT/RUST SYMBOLS DECODED`);
       await refreshAllData(true);
     }
 
@@ -3343,9 +3926,9 @@ if proc:
         body: JSON.stringify({ resign_macho: true }),
       });
       const res = await resp.json();
-      if (res.success) {
-        showToast(`PATCHED EXECUTABLE EXPORTED & SIGNED: ${res.output_path.split('/').pop()}`);
-        alert(`Binaire patché exporté avec succès !\n\nChemin : ${res.output_path}\nTaille : ${res.size_bytes} octets\nSignature macOS : ${res.codesign}`);
+      if (res.success || res.ok || res.output_path) {
+        showToast(`PATCHED EXECUTABLE EXPORTED & SIGNED: ${(res.output_path || '').split('/').pop()}`);
+        alert(`Binaire patché exporté avec succès !\n\nChemin : ${res.output_path}\nTaille : ${res.size_bytes} octets\nSignature macOS : ${res.codesign || 'ad-hoc signed'}`);
       } else {
         alert('Erreur export: ' + (res.error || 'Unknown error'));
       }
@@ -3542,6 +4125,7 @@ if proc:
 
     async function selectAddress(addr) {
       state.selectedAddress = addr;
+      state.selectedAddr = addr;
       document.getElementById('cursorStatusText').textContent = addr;
       document.getElementById('asmPatchAddr').value = addr;
 

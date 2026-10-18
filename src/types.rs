@@ -136,6 +136,23 @@ pub struct ObjCClassInfo {
     pub header_preview: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct CppClassInfo {
+    pub name: String,
+    pub demangled_name: String,
+    pub vtable_address: String,
+    pub typeinfo_address: String,
+    pub base_class: String,
+    pub virtual_methods: Vec<String>,
+}
+
+#[allow(dead_code)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct DwarfLineEntry {
+    pub address: String,
+    pub file_line: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UltronStringEntry {
     pub address: u64,
@@ -170,6 +187,11 @@ pub struct UltronDisassembledFile {
     pub objc_selector_map: HashMap<u64, String>,
     pub objc_classref_map: HashMap<u64, String>,
     pub swift_types: Vec<String>,
+    pub cpp_classes: Vec<CppClassInfo>,
+    pub dwarf_compile_units: Vec<String>,
+    pub dwarf_lines: HashMap<u64, String>,
+    pub chained_fixups_count: usize,
+    pub breakpoints: Vec<u64>,
 }
 
 #[allow(dead_code)]
@@ -184,6 +206,11 @@ pub struct SymbolsResponse {
     pub types: Vec<serde_json::Value>,
     pub objc_classes: Vec<ObjCClassInfo>,
     pub swift_types: Vec<String>,
+    pub cpp_classes: Vec<CppClassInfo>,
+    pub dwarf_compile_units: Vec<String>,
+    pub dwarf_lines: HashMap<u64, String>,
+    pub chained_fixups_count: usize,
+    pub breakpoints: Vec<u64>,
 }
 
 impl UltronDisassembledFile {
@@ -234,6 +261,11 @@ impl UltronDisassembledFile {
             objc_selector_map: HashMap::new(),
             objc_classref_map: HashMap::new(),
             swift_types: Vec::new(),
+            cpp_classes: Vec::new(),
+            dwarf_compile_units: Vec::new(),
+            dwarf_lines: HashMap::new(),
+            chained_fixups_count: 0,
+            breakpoints: Vec::new(),
         }
     }
 
