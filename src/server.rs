@@ -91,6 +91,11 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/v4/reconstruct-project", post(api_v4_reconstruct_project))
         .route("/api/v4/deobfuscate", post(api_v4_deobfuscate))
         .route("/api/v4/time-travel-trace", post(api_v4_time_travel_trace))
+        .route("/api/v4/patch-c-function", post(api_v4_patch_c_function))
+        .route("/api/v4/taint-audit", post(api_v4_taint_audit))
+        .route("/api/v4/auto-structs", post(api_v4_auto_structs))
+        .route("/api/v4/live-lldb", post(api_v4_live_lldb))
+        .route("/api/v4/neural-vault", post(api_v4_neural_vault))
         .route("/api/mcp", post(api_mcp_rpc))
         .route("/api/ultron-voice", get(api_ultron_voice))
         .route("/api/voice/ultron-active.mp3", get(api_voice_active))
@@ -1587,7 +1592,10 @@ async fn api_auto_pipeline(
         }
     }
 
-    // Stage 6 (Legendary Engine): Compilable Project Reconstruction (C + Rust + Clang Compile), De-obfuscation, and Time-Travel Coverage Trace
+    // Stage 6 (Legendary & Final Boss Engine): Compilable Project Reconstruction, De-obfuscation, Time-Travel Trace, Auto-Struct Recovery, Inter-Procedural Taint Audit & Neural Symbol Vault
+    let neural_vault = UltronLegendEngine::sync_neural_symbol_vault(&mut doc);
+    let auto_structs = UltronLegendEngine::recover_auto_structs(&mut doc, &abs_out_dir);
+    let taint_audit = UltronLegendEngine::run_interprocedural_taint_audit(&doc);
     let reconstruction = UltronLegendEngine::reconstruct_compilable_project(&doc, &abs_out_dir);
     let deobfuscation = UltronLegendEngine::deobfuscate_and_verify(&doc);
     let time_travel_trace = UltronLegendEngine::build_time_travel_trace(&doc, Some(entry_addr));
@@ -1612,13 +1620,28 @@ async fn api_auto_pipeline(
         .get("total_steps")
         .and_then(|v| v.as_u64())
         .unwrap_or(0);
+    let auto_structs_count = auto_structs
+        .get("recovered_count")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
+    let taint_chains_count = taint_audit
+        .get("taint_chains_count")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
+    let vault_total = neural_vault
+        .get("total_vault_signatures")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
 
     report_md.push_str(&format!(
-        "\n## 6. Autonomous Compilable Reconstruction & Clang Verification\n\n\
+        "\n## 6. Autonomous Compilable Reconstruction & Final Boss Telemetry\n\n\
          - **Project Directory**: `{}`\n\
          - **Clang Compilation (`clang -O2 -std=c17`)**: **{}** ({} bytes)\n\
          - **Live Binary Execution Verification**: `{}`\n\
-         - **Time-Travel Execution Trace**: `{} steps ({:.1}% CFG block coverage)`\n",
+         - **Time-Travel Execution Trace**: `{} steps ({:.1}% CFG block coverage)`\n\
+         - **Auto-Recovered Memory Structs (`recovered_structs.h`)**: `{} structs synthesized`\n\
+         - **Inter-Procedural Taint Chains (`Source -> Sink`)**: `{} data-flow paths audited`\n\
+         - **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `{} structural fingerprints indexed`\n",
         reconstruction
             .get("project_dir")
             .and_then(|v| v.as_str())
@@ -1627,7 +1650,10 @@ async fn api_auto_pipeline(
         compiled_size,
         if exec_verif.is_empty() { "OK" } else { exec_verif },
         trace_steps,
-        cov_pct
+        cov_pct,
+        auto_structs_count,
+        taint_chains_count,
+        vault_total
     ));
 
     let report_path = abs_out_dir.join("REPORT.md");
@@ -1654,6 +1680,9 @@ async fn api_auto_pipeline(
         "reconstruction": reconstruction,
         "deobfuscation": deobfuscation,
         "time_travel_trace": time_travel_trace,
+        "auto_structs": auto_structs,
+        "taint_audit": taint_audit,
+        "neural_vault": neural_vault,
     });
     let json_path = abs_out_dir.join("analysis_dossier.json");
     let _ = std::fs::write(
@@ -1664,6 +1693,7 @@ async fn api_auto_pipeline(
     let recon_c_path = abs_out_dir.join("reconstructed_project").join("reconstructed.c");
     let recon_bin_path = abs_out_dir.join("reconstructed_project").join("reconstructed_bin");
     let recon_rs_path = abs_out_dir.join("reconstructed_project").join("src").join("main.rs");
+    let structs_h_path = abs_out_dir.join("recovered_structs.h");
 
     let output_files = vec![
         json!({ "name": "REPORT.md", "label": "Executive & Technical Report (Markdown)", "path": report_path.to_string_lossy(), "bytes": report_md.len() }),
@@ -1672,6 +1702,7 @@ async fn api_auto_pipeline(
         json!({ "name": "reconstructed.c", "label": "Compilable C17/C23 Project Source", "path": recon_c_path.to_string_lossy(), "bytes": std::fs::metadata(&recon_c_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "reconstructed_bin", "label": "Compiled & Signed Native Executable", "path": recon_bin_path.to_string_lossy(), "bytes": compiled_size }),
         json!({ "name": "src/main.rs", "label": "Idiomatic Cargo Rust Reconstruction", "path": recon_rs_path.to_string_lossy(), "bytes": std::fs::metadata(&recon_rs_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "recovered_structs.h", "label": "Auto-Inferred Memory Structs Header", "path": structs_h_path.to_string_lossy(), "bytes": std::fs::metadata(&structs_h_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "analysis_dossier.json", "label": "Structured Telemetry Dossier (JSON)", "path": json_path.to_string_lossy(), "bytes": std::fs::metadata(&json_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "frida_hook.js", "label": "Dynamic Frida Instrumentation Script", "path": frida_path.to_string_lossy(), "bytes": frida_code.len() }),
         json!({ "name": "lldb_trace.py", "label": "Automated LLDB Trace Script", "path": lldb_path.to_string_lossy(), "bytes": lldb_code.len() }),
@@ -1704,6 +1735,9 @@ async fn api_auto_pipeline(
         "reconstruction": reconstruction,
         "deobfuscation": deobfuscation,
         "time_travel_trace": time_travel_trace,
+        "auto_structs": auto_structs,
+        "taint_audit": taint_audit,
+        "neural_vault": neural_vault,
     }))
 }
 
@@ -1723,8 +1757,7 @@ async fn api_reveal_outputs(Json(req): Json<RevealOutputsReq>) -> Json<Value> {
     Json(json!({ "ok": true, "path": target }))
 }
 
-async fn api_v4_reconstruct_project(State(state): State<Arc<AppState>>) -> Json<Value> {
-    let doc = state.doc.lock().unwrap();
+fn current_output_dir_for_doc(doc: &UltronDisassembledFile) -> std::path::PathBuf {
     let doc_name = Path::new(&doc.file_path)
         .file_name()
         .and_then(|s| s.to_str())
@@ -1735,7 +1768,12 @@ async fn api_v4_reconstruct_project(State(state): State<Arc<AppState>>) -> Json<
         .collect();
     let out_dir = Path::new("outputs").join(if safe_slug.is_empty() { "target" } else { &safe_slug });
     let _ = std::fs::create_dir_all(&out_dir);
-    let abs_out_dir = std::fs::canonicalize(&out_dir).unwrap_or(out_dir);
+    std::fs::canonicalize(&out_dir).unwrap_or(out_dir)
+}
+
+async fn api_v4_reconstruct_project(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
     Json(UltronLegendEngine::reconstruct_compilable_project(&doc, &abs_out_dir))
 }
 
@@ -1756,6 +1794,61 @@ async fn api_v4_time_travel_trace(
     let doc = state.doc.lock().unwrap();
     let addr = req.proc_address.and_then(|s| parse_addr(&s));
     Json(UltronLegendEngine::build_time_travel_trace(&doc, addr))
+}
+
+#[derive(Deserialize)]
+struct PatchCFunctionReq {
+    proc_address: Option<String>,
+    c_source: String,
+}
+
+async fn api_v4_patch_c_function(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<PatchCFunctionReq>,
+) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let proc_addr = req
+        .proc_address
+        .and_then(|s| parse_addr(&s))
+        .or_else(|| doc.procedures.keys().next().copied())
+        .unwrap_or(doc.entry_point);
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::compile_and_inject_c_patch(
+        &mut doc,
+        proc_addr,
+        &req.c_source,
+        &abs_out_dir,
+    ))
+}
+
+async fn api_v4_taint_audit(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    Json(UltronLegendEngine::run_interprocedural_taint_audit(&doc))
+}
+
+async fn api_v4_auto_structs(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::recover_auto_structs(&mut doc, &abs_out_dir))
+}
+
+#[derive(Deserialize)]
+struct LiveLldbReq {
+    break_address: Option<String>,
+}
+
+async fn api_v4_live_lldb(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<LiveLldbReq>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let addr = req.break_address.and_then(|s| parse_addr(&s));
+    Json(UltronLegendEngine::run_live_lldb_telemetry(&doc, addr))
+}
+
+async fn api_v4_neural_vault(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    Json(UltronLegendEngine::sync_neural_symbol_vault(&mut doc))
 }
 
 

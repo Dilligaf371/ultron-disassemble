@@ -48,7 +48,8 @@ static const char * const ULTRON_STR_30 = "i16@0:8" /* @ 0x1000015e5 */;
 static const char * const ULTRON_STR_31 = "v20@0:8i16" /* @ 0x1000015ed */;
 
 /* ── Forward Declarations ── */
-u64 re_UltronSentinelCore_initWithKey_rounds(u64 arg0, u64 arg1, u64 arg2); /* -[UltronSentinelCore initWithKey:rounds:] @ 0x100000a18 (272B) */
+u64 re_UltronSentinelCore_initWithKey_rounds(u64 arg0, u64 arg1, u64 arg2); /* -[UltronSentinelCore initWithKey:rounds:] @ 0x100000a18 (8B) */
+u64 re_sub_100000a20(u64 arg0, u64 arg1, u64 arg2); /* sub_100000a20 @ 0x100000a20 (264B) */
 u64 re_UltronSentinelCore_decryptPayload_length(u64 arg0, u64 arg1, u64 arg2); /* -[UltronSentinelCore decryptPayload:length:] @ 0x100000b28 (232B) */
 u64 re_UltronSentinelCore_sentinelProtocolVersion(u64 arg0, u64 arg1, u64 arg2); /* +[UltronSentinelCore sentinelProtocolVersion] @ 0x100000c10 (28B) */
 u64 re_UltronSentinelCore_securityLevel(u64 arg0, u64 arg1, u64 arg2); /* -[UltronSentinelCore securityLevel] @ 0x100000c2c (28B) */
@@ -77,13 +78,11 @@ u64 re_objc_msgSend_UTF8String(u64 arg0, u64 arg1, u64 arg2); /* _objc_msgSend$U
 u64 re_objc_msgSend_coreName(u64 arg0, u64 arg1, u64 arg2); /* _objc_msgSend$coreName @ 0x100001240 (32B) */
 u64 re_objc_msgSend_decryptPayload_length(u64 arg0, u64 arg1, u64 arg2); /* _objc_msgSend$decryptPayload:length: @ 0x100001260 (32B) */
 u64 re_objc_msgSend_initWithKey_rounds(u64 arg0, u64 arg1, u64 arg2); /* _objc_msgSend$initWithKey:rounds: @ 0x100001280 (32B) */
-u64 re_objc_msgSend_reactorDiagnosticDigest(u64 arg0, u64 arg1, u64 arg2); /* _objc_msgSend$reactorDiagnosticDigest @ 0x1000012a0 (32B) */
 
 /*
-* Reconstructed Procedure: -[UltronSentinelCore initWithKey:rounds:] (@ 0x100000a18, 272 bytes, 4 basic blocks)
+* Reconstructed Procedure: -[UltronSentinelCore initWithKey:rounds:] (@ 0x100000a18, 8 bytes, 1 basic blocks)
 * Decompiled SSA Lifter Output:
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // -[UltronSentinelCore initWithKey:rounds:] ───
-     * // Stack Frame: 0B | Basic Blocks: 4 | Natural Loops: 0 | Post-Dom Nodes: 4 | Callers: 0
      * // @interface UltronSentinelCore : NSObject {
      * //     uint64_t _reactorPower; // +0x08 (8B)
      * //     int32_t _encryptionRounds; // +0x10 (4B)
@@ -108,70 +107,7 @@ u64 re_objc_msgSend_reactorDiagnosticDigest(u64 arg0, u64 arg1, u64 arg2); /* _o
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore initWithKey:rounds:] {
-     *     uint8_t stack_buf_8[8]; // [fp - 0x8]
-     *     uint8_t stack_buf_20[16]; // [sp + 0x20]
-     *     r8 = &stack_buf_8; // [fp - 0x8]
-     *     ((UltronContext *)sp)->payload_length = r8;
-     *     *([x29, #-8]) = r0;
-     *     *([x29, #-0x10]) = r1;
-     *     *([x29, #-0x18]) = r2;
-     *     *([x29, #-0x1c]) = r3;
-     *     r8 = *([x29, #-8]);
-     *     *([x29, #-8]) = 0;
-     *     r0 = &stack_buf_20; // [sp + 0x20]
-     *     ((UltronContext *)sp)->crypto_nonce = r8;
-     *     r8 = classRef_UltronSentinelCore; // [0x1000040d8]
-     *     ((UltronSentinelCore *)sp)->_coreName = r8;
-     *     r1 = @selector(init); // [0x100008190]
-     *     r0 = [&stack_buf_20 init]; // @selector(init)
-     *     r1 = r0;
-     *     r0 = ((UltronContext *)sp)->payload_length;
-     *     r8 = r1;
-     *     *([x29, #-8]) = r8;
-     *     r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, r0);
-     *     r8 = *([x29, #-8]);
-     *     if (r8 != 0) {
-     *         // [Block 0x100000a80 | PostDom: 0x100000a84]
-     *         goto loc_100000a84;
-     *         // [Block 0x100000a84 | PostDom: 0x100000aec]
-     *         r8 = *([x29, #-0x18]);
-     *         r9 = *([x29, #-8]);
-     *         ((UltronContext *)r9)->crypto_nonce = r8;
-     *         r8 = *([x29, #-0x1c]);
-     *         r9 = *([x29, #-8]);
-     *         ((UltronContext *)r9)->target_buffer = r8;
-     *         r9 = *([x29, #-8]);
-     *         r8 = 0x2328;
-     *         ((UltronContext *)r9)->session_flags = r8;
-     *         r9 = *([x29, #-8]);
-     *         r8 = 1;
-     *         r8 = 0xa5a50001; // movk lsl #16
-     *         ((UltronSentinelCore *)r9)->_statusFlags = r8;
-     *         r10 = *([x29, #-0x1c]);
-     *         r9 = 2;
-     *         r8 = 5;
-     *         r10 = r10 - 8;
-     *         r8 = (r10 > 0) ? r8 : r9;
-     *         r9 = *([x29, #-8]);
-     *         ((UltronContext *)r9)->payload_length = r8;
-     *         r8 = *([x29, #-8]);
-     *         r0 = r8 + 0x28;
-     *         r1 = @"ULTRON-SENTINEL-MK9"; // 0x100004088
-     *         r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, @"ULTRON-SENTINEL-MK9");
-     *         goto loc_100000aec;
-     *     }
-     *     // [Block 0x100000aec | PostDom: exit]
-     *     r8 = &stack_buf_8; // [fp - 0x8]
-     *     ((UltronContext *)sp)->session_flags = r8;
-     *     r0 = *([x29, #-8]);
-     *     r8 = *([x8, #0x38]);
-     *     r0 = x8(r0, @"ULTRON-SENTINEL-MK9");
-     *     r1 = r0;
-     *     r0 = ((UltronContext *)sp)->session_flags;
-     *     ((UltronContext *)sp)->target_buffer = r1;
-     *     r1 = 0;
-     *     r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, 0);
-     *     r0 = ((UltronContext *)sp)->target_buffer;
+     *     r0 = 0x1337;
      *     return r0;
      * }
 */
@@ -180,7 +116,22 @@ u64 state = arg0 ^ 0x100000a18ULL;
 for (u64 i = 0; i < (arg1 & 0x0fULL); ++i) {
 state = ((state << 5) | (state >> 59)) ^ (arg2 + i + 0x0ULL);
 }
-return state + 0x9ULL;
+return state + 0x0ULL;
+}
+
+/*
+* Reconstructed Procedure: sub_100000a20 (@ 0x100000a20, 264 bytes, 1 basic blocks)
+* Decompiled SSA Lifter Output:
+     * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // sub_100000a20 ───
+     * int64_t sub_100000a20(int64_t arg0, int64_t arg1) {
+     * }
+*/
+u64 re_sub_100000a20(u64 arg0, u64 arg1, u64 arg2) {
+u64 state = arg0 ^ 0x100000a20ULL;
+for (u64 i = 0; i < (arg1 & 0x0fULL); ++i) {
+state = ((state << 5) | (state >> 59)) ^ (arg2 + i + 0x0ULL);
+}
+return state + 0x0ULL;
 }
 
 /*
@@ -219,36 +170,36 @@ return state + 0x9ULL;
      *     r8 = *([sp, #0x38]);
      *     r8 = ((UltronContext *)r8)->crypto_nonce;
      *     r9 = *([sp, #0x38]);
-     *     r9 = ((UltronContext *)r9)->session_flags;
+     *     r9 = ((AutoStruct_EntryFrame *)r9)->saved_lr;
      *     r8 = r8 ^ r9;
-     *     ((UltronContext *)sp)->payload_length = r8;
+     *     ((AutoStruct_EntryFrame *)sp)->status_code_18 = r8;
      *     ((UltronSentinelCore *)sp)->_statusFlags = 0;
      *     goto loc_100000b5c;
      *     // [NATURAL WHILE-LOOP HEADER @ 0x100000b5c (Nesting #1)]
      *     r8 = ((UltronSentinelCore *)sp)->_statusFlags;
      *     r9 = *([sp, #0x38]);
-     *     r9 = ((UltronContext *)r9)->target_buffer;
+     *     r9 = ((AutoStruct_EntryFrame *)r9)->local_var_10;
      *     r8 = r8 - r9;
      *     while (r8 < 0) {
      *         // [Block 0x100000b70 | PostDom: 0x100000b74]
      *         goto loc_100000b74;
      *         // [Block 0x100000b74 | PostDom: 0x100000b7c]
-     *         ((UltronContext *)sp)->session_flags = 0;
+     *         ((AutoStruct_EntryFrame *)sp)->saved_lr = 0;
      *         goto loc_100000b7c;
      *         // [NATURAL WHILE-LOOP HEADER @ 0x100000b7c (Nesting #2)]
-     *         r8 = ((UltronContext *)sp)->session_flags;
+     *         r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *         r9 = ((UltronContext *)sp)->crypto_nonce;
      *         r8 = r8 - r9;
      *         while (r8 < 0) {
      *             // [Block 0x100000b8c | PostDom: 0x100000b90]
      *             goto loc_100000b90;
      *             // [Block 0x100000b90 | PostDom: 0x100000bd0]
-     *             r9 = ((UltronContext *)sp)->payload_length;
-     *             r8 = ((UltronContext *)sp)->payload_length;
+     *             r9 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
+     *             r8 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *             /* 0x100000b98: lsr x8, x8, #0x39 * /
      *             r8 = r8 | r9;
      *             r9 = ((UltronSentinelCore *)sp)->_coreName;
-     *             r10 = ((UltronContext *)sp)->session_flags;
+     *             r10 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *             r9 = *([x9, x10]);
      *             r8 = r8 ^ r9;
      *             r9 = ((UltronSentinelCore *)sp)->_statusFlags;
@@ -257,12 +208,12 @@ return state + 0x9ULL;
      *             /* 0x100000bbc: mul w9, w9, w10 * /
      *             r9 = r9;
      *             r8 = r8 ^ r9;
-     *             ((UltronContext *)sp)->payload_length = r8;
+     *             ((AutoStruct_EntryFrame *)sp)->status_code_18 = r8;
      *             goto loc_100000bd0;
      *             // [Block 0x100000bd0 | PostDom: exit]
-     *             r8 = ((UltronContext *)sp)->session_flags;
+     *             r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *             r8++;
-     *             ((UltronContext *)sp)->session_flags = r8;
+     *             ((AutoStruct_EntryFrame *)sp)->saved_lr = r8;
      *         } // end while-loop -> 0x100000b7c
      *         // [Block 0x100000be0 | PostDom: 0x100000be4]
      *         goto loc_100000be4;
@@ -276,7 +227,7 @@ return state + 0x9ULL;
      *     r8 = ((UltronSentinelCore *)r9)->_statusFlags;
      *     r8 = r8 | 0x10;
      *     ((UltronSentinelCore *)r9)->_statusFlags = r8;
-     *     r0 = ((UltronContext *)sp)->payload_length;
+     *     r0 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *     return r0;
      * }
 */
@@ -316,7 +267,7 @@ return state + 0x3ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id +[UltronSentinelCore sentinelProtocolVersion] {
-     *     ((UltronContext *)sp)->session_flags = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r0;
      *     *([sp]) = r1;
      *     r0 = @"ULTRON-OBJC-PROTOCOL-v4.2"; // 0x1000040a8
      *     goto loc_1000011cc;
@@ -358,10 +309,10 @@ return state + 0x2ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore securityLevel] {
-     *     ((UltronContext *)sp)->session_flags = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r0;
      *     *([sp]) = r1;
-     *     r8 = ((UltronContext *)sp)->session_flags;
-     *     r0 = ((UltronContext *)r8)->payload_length;
+     *     r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
+     *     r0 = ((AutoStruct_EntryFrame *)r8)->status_code_18;
      *     return r0;
      * }
 */
@@ -401,12 +352,12 @@ return state + 0x1ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore setSecurityLevel:] {
-     *     ((UltronContext *)sp)->payload_length = r0;
-     *     ((UltronContext *)sp)->target_buffer = r1;
+     *     ((AutoStruct_EntryFrame *)sp)->status_code_18 = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->local_var_10 = r1;
      *     *([sp, #0xc]) = r2;
      *     r8 = *([sp, #0xc]);
-     *     r9 = ((UltronContext *)sp)->payload_length;
-     *     ((UltronContext *)r9)->payload_length = r8;
+     *     r9 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
+     *     ((AutoStruct_EntryFrame *)r9)->status_code_18 = r8;
      *     return r0;
      * }
 */
@@ -446,9 +397,9 @@ return state + 0x1ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore cipherKey] {
-     *     ((UltronContext *)sp)->session_flags = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r0;
      *     *([sp]) = r1;
-     *     r8 = ((UltronContext *)sp)->session_flags;
+     *     r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *     r0 = ((UltronContext *)r8)->crypto_nonce;
      *     return r0;
      * }
@@ -489,11 +440,11 @@ return state + 0x1ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore setCipherKey:] {
-     *     ((UltronContext *)sp)->payload_length = r0;
-     *     ((UltronContext *)sp)->target_buffer = r1;
-     *     ((UltronContext *)sp)->session_flags = r2;
-     *     r8 = ((UltronContext *)sp)->session_flags;
-     *     r9 = ((UltronContext *)sp)->payload_length;
+     *     ((AutoStruct_EntryFrame *)sp)->status_code_18 = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->local_var_10 = r1;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r2;
+     *     r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
+     *     r9 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *     ((UltronContext *)r9)->crypto_nonce = r8;
      *     return r0;
      * }
@@ -534,9 +485,9 @@ return state + 0x1ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore coreName] {
-     *     ((UltronContext *)sp)->session_flags = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r0;
      *     *([sp]) = r1;
-     *     r8 = ((UltronContext *)sp)->session_flags;
+     *     r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *     r0 = ((UltronSentinelCore *)r8)->_coreName;
      *     return r0;
      * }
@@ -578,11 +529,11 @@ return state + 0x1ULL;
      * // @end
      * id -[UltronSentinelCore setCoreName:] {
      *     *([x29, #-8]) = r0;
-     *     ((UltronContext *)sp)->target_buffer = r1;
-     *     ((UltronContext *)sp)->session_flags = r2;
-     *     r1 = ((UltronContext *)sp)->target_buffer;
+     *     ((AutoStruct_EntryFrame *)sp)->local_var_10 = r1;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r2;
+     *     r1 = ((AutoStruct_EntryFrame *)sp)->local_var_10;
      *     r0 = *([x29, #-8]);
-     *     r2 = ((UltronContext *)sp)->session_flags;
+     *     r2 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *     r3 = 0x28;
      *     r0 = flirt_dyld_stub_binder_trampoline_11e4(r0, r1);
      *     return r0;
@@ -624,9 +575,9 @@ return state + 0x3ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore .cxx_destruct] {
-     *     ((UltronContext *)sp)->session_flags = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r0;
      *     *([sp]) = r1;
-     *     r8 = ((UltronContext *)sp)->session_flags;
+     *     r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *     r0 = r8 + 0x28;
      *     r1 = 0;
      *     r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, 0);
@@ -669,14 +620,14 @@ return state + 0x4ULL;
      * // + (id)sentinelProtocolVersion; // IMP: 0x100000c10
      * // @end
      * id -[UltronSentinelCore reactorDiagnosticDigest] {
-     *     ((UltronContext *)sp)->session_flags = r0;
+     *     ((AutoStruct_EntryFrame *)sp)->saved_lr = r0;
      *     *([sp]) = r1;
-     *     r8 = ((UltronContext *)sp)->session_flags;
-     *     r8 = ((UltronContext *)r8)->session_flags;
-     *     r9 = ((UltronContext *)sp)->session_flags;
+     *     r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
+     *     r8 = ((AutoStruct_EntryFrame *)r8)->saved_lr;
+     *     r9 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *     r9 = ((UltronContext *)r9)->crypto_nonce;
      *     r8 = r8 ^ r9;
-     *     r9 = ((UltronContext *)sp)->session_flags;
+     *     r9 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *     r9 = ((UltronSentinelCore *)r9)->_statusFlags;
      *     r0 = r8 ^ r9;
      *     return r0;
@@ -694,7 +645,7 @@ return state + 0x1ULL;
 * Reconstructed Procedure: _matrix_nested_solver (@ 0x100000d64, 472 bytes, 32 basic blocks)
 * Decompiled SSA Lifter Output:
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // _matrix_nested_solver ───
-     * // Stack Frame: 0B | Basic Blocks: 32 | Natural Loops: 3 | Post-Dom Nodes: 32 | Callers: 1
+     * // Stack Frame: 0B | Basic Blocks: 32 | Natural Loops: 3 | Post-Dom Nodes: 32 | Callers: 2
      * int64_t _matrix_nested_solver(int64_t arg0, int64_t arg1) {
      *     *([sp, #0x30]) = r0;
      *     *([sp, #0x2c]) = r1;
@@ -726,10 +677,10 @@ return state + 0x1ULL;
      *     goto loc_100000dbc;
      *     // [NATURAL LOOP HEADER @ 0x100000dbc (Nesting #1)]
      *     do {
-     *         ((UltronContext *)sp)->payload_length = 0;
+     *         ((AutoStruct_EntryFrame *)sp)->status_code_18 = 0;
      *         goto loc_100000dc4;
      *         // [NATURAL WHILE-LOOP HEADER @ 0x100000dc4 (Nesting #2)]
-     *         r8 = ((UltronContext *)sp)->payload_length;
+     *         r8 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *         r9 = *([sp, #0x2c]);
      *         r8 = r8 - r9;
      *         while (r8 < 0) {
@@ -747,17 +698,17 @@ return state + 0x1ULL;
      *                 goto loc_100000df4;
      *                 // [Block 0x100000df4 | PostDom: 0x100000ee0]
      *                 r8 = *([sp, #0x30]);
-     *                 r9 = ((UltronContext *)sp)->payload_length;
+     *                 r9 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *                 r10 = ((UltronSentinelCore *)sp)->_coreName;
      *                 /* 0x100000e00: mul w9, w9, w10 * /
      *                 r10 = ((UltronSentinelCore *)sp)->_statusFlags;
      *                 r9 = r9 + r10;
      *                 r8 = *([x8, w9, sxtw #3]);
-     *                 ((UltronContext *)sp)->session_flags = r8;
-     *                 r8 = ((UltronContext *)sp)->session_flags;
+     *                 ((AutoStruct_EntryFrame *)sp)->saved_lr = r8;
+     *                 r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *                 r9 = *([sp, #0x1c]);
      *                 r8 = r8 + r9;
-     *                 r9 = ((UltronContext *)sp)->payload_length;
+     *                 r9 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *                 r8 = r8 + r9;
      *                 r9 = ((UltronSentinelCore *)sp)->_statusFlags;
      *                 r8 = r8 + r9;
@@ -779,7 +730,7 @@ return state + 0x1ULL;
      *                 // [Block 0x100000e5c | PostDom: 0x100000ecc]
      *                 goto loc_100000ecc;
      *                 // [Block 0x100000e60 | PostDom: 0x100000ee0]
-     *                 r8 = ((UltronContext *)sp)->session_flags;
+     *                 r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *                 r9 = 0x55aa;
      *                 r9 = 0x55aa55aa; // movk lsl #16
      *                 r9 = r8 ^ r9;
@@ -788,7 +739,7 @@ return state + 0x1ULL;
      *                 ((UltronContext *)sp)->crypto_nonce = r8;
      *                 goto loc_100000ee0;
      *                 // [Block 0x100000e80 | PostDom: 0x100000ee0]
-     *                 r8 = ((UltronContext *)sp)->session_flags;
+     *                 r8 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *                 r9 = 0x1f;
      *                 /* 0x100000e88: mul x8, x8, x9 * /
      *                 r9 = ((UltronSentinelCore *)sp)->_statusFlags;
@@ -803,13 +754,13 @@ return state + 0x1ULL;
      *                 /* 0x100000eac: lsr x8, x8, #0x3d * /
      *                 r8 = r8 | r9;
      *                 ((UltronContext *)sp)->crypto_nonce = r8;
-     *                 r9 = ((UltronContext *)sp)->session_flags;
+     *                 r9 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *                 r8 = ((UltronContext *)sp)->crypto_nonce;
      *                 r8 = r8 + r9;
      *                 ((UltronContext *)sp)->crypto_nonce = r8;
      *                 goto loc_100000ee0;
      *                 // [Block 0x100000ecc | PostDom: 0x100000ee0]
-     *                 r9 = ((UltronContext *)sp)->session_flags;
+     *                 r9 = ((AutoStruct_EntryFrame *)sp)->saved_lr;
      *                 r8 = ((UltronContext *)sp)->crypto_nonce;
      *                 r8 = r8 - r9;
      *                 ((UltronContext *)sp)->crypto_nonce = r8;
@@ -822,9 +773,9 @@ return state + 0x1ULL;
      *                 ((UltronSentinelCore *)sp)->_statusFlags = r8;
      *             } // end while-loop -> 0x100000de0
      *             // [Block 0x100000ef4 | PostDom: exit]
-     *             r8 = ((UltronContext *)sp)->payload_length;
+     *             r8 = ((AutoStruct_EntryFrame *)sp)->status_code_18;
      *             r8++;
-     *             ((UltronContext *)sp)->payload_length = r8;
+     *             ((AutoStruct_EntryFrame *)sp)->status_code_18 = r8;
      *         } // end while-loop -> 0x100000dc4
      *         // [Block 0x100000f04 | PostDom: 0x100000f14]
      *         r8 = *([sp, #0x1c]);
@@ -964,10 +915,10 @@ return state + 0xbULL;
      *     r9 = *([sp, #0x68]);
      *     r8 = sp;
      *     *([x8]) = r13;
-     *     ((UltronContext *)r8)->session_flags = r11;
+     *     ((AutoStruct_EntryFrame *)r8)->saved_lr = r11;
      *     r11 = r12;
-     *     ((UltronContext *)r8)->target_buffer = r11;
-     *     ((UltronContext *)r8)->payload_length = r10;
+     *     ((AutoStruct_EntryFrame *)r8)->local_var_10 = r11;
+     *     ((AutoStruct_EntryFrame *)r8)->status_code_18 = r10;
      *     ((UltronContext *)r8)->crypto_nonce = r9;
      *     ((UltronSentinelCore *)r8)->_coreName = r0;
      *     r0 = "[%s] Core=%s Level=%d Digest=0x%llx Matrix=0x%llx Diag=0x%llx\n";
@@ -1068,7 +1019,7 @@ return state + 0x0ULL;
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // flirt_dyld_stub_binder_trampoline_1190 ───
      * int64_t flirt_dyld_stub_binder_trampoline_1190(int64_t arg0, int64_t arg1) {
      *     // [SWITCH DISPATCH DETECTED @ 0x100001190: Jump-Table on r16 (computed table, default -> default)]
-     *     r16 = ((UltronContext *)r16)->session_flags;
+     *     r16 = ((AutoStruct_EntryFrame *)r16)->saved_lr;
      *     /* 0x100001198: br x16 * /
      * }
 */
@@ -1086,7 +1037,7 @@ return state + 0x0ULL;
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // flirt_dyld_stub_binder_trampoline_119c ───
      * int64_t flirt_dyld_stub_binder_trampoline_119c(int64_t arg0, int64_t arg1) {
      *     // [SWITCH DISPATCH DETECTED @ 0x10000119c: Jump-Table on r16 (computed table, default -> default)]
-     *     r16 = ((UltronContext *)r16)->target_buffer;
+     *     r16 = ((AutoStruct_EntryFrame *)r16)->local_var_10;
      *     /* 0x1000011a4: br x16 * /
      * }
 */
@@ -1232,7 +1183,7 @@ return state + 0x0ULL;
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // _objc_msgSend$UTF8String ───
      * int64_t _objc_msgSend$UTF8String(int64_t arg0, int64_t arg1) {
      *     r1 = @selector(UTF8String); // [0x100008198]
-     *     r16 = ((UltronContext *)r16)->payload_length;
+     *     r16 = ((AutoStruct_EntryFrame *)r16)->status_code_18;
      *     /* 0x100001230: br x16 * /
      * }
 */
@@ -1250,7 +1201,7 @@ return state + 0x0ULL;
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // _objc_msgSend$coreName ───
      * int64_t _objc_msgSend$coreName(int64_t arg0, int64_t arg1) {
      *     r1 = @selector(coreName); // [0x1000081a0]
-     *     r16 = ((UltronContext *)r16)->payload_length;
+     *     r16 = ((AutoStruct_EntryFrame *)r16)->status_code_18;
      *     /* 0x100001250: br x16 * /
      * }
 */
@@ -1268,7 +1219,7 @@ return state + 0x0ULL;
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // _objc_msgSend$decryptPayload:length: ───
      * int64_t _objc_msgSend$decryptPayload:length:(int64_t arg0, int64_t arg1) {
      *     r1 = @selector(decryptPayload:length:); // [0x1000081a8]
-     *     r16 = ((UltronContext *)r16)->payload_length;
+     *     r16 = ((AutoStruct_EntryFrame *)r16)->status_code_18;
      *     /* 0x100001270: br x16 * /
      * }
 */
@@ -1286,7 +1237,7 @@ return state + 0x0ULL;
      * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // _objc_msgSend$initWithKey:rounds: ───
      * int64_t _objc_msgSend$initWithKey:rounds:(int64_t arg0, int64_t arg1) {
      *     r1 = @selector(initWithKey:rounds:); // [0x1000081b0]
-     *     r16 = ((UltronContext *)r16)->payload_length;
+     *     r16 = ((AutoStruct_EntryFrame *)r16)->status_code_18;
      *     /* 0x100001290: br x16 * /
      * }
 */
@@ -1298,26 +1249,8 @@ state = ((state << 5) | (state >> 59)) ^ (arg2 + i + 0x0ULL);
 return state + 0x0ULL;
 }
 
-/*
-* Reconstructed Procedure: _objc_msgSend$reactorDiagnosticDigest (@ 0x1000012a0, 32 bytes, 1 basic blocks)
-* Decompiled SSA Lifter Output:
-     * // ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // _objc_msgSend$reactorDiagnosticDigest ───
-     * int64_t _objc_msgSend$reactorDiagnosticDigest(int64_t arg0, int64_t arg1) {
-     *     r1 = @selector(reactorDiagnosticDigest); // [0x1000081b8]
-     *     r16 = ((UltronContext *)r16)->payload_length;
-     *     /* 0x1000012b0: br x16 * /
-     * }
-*/
-u64 re_objc_msgSend_reactorDiagnosticDigest(u64 arg0, u64 arg1, u64 arg2) {
-u64 state = arg0 ^ 0x1000012a0ULL;
-for (u64 i = 0; i < (arg1 & 0x0fULL); ++i) {
-state = ((state << 5) | (state >> 59)) ^ (arg2 + i + 0x0ULL);
-}
-return state + 0x0ULL;
-}
-
 int main(int argc, char **argv) {
-printf("[ULTRON RECONSTRUCTED BINARY] Target: ultron_objc_sample | Format: Mach-O 64-bit | Procs: 33\n");
+printf("[ULTRON RECONSTRUCTED BINARY] Target: ultron_objc_sample | Format: Mach-O 64-bit | Procs: 34\n");
     u64 res = re_UltronSentinelCore_initWithKey_rounds(0x1000ULL, 4ULL, 0x42ULL);
 printf("[ULTRON] Executed entry subroutine '-[UltronSentinelCore initWithKey:rounds:]' (@ 0x100000a18) -> 0x%llx\n", (unsigned long long)res);
     return 0;

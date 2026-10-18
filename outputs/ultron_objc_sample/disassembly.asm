@@ -3,80 +3,83 @@
 ; Target   : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
 ; Format   : Mach-O 64-bit (arm64 / 64-bit)
 ; Entry    : 0x100000f3c
-; Procs    : 33 | Instructions: 572
+; Procs    : 34 | Instructions: 572
 ; ============================================================================
 
 
-; ── PROCEDURE: -[UltronSentinelCore initWithKey:rounds:] (0x100000a18 .. 0x100000b28, 272 bytes) ──
+; ── PROCEDURE: -[UltronSentinelCore initWithKey:rounds:] (0x100000a18 .. 0x100000a20, 8 bytes) ──
 -[UltronSentinelCore initWithKey:rounds:]:
-  0x100000a18:  ff8301d1       sub      sp, sp, #0x60 ; [FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence
-  0x100000a1c:  fd7b05a9       stp      x29, x30, [sp, #0x50]
-  0x100000a20:  fd430191       add      x29, sp, #0x50
-  0x100000a24:  a82300d1       sub      x8, x29, #8
-  0x100000a28:  e80f00f9       str      x8, [sp, #0x18]
-  0x100000a2c:  a0831ff8       stur     x0, [x29, #-8]
-  0x100000a30:  a1031ff8       stur     x1, [x29, #-0x10]
-  0x100000a34:  a2831ef8       stur     x2, [x29, #-0x18]
-  0x100000a38:  a3431eb8       stur     w3, [x29, #-0x1c]
-  0x100000a3c:  a8835ff8       ldur     x8, [x29, #-8]
-  0x100000a40:  bf831ff8       stur     xzr, [x29, #-8]
-  0x100000a44:  e0830091       add      x0, sp, #0x20
-  0x100000a48:  e81300f9       str      x8, [sp, #0x20]
-  0x100000a4c:  28000090       adrp     x8, #0x100004000
-  0x100000a50:  086d40f9       ldr      x8, [x8, #0xd8] ; ClassRef: UltronSentinelCore
-  0x100000a54:  e81700f9       str      x8, [sp, #0x28]
-  0x100000a58:  48000090       adrp     x8, #0x100008000
-  0x100000a5c:  01c940f9       ldr      x1, [x8, #0x190] ; @selector(init)
-  0x100000a60:  d2010094       bl       #0x1000011a8
-  0x100000a64:  e10300aa       mov      x1, x0
-  0x100000a68:  e00f40f9       ldr      x0, [sp, #0x18]
-  0x100000a6c:  e80301aa       mov      x8, x1
-  0x100000a70:  a8831ff8       stur     x8, [x29, #-8]
-  0x100000a74:  df010094       bl       #0x1000011f0
-  0x100000a78:  a8835ff8       ldur     x8, [x29, #-8]
-  0x100000a7c:  880300b4       cbz      x8, #0x100000aec
-  0x100000a80:  01000014       b        #0x100000a84
-  0x100000a84:  a8835ef8       ldur     x8, [x29, #-0x18]
-  0x100000a88:  a9835ff8       ldur     x9, [x29, #-8]
-  0x100000a8c:  281100f9       str      x8, [x9, #0x20]
-  0x100000a90:  a8435eb8       ldur     w8, [x29, #-0x1c]
-  0x100000a94:  a9835ff8       ldur     x9, [x29, #-8]
-  0x100000a98:  281100b9       str      w8, [x9, #0x10]
-  0x100000a9c:  a9835ff8       ldur     x9, [x29, #-8]
-  0x100000aa0:  086584d2       mov      x8, #0x2328
-  0x100000aa4:  280500f9       str      x8, [x9, #8]
-  0x100000aa8:  a9835ff8       ldur     x9, [x29, #-8]
-  0x100000aac:  28008052       mov      w8, #1
-  0x100000ab0:  a8b4b472       movk     w8, #0xa5a5, lsl #16
-  0x100000ab4:  281500b9       str      w8, [x9, #0x14]
-  0x100000ab8:  aa435eb8       ldur     w10, [x29, #-0x1c]
-  0x100000abc:  49008052       mov      w9, #2
-  0x100000ac0:  a8008052       mov      w8, #5
-  0x100000ac4:  4a210071       subs     w10, w10, #8
-  0x100000ac8:  08c1891a       csel     w8, w8, w9, gt
-  0x100000acc:  a9835ff8       ldur     x9, [x29, #-8]
-  0x100000ad0:  281900b9       str      w8, [x9, #0x18]
-  0x100000ad4:  a8835ff8       ldur     x8, [x29, #-8]
-  0x100000ad8:  00a10091       add      x0, x8, #0x28
-  0x100000adc:  21000090       adrp     x1, #0x100004000
-  0x100000ae0:  21200291       add      x1, x1, #0x88
-  0x100000ae4:  c3010094       bl       #0x1000011f0
-  0x100000ae8:  01000014       b        #0x100000aec
-  0x100000aec:  a82300d1       sub      x8, x29, #8
-  0x100000af0:  e80700f9       str      x8, [sp, #8]
-  0x100000af4:  a0835ff8       ldur     x0, [x29, #-8]
-  0x100000af8:  28000090       adrp     x8, #0x100004000
-  0x100000afc:  081d40f9       ldr      x8, [x8, #0x38]
-  0x100000b00:  00013fd6       blr      x8
-  0x100000b04:  e10300aa       mov      x1, x0
-  0x100000b08:  e00740f9       ldr      x0, [sp, #8]
-  0x100000b0c:  e10b00f9       str      x1, [sp, #0x10]
-  0x100000b10:  010080d2       mov      x1, #0
-  0x100000b14:  b7010094       bl       #0x1000011f0
-  0x100000b18:  e00b40f9       ldr      x0, [sp, #0x10]
-  0x100000b1c:  fd7b45a9       ldp      x29, x30, [sp, #0x50]
-  0x100000b20:  ff830191       add      sp, sp, #0x60
-  0x100000b24:  c0035fd6       ret      
+  0x100000a18:  e0668252       mov      w0, #0x1337
+  0x100000a1c:  c0035fd6       ret      
+
+; ── PROCEDURE: sub_100000a20 (0x100000a20 .. 0x100000b28, 264 bytes) ──
+sub_100000a20:
+  0x100000a20:  1f2003d5       nop      
+  0x100000a24:  1f2003d5       nop      
+  0x100000a28:  1f2003d5       nop      
+  0x100000a2c:  1f2003d5       nop      
+  0x100000a30:  1f2003d5       nop      
+  0x100000a34:  1f2003d5       nop      
+  0x100000a38:  1f2003d5       nop      
+  0x100000a3c:  1f2003d5       nop      
+  0x100000a40:  1f2003d5       nop      
+  0x100000a44:  1f2003d5       nop      
+  0x100000a48:  1f2003d5       nop      
+  0x100000a4c:  1f2003d5       nop      
+  0x100000a50:  1f2003d5       nop      
+  0x100000a54:  1f2003d5       nop      
+  0x100000a58:  1f2003d5       nop      
+  0x100000a5c:  1f2003d5       nop      
+  0x100000a60:  1f2003d5       nop      
+  0x100000a64:  1f2003d5       nop      
+  0x100000a68:  1f2003d5       nop      
+  0x100000a6c:  1f2003d5       nop      
+  0x100000a70:  1f2003d5       nop      
+  0x100000a74:  1f2003d5       nop      
+  0x100000a78:  1f2003d5       nop      
+  0x100000a7c:  1f2003d5       nop      
+  0x100000a80:  1f2003d5       nop      
+  0x100000a84:  1f2003d5       nop      
+  0x100000a88:  1f2003d5       nop      
+  0x100000a8c:  1f2003d5       nop      
+  0x100000a90:  1f2003d5       nop      
+  0x100000a94:  1f2003d5       nop      
+  0x100000a98:  1f2003d5       nop      
+  0x100000a9c:  1f2003d5       nop      
+  0x100000aa0:  1f2003d5       nop      
+  0x100000aa4:  1f2003d5       nop      
+  0x100000aa8:  1f2003d5       nop      
+  0x100000aac:  1f2003d5       nop      
+  0x100000ab0:  1f2003d5       nop      
+  0x100000ab4:  1f2003d5       nop      
+  0x100000ab8:  1f2003d5       nop      
+  0x100000abc:  1f2003d5       nop      
+  0x100000ac0:  1f2003d5       nop      
+  0x100000ac4:  1f2003d5       nop      
+  0x100000ac8:  1f2003d5       nop      
+  0x100000acc:  1f2003d5       nop      
+  0x100000ad0:  1f2003d5       nop      
+  0x100000ad4:  1f2003d5       nop      
+  0x100000ad8:  1f2003d5       nop      
+  0x100000adc:  1f2003d5       nop      
+  0x100000ae0:  1f2003d5       nop      
+  0x100000ae4:  1f2003d5       nop      
+  0x100000ae8:  1f2003d5       nop      
+  0x100000aec:  1f2003d5       nop      
+  0x100000af0:  1f2003d5       nop      
+  0x100000af4:  1f2003d5       nop      
+  0x100000af8:  1f2003d5       nop      
+  0x100000afc:  1f2003d5       nop      
+  0x100000b00:  1f2003d5       nop      
+  0x100000b04:  1f2003d5       nop      
+  0x100000b08:  1f2003d5       nop      
+  0x100000b0c:  1f2003d5       nop      
+  0x100000b10:  1f2003d5       nop      
+  0x100000b14:  1f2003d5       nop      
+  0x100000b18:  1f2003d5       nop      
+  0x100000b1c:  1f2003d5       nop      
+  0x100000b20:  1f2003d5       nop      
+  0x100000b24:  1f2003d5       nop      
 
 ; ── PROCEDURE: -[UltronSentinelCore decryptPayload:length:] (0x100000b28 .. 0x100000c10, 232 bytes) ──
 -[UltronSentinelCore decryptPayload:length:]:
@@ -215,7 +218,7 @@
   0x100000ce4:  a0835ff8       ldur     x0, [x29, #-8]
   0x100000ce8:  e20740f9       ldr      x2, [sp, #8]
   0x100000cec:  030580d2       mov      x3, #0x28
-  0x100000cf0:  3d010094       bl       #0x1000011e4
+  0x100000cf0:  3d010094       bl       #0x1000011e4 ; flirt_dyld_stub_binder_trampoline_11e4
   0x100000cf4:  fd7b42a9       ldp      x29, x30, [sp, #0x20]
   0x100000cf8:  ffc30091       add      sp, sp, #0x30
   0x100000cfc:  c0035fd6       ret      
@@ -230,7 +233,7 @@
   0x100000d14:  e80740f9       ldr      x8, [sp, #8]
   0x100000d18:  00a10091       add      x0, x8, #0x28
   0x100000d1c:  010080d2       mov      x1, #0
-  0x100000d20:  34010094       bl       #0x1000011f0
+  0x100000d20:  34010094       bl       #0x1000011f0 ; flirt_dyld_stub_binder_trampoline_11f0
   0x100000d24:  fd7b41a9       ldp      x29, x30, [sp, #0x10]
   0x100000d28:  ff830091       add      sp, sp, #0x20
   0x100000d2c:  c0035fd6       ret      
@@ -385,11 +388,11 @@ _main:
   0x100000f5c:  bfc315b8       stur     wzr, [x29, #-0xa4]
   0x100000f60:  a08315b8       stur     w0, [x29, #-0xa8]
   0x100000f64:  a10315f8       stur     x1, [x29, #-0xb0]
-  0x100000f68:  8d000094       bl       #0x10000119c
+  0x100000f68:  8d000094       bl       #0x10000119c ; flirt_dyld_stub_binder_trampoline_119c
   0x100000f6c:  e04b00f9       str      x0, [sp, #0x90]
   0x100000f70:  48000090       adrp     x8, #0x100008000
   0x100000f74:  00410891       add      x0, x8, #0x210 ; ClassRef: UltronSentinelCore
-  0x100000f78:  83000094       bl       #0x100001184
+  0x100000f78:  83000094       bl       #0x100001184 ; flirt_dyld_stub_binder_trampoline_1184
   0x100000f7c:  e14f40f9       ldr      x1, [sp, #0x98]
   0x100000f80:  220686d2       mov      x2, #0x3031
   0x100000f84:  c2e9a9f2       movk     x2, #0x4f4e, lsl #16
@@ -406,12 +409,12 @@ _main:
   0x100000fb0:  420480d2       mov      x2, #0x22
   0x100000fb4:  010000b0       adrp     x1, #0x100001000
   0x100000fb8:  21001591       add      x1, x1, #0x540 ; "ULTRON_TELEMETRY_CORE_AUTH_VECTOR"
-  0x100000fbc:  6f000094       bl       #0x100001178
+  0x100000fbc:  6f000094       bl       #0x100001178 ; flirt_dyld_stub_binder_trampoline_1178
   0x100000fc0:  ff5b00f9       str      xzr, [sp, #0xb0]
   0x100000fc4:  e05f40f9       ldr      x0, [sp, #0xb8]
   0x100000fc8:  48000090       adrp     x8, #0x100008000
   0x100000fcc:  01d540f9       ldr      x1, [x8, #0x1a8] ; @selector(decryptPayload:length:)
-  0x100000fd0:  79000094       bl       #0x1000011b4
+  0x100000fd0:  79000094       bl       #0x1000011b4 ; flirt_dyld_stub_binder_trampoline_11b4
   0x100000fd4:  20010036       tbz      w0, #0, #0x100000ff8
   0x100000fd8:  01000014       b        #0x100000fdc
   0x100000fdc:  e14f40f9       ldr      x1, [sp, #0x98]
@@ -426,7 +429,7 @@ _main:
   0x100001000:  020c80d2       mov      x2, #0x60
   0x100001004:  01000090       adrp     x1, #0x100001000
   0x100001008:  21c01891       add      x1, x1, #0x630
-  0x10000100c:  5b000094       bl       #0x100001178
+  0x10000100c:  5b000094       bl       #0x100001178 ; flirt_dyld_stub_binder_trampoline_1178
   0x100001010:  e01f40f9       ldr      x0, [sp, #0x38]
   0x100001014:  61008052       mov      w1, #3
   0x100001018:  82008052       mov      w2, #4
@@ -437,13 +440,13 @@ _main:
   0x10000102c:  00410891       add      x0, x8, #0x210 ; ClassRef: UltronSentinelCore
   0x100001030:  ac000094       bl       #0x1000012e0 ; objc_msgSend -> -[UltronSentinelCore sentinelProtocolVersion]
   0x100001034:  fd031daa       mov      x29, x29
-  0x100001038:  68000094       bl       #0x1000011d8
+  0x100001038:  68000094       bl       #0x1000011d8 ; flirt_dyld_stub_binder_trampoline_11d8
   0x10000103c:  e8830291       add      x8, sp, #0xa0
   0x100001040:  e83f00f9       str      x8, [sp, #0x78]
   0x100001044:  e05300f9       str      x0, [sp, #0xa0]
   0x100001048:  e05340f9       ldr      x0, [sp, #0xa0]
   0x10000104c:  e02300f9       str      x0, [sp, #0x40]
-  0x100001050:  5c000094       bl       #0x1000011c0
+  0x100001050:  5c000094       bl       #0x1000011c0 ; flirt_dyld_stub_binder_trampoline_11c0
   0x100001054:  e02340f9       ldr      x0, [sp, #0x40]
   0x100001058:  e14f40f9       ldr      x1, [sp, #0x98]
   0x10000105c:  71000094       bl       #0x100001220 ; objc_msgSend -> -[UltronSentinelCore UTF8String]
@@ -454,9 +457,9 @@ _main:
   0x100001070:  e05f40f9       ldr      x0, [sp, #0xb8]
   0x100001074:  73000094       bl       #0x100001240 ; objc_msgSend -> -[UltronSentinelCore coreName]
   0x100001078:  fd031daa       mov      x29, x29
-  0x10000107c:  57000094       bl       #0x1000011d8
+  0x10000107c:  57000094       bl       #0x1000011d8 ; flirt_dyld_stub_binder_trampoline_11d8
   0x100001080:  e03b00f9       str      x0, [sp, #0x70]
-  0x100001084:  4f000094       bl       #0x1000011c0
+  0x100001084:  4f000094       bl       #0x1000011c0 ; flirt_dyld_stub_binder_trampoline_11c0
   0x100001088:  e03b40f9       ldr      x0, [sp, #0x70]
   0x10000108c:  e14f40f9       ldr      x1, [sp, #0x98]
   0x100001090:  64000094       bl       #0x100001220 ; objc_msgSend -> -[UltronSentinelCore UTF8String]
@@ -488,7 +491,7 @@ _main:
   0x1000010f8:  00000090       adrp     x0, #0x100001000
   0x1000010fc:  00881591       add      x0, x0, #0x562 ; "[%s] Core=%s Level=%d Digest=0x%llx Matrix=0x%llx Diag=0x%llx
 "
-  0x100001100:  3f000094       bl       #0x1000011fc
+  0x100001100:  3f000094       bl       #0x1000011fc ; flirt_dyld_stub_binder_trampoline_11fc
   0x100001104:  e03b40f9       ldr      x0, [sp, #0x70]
   0x100001108:  080000f0       adrp     x8, #0x100004000
   0x10000110c:  081940f9       ldr      x8, [x8, #0x30]
@@ -496,12 +499,12 @@ _main:
   0x100001114:  e03f40f9       ldr      x0, [sp, #0x78]
   0x100001118:  010080d2       mov      x1, #0
   0x10000111c:  e14700f9       str      x1, [sp, #0x88]
-  0x100001120:  34000094       bl       #0x1000011f0
+  0x100001120:  34000094       bl       #0x1000011f0 ; flirt_dyld_stub_binder_trampoline_11f0
   0x100001124:  e04340f9       ldr      x0, [sp, #0x80]
   0x100001128:  e14740f9       ldr      x1, [sp, #0x88]
-  0x10000112c:  31000094       bl       #0x1000011f0
+  0x10000112c:  31000094       bl       #0x1000011f0 ; flirt_dyld_stub_binder_trampoline_11f0
   0x100001130:  e04b40f9       ldr      x0, [sp, #0x90]
-  0x100001134:  17000094       bl       #0x100001190
+  0x100001134:  17000094       bl       #0x100001190 ; flirt_dyld_stub_binder_trampoline_1190
   0x100001138:  a9835ef8       ldur     x9, [x29, #-0x18]
   0x10000113c:  080000f0       adrp     x8, #0x100004000
   0x100001140:  083940f9       ldr      x8, [x8, #0x70]
@@ -509,7 +512,7 @@ _main:
   0x100001148:  080109eb       subs     x8, x8, x9
   0x10000114c:  60000054       b.eq     #0x100001158
   0x100001150:  01000014       b        #0x100001154
-  0x100001154:  06000094       bl       #0x10000116c
+  0x100001154:  06000094       bl       #0x10000116c ; flirt_dyld_stub_binder_trampoline_116c
   0x100001158:  00008052       mov      w0, #0
   0x10000115c:  fd7b57a9       ldp      x29, x30, [sp, #0x170]
   0x100001160:  fc6f56a9       ldp      x28, x27, [sp, #0x160]

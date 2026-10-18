@@ -3417,6 +3417,9 @@ if proc:
         state.reconstructedProject = data.reconstruction || data.reconstructed_project || null;
         state.deobfuscationReport = data.deobfuscation || null;
         state.timeTravelTrace = data.time_travel_trace || data.time_travel || null;
+        state.autoStructs = data.auto_structs || null;
+        state.taintAudit = data.taint_audit || null;
+        state.neuralVault = data.neural_vault || null;
         state.timeTravelStep = 0;
         state.lastAutoPipelineReport = data;
 
@@ -3541,24 +3544,24 @@ if proc:
       const dirTag = document.getElementById('autoReportOutputDirTag');
       if (dirTag) dirTag.textContent = rep.output_dir || 'outputs/';
 
-      const riskScore = rep.audit?.risk_score ?? 0;
-      const riskLevel = rep.audit?.risk_level || 'LOW';
-      const flirtCount = rep.flirt?.matched_count ?? 0;
       const reconObj = rep.reconstruction || rep.reconstructed_project || {};
       const compiledOk = Boolean(reconObj.compiled_ok);
       const deobfObj = rep.deobfuscation || {};
       const deobfStrings = (deobfObj.stack_strings_recovered || []).length + (deobfObj.xor_operations_detected || []).length;
       const opaqueCount = (deobfObj.opaque_predicates_simplified || []).length + (deobfObj.flattened_dispatchers_recovered || []).length;
+      const autoStructsCount = rep.auto_structs?.recovered_count ?? 0;
+      const taintCount = rep.taint_audit?.taint_chains_count ?? 0;
+      const vaultCount = rep.neural_vault?.total_vault_signatures ?? 0;
 
       const sumBar = document.getElementById('autoReportSummaryBar');
       if (sumBar) {
         sumBar.innerHTML = `
           <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">FORMAT</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${escapeHtml(rep.format || 'BINARY')}</div></div>
-          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">PROCEDURES</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${rep.procedure_count ?? 0}</div></div>
-          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">INSTRUCTIONS</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${rep.instruction_count ?? 0}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">PROCEDURES</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${rep.procedure_count ?? 0} (${vaultCount} VAULT)</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">AUTO-STRUCTS</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${autoStructsCount} RECOVERED</div></div>
           <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">NATIVE RECOMPILE</div><div style="color:${compiledOk ? 'var(--emerald)' : 'var(--tertiary)'};font-weight:600;margin-top:3px;">${compiledOk ? 'CLANG PASS ✓' : 'SOURCE READY'}</div></div>
           <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">DEOBFUSCATED</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${deobfStrings} STR • ${opaqueCount} OPAQUE</div></div>
-          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">RISK & FLIRT</div><div style="color:var(--tertiary);font-weight:600;margin-top:3px;">${riskScore}/100 • ${flirtCount} SIGS</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">TAINT CHAINS</div><div style="color:var(--tertiary);font-weight:600;margin-top:3px;">${taintCount} SOURCE→SINK</div></div>
         `;
       }
 
@@ -4429,12 +4432,115 @@ if proc:
             <button class="fui-btn ${isAi && state.aiRewriteLang === 'c23' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('c23')">🧠 AI C23</button>
             <button class="fui-btn ${isAi && state.aiRewriteLang === 'rust' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('rust')">🦀 AI RUST</button>
             <button class="fui-btn ${isAi && state.aiRewriteLang === 'swift' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('swift')">🦅 AI SWIFT</button>
+            <button class="fui-btn ${state.cPatchEditorOpen ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="toggleCPatchEditor()">✏️ EDIT C TO PATCH BINARY</button>
+            <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runAutoStructRecovery()">🧩 AUTO-STRUCTS</button>
             <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="solveSymbolicPathTo(state.selectedAddress)">🔮 SOLVE SYMBOLIC PATH</button>
             <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="toggleSplitViewMode()">⚡ SPLIT VIEW [V]</button>
           </div>
         </div>
       `;
-      container.innerHTML = `${toolbarHtml}<pre class="pseudocode-pre">${buildInteractiveDecompHtml(code, d)}</pre>`;
+
+      const patchDrawerHtml = state.cPatchEditorOpen ? `
+        <div style="padding:12px 16px;background:rgba(16,18,26,0.96);border-bottom:1px solid var(--neon-cyan);display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-fui);font-size:10.5px;">
+            <span style="color:var(--neon-cyan);font-weight:700;">⚡ EDIT-C-TO-PATCH-BINARY // CLANG -Oz IN-PLACE RECOMPILER &amp; CODESIGN (${escapeHtml(d.procedure?.entry_point || '0x0')})</span>
+            <div style="display:flex;gap:8px;">
+              <button class="fui-btn primary-glow" style="padding:4px 12px;font-size:10px;" onclick="compileAndInjectCPatch()">⚡ COMPILE &amp; INJECT C PATCH INTO BINARY</button>
+              <button class="fui-btn" style="padding:4px 10px;font-size:10px;" onclick="toggleCPatchEditor()">✖ CLOSE</button>
+            </div>
+          </div>
+          <textarea id="cPatchTextarea" class="fui-input" style="width:100%;height:150px;font-family:var(--font-code);font-size:11.5px;text-transform:none;line-height:1.45;padding:10px;">${escapeHtml(state.cPatchDraft || `uint64_t patched_sub(uint64_t arg0, uint64_t arg1) {\n    // Edit C logic below; Clang -Oz compiles & injects machine bytes into ${d.procedure?.name || 'procedure'}\n    return 1;\n}`)}</textarea>
+          ${state.lastCPatchResult ? `
+            <div style="padding:8px 10px;background:rgba(16,185,129,0.12);border:1px solid var(--emerald);font-family:var(--font-code);font-size:10.5px;color:var(--text-hi);">
+              <strong style="color:var(--emerald);">✔ BINARY PATCHED &amp; CODESIGNED:</strong>
+              Injected <code>${state.lastCPatchResult.injected_size}B</code> at <code>${escapeHtml(state.lastCPatchResult.procedure_address)}</code>
+              │ Bytes: <code>${escapeHtml((state.lastCPatchResult.patched_bytes_hex || '').slice(0, 32))}</code>
+              │ Output: <span class="clickable-sym" onclick="revealOutputFileInFinder('${escapeHtml(state.lastCPatchResult.patched_binary_path || '')}')">${escapeHtml(state.lastCPatchResult.patched_binary_path || '')}</span>
+            </div>
+          ` : ''}
+        </div>
+      ` : '';
+
+      const autoStructBanner = state.autoStructs?.header_source && state.showAutoStructsBanner ? `
+        <div style="padding:10px 16px;background:rgba(0,242,255,0.07);border-bottom:1px solid rgba(0,242,255,0.35);font-family:var(--font-code);font-size:11px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <strong style="color:var(--neon-cyan);">🧩 AUTO-RECOVERED MEMORY STRUCTS (${state.autoStructs.recovered_count} SYNTHESIZED → recovered_structs.h)</strong>
+            <button class="fui-btn" style="padding:2px 8px;font-size:9px;" onclick="state.showAutoStructsBanner=false; renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);">HIDE</button>
+          </div>
+          <pre style="margin:0;max-height:140px;overflow-y:auto;color:#d1fae5;font-size:10.5px;">${escapeHtml(state.autoStructs.header_source)}</pre>
+        </div>
+      ` : '';
+
+      container.innerHTML = `${toolbarHtml}${patchDrawerHtml}${autoStructBanner}<pre class="pseudocode-pre">${buildInteractiveDecompHtml(code, d)}</pre>`;
+    }
+
+    function toggleCPatchEditor() {
+      state.cPatchEditorOpen = !state.cPatchEditorOpen;
+      if (state.currentDossier) {
+        renderPseudoMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function compileAndInjectCPatch() {
+      const ta = document.getElementById('cPatchTextarea');
+      const cSource = ta ? ta.value : '';
+      state.cPatchDraft = cSource;
+      showToast('⚡ COMPILING C PATCH VIA CLANG -Oz & INJECTING BYTES...');
+      const resp = await fetch('/api/v4/patch-c-function', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          proc_address: state.selectedProcedure || state.currentDossier?.procedure?.entry_point || null,
+          c_source: cSource,
+        }),
+      });
+      const res = await resp.json();
+      if (res.error) {
+        alert('C Patch Error: ' + res.error);
+        return;
+      }
+      state.lastCPatchResult = res;
+      showToast(`✔ C PATCH INJECTED (${res.injected_size}B) & CODESIGNED!`);
+      await refreshAllData(true);
+    }
+
+    async function runAutoStructRecovery() {
+      showToast('🧩 INFERRING MEMORY STRUCT LAYOUTS ACROSS PROCEDURES...');
+      const resp = await fetch('/api/v4/auto-structs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      state.autoStructs = await resp.json();
+      state.showAutoStructsBanner = true;
+      showToast(`🧩 RECOVERED ${state.autoStructs.recovered_count || 0} MEMORY STRUCTS → recovered_structs.h`);
+      await refreshAllData(true);
+    }
+
+    async function runLiveLldbTelemetry() {
+      showToast('🔴 LAUNCHING NATIVE LLDB KERNEL TELEMETRY BRIDGE...');
+      const resp = await fetch('/api/v4/live-lldb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ break_address: state.selectedProcedure || null }),
+      });
+      state.liveLldbData = await resp.json();
+      showToast(state.liveLldbData.live_lldb_attached ? '🔴 LLDB KERNEL TELEMETRY CAPTURED!' : '⚡ DETERMINISTIC HARDWARE TELEMETRY CAPTURED');
+      if (state.mode === 'emu' && state.currentDossier) {
+        renderEmuMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function syncNeuralSymbolVault() {
+      showToast('🧠 SYNCING STRUCTURAL FINGERPRINTS WITH ~/.ultron/knowledge_vault.json...');
+      const resp = await fetch('/api/v4/neural-vault', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      state.neuralVault = await resp.json();
+      showToast(`🧠 NEURAL VAULT SYNCED: ${state.neuralVault.total_vault_signatures || 0} SIGNATURES (${state.neuralVault.restored_in_session || 0} RESTORED)`);
+      await refreshAllData(true);
     }
 
     async function renderHexMode(container, addr) {
@@ -4520,15 +4626,26 @@ if proc:
         </div>
       `).join('');
 
+      const lldbPanelHtml = state.liveLldbData ? `
+        <div class="fui-module" style="grid-column:1 / -1;border-color:var(--neon-cyan);">
+          <div class="fui-module-title">
+            <span>🔴 LIVE NATIVE LLDB KERNEL TELEMETRY // BREAKPOINT: ${escapeHtml(state.liveLldbData.breakpoint_symbol || 'main')} (${escapeHtml(state.liveLldbData.breakpoint_address || '0x0')})</span>
+            <span class="hud-tag">${state.liveLldbData.live_lldb_attached ? 'LLDB ATTACHED ✓' : 'DETERMINISTIC TRACE'}</span>
+          </div>
+          <pre style="margin:0;max-height:190px;overflow-y:auto;font-family:var(--font-code);font-size:10.5px;color:#e0f2fe;white-space:pre-wrap;">${escapeHtml(state.liveLldbData.lldb_batch_transcript || '')}</pre>
+        </div>
+      ` : '';
+
       container.innerHTML = `
-        <div style="padding:10px 16px;background:rgba(12,13,17,0.95);border-bottom:1px solid rgba(255,255,255,0.3);display:flex;justify-content:space-between;align-items:center;">
-          <div style="display:flex;gap:10px;align-items:center;">
+        <div style="padding:10px 16px;background:rgba(12,13,17,0.95);border-bottom:1px solid rgba(255,255,255,0.3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
             <button class="fui-btn primary-glow" onclick="emuStep('step')">▶ STEP INTO [F7]</button>
             <button class="fui-btn cyan-glow" onclick="emuStep('run')">⏩ RUN TO RET [F9]</button>
             <button class="fui-btn" onclick="emuStep('reset')">↺ RESET CPU</button>
-            <span style="font-family:var(--font-fui);font-size:11px;color:var(--text-mid);margin-left:8px;">
-              INJECT X0/RDI: <input id="emuInitX0" class="fui-input" value="0x100008000" style="width:115px;padding:2px 6px;text-transform:none;" />
-              X1/RSI: <input id="emuInitX1" class="fui-input" value="0x2a" style="width:80px;padding:2px 6px;text-transform:none;" />
+            <button class="fui-btn primary-glow" onclick="runLiveLldbTelemetry()">🔴 LIVE LLDB TELEMETRY</button>
+            <span style="font-family:var(--font-fui);font-size:11px;color:var(--text-mid);margin-left:4px;">
+              INJECT X0/RDI: <input id="emuInitX0" class="fui-input" value="0x100008000" style="width:105px;padding:2px 6px;text-transform:none;" />
+              X1/RSI: <input id="emuInitX1" class="fui-input" value="0x2a" style="width:70px;padding:2px 6px;text-transform:none;" />
             </span>
           </div>
           <div style="font-family:var(--font-fui);font-size:11.5px;">
@@ -4538,6 +4655,7 @@ if proc:
           </div>
         </div>
         <div class="emu-layout">
+          ${lldbPanelHtml}
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="fui-module">
               <div class="fui-module-title"><span>LIVE INSTRUCTION STREAM // PC = ${emu.pc}</span></div>
@@ -4585,19 +4703,25 @@ if proc:
 
     /* ─── MODE 06: ULTRON NEURAL CORE & SECURITY AUDITOR ─── */
     async function renderAuditMode(container, d) {
-      const [auditResp, neuralResp] = await Promise.all([
+      const [auditResp, neuralResp, taintResp, vaultResp] = await Promise.all([
         state.auditData ? Promise.resolve({ json: () => state.auditData }) : fetch('/api/audit'),
         fetch('/api/neural/analyze', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ procedure: d.procedure.entry_point, apply_rename: false }),
         }),
+        state.taintAudit ? Promise.resolve({ json: () => state.taintAudit }) : fetch('/api/v4/taint-audit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }),
+        state.neuralVault ? Promise.resolve({ json: () => state.neuralVault }) : fetch('/api/v4/neural-vault', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }),
       ]);
       state.auditData = await auditResp.json();
       state.neuralReport = await neuralResp.json();
+      state.taintAudit = await taintResp.json();
+      state.neuralVault = await vaultResp.json();
 
       const audit = state.auditData;
       const nr = state.neuralReport;
+      const taint = state.taintAudit || {};
+      const vault = state.neuralVault || {};
 
       const mitCards = Object.entries(audit.mitigations || {}).map(([k, ok]) => `
         <div class="mitigation-card" style="border-color:${ok ? 'var(--emerald)' : 'var(--primary)'};">
@@ -4614,6 +4738,15 @@ if proc:
           <td style="color:#fff;font-weight:700;">${escapeHtml(f.sink)}()</td>
           <td style="color:var(--secondary);">${escapeHtml(f.procedure)} (${f.call_address})</td>
           <td style="color:var(--text-mid);">${escapeHtml(f.description)}</td>
+        </tr>
+      `).join('');
+
+      const taintRowsHtml = (taint.taint_chains || []).map(tc => `
+        <tr class="asm-row" onclick="selectAddress('${tc.sink_address}'); setMode('asm');">
+          <td style="color:var(--primary);font-weight:700;">[${escapeHtml(tc.severity)}] ${escapeHtml(tc.cwe)}</td>
+          <td style="color:var(--neon-cyan);">${escapeHtml(tc.source_origin)}</td>
+          <td style="color:#ffffff;">${escapeHtml((tc.call_chain || []).join(' → '))} → <strong>${escapeHtml(tc.sink_api)}()</strong> @ ${escapeHtml(tc.sink_address)}</td>
+          <td style="color:var(--emerald);font-size:10.5px;">${escapeHtml(tc.defensive_remediation)}</td>
         </tr>
       `).join('');
 
@@ -4642,23 +4775,40 @@ if proc:
 
       container.innerHTML = `
         <div class="audit-layout">
-          <!-- Neural Function Synthesizer Card -->
+          <!-- Neural Function Synthesizer & Persistent Vault Card -->
           <div class="fui-module" style="border-color:var(--primary);background:linear-gradient(90deg,rgba(255,26,53,0.14),rgba(12,13,17,0.92));">
             <div class="fui-module-title">
-              <span>ULTRON NEURAL SUBROUTINE SYNTHESIS // ${escapeHtml(nr.procedure)} (${nr.address})</span>
-              <button class="fui-btn primary-glow" onclick="triggerQuickNeuralRename()">⚡ APPLY NEURAL AUTO-RENAME &amp; SIGNATURE</button>
+              <span>ULTRON NEURAL SUBROUTINE SYNTHESIS &amp; PERSISTENT VAULT // ${escapeHtml(nr.procedure)} (${nr.address})</span>
+              <div style="display:flex;gap:8px;">
+                <button class="fui-btn cyan-glow" onclick="syncNeuralSymbolVault()">🧠 SYNC NEURAL VAULT (${vault.total_vault_signatures ?? 0} SIGS)</button>
+                <button class="fui-btn primary-glow" onclick="triggerQuickNeuralRename()">⚡ APPLY NEURAL AUTO-RENAME &amp; SIGNATURE</button>
+              </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-family:var(--font-code);font-size:12px;">
               <div>
                 <div><span style="color:var(--text-mid);">CLASSIFICATION :</span> <strong style="color:var(--secondary);">${escapeHtml(nr.category)}</strong></div>
                 <div style="margin-top:4px;"><span style="color:var(--text-mid);">SUGGESTED NAME :</span> <strong style="color:var(--emerald);">${escapeHtml(nr.suggested_name)}</strong></div>
                 <div style="margin-top:4px;"><span style="color:var(--text-mid);">INFERRED ABI :</span> <code style="color:var(--tertiary);">${escapeHtml(nr.suggested_signature)}</code></div>
+                <div style="margin-top:4px;"><span style="color:var(--text-mid);">PERSISTENT VAULT :</span> <code style="color:var(--neon-cyan);">${escapeHtml(vault.vault_path || '~/.ultron/knowledge_vault.json')} (${vault.learned_in_session ?? 0} learned / ${vault.restored_in_session ?? 0} restored)</code></div>
               </div>
               <div>
                 <div style="color:var(--text-mid);font-size:11px;margin-bottom:4px;">BEHAVIORAL TELEMETRY :</div>
                 ${(nr.behaviors || []).map(b => `<div style="color:var(--text-hi);font-size:11.5px;">• ${escapeHtml(b)}</div>`).join('')}
               </div>
             </div>
+          </div>
+
+          <!-- Inter-Procedural Source -> Sink Taint Chains -->
+          <div class="fui-module" style="border-color:var(--neon-cyan);">
+            <div class="fui-module-title">
+              <span>☣ INTER-PROCEDURAL DATA-FLOW TAINT AUDITOR (SOURCE → CALL HOPS → SINK // ${taint.taint_chains_count ?? 0} PATHS)</span>
+              <span class="hud-tag">SOURCES: ${taint.sources_discovered ?? 0} • SINKS: ${taint.sinks_discovered ?? 0}</span>
+            </div>
+            <table class="asm-table">
+              <tbody>
+                ${taintRowsHtml || '<tr><td colspan="4" style="color:var(--emerald);padding:8px;">✔ Zero untrusted source-to-sink taint propagation paths detected across call graph.</td></tr>'}
+              </tbody>
+            </table>
           </div>
 
           <!-- Binary Hardening Mitigations -->
