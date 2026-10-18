@@ -1193,6 +1193,9 @@
           <button class="fui-btn" style="padding:2px 8px;font-size:9px;border-color:rgba(255,150,0,0.5);color:#ffb84d;" onclick="event.stopPropagation(); triggerProcessBurst()">
             ⚡ PULSE PROCESS
           </button>
+          <button class="fui-btn" id="launchCloudToggleBtn" style="padding:2px 8px;font-size:9px;border-color:rgba(0,242,255,0.55);color:#00f2ff;" title="Activer/Désactiver le nuage de particules sphérique 3D temps réel 60 FPS [Raccourci: P]" onclick="event.stopPropagation(); toggle3DCloud()">
+            ☁ 3D CLOUD: ON
+          </button>
         </div>
 
         <div style="font-family:var(--font-fui);font-size:11px;color:var(--primary);letter-spacing:4px;margin-bottom:4px;" id="launchProtocolBanner">
@@ -1205,7 +1208,7 @@
           ⬢ ENGAGE DISASSEMBLE // LAUNCH COCKPIT
         </button>
         <div style="margin-top:10px;font-family:var(--font-fui);font-size:10.5px;color:var(--text-mid);letter-spacing:1.5px;">
-          SURVOLER / GLISSER LE NUAGE 3D • <strong style="color:#ff9d00;">[ENTRÉE]</strong> POUR LANCER LE COCKPIT
+          SURVOLER / GLISSER LE NUAGE 3D • <strong style="color:#00f2ff;">[P]</strong> CLOUD ON/OFF • <strong style="color:#ff9d00;">[ENTRÉE]</strong> POUR LANCER LE COCKPIT
         </div>
       </div>
 
@@ -1232,10 +1235,13 @@
         <div id="launchTargetDeck" style="max-height:175px;overflow-y:auto;margin-bottom:10px;"></div>
 
         <div style="display:flex;gap:6px;margin-top:8px;">
-          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin binaire personnalisé (/bin/ls, .app, .dylib)…" />
+          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin binaire (.app, .framework, .dylib, ELF, PE, .wasm, .a)…" />
           <select id="launchArchSelect" class="fui-select" onchange="document.getElementById('launchSelectedArchBadge').textContent=this.value.toUpperCase()">
             <option value="arm64">ARM64</option>
+            <option value="arm32">ARM32</option>
             <option value="x86_64">X86_64</option>
+            <option value="x86">X86 (32-BIT)</option>
+            <option value="wasm32">WASM32</option>
           </select>
         </div>
       </div>
@@ -1243,8 +1249,8 @@
 
     <div class="launch-bottom-bar">
       <span>STATUS: <strong style="color:var(--emerald);">ALL SYSTEMS NOMINAL // NO STRINGS ON ME</strong></span>
-      <span>ENGINE: <strong style="color:var(--secondary);">CLEAN-ROOM AARCH64 + X86_64 // LLVMSERVICES</strong></span>
-      <span>VERSION: <strong style="color:var(--primary);">2.0.0 AAA EDITION</strong></span>
+      <span>ENGINE: <strong style="color:var(--secondary);">MULTI-ARCH MACH-O/ELF/PE/WASM // OBJC 2.0 // DOMINATOR LOOP SSA</strong></span>
+      <span>VERSION: <strong style="color:var(--primary);">2.1.0 RUST NATIVE EDITION</strong></span>
     </div>
   </div>
 
@@ -1273,7 +1279,10 @@
       <select id="presetSelect" class="fui-select" title="Cibles binaires pré-configurées"></select>
       <select id="archSelect" class="fui-select" title="Architecture CPU">
         <option value="arm64">ARCH // AARCH64</option>
+        <option value="arm32">ARCH // ARM32</option>
         <option value="x86_64">ARCH // X86_64</option>
+        <option value="x86">ARCH // X86 (32-BIT)</option>
+        <option value="wasm32">ARCH // WASM32</option>
       </select>
       <button class="fui-btn cyan-glow" onclick="playChirp(660, 0.06); showLaunchPortal()">⬢ LAUNCH DECK</button>
     </div>
@@ -1314,6 +1323,7 @@
       <button class="fui-btn" onclick="undoAction()" id="undoBtn" title="Annuler">↶</button>
       <button class="fui-btn" onclick="redoAction()" id="redoBtn" title="Rétablir">↷</button>
       <button class="fui-btn cyan-glow" onclick="playChirp(680, 0.07); openPythonModal()" title="Console Python Scripting">PY-CORE</button>
+      <button class="fui-btn cyan-glow" onclick="toggle3DCloud()" id="cloud3DBtn" title="Activer/Désactiver le nuage de particules sphérique 3D temps réel 60 FPS [Raccourci: P]">☁ 3D CLOUD: ON</button>
       <button class="fui-btn" onclick="toggle3DCockpit()" id="cockpit3DBtn" title="Activer/Désactiver la courbure 3D du casque HUD">3D HUD: ON</button>
       <button class="fui-btn" onclick="toggleJarvisMode()" id="themeToggleBtn" title="Basculer entre ULTRON (Rouge/Cyan) et J.A.R.V.I.S. (Or/Cyan)">J.A.R.V.I.S.</button>
       <button class="fui-btn primary-glow" onclick="playChirp(920, 0.06); openCommandPalette()" title="Recherche Tactique (⌘K)">⌘K</button>
@@ -1613,6 +1623,47 @@ if proc:
     </div>
   </div>
 
+  <!-- Objective-C 2.0 @interface Header Preview & Method/Ivar Inspector Modal -->
+  <div class="modal-backdrop" id="objcClassModal">
+    <div class="modal" style="width: 820px; max-width: 95vw;">
+      <div class="modal-header">
+        <span id="objcModalTitle">OBJC 2.0 RUNTIME // @INTERFACE HEADER INSPECTOR</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="fui-btn cyan-glow" id="objcModalExportStructBtn" style="padding:4px 10px;font-size:10px;">⚙ IMPORT IVARS TO STRUCT FORGE</button>
+          <button class="fui-btn" onclick="closeModal('objcClassModal')">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
+        <div id="objcModalMetaBar" style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.28);font-family:var(--font-fui);font-size:11px;"></div>
+        <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:12px;">
+          <div class="fui-module" style="padding:10px;">
+            <div class="fui-module-title">
+              <span>SYNTHESIZED @INTERFACE HEADER PREVIEW</span>
+              <span class="hud-tag">CLICK METHODS TO DECOMPILE</span>
+            </div>
+            <pre id="objcModalHeaderPre" style="background:#02050b;padding:12px;border:1px solid rgba(0,240,255,0.22);font-family:var(--font-code);font-size:11.8px;line-height:1.65;max-height:360px;overflow:auto;white-space:pre-wrap;user-select:text;"></pre>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="fui-module" style="padding:10px;flex:1;">
+              <div class="fui-module-title">
+                <span>DISPATCH TABLE // METHODS (IMP)</span>
+                <span id="objcModalMethodCount" style="color:var(--secondary);font-family:var(--font-fui);">0</span>
+              </div>
+              <div id="objcModalMethodsList" style="max-height:175px;overflow-y:auto;font-family:var(--font-code);font-size:11px;"></div>
+            </div>
+            <div class="fui-module" style="padding:10px;flex:1;">
+              <div class="fui-module-title">
+                <span>INSTANCE VARIABLES // IVAR OFFSETS</span>
+                <span id="objcModalIvarCount" style="color:var(--tertiary);font-family:var(--font-fui);">0</span>
+              </div>
+              <div id="objcModalIvarsList" style="max-height:145px;overflow-y:auto;font-family:var(--font-code);font-size:11px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="paletteModal">
     <div class="modal">
       <div class="modal-header">
@@ -1635,7 +1686,7 @@ if proc:
       sidebarTab: 'procs',
       procedures: [],
       strings: [],
-      symbols: { imports: [], exports: [], objc_classes: [], types: [] },
+      symbols: { imports: [], exports: [], objc_classes: [], swift_types: [], types: [] },
       currentDossier: null,
       selectedAddress: null,
       selectedProcedure: null,
@@ -1671,6 +1722,7 @@ if proc:
 
     /* ─── UNIFIED INTERACTIVE & PROCESS-REACTIVE 3D ORANGE SPHERICAL PARTICLE CLOUD ENGINE ─── */
     const neuralCloudState = {
+      enabled: true,          // Toggle 60 FPS 3D Holographic Particle Cloud ON / OFF
       energy: 0.35,           // Current smoothed synaptic activity level (0.0 = idle, 1.8 = peak process storm)
       targetEnergy: 0.15,     // Target baseline or active process energy
       activeRequests: 0,      // Count of in-flight backend processes
@@ -1693,6 +1745,34 @@ if proc:
       cloudParticles: null,
       ambientDust: null,
     };
+
+    function toggle3DCloud() {
+      neuralCloudState.enabled = !neuralCloudState.enabled;
+      playChirp(neuralCloudState.enabled ? 880 : 420, 0.07);
+      const on = neuralCloudState.enabled;
+      const topBtn = document.getElementById('cloud3DBtn');
+      if (topBtn) {
+        topBtn.textContent = on ? '☁ 3D CLOUD: ON' : '☁ 3D CLOUD: OFF';
+        topBtn.classList.toggle('cyan-glow', on);
+      }
+      const launchBtn = document.getElementById('launchCloudToggleBtn');
+      if (launchBtn) {
+        launchBtn.textContent = on ? '☁ 3D CLOUD: ON' : '☁ 3D CLOUD: OFF';
+        launchBtn.style.color = on ? '#00f2ff' : '#8a99ad';
+        launchBtn.style.borderColor = on ? 'rgba(0,242,255,0.55)' : 'rgba(138,153,173,0.35)';
+      }
+      if (!on) {
+        ['fuiCanvas', 'core3dCanvas', 'headerOrbCanvas', 'wingCloudCanvas', 'launchCanvas'].forEach(id => {
+          const c = document.getElementById(id);
+          if (c) {
+            const ctx = c.getContext('2d');
+            if (ctx) ctx.clearRect(0, 0, c.width, c.height);
+          }
+        });
+      }
+      updateNeuralActivityHud();
+      showToast(on ? 'Nuage Holographique 3D (60 FPS) : ACTIVÉ' : 'Nuage Holographique 3D (60 FPS) : DÉSACTIVÉ (Mode Économie GPU)');
+    }
 
     function initCloudResources() {
       if (neuralCloudState.sprites) return;
@@ -2126,46 +2206,52 @@ if proc:
           const bh = bgCanvas.height;
           bgCtx.clearRect(0, 0, bw, bh);
 
-          // Wide-field drifting orange ambient dust across 100% of the screen surface
-          bgCtx.save();
-          bgCtx.globalCompositeOperation = 'lighter';
-          const dust = neuralCloudState.ambientDust;
-          const sprites = neuralCloudState.sprites;
-          const driftMul = 1.0 + neuralCloudState.energy * 3.5;
+          if (neuralCloudState.enabled) {
+            // Wide-field drifting orange ambient dust across 100% of the screen surface
+            bgCtx.save();
+            bgCtx.globalCompositeOperation = 'lighter';
+            const dust = neuralCloudState.ambientDust;
+            const sprites = neuralCloudState.sprites;
+            const driftMul = 1.0 + neuralCloudState.energy * 3.5;
 
-          for (let i = 0; i < dust.length; i++) {
-            const d = dust[i];
-            d.x += d.vx * driftMul;
-            d.y += d.vy * driftMul;
-            if (d.x < -0.05) d.x = 1.05;
-            if (d.x > 1.05) d.x = -0.05;
-            if (d.y < -0.05) d.y = 1.05;
-            if (d.y > 1.05) d.y = -0.05;
+            for (let i = 0; i < dust.length; i++) {
+              const d = dust[i];
+              d.x += d.vx * driftMul;
+              d.y += d.vy * driftMul;
+              if (d.x < -0.05) d.x = 1.05;
+              if (d.x > 1.05) d.x = -0.05;
+              if (d.y < -0.05) d.y = 1.05;
+              if (d.y > 1.05) d.y = -0.05;
 
-            const px = (d.x + neuralCloudState.normMouseX * 0.018 * d.z) * bw;
-            const py = (d.y + neuralCloudState.normMouseY * 0.018 * d.z) * bh;
-            const pulse = 0.65 + 0.35 * Math.sin(t * 2.2 + d.phase);
-            bgCtx.globalAlpha = Math.min(0.85, d.alpha * pulse * (0.85 + neuralCloudState.energy * 0.5));
-            const sz = d.size * (1.0 + neuralCloudState.energy * 0.25);
-            bgCtx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
+              const px = (d.x + neuralCloudState.normMouseX * 0.018 * d.z) * bw;
+              const py = (d.y + neuralCloudState.normMouseY * 0.018 * d.z) * bh;
+              const pulse = 0.65 + 0.35 * Math.sin(t * 2.2 + d.phase);
+              bgCtx.globalAlpha = Math.min(0.85, d.alpha * pulse * (0.85 + neuralCloudState.energy * 0.5));
+              const sz = d.size * (1.0 + neuralCloudState.energy * 0.25);
+              bgCtx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
+            }
+            bgCtx.restore();
+
+            // Giant 3D Volumetric Orange Spherical Particle Cloud spanning the background of the entire workspace
+            const bgSphereRadius = Math.min(bw, bh) * 0.44;
+            renderOrangeSphereToCanvas(bgCtx, bw, bh, bgSphereRadius, 2, t, 0.72, false);
           }
-          bgCtx.restore();
-
-          // Giant 3D Volumetric Orange Spherical Particle Cloud spanning the background of the entire workspace
-          const bgSphereRadius = Math.min(bw, bh) * 0.44;
-          renderOrangeSphereToCanvas(bgCtx, bw, bh, bgSphereRadius, 2, t, 0.72, false);
         }
 
         // 2. TOP-LEFT HEADER EMBLEM (#headerOrbCanvas): Miniature 3D Orange Spherical Particle Cloud
         if (orbCtx && orbCanvas) {
           orbCtx.clearRect(0, 0, orbCanvas.width, orbCanvas.height);
-          renderOrangeSphereToCanvas(orbCtx, orbCanvas.width, orbCanvas.height, 44, 6, t * 1.25, 1.15, false);
+          if (neuralCloudState.enabled) {
+            renderOrangeSphereToCanvas(orbCtx, orbCanvas.width, orbCanvas.height, 44, 6, t * 1.25, 1.15, false);
+          }
         }
 
         // 3. RIGHT TELEMETRY WING (#wingCloudCanvas): Dedicated 3D Orange Spherical Particle Cloud
         if (wingCtx && wingCanvas) {
           wingCtx.clearRect(0, 0, wingCanvas.width, wingCanvas.height);
-          renderOrangeSphereToCanvas(wingCtx, wingCanvas.width, wingCanvas.height, 108, 3, t * 1.1, 1.05, false);
+          if (neuralCloudState.enabled) {
+            renderOrangeSphereToCanvas(wingCtx, wingCanvas.width, wingCanvas.height, 108, 3, t * 1.1, 1.05, false);
+          }
         }
 
         // 4. RIGHT WING HARMONIC OSCILLOSCOPE (#waveCanvas)
@@ -2246,12 +2332,12 @@ if proc:
       const bootLines = [
         ['[00.012s] INITIALIZING STARK/SOKOVIA QUANTUM BUS...', 'QUANTUM BUS INIT'],
         ['[00.048s] LOADING NATIVE LLVM CORE: libLLVMServices.dylib [OK]', 'LLVM CORE LOAD'],
-        ['[00.095s] MOUNTING CAPSTONE AARCH64 + X86_64 ENGINE [OK]', 'CAPSTONE MOUNT'],
-        ['[00.142s] CALIBRATING SSA DECOMPILER & PHI (φ) SOLVER [OK]', 'SSA PHI CALIBRATION'],
-        ['[00.189s] ALLOCATING 64KB VIRTUAL STACK FOR CPU EMULATOR [OK]', 'CPU EMULATOR ALLOC'],
+        ['[00.095s] MOUNTING CAPSTONE MULTI-ARCH (ARM64/ARM32/X86/WASM) [OK]', 'CAPSTONE MOUNT'],
+        ['[00.142s] CALIBRATING DOMINATOR LOOP SSA & PHI (φ) SOLVER [OK]', 'SSA PHI CALIBRATION'],
+        ['[00.189s] RECONSTRUCTING OBJECTIVE-C 2.0 RUNTIME METADATA [OK]', 'OBJC 2.0 PARSER'],
         ['[00.234s] LOADING CWE VULNERABILITY & AES S-BOX SIGNATURES [OK]', 'CWE & S-BOX LOAD'],
         ['[00.280s] BIOMETRIC CLEARANCE VERIFIED: LEVEL 10 AVENGER', 'BIOMETRIC LOCK'],
-        ['[00.315s] ULTRON DISASSEMBLE v2.0 READY FOR DEPLOYMENT.', 'SYSTEMS NOMINAL'],
+        ['[00.315s] ULTRON DISASSEMBLE v2.1 RUST READY FOR DEPLOYMENT.', 'SYSTEMS NOMINAL'],
       ];
       const bootBox = document.getElementById('launchBootLog');
       if (bootBox) {
@@ -2312,26 +2398,30 @@ if proc:
         if (portal && !portal.classList.contains('portal-hidden')) {
           lctx.clearRect(0, 0, lCanvas.width, lCanvas.height);
 
-          // Render ambient drifting orange embers across the entire Launch Portal background surface (#launchCanvas)
-          lctx.save();
-          lctx.globalCompositeOperation = 'lighter';
-          const dust = neuralCloudState.ambientDust;
-          const sprites = neuralCloudState.sprites;
-          for (let i = 0; i < dust.length; i++) {
-            const d = dust[i];
-            const px = (d.x + neuralCloudState.normMouseX * 0.02 * d.z) * lCanvas.width;
-            const py = (d.y + neuralCloudState.normMouseY * 0.02 * d.z) * lCanvas.height;
-            const pulse = 0.6 + 0.4 * Math.sin(lt * 2.4 + d.phase);
-            lctx.globalAlpha = Math.min(0.8, d.alpha * pulse * 0.85);
-            const sz = d.size * (1.0 + neuralCloudState.energy * 0.3);
-            lctx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
-          }
-          lctx.restore();
+          if (neuralCloudState.enabled) {
+            // Render ambient drifting orange embers across the entire Launch Portal background surface (#launchCanvas)
+            lctx.save();
+            lctx.globalCompositeOperation = 'lighter';
+            const dust = neuralCloudState.ambientDust;
+            const sprites = neuralCloudState.sprites;
+            for (let i = 0; i < dust.length; i++) {
+              const d = dust[i];
+              const px = (d.x + neuralCloudState.normMouseX * 0.02 * d.z) * lCanvas.width;
+              const py = (d.y + neuralCloudState.normMouseY * 0.02 * d.z) * lCanvas.height;
+              const pulse = 0.6 + 0.4 * Math.sin(lt * 2.4 + d.phase);
+              lctx.globalAlpha = Math.min(0.8, d.alpha * pulse * 0.85);
+              const sz = d.size * (1.0 + neuralCloudState.energy * 0.3);
+              lctx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
+            }
+            lctx.restore();
 
-          // Render flagship 4,400-particle 3D Volumetric Orange Spherical Cloud on #core3dCanvas
-          if (c3ctx && c3d) {
+            // Render flagship 4,400-particle 3D Volumetric Orange Spherical Cloud on #core3dCanvas
+            if (c3ctx && c3d) {
+              c3ctx.clearRect(0, 0, c3d.width, c3d.height);
+              renderOrangeSphereToCanvas(c3ctx, c3d.width, c3d.height, 240, 1, lt, 1.0, true);
+            }
+          } else if (c3ctx && c3d) {
             c3ctx.clearRect(0, 0, c3d.width, c3d.height);
-            renderOrangeSphereToCanvas(c3ctx, c3d.width, c3d.height, 240, 1, lt, 1.0, true);
           }
 
           const clk = document.getElementById('launchClockText');
@@ -2452,13 +2542,15 @@ if proc:
           openCommandPalette();
         }
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
         if (e.key === 'Escape') { e.preventDefault(); navigateBack(); }
         if (e.key === 'n' || e.key === 'N') { e.preventDefault(); promptRename(); }
         if (e.key === ';') { e.preventDefault(); promptComment(); }
         if (e.key === 't' || e.key === 'T') { e.preventDefault(); openStructModal(); }
         if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
         if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
-        if (e.key === 'p' || e.key === 'P') { e.preventDefault(); setMode('pseudo'); }
+        if (e.key === 'p' || e.key === 'P') { e.preventDefault(); toggle3DCloud(); }
+        if (e.key === 'd' || e.key === 'D') { e.preventDefault(); setMode('pseudo'); }
         if (e.key === 'F7') { e.preventDefault(); if (state.mode !== 'emu') setMode('emu'); else emuStep('step'); }
         if (e.key === 'F9') { e.preventDefault(); if (state.mode !== 'emu') setMode('emu'); else emuStep('run'); }
       });
@@ -2617,6 +2709,45 @@ if proc:
             container.appendChild(row);
           });
       } else if (state.sidebarTab === 'symbols') {
+        const objcList = state.symbols.objc_classes || [];
+        objcList
+          .filter(c => !q || c.name.toLowerCase().includes(q) || (c.header_preview || '').toLowerCase().includes(q))
+          .forEach(c => {
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.title = c.header_preview || `@interface ${c.name} — Cliquer pour inspecter l'en-tête Objective-C 2.0 complet`;
+            const superCls = c.super_class || c.superclass || 'NSObject';
+            const allMethods = c.methods || [...(c.instance_methods || []), ...(c.class_methods || [])];
+            const methodCount = allMethods.length;
+            row.innerHTML = `<span class="list-item-name" style="color:#00f2ff;font-weight:700;">[@INTERFACE] ${escapeHtml(c.name)} : ${escapeHtml(superCls)}</span><span class="list-item-addr">${c.ivars ? c.ivars.length : 0} ivars / ${methodCount}m</span>`;
+            row.onclick = () => {
+              playChirp(780, 0.05);
+              openObjcClassModal(c);
+            };
+            container.appendChild(row);
+          });
+        const swiftList = state.symbols.swift_types || [];
+        swiftList
+          .filter(s => {
+            const label = typeof s === 'string' ? s : (s.demangled || s.name || '');
+            return !q || label.toLowerCase().includes(q);
+          })
+          .forEach(s => {
+            const name = typeof s === 'string' ? s : (s.demangled || s.name || 'SwiftType');
+            const addr = (typeof s === 'object' && s.address) ? s.address : 'swift5';
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.innerHTML = `<span class="list-item-name" style="color:#ff9e00;font-weight:700;" title="${escapeHtml(name)}">[SWIFT] ${escapeHtml(name)}</span><span class="list-item-addr">${escapeHtml(String(addr))}</span>`;
+            row.onclick = () => {
+              playChirp(720, 0.04);
+              if (typeof s === 'object' && s.address) {
+                loadProcedure(s.address);
+              } else {
+                showToast(`Swift Type Descriptor: ${name}`);
+              }
+            };
+            container.appendChild(row);
+          });
         const typesList = state.symbols.types || [];
         typesList.forEach(t => {
           const row = document.createElement('div');
@@ -3220,6 +3351,161 @@ if proc:
       }
     }
 
+    function jumpToObjcMethod(impHex, label = '') {
+      if (!impHex || impHex === '0x0' || impHex === '0') {
+        showToast('IMP ADDRESS NOT MAPPED');
+        return;
+      }
+      playChirp(860, 0.06);
+      closeModal('objcClassModal');
+      setMode('pseudo');
+      loadProcedure(impHex);
+      showToast(`DECOMPILING OBJC IMP → ${label || impHex} [${impHex}]`);
+    }
+
+    function openObjcClassModal(cls) {
+      if (!cls) return;
+      triggerNeuralActivity(1.1, `OBJC @INTERFACE // ${cls.name}`);
+      const superCls = cls.super_class || cls.superclass || 'NSObject';
+      const clsAddr = typeof cls.address === 'number' ? '0x' + cls.address.toString(16) : (cls.address || '0x0');
+      const instSize = cls.instance_size || 8;
+      const protocols = cls.protocols || [];
+      const ivars = (cls.ivars || []).map(iv => ({
+        name: iv.name || '_ivar',
+        type: iv.ivar_type || iv.type || 'id',
+        offsetNum: typeof iv.offset === 'number' ? iv.offset : (parseInt(iv.offset, 0) || 0),
+        offsetHex: typeof iv.offset === 'number' ? '0x' + iv.offset.toString(16).padStart(2, '0') : String(iv.offset || '0x00'),
+        size: iv.size || 8,
+      }));
+      const properties = cls.properties || [];
+      const rawMethods = cls.methods || [
+        ...(cls.class_methods || []).map(m => ({ ...m, is_class_method: true })),
+        ...(cls.instance_methods || []).map(m => ({ ...m, is_class_method: false })),
+      ];
+      const methods = rawMethods.map(m => {
+        const isCls = Boolean(m.is_class_method);
+        const impHex = typeof m.imp_address === 'number'
+          ? '0x' + m.imp_address.toString(16)
+          : (m.imp_address || m.imp || '0x0');
+        const sig = m.decoded_signature || `${isCls ? '+' : '-'} (id)${m.name || 'method'}`;
+        return {
+          name: m.name || 'method',
+          types: m.types || '',
+          isClass: isCls,
+          impHex,
+          sig,
+        };
+      });
+
+      document.getElementById('objcModalTitle').textContent =
+        `OBJC 2.0 RUNTIME // @interface ${cls.name} : ${superCls}`;
+
+      const protoBadge = protocols.length ? `&lt;${escapeHtml(protocols.join(', '))}&gt;` : 'NO PROTOCOLS';
+      document.getElementById('objcModalMetaBar').innerHTML = `
+        <div>
+          <span style="color:var(--text-mid);">CLASS META:</span>
+          <strong style="color:#00f2ff;margin-left:6px;">${escapeHtml(cls.name)}</strong>
+          <span style="color:var(--text-mid);margin:0 6px;">:</span>
+          <span style="color:var(--violet);">${escapeHtml(superCls)}</span>
+          <span style="color:var(--tertiary);margin-left:8px;">${protoBadge}</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <span>ADDR: <strong style="color:var(--secondary);">${escapeHtml(clsAddr)}</strong></span>
+          <span>INSTANCE SIZE: <strong style="color:var(--emerald);">${instSize} B</strong></span>
+          <span>IVARS: <strong>${ivars.length}</strong></span>
+          <span>METHODS: <strong>${methods.length}</strong></span>
+        </div>
+      `;
+
+      // Build syntax-highlighted @interface ... @end preview with clickable methods
+      const protoStr = protocols.length ? ` &lt;<span style="color:var(--tertiary);">${escapeHtml(protocols.join(', '))}</span>&gt;` : '';
+      const hdrLines = [];
+      hdrLines.push(`<span class="cmt">// Reconstructed from Mach-O __objc_classlist / class_ro_t @ ${escapeHtml(clsAddr)} (Instance Size: ${instSize} bytes)</span>`);
+      hdrLines.push(`<span class="kw">@interface</span> <span style="color:#00f2ff;font-weight:700;">${escapeHtml(cls.name)}</span> : <span style="color:var(--violet);font-weight:700;">${escapeHtml(superCls)}</span>${protoStr} {`);
+      if (ivars.length === 0) {
+        hdrLines.push(`    <span class="cmt">// No direct instance variables declared</span>`);
+      } else {
+        ivars.forEach(iv => {
+          hdrLines.push(`    <span style="color:var(--secondary);">${escapeHtml(iv.type)}</span> <span style="color:#fff;font-weight:600;">${escapeHtml(iv.name)}</span>; <span class="cmt">// +${escapeHtml(iv.offsetHex)} (${iv.size}B)</span>`);
+        });
+      }
+      hdrLines.push(`}`);
+      if (properties.length > 0) {
+        hdrLines.push(``);
+        properties.forEach(p => {
+          hdrLines.push(`<span class="kw">@property</span> (<span style="color:var(--tertiary);">${escapeHtml(p.attributes || 'nonatomic, strong')}</span>) <span style="color:#fff;">${escapeHtml(p.name)}</span>;`);
+        });
+      }
+      if (methods.length > 0) {
+        hdrLines.push(``);
+        methods.forEach(m => {
+          const safeFull = `${m.isClass ? '+' : '-'}[${cls.name} ${m.name}]`;
+          hdrLines.push(
+            `<span class="clickable-sym" title="Jump to ${escapeHtml(safeFull)} @ ${escapeHtml(m.impHex)} in Decompiler" onclick="jumpToObjcMethod('${escapeHtml(m.impHex)}', '${escapeHtml(safeFull)}')">${escapeHtml(m.sig)}</span>; <span class="cmt">// IMP: ${escapeHtml(m.impHex)}</span>`
+          );
+        });
+      }
+      hdrLines.push(`<span class="kw">@end</span>`);
+      document.getElementById('objcModalHeaderPre').innerHTML = hdrLines.join('\n');
+
+      // Populate Dispatch Table Methods List
+      document.getElementById('objcModalMethodCount').textContent = `${methods.length} METHODS`;
+      const mListEl = document.getElementById('objcModalMethodsList');
+      if (methods.length === 0) {
+        mListEl.innerHTML = '<div style="color:var(--text-lo);padding:6px;">No methods found in class_ro_t</div>';
+      } else {
+        mListEl.innerHTML = methods.map(m => {
+          const badgeColor = m.isClass ? 'var(--tertiary)' : '#00f2ff';
+          const safeFull = `${m.isClass ? '+' : '-'}[${cls.name} ${m.name}]`;
+          return `
+            <div class="list-item" style="padding:5px 8px;" onclick="jumpToObjcMethod('${escapeHtml(m.impHex)}', '${escapeHtml(safeFull)}')" title="Cliquer pour décompiler ${escapeHtml(safeFull)} (${escapeHtml(m.impHex)})">
+              <span class="list-item-name" style="color:${badgeColor};">
+                <strong>[${m.isClass ? '+' : '-'}]</strong> ${escapeHtml(m.sig)}
+              </span>
+              <span class="list-item-addr">${escapeHtml(m.impHex)}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Populate Ivars Offset List
+      document.getElementById('objcModalIvarCount').textContent = `${ivars.length} IVARS`;
+      const ivListEl = document.getElementById('objcModalIvarsList');
+      if (ivars.length === 0) {
+        ivListEl.innerHTML = '<div style="color:var(--text-lo);padding:6px;">No instance variables in class_ro_t</div>';
+      } else {
+        ivListEl.innerHTML = ivars.map(iv => `
+          <div class="list-item" style="padding:5px 8px;cursor:default;">
+            <span class="list-item-name">
+              <span style="color:var(--tertiary);font-family:var(--font-fui);">+${escapeHtml(iv.offsetHex)}</span>
+              <span style="color:var(--secondary);margin-left:6px;">${escapeHtml(iv.type)}</span>
+              <strong style="color:#fff;margin-left:4px;">${escapeHtml(iv.name)}</strong>
+            </span>
+            <span class="list-item-addr">${iv.size}B</span>
+          </div>
+        `).join('');
+      }
+
+      // Export ivars to C Struct Forge button
+      const exportBtn = document.getElementById('objcModalExportStructBtn');
+      if (exportBtn) {
+        exportBtn.onclick = () => {
+          closeModal('objcClassModal');
+          document.getElementById('structNameInput').value = cls.name;
+          document.getElementById('structSizeInput').value = String(Math.max(8, instSize));
+          const lines = ['0x00:void *:isa'];
+          ivars.forEach(iv => {
+            lines.push(`${iv.offsetHex}:${iv.type}:${iv.name}`);
+          });
+          document.getElementById('structFieldsInput').value = lines.join('\n');
+          openStructModal();
+        };
+      }
+
+      document.getElementById('objcClassModal').classList.add('open');
+      showToast(`ObjC @interface ${cls.name} (${instSize}B, ${ivars.length} ivars, ${methods.length} méthodes)`);
+    }
+
     function openStructModal() {
       document.getElementById('structModal').classList.add('open');
     }
@@ -3233,7 +3519,8 @@ if proc:
         const parts = line.split(':').map(s => s.trim());
         if (parts.length >= 3) {
           fields.push({
-            offset: parseInt(parts[0], 0) || 0,
+            offset: parts[0],
+            type: parts[1],
             field_type: parts[1],
             name: parts[2],
             size: 8,
@@ -3246,7 +3533,7 @@ if proc:
         body: JSON.stringify({ name, size, fields }),
       });
       const res = await resp.json();
-      if (res.success) {
+      if (res.ok || res.success) {
         closeModal('structModal');
         showToast(`STRUCT [${name}] REGISTERED (${fields.length} FIELDS)`);
         await refreshAllData(true);

@@ -35,6 +35,7 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
     let app = Router::new()
         .route("/", get(serve_index))
         .route("/api/overview", get(api_overview))
+        .route("/api/presets", get(api_presets))
         .route("/api/procedures", get(api_procedures))
         .route("/api/procedure/:query", get(api_procedure_detail))
         .route("/api/strings", get(api_strings))
@@ -115,23 +116,7 @@ async fn api_overview(State(state): State<Arc<AppState>>) -> Json<Value> {
         })
         .collect();
 
-    let presets = vec![
-        json!({
-            "label": "Ultron Sample (Mach-O ARM64 Objective-C + C)",
-            "path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_sample_macho",
-            "arch": "arm64"
-        }),
-        json!({
-            "label": "Ultron Native LLVM Core (libLLVMServices.dylib)",
-            "path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/ultron_disassembler/lib/libLLVMServices.dylib",
-            "arch": "arm64"
-        }),
-        json!({
-            "label": "macOS System Binary (/bin/ls)",
-            "path": "/bin/ls",
-            "arch": "arm64"
-        }),
-    ];
+    let presets = build_presets_list();
 
     Json(json!({
         "open": true,
@@ -149,6 +134,40 @@ async fn api_overview(State(state): State<Arc<AppState>>) -> Json<Value> {
         "segments": segments,
         "presets": presets,
     }))
+}
+
+fn build_presets_list() -> Vec<Value> {
+    vec![
+        json!({
+            "label": "Ultron ObjC 2.0 + Nested Loops (Mach-O)",
+            "path": "samples/ultron_objc_sample",
+            "arch": "arm64"
+        }),
+        json!({
+            "label": "Ultron WebAssembly Crypto Module (.wasm)",
+            "path": "samples/ultron_wasm_sample.wasm",
+            "arch": "wasm32"
+        }),
+        json!({
+            "label": "Ultron Sample (Mach-O ARM64 Objective-C + C)",
+            "path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_sample_macho",
+            "arch": "arm64"
+        }),
+        json!({
+            "label": "Ultron Native LLVM Core (libLLVMServices.dylib)",
+            "path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/ultron_disassembler/lib/libLLVMServices.dylib",
+            "arch": "arm64"
+        }),
+        json!({
+            "label": "macOS System Binary (/bin/ls)",
+            "path": "/bin/ls",
+            "arch": "arm64"
+        }),
+    ]
+}
+
+async fn api_presets() -> Json<Value> {
+    Json(json!({ "presets": build_presets_list() }))
 }
 
 async fn api_procedures(State(state): State<Arc<AppState>>) -> Json<Value> {
@@ -352,6 +371,8 @@ async fn api_symbols(State(state): State<Arc<AppState>>) -> Json<Value> {
         "imports": imports,
         "labels": labels,
         "types": types,
+        "objc_classes": doc.objc_classes,
+        "swift_types": doc.swift_types,
     }))
 }
 

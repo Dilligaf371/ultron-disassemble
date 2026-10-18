@@ -116,6 +116,14 @@ async fn main() -> anyhow::Result<()> {
                 }
             }
             let audit = UltronSecurityAuditor::audit_document(&doc);
+            if !doc.objc_classes.is_empty() {
+                println!("\n─── OBJECTIVE-C 2.0 RECONSTRUCTED CLASSES ({}) ───", doc.objc_classes.len());
+                for cls in &doc.objc_classes {
+                    for line in cls.header_preview.lines() {
+                        println!("  {}", line);
+                    }
+                }
+            }
             println!("\n─── SECURITY & ENTROPY AUDIT ───");
             println!("  Risk Score : {}/100", audit["risk_score"]);
             println!("  CWE Sinks  : {}", audit["vulnerability_count"]);

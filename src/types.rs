@@ -101,6 +101,42 @@ pub struct UltronStructDef {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObjCIvarInfo {
+    pub name: String,
+    pub ivar_type: String,
+    pub offset: u64,
+    pub size: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObjCMethodInfo {
+    pub name: String,
+    pub types: String,
+    pub decoded_signature: String,
+    pub imp_address: u64,
+    pub is_class_method: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObjCPropertyInfo {
+    pub name: String,
+    pub attributes: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObjCClassInfo {
+    pub name: String,
+    pub address: u64,
+    pub super_class: String,
+    pub instance_size: u32,
+    pub ivars: Vec<ObjCIvarInfo>,
+    pub methods: Vec<ObjCMethodInfo>,
+    pub properties: Vec<ObjCPropertyInfo>,
+    pub protocols: Vec<String>,
+    pub header_preview: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UltronStringEntry {
     pub address: u64,
     pub value: String,
@@ -130,6 +166,24 @@ pub struct UltronDisassembledFile {
     pub imports: BTreeMap<u64, String>,
     pub exports: BTreeMap<u64, String>,
     pub structs: BTreeMap<String, UltronStructDef>,
+    pub objc_classes: Vec<ObjCClassInfo>,
+    pub objc_selector_map: HashMap<u64, String>,
+    pub objc_classref_map: HashMap<u64, String>,
+    pub swift_types: Vec<String>,
+}
+
+#[allow(dead_code)]
+pub type BinaryDocument = UltronDisassembledFile;
+
+#[allow(dead_code)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct SymbolsResponse {
+    pub exports: Vec<serde_json::Value>,
+    pub imports: Vec<serde_json::Value>,
+    pub labels: Vec<serde_json::Value>,
+    pub types: Vec<serde_json::Value>,
+    pub objc_classes: Vec<ObjCClassInfo>,
+    pub swift_types: Vec<String>,
 }
 
 impl UltronDisassembledFile {
@@ -149,12 +203,19 @@ impl UltronDisassembledFile {
                 ],
             },
         );
+        let (family, bits) = match arch {
+            "x86_64" => ("Intel x86_64", 64),
+            "x86" | "i386" => ("Intel x86 (32-bit)", 32),
+            "arm" | "arm32" => ("ARMv7 (32-bit)", 32),
+            "wasm32" => ("WebAssembly VM", 32),
+            _ => ("ARM64 (AArch64)", 64),
+        };
         Self {
             file_path,
             format_name: "Mach-O 64-bit".to_string(),
-            cpu_family: if arch == "x86_64" { "Intel".to_string() } else { "ARM".to_string() },
+            cpu_family: family.to_string(),
             cpu_subfamily: arch.to_string(),
-            address_space_bits: 64,
+            address_space_bits: bits,
             entry_point: 0,
             raw_bytes,
             segments: Vec::new(),
@@ -169,6 +230,10 @@ impl UltronDisassembledFile {
             imports: BTreeMap::new(),
             exports: BTreeMap::new(),
             structs,
+            objc_classes: Vec::new(),
+            objc_selector_map: HashMap::new(),
+            objc_classref_map: HashMap::new(),
+            swift_types: Vec::new(),
         }
     }
 
@@ -205,18 +270,27 @@ impl UltronDisassembledFile {
     }
 
     pub fn read_bytes(&self, addr: u64, size: usize) -> Vec<u8> {
+        let norm_addr = if addr < 0x100000000 && addr > 0 && self.get_section_at(addr).is_none() {
+            if self.get_section_at(addr + 0x100000000).is_some() {
+                addr + 0x100000000
+            } else {
+                addr
+            }
+        } else {
+            addr
+        };
         for seg in &self.segments {
             for sec in &seg.sections {
-                if addr >= sec.start_address && addr < sec.start_address + sec.length {
-                    let off = (addr - sec.start_address) as usize;
+                if norm_addr >= sec.start_address && norm_addr < sec.start_address + sec.length {
+                    let off = (norm_addr - sec.start_address) as usize;
                     if off < sec.data.len() {
                         let end = (off + size).min(sec.data.len());
                         return sec.data[off..end].to_vec();
                     }
                 }
             }
-            if addr >= seg.start_address && addr < seg.start_address + seg.length {
-                let off = (addr - seg.start_address) as usize;
+            if norm_addr >= seg.start_address && norm_addr < seg.start_address + seg.length {
+                let off = (norm_addr - seg.start_address) as usize;
                 if off < seg.raw_data.len() {
                     let end = (off + size).min(seg.raw_data.len());
                     return seg.raw_data[off..end].to_vec();
@@ -224,6 +298,53 @@ impl UltronDisassembledFile {
             }
         }
         Vec::new()
+    }
+
+    pub fn read_u64_le(&self, addr: u64) -> Option<u64> {
+        let b = self.read_bytes(addr, 8);
+        if b.len() == 8 {
+            Some(u64::from_le_bytes(b.try_into().ok()?))
+        } else {
+            None
+        }
+    }
+
+    pub fn read_u32_le(&self, addr: u64) -> Option<u32> {
+        let b = self.read_bytes(addr, 4);
+        if b.len() == 4 {
+            Some(u32::from_le_bytes(b.try_into().ok()?))
+        } else {
+            None
+        }
+    }
+
+    pub fn read_cstring(&self, addr: u64) -> Option<String> {
+        if addr == 0 {
+            return None;
+        }
+        let ptr = self.normalize_ptr(addr);
+        if let Some(s) = self.strings_table.get(&ptr) {
+            return Some(s.clone());
+        }
+        let b = self.read_bytes(ptr, 256);
+        if b.is_empty() {
+            return None;
+        }
+        let end = b.iter().position(|&c| c == 0).unwrap_or(b.len());
+        if end == 0 {
+            return None;
+        }
+        std::str::from_utf8(&b[..end]).ok().map(|s| s.to_string())
+    }
+
+    pub fn normalize_ptr(&self, raw_ptr: u64) -> u64 {
+        // Strip ARM64 PAC / Mach-O dyld chained fixup high bits
+        let masked = raw_ptr & 0x0000_000f_ffff_ffff;
+        if masked > 0 && masked < 0x100000000 && self.get_section_at(masked + 0x100000000).is_some() {
+            masked + 0x100000000
+        } else {
+            masked
+        }
     }
 
     pub fn write_bytes(&mut self, addr: u64, patch: &[u8]) -> bool {
