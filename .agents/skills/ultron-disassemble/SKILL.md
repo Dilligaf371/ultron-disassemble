@@ -21,9 +21,9 @@ Use this skill whenever the user asks to disassemble, decompile, audit, or rever
 
 ---
 
-## Workflow 1: 1-Click Autonomous End-to-End Disassembly & Report Generation
+## Workflow 1: 1-Click Autonomous End-to-End Disassembly, Native Recompilation & Report Generation
 
-To run the complete 5-stage reverse engineering pipeline on any file or `.app` bundle and produce all 6 output files (`REPORT.md`, `disassembly.asm`, `decompiled.c`, `analysis_dossier.json`, `frida_hook.js`, `lldb_trace.py`):
+To run the complete 6-stage reverse engineering pipeline on any file or `.app` bundle and produce all 9 output files (`REPORT.md`, `disassembly.asm`, `decompiled.c`, `reconstructed.c`, `reconstructed_bin`, `src/main.rs`, `analysis_dossier.json`, `frida_hook.js`, `lldb_trace.py`):
 
 1. Run the helper script [run_ultron_pipeline.sh](./scripts/run_ultron_pipeline.sh):
    ```bash
@@ -32,7 +32,9 @@ To run the complete 5-stage reverse engineering pipeline on any file or `.app` b
    *(If `arch` is omitted, Ultron automatically detects `arm64`, `x86_64`, `wasm32`, `evm`, `dex`, or `asar`, and automatically resolves executables inside `.app/Contents/MacOS/`.)*
 
 2. Read the generated report and artifacts in `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/<target_slug>/`:
-   - `REPORT.md` — Executive & technical summary, binary hardening mitigations, procedures, AI C23/Rust reconstruction, Z3 SMT-LIB2 model, and extracted strings.
+   - `REPORT.md` — Executive & technical summary, binary hardening mitigations, procedures, AI C23/Rust reconstruction, Clang compilation verification, De-obfuscation report, Time-Travel coverage trace, Z3 SMT-LIB2 model, and extracted strings.
+   - `reconstructed_project/reconstructed.c` & `reconstructed_project/reconstructed_bin` — Self-contained compilable C17/C23 source and Clang-compiled native Mach-O executable (`clang -O2 -std=c17` + `codesign`).
+   - `reconstructed_project/src/main.rs` — Idiomatic Cargo Rust project reconstruction.
    - `decompiled.c` — Optimizing SSA & AI-rewritten C23/Rust pseudocode for recovered procedures.
    - `disassembly.asm` — Full annotated assembly listing.
    - `analysis_dossier.json` — Complete JSON telemetry dossier.
