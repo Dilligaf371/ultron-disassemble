@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1570,7 +1570,7 @@
 
     <div class="launch-center-stage">
       <!-- Singularity Particle + Halo -> 3D Spherical Particle Cloud -->
-      <div class="launch-reactor-hub" id="launchCloudHub" title="Cliquer ou glisser pour interagir avec la singularité 3D • Double-clic pour ouvrir l'interface">
+      <div class="launch-reactor-hub" id="launchCloudHub" title="Click or drag to interact with the 3D singularity • Double-click to enter workspace">
         <canvas id="core3dCanvas" width="840" height="840"></canvas>
       </div>
 
@@ -1587,10 +1587,10 @@
           <span id="neuralActivityText" style="font-family:var(--font-code);font-size:10px;color:var(--text-mid);letter-spacing:1.4px;">
             SINGULARITY ONLINE // REA PROTOCOL
           </span>
-          <button class="fui-btn" id="launchCloudToggleBtn" style="padding:3px 9px;font-size:9.5px;" title="Activer/Désactiver le nuage de particules 3D [Raccourci: P]" onclick="event.stopPropagation(); toggle3DCloud()">
+          <button class="fui-btn" id="launchCloudToggleBtn" style="padding:3px 9px;font-size:9.5px;" title="Toggle real-time 60 FPS 3D particle cloud [Shortcut: P]" onclick="event.stopPropagation(); toggle3DCloud()">
             ☁ 3D CLOUD: ON
           </button>
-          <button class="fui-btn" style="padding:3px 9px;font-size:9.5px;" title="Réécouter l'annonce vocale d'initialisation Ultron" onclick="event.stopPropagation(); replayGenesisSequence()">
+          <button class="fui-btn" style="padding:3px 9px;font-size:9.5px;" title="Replay Ultron initialization voice sequence" onclick="event.stopPropagation(); replayGenesisSequence()">
             🔊 VOICE: ULTRON ACTIVE
           </button>
         </div>
@@ -1598,12 +1598,12 @@
         <!-- Target Binary File Selector Row -->
         <input type="file" id="globalBinaryFileInput" style="display:none;" onchange="handleBrowserFileSelected(event)" />
         <div style="display:flex;gap:6px;width:100%;max-width:640px;margin-bottom:14px;align-items:center;">
-          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin du fichier à désassembler (.app, Mach-O, ELF, PE, .wasm, .asar, .evm, .dex)…" />
-          <button class="fui-btn primary-glow" type="button" onclick="event.stopPropagation(); pickFileToDisassemble('launch')" title="Ouvrir le sélecteur de fichier macOS natif (Finder)">
-            📂 CHOISIR FICHIER…
+          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Target binary path to disassemble (.app, Mach-O, ELF, PE, .wasm, .asar, .evm, .dex)…" />
+          <button class="fui-btn primary-glow" type="button" onclick="event.stopPropagation(); pickFileToDisassemble('launch')" title="Open native macOS file selector (Finder)">
+            📂 SELECT FILE…
           </button>
-          <button class="fui-btn" type="button" onclick="event.stopPropagation(); triggerBrowserFileUpload('launch')" title="Importer ou glisser-déposer un fichier local via le navigateur">
-            📤 IMPORT
+          <button class="fui-btn" type="button" onclick="event.stopPropagation(); triggerBrowserFileUpload('launch')" title="Upload or drag-and-drop a local binary file via browser">
+            📤 UPLOAD
           </button>
           <select id="launchArchSelect" class="fui-select" onchange="const b=document.getElementById('launchSelectedArchBadge'); if(b) b.textContent=this.value.toUpperCase()">
             <option value="arm64">ARM64</option>
@@ -1627,7 +1627,7 @@
           ⚡ DISASSEMBLE // PROCEED TO WORKSPACE
         </button>
         <div style="margin-top:10px;font-family:var(--font-fui);font-size:9.5px;color:var(--text-lo);letter-spacing:1.4px;">
-          [O] CHOISIR UN FICHIER • [GLISSER-DÉPOSER] BINAIRE • [P] 3D CLOUD ON/OFF • [ENTER] DISASSEMBLE
+          [O] SELECT FILE • [DRAG & DROP] BINARY • [P] 3D CLOUD ON/OFF • [ENTER] DISASSEMBLE
         </div>
       </div>
     </div>
@@ -1651,7 +1651,7 @@
   <!-- ─── TOP MINIMALIST COMMAND BAR ─── -->
   <header class="command-bridge">
     <div class="bridge-cluster">
-      <div class="reactor-pod" onclick="playChirp(880, 0.05); showLaunchPortal()" title="Retourner à l'écran de lancement">
+      <div class="reactor-pod" onclick="playChirp(880, 0.05); showLaunchPortal()" title="Return to launch screen">
         <div class="reactor-orb">
           <canvas id="headerOrbCanvas" width="80" height="80" style="width:32px;height:32px;display:block;"></canvas>
         </div>
@@ -1661,11 +1661,11 @@
         </div>
       </div>
 
-      <button class="fui-btn primary-glow" onclick="pickFileToDisassemble('workspace')" title="Choisir un fichier binaire à désassembler [Raccourci: O]">
+      <button class="fui-btn primary-glow" onclick="pickFileToDisassemble('workspace')" title="Select a target binary file to disassemble [Shortcut: O]">
         📂 DISASSEMBLE…
       </button>
-      <select id="presetSelect" class="fui-select" title="Cibles binaires pré-configurées"></select>
-      <select id="archSelect" class="fui-select" title="Architecture CPU">
+      <select id="presetSelect" class="fui-select" title="Preset binary targets"></select>
+      <select id="archSelect" class="fui-select" title="CPU Architecture">
         <option value="arm64">ARM64</option>
         <option value="arm32">ARM32</option>
         <option value="x86_64">X86_64</option>
@@ -1707,31 +1707,44 @@
 
     <!-- Minimalist Operations & Controls -->
     <div class="bridge-cluster">
-      <button class="fui-btn cyan-glow" id="splitViewBtn" onclick="toggleSplitViewMode()" title="Vue Scindée Synchronisée ASM ↔ Decompiler ↔ AI Rewrite [Raccourci: V]">SPLIT [V]</button>
-      <button class="fui-btn" onclick="navigateBack()" title="Retour à la fonction précédente (Échap)">◀ ESC</button>
-      <button class="fui-btn" onclick="promptRename()" title="Renommer symbole (N)">RENAME [N]</button>
-      <button class="fui-btn" onclick="promptComment()" title="Annoter adresse (;)">NOTE [;]</button>
-      <button class="fui-btn" onclick="openStructModal()" title="Éditeur de Structures C (T)">STRUCT [T]</button>
-      <button class="fui-btn" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)" title="Basculer Breakpoint sur l'adresse sélectionnée (B)">BP [B]</button>
-      <button class="fui-btn" onclick="demangleAllAction()" title="Démangler tous les symboles C++ / Swift / Rust">DEMANGLE</button>
-      <button class="fui-btn" onclick="openAssemblerModal()" title="Assembleur LLVM Live (A)">LLVM [A]</button>
-      <button class="fui-btn" onclick="exportPatchedBinaryAction()" title="Exporter le binaire patché sur disque">EXPORT</button>
-      <button class="fui-btn" onclick="invertJumpAction()" title="Inverser saut conditionnel">INV JMP</button>
-      <button class="fui-btn" onclick="nopInstructionAction()" title="Neutraliser instruction (NOP)">NOP</button>
-      <button class="fui-btn" onclick="undoAction()" id="undoBtn" title="Annuler">↶</button>
-      <button class="fui-btn" onclick="redoAction()" id="redoBtn" title="Rétablir">↷</button>
-      <button class="fui-btn" onclick="openPythonModal()" title="Console Python Scripting">PY</button>
-      <button class="fui-btn primary-glow" onclick="toggle3DCloud()" id="cloud3DBtn" title="Activer/Désactiver le nuage de particules 3D temps réel 60 FPS [Raccourci: P]">☁ 3D CLOUD: ON</button>
-      <button class="fui-btn" onclick="toggle3DCockpit()" id="cockpit3DBtn" title="Activer/Désactiver l'inclinaison 3D des panneaux" style="display:none;">3D: FLAT</button>
-      <button class="fui-btn" onclick="toggleContrastMode()" id="themeToggleBtn" title="Basculer le contraste Carbon / Graphite">CONTRAST</button>
-      <button class="fui-btn primary-glow" onclick="openCommandPalette()" title="Recherche Rapide (⌘K)">⌘K</button>
+      <button class="fui-btn cyan-glow" id="splitViewBtn" onclick="toggleSplitViewMode()" title="Synchronized Split-View ASM ↔ Decompiler ↔ AI Rewrite [Shortcut: V]">SPLIT [V]</button>
+      <button class="fui-btn" onclick="navigateBack()" title="Navigate back to previous procedure (Esc)">◀ ESC</button>
+      <button class="fui-btn" onclick="promptRename()" title="Rename symbol (N)">RENAME [N]</button>
+      <button class="fui-btn" onclick="promptComment()" title="Add inline comment (;)">NOTE [;]</button>
+      <button class="fui-btn" onclick="openStructModal()" title="C Struct Editor (T)">STRUCT [T]</button>
+      <button class="fui-btn" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)" title="Toggle breakpoint at selected address (B)">BP [B]</button>
+      <button class="fui-btn" onclick="demangleAllAction()" title="Demangle all C++ / Swift / Rust symbols">DEMANGLE</button>
+      <button class="fui-btn" onclick="openAssemblerModal()" title="Live LLVM Assembler & Patcher (A)">LLVM [A]</button>
+      <button class="fui-btn primary-glow" onclick="openAutoReportModal()" id="reportOutputsBtn" title="View Autonomous Reverse Engineering Report & Generated Output Files [Shortcut: R]">📄 REPORT &amp; OUTPUTS</button>
+      <button class="fui-btn" onclick="exportPatchedBinaryAction()" title="Export patched binary to disk">EXPORT</button>
+      <button class="fui-btn" onclick="invertJumpAction()" title="Invert conditional branch">INV JMP</button>
+      <button class="fui-btn" onclick="nopInstructionAction()" title="NOP selected instruction">NOP</button>
+      <button class="fui-btn" onclick="undoAction()" id="undoBtn" title="Undo">↶</button>
+      <button class="fui-btn" onclick="redoAction()" id="redoBtn" title="Redo">↷</button>
+      <button class="fui-btn" onclick="openPythonModal()" title="Python Scripting Console">PY</button>
+      <button class="fui-btn primary-glow" onclick="toggle3DCloud()" id="cloud3DBtn" title="Toggle real-time 60 FPS 3D particle cloud [Shortcut: P]">☁ 3D CLOUD: ON</button>
+      <button class="fui-btn" onclick="toggle3DCockpit()" id="cockpit3DBtn" title="Toggle 3D curved panel perspective" style="display:none;">3D: FLAT</button>
+      <button class="fui-btn" onclick="toggleContrastMode()" id="themeToggleBtn" title="Toggle Carbon / Graphite contrast theme">CONTRAST</button>
+      <button class="fui-btn primary-glow" onclick="openCommandPalette()" title="Quick Locator (⌘K)">⌘K</button>
     </div>
   </header>
+
+  <!-- ─── AUTONOMOUS 5-STAGE DISASSEMBLY PIPELINE PROGRESS BANNER ─── -->
+  <div id="autoPipelineBanner" style="display:none;position:relative;z-index:12;background:rgba(0,240,255,0.08);border-bottom:1px solid var(--neon-cyan);padding:6px 16px;font-family:var(--font-fui);font-size:10.5px;color:#ffffff;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 0 20px rgba(0,240,255,0.2);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="beacon-dot" style="background:var(--neon-cyan);box-shadow:0 0 8px var(--neon-cyan);"></span>
+      <strong id="autoPipelineStageText" style="letter-spacing:1.2px;color:#ffffff;">[1/5] AUTONOMOUS PIPELINE INITIALIZING…</strong>
+    </div>
+    <div style="flex:1;max-width:420px;height:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(0,240,255,0.4);border-radius:2px;overflow:hidden;">
+      <div id="autoPipelineProgressBar" style="width:15%;height:100%;background:var(--neon-cyan);box-shadow:0 0 12px var(--neon-cyan);transition:width 0.22s ease;"></div>
+    </div>
+    <span id="autoPipelineDetailText" style="color:var(--neon-cyan);font-size:10px;letter-spacing:0.8px;">REA PROTOCOL // FULL AUTOMATION</span>
+  </div>
 
   <!-- ─── TELEMETRY & ENTROPY HORIZON BAR ─── -->
   <div class="horizon-bar">
     <span class="beacon-pill"><span class="beacon-dot"></span><span id="docSummaryText">SYNCHRONIZING TELEMETRY…</span></span>
-    <div class="seg-horizon-map" id="segmentMapBar" title="Carte mémoire des segments"></div>
+    <div class="seg-horizon-map" id="segmentMapBar" title="Memory segment map"></div>
     <span class="beacon-pill">CURSOR: <strong id="cursorStatusText" style="color: #ffffff;">0x100000000</strong></span>
   </div>
 
@@ -1764,7 +1777,7 @@
           <span style="color: var(--text-mid); margin-left: 10px;" id="bannerProcSig"></span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <button class="fui-btn" onclick="triggerQuickNeuralRename()" title="Auto-analyse et renommage sémantique" style="padding: 3px 9px; font-size: 9.5px;">AUTO-RENAME</button>
+          <button class="fui-btn" onclick="triggerQuickNeuralRename()" title="Auto-analyze and semantic rename" style="padding: 3px 9px; font-size: 9.5px;">AUTO-RENAME</button>
           <span id="bannerProcMeta" style="color: var(--text-mid);"></span>
           <select id="syntaxSelect" class="fui-select" onchange="changeSyntax(this.value)" style="padding: 3px 22px 3px 8px; font-size: 10px;">
             <option value="intel">INTEL</option>
@@ -1916,7 +1929,7 @@
       </div>
       <div class="modal-body">
         <div style="font-size: 12px; color: var(--text-mid);">
-          Compile des instructions ARM64 / x86_64 en code machine via <code>libLLVMServices.dylib</code> et applique le patch en mémoire.
+          Compiles ARM64 / x86_64 instructions into machine code via <code>libLLVMServices.dylib</code> and applies the patch in memory.
         </div>
         <div style="display: flex; gap: 8px;">
           <input type="text" id="asmInputInstr" class="fui-input" value="mov x0, #0x1" style="flex: 1; text-transform: none;" placeholder="ex: mov x0, #0x2a ou nop" />
@@ -1993,11 +2006,11 @@ if proc:
       </div>
       <div class="modal-body">
         <div style="font-size: 12px; color: var(--text-mid);">
-          Définissez une structure C : le Décompilateur SSA résoudra automatiquement les accès mémoire <code>[x0, #offset]</code> en <code>((StructName *)r0)-&gt;field</code>.
+          Define a C struct: the SSA Decompiler will automatically resolve memory accesses <code>[x0, #offset]</code> into <code>((StructName *)r0)-&gt;field</code>.
         </div>
         <div style="display: flex; gap: 10px;">
           <input type="text" id="structNameInput" class="fui-input" value="UltronContext" style="flex: 1; text-transform: none;" placeholder="Nom de la struct (ex: UltronContext)" />
-          <input type="number" id="structSizeInput" class="fui-input" value="64" style="width: 110px;" placeholder="Taille (octets)" />
+          <input type="number" id="structSizeInput" class="fui-input" value="64" style="width: 110px;" placeholder="Size (bytes)" />
         </div>
         <textarea id="structFieldsInput" rows="6" placeholder="offset_hex:type:name (un champ par ligne)">0x00:void *:isa_vtable
 0x08:uint64_t:session_flags
@@ -2061,6 +2074,38 @@ if proc:
       <div class="modal-body">
         <input type="text" id="paletteInput" class="fui-input" style="text-transform: none; width: 100%;" placeholder="Target address (0x100000978), subroutine name, or symbol…" oninput="renderPaletteItems()" onkeydown="if(event.key==='Enter') executeFirstPaletteItem()" />
         <div id="paletteResults" style="max-height: 290px; overflow-y: auto; font-family: var(--font-code);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── AUTONOMOUS REVERSE ENGINEERING REPORT & GENERATED OUTPUTS MODAL ─── -->
+  <div class="modal-backdrop" id="autoReportModal">
+    <div class="modal" style="width: 960px; max-width: 96vw;">
+      <div class="modal-header">
+        <span id="autoReportModalTitle">⚡ AUTONOMOUS REVERSE ENGINEERING REPORT &amp; GENERATED OUTPUTS</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="fui-btn primary-glow" onclick="revealOutputFolderInFinder()" style="padding:4px 10px;font-size:10px;">📂 REVEAL OUTPUTS IN FINDER</button>
+          <button class="fui-btn" onclick="copyAutoReportMarkdown()" style="padding:4px 10px;font-size:10px;">📋 COPY REPORT.MD</button>
+          <button class="fui-btn" onclick="downloadAutoReportMarkdown()" style="padding:4px 10px;font-size:10px;">⬇ DOWNLOAD REPORT.MD</button>
+          <button class="fui-btn" onclick="closeModal('autoReportModal')">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" style="max-height: 82vh; overflow-y: auto; gap: 14px;">
+        <div id="autoReportSummaryBar" style="display:grid;grid-template-columns:repeat(6, 1fr);gap:8px;"></div>
+        <div class="fui-module" style="padding:10px 12px;">
+          <div class="fui-module-title">
+            <span>GENERATED OUTPUT ARTIFACTS ON DISK</span>
+            <span class="hud-tag" id="autoReportOutputDirTag">outputs/</span>
+          </div>
+          <div id="autoReportFilesGrid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;"></div>
+        </div>
+        <div class="fui-module" style="padding:10px 12px;">
+          <div class="fui-module-title">
+            <span>EXECUTIVE &amp; TECHNICAL REVERSE ENGINEERING REPORT (REPORT.MD)</span>
+            <span class="hud-tag">FULL PIPELINE SYNTHESIS</span>
+          </div>
+          <pre id="autoReportMarkdownPre" style="background:#040507;color:#e5e7eb;padding:14px;border:1px solid var(--border-hairline);font-family:var(--font-code);font-size:11.5px;line-height:1.65;max-height:420px;overflow:auto;white-space:pre-wrap;user-select:text;"></pre>
+        </div>
       </div>
     </div>
   </div>
@@ -3116,11 +3161,8 @@ if proc:
       const arch = document.getElementById('launchArchSelect')?.value || 'arm64';
       const portal = document.getElementById('launchPortal');
       if (portal) portal.classList.add('portal-hidden');
-      if (customPath && customPath !== state.overview?.file_path) {
-        await openBinary(customPath, arch);
-      } else {
-        showToast('ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE');
-      }
+      const targetPath = customPath || state.overview?.file_path || '';
+      await runAutonomousDisassemblePipeline(targetPath, arch, true);
     }
 
     function showLaunchPortal() {
@@ -3186,6 +3228,7 @@ if proc:
         if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
         if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleBreakpoint(state.selectedAddr || state.selectedAddress); }
         if (e.key === 'o' || e.key === 'O') { e.preventDefault(); pickFileToDisassemble('workspace'); }
+        if (e.key === 'r' || e.key === 'R') { e.preventDefault(); openAutoReportModal(); }
         if (e.key === 'v' || e.key === 'V') { e.preventDefault(); toggleSplitViewMode(); }
         if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
         if (e.key === 'p' || e.key === 'P') { e.preventDefault(); toggle3DCloud(); }
@@ -3246,11 +3289,13 @@ if proc:
         }
         presetSel.onchange = () => {
           playUltronDisassembleClip();
-          openBinary(presetSel.value, document.getElementById('archSelect').value);
+          runAutonomousDisassemblePipeline(presetSel.value, document.getElementById('archSelect').value, true);
         };
       }
       document.getElementById('archSelect').onchange = () => {
-        if (state.overview?.file_path) openBinary(state.overview.file_path, document.getElementById('archSelect').value);
+        if (state.overview?.file_path) {
+          runAutonomousDisassemblePipeline(state.overview.file_path, document.getElementById('archSelect').value, true);
+        }
       };
 
       const [procsResp, strsResp, symsResp] = await Promise.all([
@@ -3279,36 +3324,186 @@ if proc:
       }
     }
 
+    function setPipelineBannerStage(stepIdx, total, stageTitle, detail) {
+      const banner = document.getElementById('autoPipelineBanner');
+      const stEl = document.getElementById('autoPipelineStageText');
+      const barEl = document.getElementById('autoPipelineProgressBar');
+      const dtEl = document.getElementById('autoPipelineDetailText');
+      if (banner) banner.style.display = 'flex';
+      if (stEl) stEl.textContent = `[${stepIdx}/${total}] ${stageTitle}`;
+      if (barEl) barEl.style.width = `${Math.round((stepIdx / total) * 100)}%`;
+      if (dtEl && detail) dtEl.textContent = detail;
+    }
+
+    function hidePipelineBanner() {
+      const banner = document.getElementById('autoPipelineBanner');
+      if (banner) banner.style.display = 'none';
+    }
+
+    async function runAutonomousDisassemblePipeline(path, arch = 'arm64', showModalOnComplete = true) {
+      try {
+        const targetLabel = (path || state.overview?.document || 'binary').split('/').pop();
+        triggerNeuralActivity(1.85, `AUTONOMOUS PIPELINE // ${targetLabel}`);
+        setPipelineBannerStage(1, 5, `DISASSEMBLING & RECOVERING CFG: ${targetLabel}…`, 'MULTI-ARCHLOADER // CFG');
+
+        const stageTimer1 = setTimeout(() => {
+          setPipelineBannerStage(2, 5, 'OPTIMIZING SSA DECOMPILATION & AI C23/RUST REWRITE…', 'SSA // AST // AI REWRITER');
+        }, 140);
+        const stageTimer2 = setTimeout(() => {
+          setPipelineBannerStage(3, 5, 'RUNNING SECURITY AUDIT & FLIRT/WARP SIGNATURES…', 'ENTROPY // MITIGATIONS // FLIRT');
+        }, 280);
+        const stageTimer3 = setTimeout(() => {
+          setPipelineBannerStage(4, 5, 'SOLVING Z3 SYMBOLIC PATHS & GLOBAL CALL GRAPH…', 'SMT-LIB2 // CALL TOPOLOGY');
+        }, 420);
+        const stageTimer4 = setTimeout(() => {
+          setPipelineBannerStage(5, 5, 'GENERATING REPORT.MD & OUTPUT ARTIFACTS ON DISK…', 'OUTPUTS // DOSSIER');
+        }, 560);
+
+        const resp = await fetch('/api/auto-pipeline', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path, arch }),
+        });
+        const data = await resp.json();
+        [stageTimer1, stageTimer2, stageTimer3, stageTimer4].forEach(clearTimeout);
+
+        if (data.error) {
+          hidePipelineBanner();
+          alert('Error: ' + data.error);
+          return;
+        }
+
+        if (data.arch) {
+          const aSel = document.getElementById('archSelect');
+          if (aSel) aSel.value = data.arch;
+          const lSel = document.getElementById('launchArchSelect');
+          if (lSel) lSel.value = data.arch;
+        }
+
+        // Store all precomputed pipeline outputs into UI state so every tab is immediately populated
+        state.selectedProcedure = null;
+        state.navHistory = [];
+        state.auditData = data.audit || null;
+        state.flirtReport = data.flirt || null;
+        state.aiRewriteData = data.ai_rewrite || null;
+        state.symbolicSolveResult = data.symbolic || null;
+        state.globalCallGraph = data.callgraph || null;
+        state.debugScripts = data.debug_scripts || null;
+        state.artifactReport = data.artifact_report || null;
+        state.lastAutoPipelineReport = data;
+
+        await refreshAllData(false);
+        setPipelineBannerStage(5, 5, `PIPELINE COMPLETE // ${data.procedure_count} PROCS • ${data.instruction_count} INSTRS • 6 OUTPUT FILES GENERATED`, data.output_dir || 'outputs/');
+        setTimeout(() => hidePipelineBanner(), 2400);
+
+        showToast(`⚡ PIPELINE COMPLETE: ${data.procedure_count} PROCS • REPORT & OUTPUTS READY`);
+        if (showModalOnComplete) {
+          openAutoReportModal();
+        }
+      } catch (e) {
+        hidePipelineBanner();
+        alert('Autonomous pipeline error: ' + e.message);
+      }
+    }
+
     async function openBinary(path, arch = 'arm64') {
-      playChirp(620, 0.05);
-      showToast(`DISASSEMBLING TARGET: ${path.split('/').pop()} [${arch.toUpperCase()}]…`);
-      const resp = await fetch('/api/open', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ path, arch }),
-      });
-      const data = await resp.json();
-      if (data.error) {
-        alert('Erreur: ' + data.error);
+      await runAutonomousDisassemblePipeline(path, arch, true);
+    }
+
+    function openAutoReportModal() {
+      const rep = state.lastAutoPipelineReport;
+      if (!rep) {
+        // Run pipeline on current binary if not run yet
+        runAutonomousDisassemblePipeline(state.overview?.file_path || '', document.getElementById('archSelect')?.value || 'arm64', true);
         return;
       }
-      if (data.arch) {
-        const aSel = document.getElementById('archSelect');
-        if (aSel) aSel.value = data.arch;
-        const lSel = document.getElementById('launchArchSelect');
-        if (lSel) lSel.value = data.arch;
+
+      const titleEl = document.getElementById('autoReportModalTitle');
+      if (titleEl) {
+        titleEl.textContent = `⚡ AUTONOMOUS REPORT & OUTPUTS // ${(rep.document || 'BINARY').toUpperCase()} [${(rep.arch || 'ARM64').toUpperCase()}]`;
       }
-      state.selectedProcedure = null;
-      state.navHistory = [];
-      state.auditData = null;
-      state.binDiffReport = null;
-      state.debugScripts = null;
-      state.flirtReport = null;
-      state.aiRewriteData = null;
-      state.symbolicSolveResult = null;
-      state.globalCallGraph = null;
-      await refreshAllData(false);
-      showToast(`ULTRON DISASSEMBLE // ${data.procedure_count} PROCS • ${data.instruction_count} INSTRS`);
+
+      const dirTag = document.getElementById('autoReportOutputDirTag');
+      if (dirTag) dirTag.textContent = rep.output_dir || 'outputs/';
+
+      const riskScore = rep.audit?.risk_score ?? 0;
+      const riskLevel = rep.audit?.risk_level || 'LOW';
+      const flirtCount = rep.flirt?.matched_count ?? 0;
+
+      const sumBar = document.getElementById('autoReportSummaryBar');
+      if (sumBar) {
+        sumBar.innerHTML = `
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">FORMAT</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${escapeHtml(rep.format || 'BINARY')}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">PROCEDURES</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${rep.procedure_count ?? 0}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">INSTRUCTIONS</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${rep.instruction_count ?? 0}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">STRINGS</div><div style="color:var(--emerald);font-weight:600;margin-top:3px;">${rep.string_count ?? 0}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">FLIRT MATCHES</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${flirtCount}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">RISK SCORE</div><div style="color:var(--tertiary);font-weight:600;margin-top:3px;">${riskScore}/100 (${escapeHtml(riskLevel)})</div></div>
+        `;
+      }
+
+      const filesGrid = document.getElementById('autoReportFilesGrid');
+      if (filesGrid) {
+        const files = rep.output_files || [];
+        filesGrid.innerHTML = files.map(f => `
+          <div class="target-deck-card" onclick="revealOutputFileInFinder('${escapeHtml(f.path)}')" title="Click to reveal ${escapeHtml(f.name)} in macOS Finder">
+            <div style="overflow:hidden;text-align:left;">
+              <div style="font-family:var(--font-code);font-size:11px;font-weight:600;color:var(--neon-cyan);">${escapeHtml(f.name)}</div>
+              <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(f.label)}</div>
+            </div>
+            <span class="hud-tag">${((f.bytes || 0) / 1024).toFixed(1)} KB</span>
+          </div>
+        `).join('');
+      }
+
+      const preEl = document.getElementById('autoReportMarkdownPre');
+      if (preEl) {
+        preEl.textContent = rep.report_markdown || '';
+      }
+
+      document.getElementById('autoReportModal')?.classList.add('open');
+    }
+
+    async function revealOutputFolderInFinder() {
+      const dir = state.lastAutoPipelineReport?.output_dir || 'outputs';
+      await fetch('/api/reveal-outputs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: dir }),
+      });
+      showToast(`📂 OPENED OUTPUT DIRECTORY IN FINDER: ${dir}`);
+    }
+
+    async function revealOutputFileInFinder(filePath) {
+      await fetch('/api/reveal-outputs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: filePath }),
+      });
+      showToast(`📂 REVEALED IN FINDER: ${filePath.split('/').pop()}`);
+    }
+
+    function copyAutoReportMarkdown() {
+      const md = state.lastAutoPipelineReport?.report_markdown || '';
+      if (!md) return;
+      navigator.clipboard.writeText(md);
+      showToast('📋 REPORT.MD COPIED TO CLIPBOARD');
+    }
+
+    function downloadAutoReportMarkdown() {
+      const md = state.lastAutoPipelineReport?.report_markdown || '';
+      if (!md) return;
+      const docName = state.lastAutoPipelineReport?.document || 'ultron_target';
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${docName}_REPORT.md`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast(`⬇ DOWNLOADED ${docName}_REPORT.md`);
     }
 
     let pendingUploadOrigin = 'launch';
@@ -3331,7 +3526,7 @@ if proc:
     async function uploadAndDisassembleFile(file, origin = 'workspace') {
       try {
         playChirp(740, 0.05);
-        showToast(`IMPORTING & DISASSEMBLING: ${file.name}…`);
+        showToast(`UPLOADING & RUNNING FULL PIPELINE: ${file.name}…`);
         const buf = await file.arrayBuffer();
         const bytes = Array.from(new Uint8Array(buf));
         const arch = (origin === 'launch'
@@ -3345,7 +3540,7 @@ if proc:
         });
         const data = await resp.json();
         if (data.error) {
-          alert('Erreur lors du désassemblage : ' + data.error);
+          alert('Disassembly error: ' + data.error);
           return;
         }
         if (data.path) {
@@ -3363,12 +3558,9 @@ if proc:
           portal.classList.add('portal-hidden');
         }
         playUltronDisassembleClip();
-        state.selectedProcedure = null;
-        state.navHistory = [];
-        await refreshAllData(false);
-        showToast(`DISASSEMBLED: ${file.name} (${data.procedure_count} PROCS // ${data.instruction_count} INSTRS)`);
+        await runAutonomousDisassemblePipeline(data.path || '', data.arch || arch, true);
       } catch (e) {
-        alert('Erreur import fichier : ' + e.message);
+        alert('File upload error: ' + e.message);
       }
     }
 
@@ -3390,12 +3582,14 @@ if proc:
             const aSel = document.getElementById('archSelect');
             if (aSel) aSel.value = data.arch;
           }
-          if (origin === 'workspace') {
-            playUltronDisassembleClip();
-            await openBinary(data.path, data.arch || 'arm64');
-          } else {
-            showToast(`SELECTED: ${data.path.split('/').pop()} [${(data.arch || 'arm64').toUpperCase()}] — CLICK DISASSEMBLE`);
+          // Immediately transition out of launch portal (if open) and execute the entire autonomous disassembly & report pipeline!
+          const portal = document.getElementById('launchPortal');
+          if (portal && !portal.classList.contains('portal-hidden')) {
+            portal.classList.add('portal-hidden');
           }
+          voiceSequenceAbortId++;
+          playUltronDisassembleClip();
+          await runAutonomousDisassemblePipeline(data.path, data.arch || 'arm64', true);
           return;
         }
       } catch (e) {}
@@ -3490,7 +3684,7 @@ if proc:
           .forEach(c => {
             const row = document.createElement('div');
             row.className = 'list-item';
-            row.title = c.header_preview || `@interface ${c.name} — Cliquer pour inspecter l'en-tête Objective-C 2.0 complet`;
+            row.title = c.header_preview || `@interface ${c.name} — Click to inspect full Objective-C 2.0 @interface header`;
             const superCls = c.super_class || c.superclass || 'NSObject';
             const allMethods = c.methods || [...(c.instance_methods || []), ...(c.class_methods || [])];
             const methodCount = allMethods.length;
@@ -3513,7 +3707,7 @@ if proc:
             const vtAddr = typeof rawVtAddr === 'number' ? '0x' + rawVtAddr.toString(16) : String(rawVtAddr);
             const row = document.createElement('div');
             row.className = 'list-item';
-            row.title = `C++ Polymorphic VTable @ ${vtAddr} — Cliquer pour sauter vers la 1ère méthode virtuelle ou inspecter dans RE SUITE`;
+            row.title = `C++ Polymorphic VTable @ ${vtAddr} — Click to jump to 1st virtual method or inspect in RE SUITE`;
             row.innerHTML = `<span class="list-item-name vtable-badge">[C++ VTABLE] ${escapeHtml(c.demangled_name || c.name)} (${vfuncs.length} vfuncs)</span><span class="list-item-addr">${escapeHtml(vtAddr)}</span>`;
             row.onclick = () => {
               playChirp(820, 0.05);
@@ -3542,7 +3736,7 @@ if proc:
             const cuMeta = cu.language || `${(cu.line_mappings || cu.functions || []).length} lines`;
             const row = document.createElement('div');
             row.className = 'list-item';
-            row.title = `DWARF Debug Compile Unit (${cu.producer || 'DWARF'}) — Cliquer pour ouvrir dans RE SUITE`;
+            row.title = `DWARF Debug Compile Unit (${cu.producer || 'DWARF'}) — Click to open in RE SUITE`;
             row.innerHTML = `<span class="list-item-name dwarf-badge">[DWARF] ${escapeHtml(cuName)}</span><span class="list-item-addr">${escapeHtml(String(cuMeta))}</span>`;
             row.onclick = () => {
               playChirp(760, 0.05);
@@ -3688,8 +3882,8 @@ if proc:
       document.getElementById('decompilerOptionsBar').style.display =
         (state.mode === 'pseudo' || (state.splitView && state.mode === 'asm')) ? 'flex' : 'none';
       showToast(state.splitView
-        ? '⚡ VUE SCINDÉE SYNCHRONISÉE (ASM ↔ DECOMPILER ↔ AI REWRITE) : ACTIVÉE'
-        : '⚡ VUE SCINDÉE SYNCHRONISÉE : DÉSACTIVÉE');
+        ? '⚡ SYNCHRONIZED SPLIT-VIEW (ASM ↔ DECOMPILER ↔ AI REWRITE) : ENABLED'
+        : '⚡ SYNCHRONIZED SPLIT-VIEW : DISABLED');
       renderCenterView();
     }
 
@@ -3795,20 +3989,20 @@ if proc:
         const isSel = state.selectedAddress === ins.address ? 'selected' : '';
         const isBp = hasBreakpoint(ins.address);
         const bpBadge = isBp
-          ? `<span class="bp-dot" title="Breakpoint armé sur ${ins.address} (Cliquer ou [B] pour désarmer)" onclick="event.stopPropagation(); toggleBreakpoint('${ins.address}')">●</span>`
+          ? `<span class="bp-dot" title="Breakpoint armed at ${ins.address} (Click or press [B] to disarm)" onclick="event.stopPropagation(); toggleBreakpoint('${ins.address}')">●</span>`
           : '';
         let opsHtml = escapeHtml(ins.formatted_op_str || ins.op_str || ins.operands || '');
         const jumpTarget = ins.call_target || ins.branch_target;
         if (jumpTarget) {
-          opsHtml = `<span class="clickable-sym" title="Cliquer pour sauter vers ${jumpTarget} (Échap pour revenir)" onclick="event.stopPropagation(); playChirp(820,0.05); loadProcedure('${jumpTarget}')">${opsHtml}</span>`;
+          opsHtml = `<span class="clickable-sym" title="Click to jump to ${jumpTarget} (Esc to return)" onclick="event.stopPropagation(); playChirp(820,0.05); loadProcedure('${jumpTarget}')">${opsHtml}</span>`;
         } else {
           opsHtml = wrapInteractiveTokens(opsHtml);
         }
         const cmt = (ins.inline_comment || ins.comment) ? `; ${escapeHtml(ins.inline_comment || ins.comment)}` : '';
-        const solveBtn = `<button class="solve-here-btn" title="Résoudre le chemin d'exécution symbolique Z3 jusqu'à ${ins.address}" onclick="event.stopPropagation(); solveSymbolicPathTo('${ins.address}')">🔮 SOLVE PATH TO HERE</button>`;
+        const solveBtn = `<button class="solve-here-btn" title="Solve Z3 symbolic execution path to ${ins.address}" onclick="event.stopPropagation(); solveSymbolicPathTo('${ins.address}')">🔮 SOLVE PATH TO HERE</button>`;
         html += `
           <tr class="asm-row ${isSel} ${isBp ? 'has-bp' : ''}" data-addr="${ins.address}" data-ins-idx="${idx}" onmouseenter="syncHighlightFromAsm('${ins.address}', ${idx}, ${totalIns})" onclick="playChirp(540,0.03); selectAddress('${ins.address}'); syncHighlightFromAsm('${ins.address}', ${idx}, ${totalIns}, true)" ondblclick="${jumpTarget ? `loadProcedure('${jumpTarget}')` : `toggleBreakpoint('${ins.address}')`}">
-            <td class="col-addr" title="Cliquer pour sélectionner • [B] pour Breakpoint">${bpBadge}${ins.address}</td>
+            <td class="col-addr" title="Click to select • [B] to toggle Breakpoint">${bpBadge}${ins.address}</td>
             <td class="col-bytes">${ins.bytes}</td>
             <td class="col-mnem ${mnemClass}">${escapeHtml(ins.mnemonic)}</td>
             <td class="col-ops">${opsHtml}${solveBtn}</td>
@@ -4436,10 +4630,10 @@ if proc:
       });
       const res = await resp.json();
       if (res.error) {
-        showToast('ERREUR SAUVEGARDE: ' + res.error);
+        showToast('SAVE ERROR: ' + res.error);
         return;
       }
-      showToast(`💾 PROJET .ULTRON SAUVEGARDÉ : ${res.path || res.file || rawName}`);
+      showToast(`💾 .ULTRON PROJECT SAVED: ${res.path || res.file || rawName}`);
       await loadUltronProjectList(false);
     }
 
@@ -4452,7 +4646,7 @@ if proc:
       });
       const res = await resp.json();
       if (res.error) {
-        showToast('ERREUR CHARGEMENT: ' + res.error);
+        showToast('LOAD ERROR: ' + res.error);
         return;
       }
       if (Array.isArray(res.breakpoints)) {
@@ -4461,14 +4655,14 @@ if proc:
         );
       }
       await refreshAllData(true);
-      showToast(`📂 PROJET .ULTRON CHARGÉ : ${nameOrPath} (Renommages, Notes, Structs & Breakpoints restaurés)`);
+      showToast(`📂 .ULTRON PROJECT LOADED: ${nameOrPath} (Renames, Comments, Structs & Breakpoints restored)`);
     }
 
     async function runBinDiffAction() {
       playChirp(960, 0.09);
       const targetPath = (document.getElementById('bindiffTargetInput')?.value || '').trim();
       if (!targetPath) {
-        showToast('SÉLECTIONNEZ UNE CIBLE BINAIRE SECONDAIRE POUR BINDIFF');
+        showToast('SELECT A SECONDARY TARGET BINARY FOR BINDIFF');
         return;
       }
       showToast(`⚖ BINDIFF EN COURS CONTRE : ${targetPath.split('/').pop()}…`);
@@ -4479,11 +4673,11 @@ if proc:
       });
       const res = await resp.json();
       if (res.error) {
-        showToast('ERREUR BINDIFF: ' + res.error);
+        showToast('BINDIFF ERROR: ' + res.error);
         return;
       }
       state.binDiffReport = res;
-      showToast(`⚖ BINDIFF TERMINÉ // SIMILARITÉ GLOBALE : ${res.overall_similarity_pct ?? res.similarity_pct ?? res.overall_similarity ?? 0}%`);
+      showToast(`⚖ BINDIFF COMPLETE // OVERALL SIMILARITY: ${res.overall_similarity_pct ?? res.similarity_pct ?? res.overall_similarity ?? 0}%`);
       if (state.mode === 'resuite') {
         await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
       }
@@ -4495,7 +4689,7 @@ if proc:
       const resp = await fetch(`/api/debug/script?addr=${encodeURIComponent(addr)}&address=${encodeURIComponent(addr)}`);
       const res = await resp.json();
       state.debugScripts = res;
-      showToast(`⚡ SCRIPTS FRIDA & LLDB GÉNÉRÉS POUR ${addr}`);
+      showToast(`⚡ FRIDA & LLDB SCRIPTS GENERATED FOR ${addr}`);
       if (state.mode === 'resuite') {
         await renderReSuite(document.getElementById('centerContent'), state.currentDossier);
       }
@@ -4511,7 +4705,7 @@ if proc:
       const res = await resp.json();
       state.flirtReport = res;
       const matchCount = (res.matches || res.matched_functions || res.signatures || []).length || res.matched_count || 0;
-      showToast(`🔍 SCAN FLIRT / WARP TERMINÉ : ${matchCount} FONCTIONS IDENTIFIÉES`);
+      showToast(`🔍 FLIRT / WARP SCAN COMPLETE: ${matchCount} FUNCTIONS IDENTIFIED`);
       await refreshAllData(true);
     }
 
@@ -4521,7 +4715,7 @@ if proc:
       const text = el.value || el.textContent || '';
       navigator.clipboard?.writeText(text);
       playChirp(1040, 0.04);
-      showToast(`📋 ${label} COPIÉ DANS LE PRESSE-PAPIERS`);
+      showToast(`📋 ${label} COPIED TO CLIPBOARD`);
     }
 
     async function renderReSuite(container, d) {
@@ -4556,18 +4750,18 @@ if proc:
                   <div style="color:#fff;font-weight:700;font-size:11.5px;">◈ ${escapeHtml(pName)}</div>
                   <div style="color:var(--text-mid);font-size:10px;font-family:var(--font-fui);">${escapeHtml(pMeta)}</div>
                 </div>
-                <button class="fui-btn cyan-glow" style="padding:4px 10px;font-size:10px;flex-shrink:0;" onclick="loadUltronProject('${escapeHtml(pPath)}')">📂 CHARGER</button>
+                <button class="fui-btn cyan-glow" style="padding:4px 10px;font-size:10px;flex-shrink:0;" onclick="loadUltronProject('${escapeHtml(pPath)}')">📂 LOAD</button>
               </div>
             `;
           }).join('')
-        : `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Aucun projet <code>.ultron</code> sauvegardé. Cliquez sur <strong>💾 SAUVEGARDER PROJET (.ULTRON)</strong> pour persister vos renommages, commentaires, structures C et breakpoints.</div>`;
+        : `<div style="color:var(--text-mid);font-size:11px;padding:8px;">No saved <code>.ultron</code> project yet. Click <strong>💾 SAVE PROJECT (.ULTRON)</strong> to persist your renames, comments, C structs, and breakpoints.</div>`;
 
       // Panel 2: BinDiff Report HTML
       const bd = state.binDiffReport;
       const defaultDiffTarget = bd?.target_path || bd?.secondary_binary || (presets[1]?.path || presets[0]?.path || '/bin/ls');
       const presetOptsHtml = presets.map(p => `<option value="${escapeHtml(p.path)}" ${p.path === defaultDiffTarget ? 'selected' : ''}>${escapeHtml(p.label)} (${escapeHtml(p.path)})</option>`).join('');
 
-      let bindiffBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Sélectionnez un second binaire cible et lancez <strong>⚖ LANCER BINDIFF</strong> pour comparer les graphes CFG, hashes d'instructions et deltas de blocs basiques.</div>`;
+      let bindiffBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:8px;">Select a secondary target binary and click <strong>⚖ RUN BINDIFF</strong> to compare CFG topology, instruction hashes, and basic block deltas.</div>`;
       if (bd && !bd.error) {
         const rawSim = bd.overall_similarity_pct ?? bd.similarity_pct ?? bd.overall_similarity ?? bd.similarity_score ?? (bd.similarity !== undefined ? Math.round(bd.similarity * 100) : 0);
         const simPct = Number(rawSim).toFixed(1);
@@ -4592,7 +4786,7 @@ if proc:
           const insDelta = it.instruction_delta ?? it.insn_delta ?? 0;
           const fmtDelta = (n) => (n > 0 ? `+${n}` : `${n}`);
           return `
-            <tr class="asm-row" onclick="loadProcedure('${escapeHtml(String(pAddr))}'); setMode('asm');" title="Cliquer pour ouvrir ${escapeHtml(pName)} @ ${escapeHtml(String(pAddr))}">
+            <tr class="asm-row" onclick="loadProcedure('${escapeHtml(String(pAddr))}'); setMode('asm');" title="Click to open ${escapeHtml(pName)} @ ${escapeHtml(String(pAddr))}">
               <td style="color:${stColor};font-weight:700;font-size:10.5px;">[${escapeHtml(st)}]</td>
               <td style="color:#fff;font-weight:600;">${escapeHtml(pName)} <span style="color:var(--text-mid);font-size:10px;">(${escapeHtml(String(pAddr))})</span></td>
               <td style="color:${stColor};font-weight:700;">${sPct}%</td>
@@ -4605,7 +4799,7 @@ if proc:
         bindiffBodyHtml = `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(10,11,14,0.85);border:1px solid rgba(255,255,255,0.22);">
             <div>
-              <span style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">SIMILARITÉ GLOBALE :</span>
+              <span style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">OVERALL SIMILARITY:</span>
               <strong style="color:var(--emerald);font-size:14px;margin-left:6px;">${simPct}%</strong>
             </div>
             <div style="display:flex;gap:6px;font-family:var(--font-fui);font-size:10px;">
@@ -4616,7 +4810,7 @@ if proc:
             </div>
           </div>
           <div style="max-height:175px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);">
-            <table class="asm-table"><tbody>${rowsHtml || '<tr><td colspan="5" style="padding:8px;color:var(--text-mid);">Aucune différence détectée.</td></tr>'}</tbody></table>
+            <table class="asm-table"><tbody>${rowsHtml || '<tr><td colspan="5" style="padding:8px;color:var(--text-mid);">No differences detected.</td></tr>'}</tbody></table>
           </div>
         `;
       }
@@ -4629,11 +4823,11 @@ if proc:
       const bpArray = Array.from(state.breakpoints);
       const bpPillsHtml = bpArray.length > 0
         ? bpArray.map(bp => `
-            <span class="xref-pill" style="border-color:#f3f4f6;color:#fff;background:rgba(255,255,255,0.22);" title="Cliquer pour sauter vers ${escapeHtml(bp)} • Double-clic pour supprimer" onclick="selectAddress('${escapeHtml(bp)}'); setMode('asm');" ondblclick="event.stopPropagation(); toggleBreakpoint('${escapeHtml(bp)}')">
+            <span class="xref-pill" style="border-color:#f3f4f6;color:#fff;background:rgba(255,255,255,0.22);" title="Click to jump to ${escapeHtml(bp)} • Double-click to remove" onclick="selectAddress('${escapeHtml(bp)}'); setMode('asm');" ondblclick="event.stopPropagation(); toggleBreakpoint('${escapeHtml(bp)}')">
               <span class="bp-dot" style="margin-right:3px;">●</span>${escapeHtml(bp)}
             </span>
           `).join('')
-        : `<span style="color:var(--text-lo);font-size:11px;">Aucun breakpoint actif (Appuyez sur [B] dans ASM MATRIX ou cliquez sur 🔴 BASCULER BP)</span>`;
+        : `<span style="color:var(--text-lo);font-size:11px;">No active breakpoints (Press [B] in ASM MATRIX or click 🔴 TOGGLE BP)</span>`;
 
       // Panel 4: FLIRT / WARP Signatures, DWARF Compile Units & C++ Polymorphic VTables
       const flirtMatches = state.flirtReport?.matches || state.flirtReport?.matched_functions || state.flirtReport?.signatures || [];
@@ -4651,7 +4845,7 @@ if proc:
               </div>
             `;
           }).join('')
-        : `<div style="color:var(--text-mid);font-size:11px;padding:4px 6px;">Cliquez sur <strong>🔍 SCANNER SIGNATURES STATIQUES (FLIRT / WARP)</strong> pour identifier les routines standard strippées.</div>`;
+        : `<div style="color:var(--text-mid);font-size:11px;padding:4px 6px;">Click <strong>🔍 SCAN STATIC SIGNATURES (FLIRT / WARP)</strong> to identify stripped standard library routines.</div>`;
 
       const cppHtml = cppClasses.length > 0
         ? cppClasses.map(c => {
@@ -4661,7 +4855,7 @@ if proc:
               const vfAddrRaw = typeof vf === 'object' ? (vf.address ?? vf.target ?? vf.imp_address ?? vf.entry_point) : vf;
               const vfAddr = typeof vfAddrRaw === 'number' ? '0x' + vfAddrRaw.toString(16) : String(vfAddrRaw || '0x0');
               const vfName = typeof vf === 'object' ? (vf.demangled_name || vf.demangled || vf.name || `vfunc_${idx}`) : `vfunc_${idx}`;
-              return `<span class="xref-pill" style="border-color:var(--violet);color:var(--violet);" onclick="loadProcedure('${escapeHtml(vfAddr)}'); setMode('pseudo');" title="Décompiler ${escapeHtml(vfName)} @ ${escapeHtml(vfAddr)}">[#${idx}] ${escapeHtml(vfName)} (${escapeHtml(vfAddr)})</span>`;
+              return `<span class="xref-pill" style="border-color:var(--violet);color:var(--violet);" onclick="loadProcedure('${escapeHtml(vfAddr)}'); setMode('pseudo');" title="Decompile ${escapeHtml(vfName)} @ ${escapeHtml(vfAddr)}">[#${idx}] ${escapeHtml(vfName)} (${escapeHtml(vfAddr)})</span>`;
             }).join('');
             return `
               <div style="padding:6px 8px;border-bottom:1px solid rgba(199,125,255,0.18);background:rgba(199,125,255,0.04);">
@@ -4669,11 +4863,11 @@ if proc:
                   <span class="vtable-badge">[C++ VTABLE] ${escapeHtml(c.demangled_name || c.name)}</span>
                   <span style="font-family:var(--font-fui);font-size:10.5px;color:var(--secondary);">${escapeHtml(String(vtAddr))} (${vfuncs.length} vfuncs)</span>
                 </div>
-                <div>${vfuncPills || '<span style="color:var(--text-lo);font-size:10.5px;">Aucune méthode virtuelle résolue</span>'}</div>
+                <div>${vfuncPills || '<span style="color:var(--text-lo);font-size:10.5px;">No virtual methods resolved</span>'}</div>
               </div>
             `;
           }).join('')
-        : `<div style="color:var(--text-lo);font-size:11px;padding:4px 6px;">Aucune VTable C++ (__ZTV / __const) détectée dans cette cible.</div>`;
+        : `<div style="color:var(--text-lo);font-size:11px;padding:4px 6px;">No C++ VTable (__ZTV / __const) detected in this target.</div>`;
 
       const dwarfHtml = dwarfUnits.length > 0
         ? dwarfUnits.map(cu => {
@@ -4687,7 +4881,7 @@ if proc:
               </div>
             `;
           }).join('')
-        : `<div style="color:var(--text-lo);font-size:11px;padding:4px 6px;">Aucune section DWARF (__debug_info / .debug_line) embarquée.</div>`;
+        : `<div style="color:var(--text-lo);font-size:11px;padding:4px 6px;">No embedded DWARF debug section (__debug_info / .debug_line) found.</div>`;
 
       container.innerHTML = `
         <div class="resuite-grid">
@@ -4699,11 +4893,11 @@ if proc:
             </div>
             <div style="display:flex;gap:8px;align-items:center;">
               <input type="text" id="ultronProjectNameInput" class="fui-input" value="${escapeHtml(defaultProjName)}" style="flex:1;text-transform:none;" placeholder="Nom du fichier projet (.ultron)…" />
-              <button class="fui-btn primary-glow" onclick="saveUltronProject()">💾 SAUVEGARDER PROJET (.ULTRON)</button>
-              <button class="fui-btn" onclick="loadUltronProjectList(false)" title="Rafraîchir la liste des projets .ultron">↻</button>
+              <button class="fui-btn primary-glow" onclick="saveUltronProject()">💾 SAVE PROJECT (.ULTRON)</button>
+              <button class="fui-btn" onclick="loadUltronProjectList(false)" title="Refresh .ultron project list">↻</button>
             </div>
             <div style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">
-              BASE DE DONNÉES D'ANALYSE : Persiste les renommages de fonctions, notes tactiques, structures C et breakpoints matériels/logiciels.
+              ANALYSIS DATABASE: Persists function renames, inline comments, C structs, and hardware/software breakpoints.
             </div>
             <div style="max-height:195px;overflow-y:auto;">
               ${projectsListHtml}
@@ -4718,11 +4912,11 @@ if proc:
             </div>
             <div style="display:flex;gap:6px;align-items:center;">
               <select id="bindiffPresetSelect" class="fui-select" style="max-width:190px;" onchange="document.getElementById('bindiffTargetInput').value=this.value">
-                <option value="">-- PRESETS CIBLES --</option>
+                <option value="">-- TARGET PRESETS --</option>
                 ${presetOptsHtml}
               </select>
-              <input type="text" id="bindiffTargetInput" class="fui-input" value="${escapeHtml(defaultDiffTarget)}" style="flex:1;text-transform:none;" placeholder="Chemin du 2ème binaire à comparer…" />
-              <button class="fui-btn primary-glow" onclick="runBinDiffAction()">⚖ LANCER BINDIFF</button>
+              <input type="text" id="bindiffTargetInput" class="fui-input" value="${escapeHtml(defaultDiffTarget)}" style="flex:1;text-transform:none;" placeholder="Secondary target binary path to compare…" />
+              <button class="fui-btn primary-glow" onclick="runBinDiffAction()">⚖ RUN BINDIFF</button>
             </div>
             ${bindiffBodyHtml}
           </div>
@@ -4731,7 +4925,7 @@ if proc:
           <div class="resuite-panel">
             <div class="fui-module-title">
               <span>🐞 PONT DYNAMIQUE FRIDA &amp; LLDB (LIVE INSTRUMENTATION &amp; BREAKPOINTS)</span>
-              <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="generateDebugScriptsAction()">⚡ GÉNÉRER SCRIPTS FRIDA &amp; LLDB (PROCÉDURE ACTIVE)</button>
+              <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="generateDebugScriptsAction()">⚡ GENERATE FRIDA &amp; LLDB SCRIPTS (ACTIVE PROCEDURE)</button>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
               <div>
@@ -4754,7 +4948,7 @@ if proc:
                 BREAKPOINTS ACTIFS (${bpArray.length}) : ${bpPillsHtml}
               </div>
               <button class="fui-btn primary-glow" style="padding:4px 10px;font-size:10px;" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)">
-                🔴 BASCULER BREAKPOINT @ ${escapeHtml(state.selectedAddress || activeProcAddr)} [B]
+                🔴 TOGGLE BREAKPOINT @ ${escapeHtml(state.selectedAddress || activeProcAddr)} [B]
               </button>
             </div>
           </div>
@@ -4763,17 +4957,17 @@ if proc:
           <div class="resuite-panel">
             <div class="fui-module-title">
               <span>🧬 SIGNATURES FLIRT/WARP, C++ VTABLES &amp; DWARF DEBUG</span>
-              <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runFlirtScanAction()">🔍 SCANNER SIGNATURES STATIQUES (FLIRT / WARP)</button>
+              <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runFlirtScanAction()">🔍 SCAN STATIC SIGNATURES (FLIRT / WARP)</button>
             </div>
-            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--emerald);letter-spacing:1px;">SIGNATURES DE BIBLIOTHÈQUES STATIQUES (FLIRT / WARP) :</div>
+            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--emerald);letter-spacing:1px;">STATIC LIBRARY SIGNATURES (FLIRT / WARP) :</div>
             <div style="max-height:85px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);background:rgba(8,9,12,0.75);">
               ${flirtHtml}
             </div>
-            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--violet);letter-spacing:1px;">TABLES DE MÉTHODES VIRTUELLES POLYMORPHIQUES C++ (VTABLES &amp; RTTI) :</div>
+            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--violet);letter-spacing:1px;">C++ POLYMORPHIC VIRTUAL METHOD TABLES (VTABLES &amp; RTTI):</div>
             <div style="max-height:105px;overflow-y:auto;border:1px solid rgba(199,125,255,0.22);background:rgba(8,9,12,0.75);">
               ${cppHtml}
             </div>
-            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--secondary);letter-spacing:1px;">UNITÉS DE COMPILATION DWARF (DEBUG INFO &amp; SOURCE LINES) :</div>
+            <div style="font-family:var(--font-display);font-size:9.5px;color:var(--secondary);letter-spacing:1px;">DWARF COMPILE UNITS (DEBUG INFO &amp; SOURCE LINES):</div>
             <div style="max-height:70px;overflow-y:auto;border:1px solid rgba(255,255,255,0.15);background:rgba(8,9,12,0.75);">
               ${dwarfHtml}
             </div>
@@ -4787,7 +4981,7 @@ if proc:
       playChirp(1020, 0.08);
       const procAddr = state.selectedProcedure || state.overview?.entry_point || '0x100000000';
       const tgtAddr = (targetAddr || document.getElementById('omniSymbolicTargetInput')?.value || state.selectedAddress || procAddr).trim();
-      showToast(`🔮 Z3 SYMBOLIC SOLVER : Calcul du chemin CFG ${procAddr} → ${tgtAddr}…`);
+      showToast(`🔮 Z3 SYMBOLIC SOLVER: Computing CFG path ${procAddr} → ${tgtAddr}…`);
       try {
         const resp = await fetch('/api/v3/symbolic-solve', {
           method: 'POST',
@@ -4817,7 +5011,7 @@ if proc:
       playChirp(980, 0.08);
       state.aiRewriteLang = language;
       const procAddr = state.selectedProcedure || state.overview?.entry_point || '0x100000000';
-      showToast(`🧠 AI NEURAL REWRITER : Synthèse idiomatique [${language.toUpperCase()}] pour ${procAddr}…`);
+      showToast(`🧠 AI NEURAL REWRITER: Synthesizing idiomatic [${language.toUpperCase()}] for ${procAddr}…`);
       try {
         const resp = await fetch('/api/v3/ai-decompile', {
           method: 'POST',
@@ -4830,7 +5024,7 @@ if proc:
         });
         const res = await resp.json();
         state.aiRewriteData = { ...res, language: res.language || language };
-        showToast(`🧠 AI REWRITE [${language.toUpperCase()}] COMPLÉTÉ`);
+        showToast(`🧠 AI REWRITE [${language.toUpperCase()}] COMPLETE`);
       } catch (e) {
         state.aiRewriteData = { error: String(e), language };
       }
@@ -4845,7 +5039,7 @@ if proc:
         if (!silent) {
           const nCount = (state.globalCallGraph?.nodes || []).length;
           const eCount = (state.globalCallGraph?.edges || []).length;
-          showToast(`🕸 GRAPHE D'APPELS GLOBAL GÉNÉRÉ : ${nCount} NŒUDS // ${eCount} ARÊTES`);
+          showToast(`🕸 GLOBAL CALL GRAPH GENERATED: ${nCount} NODES // ${eCount} EDGES`);
           if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
         }
       } catch (e) {
@@ -4876,7 +5070,7 @@ if proc:
         });
         state.artifactReport = await resp.json();
         state.bytecodeReport = null;
-        showToast(`📦 ARTEFACT ANALYSÉ : ${state.artifactReport?.format || state.artifactReport?.artifact_type || p.split('/').pop()}`);
+        showToast(`📦 ARTIFACT ANALYZED: ${state.artifactReport?.format || state.artifactReport?.artifact_type || p.split('/').pop()}`);
       } catch (e) {
         state.artifactReport = { error: String(e) };
       }
@@ -4887,7 +5081,7 @@ if proc:
       playChirp(960, 0.08);
       const p = (pathOverride || document.getElementById('omniArtifactPathInput')?.value || 'samples/ultron_smart_contract.evm').trim();
       const fmt = formatHint || (p.endsWith('.dex') ? 'dex' : (p.endsWith('.dll') || p.endsWith('.exe') ? 'cil' : 'evm'));
-      showToast(`🧬 DÉCODAGE BYTECODE [${fmt.toUpperCase()}] : ${p.split('/').pop()}…`);
+      showToast(`🧬 DECODING BYTECODE [${fmt.toUpperCase()}] : ${p.split('/').pop()}…`);
       try {
         const resp = await fetch('/api/v3/decode-bytecode', {
           method: 'POST',
@@ -4896,7 +5090,7 @@ if proc:
         });
         state.bytecodeReport = await resp.json();
         state.artifactReport = null;
-        showToast(`🧬 BYTECODE DÉCODÉ : ${state.bytecodeReport?.format || fmt.toUpperCase()}`);
+        showToast(`🧬 BYTECODE DECODED: ${state.bytecodeReport?.format || fmt.toUpperCase()}`);
       } catch (e) {
         state.bytecodeReport = { error: String(e) };
       }
@@ -4914,7 +5108,7 @@ if proc:
           body: JSON.stringify({ path: p, dump_path: p }),
         });
         state.crashDumpReport = await resp.json();
-        showToast(`💥 CRASH DUMP ANALYSÉ : ${state.crashDumpReport?.exception_type || state.crashDumpReport?.signal || 'EXC_BAD_ACCESS'}`);
+        showToast(`💥 CRASH DUMP ANALYZED: ${state.crashDumpReport?.exception_type || state.crashDumpReport?.signal || 'EXC_BAD_ACCESS'}`);
       } catch (e) {
         state.crashDumpReport = { error: String(e) };
       }
@@ -4925,7 +5119,7 @@ if proc:
       playChirp(1010, 0.08);
       const binPath = state.overview?.file_path || 'samples/ultron_objc_sample';
       const bps = Array.from(state.breakpoints);
-      showToast(`🐞 LLDB LIVE OBSERVER : Capture d'appels natifs sur ${binPath.split('/').pop()}…`);
+      showToast(`🐞 LLDB LIVE OBSERVER: Capturing native calls on ${binPath.split('/').pop()}…`);
       try {
         const resp = await fetch('/api/v3/observe-calls', {
           method: 'POST',
@@ -4938,7 +5132,7 @@ if proc:
         });
         state.observedCallsReport = await resp.json();
         const cnt = (state.observedCallsReport?.observed_calls || state.observedCallsReport?.calls || state.observedCallsReport?.events || []).length;
-        showToast(`🐞 LLDB LIVE OBSERVER : ${cnt} APPELS NATIFS CAPTURÉS`);
+        showToast(`🐞 LLDB LIVE OBSERVER: ${cnt} NATIVE CALLS CAPTURED`);
       } catch (e) {
         state.observedCallsReport = { error: String(e) };
       }
@@ -4961,7 +5155,7 @@ if proc:
         });
         state.mcpToolsReport = await resp.json();
         const tools = state.mcpToolsReport?.result?.tools || state.mcpToolsReport?.tools || [];
-        showToast(`🔌 SERVEUR MCP ACTIF : ${tools.length} OUTILS REA-COMPATIBLES PRÊTS`);
+        showToast(`🔌 MCP SERVER ACTIVE: ${tools.length} REA-COMPATIBLE TOOLS READY`);
       } catch (e) {
         state.mcpToolsReport = { error: String(e) };
       }
@@ -4980,7 +5174,7 @@ if proc:
       const ai = state.aiRewriteData;
 
       // ── QUADRANT 1: Z3 SYMBOLIC SOLVER & AI REWRITER ──
-      let symHtml = `<div style="color:var(--text-mid);font-size:11px;padding:6px;">Entrez une adresse cible et cliquez sur <strong>🔮 RÉSOUDRE CHEMIN SYMBOLIQUE</strong> pour calculer le plus court chemin CFG (BFS), extraire les contraintes algébriques, résoudre les entrées concrètes (<code>arg0</code>, <code>arg1</code>) et générer le modèle formel <strong>SMT-LIB2 (Z3)</strong>.</div>`;
+      let symHtml = `<div style="color:var(--text-mid);font-size:11px;padding:6px;">Enter a target address and click <strong>🔮 SOLVE SYMBOLIC PATH</strong> to compute the shortest CFG path (BFS), extract algebraic constraints, solve concrete inputs (<code>arg0</code>, <code>arg1</code>), and generate the formal <strong>SMT-LIB2 (Z3)</strong> model.</div>`;
       if (sym && !sym.error) {
         const bfsPath = sym.bfs_path || sym.cfg_path || sym.path || sym.basic_blocks_path || [];
         const pathStr = Array.isArray(bfsPath)
@@ -5028,8 +5222,8 @@ if proc:
             ${smtModel ? `
               <div>
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-                  <span style="color:var(--violet);font-family:var(--font-fui);font-size:10px;">MODÈLE FORMEL SMT-LIB2 (Z3 PROVER) :</span>
-                  <button class="fui-btn" style="padding:1px 7px;font-size:9px;" onclick="copyReSuiteText('omniSmtPre', 'MODÈLE SMT-LIB2 Z3')">📋 COPIER SMT2</button>
+                  <span style="color:var(--violet);font-family:var(--font-fui);font-size:10px;">FORMAL SMT-LIB2 MODEL (Z3 PROVER):</span>
+                  <button class="fui-btn" style="padding:1px 7px;font-size:9px;" onclick="copyReSuiteText('omniSmtPre', 'Z3 SMT-LIB2 MODEL')">📋 COPIER SMT2</button>
                 </div>
                 <textarea id="omniSmtPre" class="resuite-code-box" style="min-height:82px;max-height:110px;color:var(--secondary);" readonly>${escapeHtml(smtModel)}</textarea>
               </div>
@@ -5118,7 +5312,7 @@ if proc:
         const outDeg = h.out_degree ?? h.callees_count ?? 0;
         const depth = h.depth ?? h.call_depth ?? 0;
         return `
-          <tr class="asm-row" onclick="loadProcedure('${escapeHtml(String(hAddr))}'); setMode('asm');" title="Cliquer pour charger ${escapeHtml(hName)} (${escapeHtml(String(hAddr))})">
+          <tr class="asm-row" onclick="loadProcedure('${escapeHtml(String(hAddr))}'); setMode('asm');" title="Click to load ${escapeHtml(hName)} (${escapeHtml(String(hAddr))})">
             <td style="color:${hCol};font-weight:700;font-size:10px;">[${escapeHtml(hCat)}]</td>
             <td style="color:#fff;font-weight:600;">${escapeHtml(hName)}</td>
             <td style="color:var(--secondary);font-family:var(--font-fui);">${escapeHtml(String(hAddr))}</td>
@@ -5131,7 +5325,7 @@ if proc:
       // ── QUADRANT 3: REA MULTI-ARTIFACT & BYTECODE ANALYZER ──
       const art = state.artifactReport;
       const bc = state.bytecodeReport;
-      let reaBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:6px;">Sélectionnez un preset REA (<strong>.asar Electron</strong>, <strong>.evm Solidity</strong>, <strong>.dex Android</strong>) ou cliquez sur <strong>📦 INSPECTER ARTEFACT</strong> / <strong>🧬 DÉCODER BYTECODE</strong>.</div>`;
+      let reaBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:6px;">Select an REA preset (<strong>.asar Electron</strong>, <strong>.evm Solidity</strong>, <strong>.dex Android</strong>) or click <strong>📦 INSPECT ARTIFACT</strong> / <strong>🧬 DECODE BYTECODE</strong>.</div>`;
 
       if (art && !art.error) {
         const files = art.files || art.file_tree || art.entries || [];
@@ -5279,12 +5473,12 @@ if proc:
           <!-- QUADRANT 1: Z3 SYMBOLIC EXECUTION SOLVER & AI SEMANTIC REWRITER -->
           <div class="omniv3-panel">
             <div class="fui-module-title">
-              <span>🔮 SOLVEUR D'EXÉCUTION SYMBOLIQUE (Z3 / ANGR) &amp; 🧠 AI REWRITER</span>
+              <span>🔮 SYMBOLIC EXECUTION SOLVER (Z3 / ANGR) &amp; 🧠 AI REWRITER</span>
               <span class="hud-tag">Z3 + AI AST</span>
             </div>
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-              <input type="text" id="omniSymbolicTargetInput" class="fui-input" value="${escapeHtml(defaultTargetAddr)}" style="flex:1;min-width:130px;text-transform:none;" placeholder="Adresse cible (ex: 0x100000978)…" />
-              <button class="fui-btn primary-glow" onclick="solveSymbolicPathTo(document.getElementById('omniSymbolicTargetInput')?.value)">🔮 RÉSOUDRE CHEMIN SYMBOLIQUE</button>
+              <input type="text" id="omniSymbolicTargetInput" class="fui-input" value="${escapeHtml(defaultTargetAddr)}" style="flex:1;min-width:130px;text-transform:none;" placeholder="Target address (e.g. 0x100000978)…" />
+              <button class="fui-btn primary-glow" onclick="solveSymbolicPathTo(document.getElementById('omniSymbolicTargetInput')?.value)">🔮 SOLVE SYMBOLIC PATH</button>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
               <button class="fui-btn cyan-glow" style="flex:1;" onclick="runAiRewrite('c23')">🧠 AI REWRITE -&gt; C23</button>
@@ -5298,8 +5492,8 @@ if proc:
           <!-- QUADRANT 2: GLOBAL 3D/2D CALL GRAPH & XREF MATRIX -->
           <div class="omniv3-panel">
             <div class="fui-module-title">
-              <span>🕸 GRAPHE D'APPELS GLOBAL 3D/2D (GLOBAL CALL GRAPH &amp; XREF MATRIX)</span>
-              <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="loadGlobalCallGraph(false)">🕸 GÉNÉRER GRAPHE D'APPELS GLOBAL</button>
+              <span>🕸 3D/2D GLOBAL CALL GRAPH &amp; XREF MATRIX</span>
+              <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="loadGlobalCallGraph(false)">🕸 BUILD CALL GRAPH GLOBAL</button>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-fui);font-size:10px;color:var(--text-mid);flex-wrap:wrap;gap:6px;">
               <span>NODES: <strong style="color:#fff;">${cgNodes.length}</strong> • EDGES: <strong style="color:var(--secondary);">${cgEdges.length}</strong> • CYCLES: <strong style="color:var(--primary);">${cgCycles.length}</strong></span>
@@ -5320,7 +5514,7 @@ if proc:
             <div style="max-height:115px;overflow-y:auto;border:1px solid rgba(255,255,255,0.16);">
               <table class="asm-table">
                 <tbody>
-                  ${hubRowsHtml || '<tr><td colspan="5" style="padding:6px;color:var(--text-mid);">Cliquez sur 🕸 GÉNÉRER GRAPHE D\'APPELS GLOBAL</td></tr>'}
+                  ${hubRowsHtml || '<tr><td colspan="5" style="padding:6px;color:var(--text-mid);">Click 🕸 BUILD GLOBAL CALL GRAPH</td></tr>'}
                 </tbody>
               </table>
             </div>
@@ -5338,9 +5532,9 @@ if proc:
               <button class="fui-btn cyan-glow" style="font-size:9.5px;padding:4px 8px;" onclick="selectReaPreset('samples/ultron_android_classes.dex', 'dex')">🤖 Android Dalvik DEX (samples/ultron_android_classes.dex)</button>
             </div>
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-              <input type="text" id="omniArtifactPathInput" class="fui-input" value="samples/ultron_electron_app.asar" style="flex:1;min-width:150px;text-transform:none;" placeholder="Chemin .asar, .evm, .dex, .ipa, .apk, .dll…" />
-              <button class="fui-btn primary-glow" style="font-size:10px;padding:5px 9px;" onclick="inspectReaArtifact()">📦 INSPECTER ARTEFACT (.ASAR / .IPA / .APK)</button>
-              <button class="fui-btn cyan-glow" style="font-size:10px;padding:5px 9px;" onclick="decodeReaBytecode()">🧬 DÉCODER BYTECODE (EVM / DEX / .NET CIL)</button>
+              <input type="text" id="omniArtifactPathInput" class="fui-input" value="samples/ultron_electron_app.asar" style="flex:1;min-width:150px;text-transform:none;" placeholder="Path to .asar, .evm, .dex, .ipa, .apk, .dll…" />
+              <button class="fui-btn primary-glow" style="font-size:10px;padding:5px 9px;" onclick="inspectReaArtifact()">📦 INSPECT ARTIFACT (.ASAR / .IPA / .APK)</button>
+              <button class="fui-btn cyan-glow" style="font-size:10px;padding:5px 9px;" onclick="decodeReaBytecode()">🧬 DECODE BYTECODE (EVM / DEX / .NET CIL)</button>
             </div>
             ${reaBodyHtml}
           </div>
@@ -5348,15 +5542,15 @@ if proc:
           <!-- QUADRANT 4: CRASH DUMP FORENSICS, LLDB LIVE OBSERVER & NATIVE MCP SERVER -->
           <div class="omniv3-panel">
             <div class="fui-module-title">
-              <span>💥 CRASH DUMP FORENSICS (.IPS / CORE), LLDB LIVE OBSERVER &amp; SERVEUR MCP NATIF</span>
+              <span>💥 CRASH DUMP FORENSICS (.IPS / CORE), LLDB LIVE OBSERVER &amp; NATIVE MCP SERVER</span>
               <span class="hud-tag">MCP + LLDB + IPS</span>
             </div>
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-              <input type="text" id="omniCrashPathInput" class="fui-input" value="samples/ultron_crash_report.ips" style="flex:1;min-width:140px;text-transform:none;" placeholder="Chemin du rapport de crash (.ips / ELF core)…" />
-              <button class="fui-btn primary-glow" style="font-size:10px;padding:5px 9px;" onclick="analyzeCrashDumpAction()">💥 ANALYSER CRASH DUMP (.IPS / CORE)</button>
+              <input type="text" id="omniCrashPathInput" class="fui-input" value="samples/ultron_crash_report.ips" style="flex:1;min-width:140px;text-transform:none;" placeholder="Crash report path (.ips / ELF core)…" />
+              <button class="fui-btn primary-glow" style="font-size:10px;padding:5px 9px;" onclick="analyzeCrashDumpAction()">💥 ANALYZE CRASH DUMP (.IPS / CORE)</button>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button class="fui-btn cyan-glow" style="flex:1;font-size:10px;" onclick="observeNativeCallsAction()">🐞 OBSERVER APPELS NATIFS LIVE (LLDB)</button>
+              <button class="fui-btn cyan-glow" style="flex:1;font-size:10px;" onclick="observeNativeCallsAction()">🐞 OBSERVE LIVE NATIVE CALLS (LLDB)</button>
               <button class="fui-btn primary-glow" style="flex:1;font-size:10px;" onclick="listMcpToolsAction()">🔌 LISTER LES 20 OUTILS MCP (REA-COMPATIBLE)</button>
             </div>
             ${crashHtml}
@@ -5364,9 +5558,9 @@ if proc:
             ${mcpHtml}
             ${(!crashHtml && !obsHtml && !mcpHtml) ? `
               <div style="color:var(--text-mid);font-size:11px;padding:6px;background:rgba(10,11,14,0.65);border:1px solid rgba(255,255,255,0.15);">
-                <div>• <strong>💥 ANALYSER CRASH DUMP</strong> : Décode les rapports macOS <code>.ips</code> &amp; <code>ELF Core</code> (thread fautif, signal <code>EXC_BAD_ACCESS</code>, registres ARM64 <code>pc/lr/sp/far</code>, backtrace symboliquée).</div>
-                <div style="margin-top:4px;">• <strong>🐞 OBSERVER APPELS NATIFS LIVE</strong> : Trace les appels de fonctions et snapshots de registres en direct via LLDB.</div>
-                <div style="margin-top:4px;">• <strong>🔌 SERVEUR MCP NATIF</strong> : Serveur JSON-RPC 2.0 (<code>ultron-disassemble-rs mcp</code> / <code>POST /api/mcp</code>) exposant 20 outils REA et le grand livre de preuves (Evidence Ledger).</div>
+                <div>• <strong>💥 ANALYZE CRASH DUMP</strong> : Decodes macOS <code>.ips</code> &amp; <code>ELF Core</code> crash reports (faulting thread, <code>EXC_BAD_ACCESS</code> signal, ARM64 registers <code>pc/lr/sp/far</code>, symbolicated backtrace).</div>
+                <div style="margin-top:4px;">• <strong>🐞 OBSERVE LIVE NATIVE CALLS</strong> : Traces function calls and live register snapshots via LLDB.</div>
+                <div style="margin-top:4px;">• <strong>🔌 NATIVE MCP SERVER</strong> : Serveur JSON-RPC 2.0 (<code>ultron-disassemble-rs mcp</code> / <code>POST /api/mcp</code>) exposant 20 outils REA et le grand livre de preuves (Evidence Ledger).</div>
               </div>
             ` : ''}
           </div>
@@ -5409,9 +5603,9 @@ if proc:
       const res = await resp.json();
       if (res.success || res.ok || res.output_path) {
         showToast(`PATCHED EXECUTABLE EXPORTED & SIGNED: ${(res.output_path || '').split('/').pop()}`);
-        alert(`Binaire patché exporté avec succès !\n\nChemin : ${res.output_path}\nTaille : ${res.size_bytes} octets\nSignature macOS : ${res.codesign || 'ad-hoc signed'}`);
+        alert(`Patched binary exported successfully!\n\nPath: ${res.output_path}\nSize: ${res.size_bytes} bytes\nmacOS Signature: ${res.codesign || 'ad-hoc signed'}`);
       } else {
-        alert('Erreur export: ' + (res.error || 'Unknown error'));
+        alert('Export error: ' + (res.error || 'Unknown error'));
       }
     }
 
@@ -5522,7 +5716,7 @@ if proc:
           const badgeColor = m.isClass ? 'var(--tertiary)' : '#e5e7eb';
           const safeFull = `${m.isClass ? '+' : '-'}[${cls.name} ${m.name}]`;
           return `
-            <div class="list-item" style="padding:5px 8px;" onclick="jumpToObjcMethod('${escapeHtml(m.impHex)}', '${escapeHtml(safeFull)}')" title="Cliquer pour décompiler ${escapeHtml(safeFull)} (${escapeHtml(m.impHex)})">
+            <div class="list-item" style="padding:5px 8px;" onclick="jumpToObjcMethod('${escapeHtml(m.impHex)}', '${escapeHtml(safeFull)}')" title="Click to decompile ${escapeHtml(safeFull)} (${escapeHtml(m.impHex)})">
               <span class="list-item-name" style="color:${badgeColor};">
                 <strong>[${m.isClass ? '+' : '-'}]</strong> ${escapeHtml(m.sig)}
               </span>
@@ -5567,7 +5761,7 @@ if proc:
       }
 
       document.getElementById('objcClassModal').classList.add('open');
-      showToast(`ObjC @interface ${cls.name} (${instSize}B, ${ivars.length} ivars, ${methods.length} méthodes)`);
+      showToast(`ObjC @interface ${cls.name} (${instSize}B, ${ivars.length} ivars, ${methods.length} methods)`);
     }
 
     function openStructModal() {

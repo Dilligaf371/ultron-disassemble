@@ -1,0 +1,2039 @@
+{
+  "ai_rewrite_c23": {
+    "baseline_ssa": "// ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // -[UltronSentinelCore initWithKey:rounds:] ───\n// Stack Frame: 0B | Basic Blocks: 4 | Natural Loops: 0 | Post-Dom Nodes: 4 | Callers: 0\n// @interface UltronSentinelCore : NSObject {\n//     uint64_t _reactorPower; // +0x08 (8B)\n//     int32_t _encryptionRounds; // +0x10 (4B)\n//     uint32_t _statusFlags; // +0x14 (4B)\n//     int32_t _securityLevel; // +0x18 (4B)\n//     uint64_t _cipherKey; // +0x20 (8B)\n//     NSString * _coreName; // +0x28 (8B)\n// }\n// @property (Ti,N,V_securityLevel) securityLevel;\n// @property (TQ,N,V_cipherKey) cipherKey;\n// @property (T@\"NSString\",C,N,V_coreName) coreName;\n// - (uint64_t)reactorDiagnosticDigest; // IMP: 0x100000d30\n// - (id)initWithKey:(uint64_t)arg0 rounds:(int32_t)arg1; // IMP: 0x100000a18\n// - (uint64_t)decryptPayload:(const char *)arg0 length:(uint64_t)arg1; // IMP: 0x100000b28\n// - (int32_t)securityLevel; // IMP: 0x100000c2c\n// - (void)setSecurityLevel:(int32_t)arg0; // IMP: 0x100000c48\n// - (uint64_t)cipherKey; // IMP: 0x100000c6c\n// - (void)setCipherKey:(uint64_t)arg0; // IMP: 0x100000c88\n// - (id)coreName; // IMP: 0x100000cac\n// - (void)setCoreName:(id)arg0; // IMP: 0x100000cc8\n// - (void).cxx_destruct; // IMP: 0x100000d00\n// + (id)sentinelProtocolVersion; // IMP: 0x100000c10\n// @end\nid -[UltronSentinelCore initWithKey:rounds:] {\n    uint8_t stack_buf_8[8]; // [fp - 0x8]\n    uint8_t stack_buf_20[16]; // [sp + 0x20]\n    r8 = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->payload_length = r8;\n    *([x29, #-8]) = r0;\n    *([x29, #-0x10]) = r1;\n    *([x29, #-0x18]) = r2;\n    *([x29, #-0x1c]) = r3;\n    r8 = *([x29, #-8]);\n    *([x29, #-8]) = 0;\n    r0 = &stack_buf_20; // [sp + 0x20]\n    ((UltronContext *)sp)->crypto_nonce = r8;\n    r8 = classRef_UltronSentinelCore; // [0x1000040d8]\n    ((UltronSentinelCore *)sp)->_coreName = r8;\n    r1 = @selector(init); // [0x100008190]\n    r0 = [&stack_buf_20 init]; // @selector(init)\n    r1 = r0;\n    r0 = ((UltronContext *)sp)->payload_length;\n    r8 = r1;\n    *([x29, #-8]) = r8;\n    r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, r0);\n    r8 = *([x29, #-8]);\n    if (r8 != 0) {\n        // [Block 0x100000a80 | PostDom: 0x100000a84]\n        goto loc_100000a84;\n        // [Block 0x100000a84 | PostDom: 0x100000aec]\n        r8 = *([x29, #-0x18]);\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->crypto_nonce = r8;\n        r8 = *([x29, #-0x1c]);\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->target_buffer = r8;\n        r9 = *([x29, #-8]);\n        r8 = 0x2328;\n        ((UltronContext *)r9)->session_flags = r8;\n        r9 = *([x29, #-8]);\n        r8 = 1;\n        r8 = 0xa5a50001; // movk lsl #16\n        ((UltronSentinelCore *)r9)->_statusFlags = r8;\n        r10 = *([x29, #-0x1c]);\n        r9 = 2;\n        r8 = 5;\n        r10 = r10 - 8;\n        r8 = (r10 > 0) ? r8 : r9;\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->payload_length = r8;\n        r8 = *([x29, #-8]);\n        r0 = r8 + 0x28;\n        r1 = @\"ULTRON-SENTINEL-MK9\"; // 0x100004088\n        r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, @\"ULTRON-SENTINEL-MK9\");\n        goto loc_100000aec;\n    }\n    // [Block 0x100000aec | PostDom: exit]\n    r8 = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->session_flags = r8;\n    r0 = *([x29, #-8]);\n    r8 = *([x8, #0x38]);\n    r0 = x8(r0, @\"ULTRON-SENTINEL-MK9\");\n    r1 = r0;\n    r0 = ((UltronContext *)sp)->session_flags;\n    ((UltronContext *)sp)->target_buffer = r1;\n    r1 = 0;\n    r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, 0);\n    r0 = ((UltronContext *)sp)->target_buffer;\n    return r0;\n}",
+    "engine": "Ultron Neural AST Synthesizer v3.0",
+    "entry_point": "0x100000a18",
+    "idiomatic_code": "// ─── ULTRON v3.0 NEURAL AST SYNTHESIZER // TARGET: ISO C23 ───\n/**\n * @brief Reconstructed implementation of `-[UltronSentinelCore initWithKey:rounds:]`\n * @address 0x100000a18 (Stack Frame: 0 bytes, Basic Blocks: 4)\n */\n#include <stdint.h>\n#include <stddef.h>\n#include <stdbool.h>\n\n[[nodiscard]] uint64_t UltronSentinelCore_initWithKey_rounds(id self_obj, SEL cmd_sel) {\n    uint64_t aux_param = 0;\n    uint64_t digest_acc = 0;\n    uint64_t loop_idx = 0;\n// @interface UltronSentinelCore : NSObject {\n//     uint64_t _reactorPower; // +0x08 (8B)\n//     int32_t _encryptionRounds; // +0x10 (4B)\n//     uint32_t _statusFlags; // +0x14 (4B)\n//     int32_t _securityLevel; // +0x18 (4B)\n//     uint64_t _cipherKey; // +0x20 (8B)\n//     NSString * _coreName; // +0x28 (8B)\n// }\n// @property (Ti,N,V_securityLevel) securityLevel;\n// @property (TQ,N,V_cipherKey) cipherKey;\n// @property (T@\"NSString\",C,N,V_coreName) coreName;\n// - (uint64_t)reactorDiagnosticDigest; // IMP: 0x100000d30\n// - (id)initWithKey:(uint64_t)self_obj rounds:(int32_t)cmd_sel; // IMP: 0x100000a18\n// - (uint64_t)decryptPayload:(const char *)self_obj length:(uint64_t)cmd_sel; // IMP: 0x100000b28\n// - (int32_t)securityLevel; // IMP: 0x100000c2c\n// - (void)setSecurityLevel:(int32_t)self_obj; // IMP: 0x100000c48\n// - (uint64_t)cipherKey; // IMP: 0x100000c6c\n// - (void)setCipherKey:(uint64_t)self_obj; // IMP: 0x100000c88\n// - (id)coreName; // IMP: 0x100000cac\n// - (void)setCoreName:(id)self_obj; // IMP: 0x100000cc8\n// - (void).cxx_destruct; // IMP: 0x100000d00\n// + (id)sentinelProtocolVersion; // IMP: 0x100000c10\n// @end\n    uint8_t stack_buf_8[8]; // [fp - 0x8]\n    uint8_t stack_buf_20[16]; // [sp + 0x20]\n    digest_acc = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->payload_length = digest_acc;\n    *([x29, #-8]) = self_obj;\n    *([x29, #-0x10]) = cmd_sel;\n    *([x29, #-0x18]) = aux_param;\n    *([x29, #-0x1c]) = r3;\n    digest_acc = *([x29, #-8]);\n    *([x29, #-8]) = 0;\n    self_obj = &stack_buf_20; // [sp + 0x20]\n    ((UltronContext *)sp)->crypto_nonce = digest_acc;\n    digest_acc = classRef_UltronSentinelCore; // [0x1000040d8]\n    ((UltronSentinelCore *)sp)->_coreName = digest_acc;\n    cmd_sel = @selector(init); // [0x100008190]\n    self_obj = [&stack_buf_20 init]; // @selector(init)\n    cmd_sel = self_obj;\n    self_obj = ((UltronContext *)sp)->payload_length;\n    digest_acc = cmd_sel;\n    *([x29, #-8]) = digest_acc;\n    self_obj = flirt_dyld_stub_binder_trampoline_11f0(self_obj, self_obj);\n    digest_acc = *([x29, #-8]);\n    if (digest_acc != 0) {\n        // [Block 0x100000a80 | PostDom: 0x100000a84]\n        goto loc_100000a84;\n        // [Block 0x100000a84 | PostDom: 0x100000aec]\n        digest_acc = *([x29, #-0x18]);\n        loop_idx = *([x29, #-8]);\n        ((UltronContext *)loop_idx)->crypto_nonce = digest_acc;\n        digest_acc = *([x29, #-0x1c]);\n        loop_idx = *([x29, #-8]);\n        ((UltronContext *)loop_idx)->target_buffer = digest_acc;\n        loop_idx = *([x29, #-8]);\n        digest_acc = 0x2328;\n        ((UltronContext *)loop_idx)->session_flags = digest_acc;\n        loop_idx = *([x29, #-8]);\n        digest_acc = 1;\n        digest_acc = 0xa5a50001; // movk lsl #16\n        ((UltronSentinelCore *)loop_idx)->_statusFlags = digest_acc;\n        r10 = *([x29, #-0x1c]);\n        loop_idx = 2;\n        digest_acc = 5;\n        r10 = r10 - 8;\n        digest_acc = (r10 > 0) ? digest_acc : loop_idx;\n        loop_idx = *([x29, #-8]);\n        ((UltronContext *)loop_idx)->payload_length = digest_acc;\n        digest_acc = *([x29, #-8]);\n        self_obj = digest_acc + 0x28;\n        cmd_sel = @\"ULTRON-SENTINEL-MK9\"; // 0x100004088\n        self_obj = flirt_dyld_stub_binder_trampoline_11f0(self_obj, @\"ULTRON-SENTINEL-MK9\");\n        goto loc_100000aec;\n    // [Block 0x100000aec | PostDom: exit]\n    digest_acc = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->session_flags = digest_acc;\n    self_obj = *([x29, #-8]);\n    digest_acc = *([x8, #0x38]);\n    self_obj = x8(self_obj, @\"ULTRON-SENTINEL-MK9\");\n    cmd_sel = self_obj;\n    self_obj = ((UltronContext *)sp)->session_flags;\n    ((UltronContext *)sp)->target_buffer = cmd_sel;\n    cmd_sel = 0;\n    self_obj = flirt_dyld_stub_binder_trampoline_11f0(self_obj, 0);\n    self_obj = ((UltronContext *)sp)->target_buffer;\n    return self_obj;\n}",
+    "inferred_variables": [
+      {
+        "inferred_type": "id",
+        "register": "r0",
+        "role": "Objective-C receiver instance (`self`)",
+        "semantic_name": "self_obj"
+      },
+      {
+        "inferred_type": "SEL",
+        "register": "r1",
+        "role": "Objective-C method selector (`_cmd`)",
+        "semantic_name": "cmd_sel"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r2",
+        "role": "Secondary argument / flags",
+        "semantic_name": "aux_param"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r8",
+        "role": "Primary accumulator / state digest register",
+        "semantic_name": "digest_acc"
+      },
+      {
+        "inferred_type": "size_t",
+        "register": "r9",
+        "role": "Induction variable / loop counter",
+        "semantic_name": "loop_idx"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r16",
+        "role": "Outer loop cursor / dispatch scratch",
+        "semantic_name": "row_cursor"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r17",
+        "role": "Inner loop cursor / stride offset",
+        "semantic_name": "col_cursor"
+      },
+      {
+        "inferred_type": "void *",
+        "register": "r19",
+        "role": "Callee-saved object / context handle",
+        "semantic_name": "saved_handle"
+      },
+      {
+        "inferred_type": "int64_t",
+        "register": "r20",
+        "role": "Callee-saved status / bound register",
+        "semantic_name": "saved_status"
+      }
+    ],
+    "language": "c23",
+    "procedure": "-[UltronSentinelCore initWithKey:rounds:]"
+  },
+  "ai_rewrite_rust": {
+    "baseline_ssa": "// ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // -[UltronSentinelCore initWithKey:rounds:] ───\n// Stack Frame: 0B | Basic Blocks: 4 | Natural Loops: 0 | Post-Dom Nodes: 4 | Callers: 0\n// @interface UltronSentinelCore : NSObject {\n//     uint64_t _reactorPower; // +0x08 (8B)\n//     int32_t _encryptionRounds; // +0x10 (4B)\n//     uint32_t _statusFlags; // +0x14 (4B)\n//     int32_t _securityLevel; // +0x18 (4B)\n//     uint64_t _cipherKey; // +0x20 (8B)\n//     NSString * _coreName; // +0x28 (8B)\n// }\n// @property (Ti,N,V_securityLevel) securityLevel;\n// @property (TQ,N,V_cipherKey) cipherKey;\n// @property (T@\"NSString\",C,N,V_coreName) coreName;\n// - (uint64_t)reactorDiagnosticDigest; // IMP: 0x100000d30\n// - (id)initWithKey:(uint64_t)arg0 rounds:(int32_t)arg1; // IMP: 0x100000a18\n// - (uint64_t)decryptPayload:(const char *)arg0 length:(uint64_t)arg1; // IMP: 0x100000b28\n// - (int32_t)securityLevel; // IMP: 0x100000c2c\n// - (void)setSecurityLevel:(int32_t)arg0; // IMP: 0x100000c48\n// - (uint64_t)cipherKey; // IMP: 0x100000c6c\n// - (void)setCipherKey:(uint64_t)arg0; // IMP: 0x100000c88\n// - (id)coreName; // IMP: 0x100000cac\n// - (void)setCoreName:(id)arg0; // IMP: 0x100000cc8\n// - (void).cxx_destruct; // IMP: 0x100000d00\n// + (id)sentinelProtocolVersion; // IMP: 0x100000c10\n// @end\nid -[UltronSentinelCore initWithKey:rounds:] {\n    uint8_t stack_buf_8[8]; // [fp - 0x8]\n    uint8_t stack_buf_20[16]; // [sp + 0x20]\n    r8 = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->payload_length = r8;\n    *([x29, #-8]) = r0;\n    *([x29, #-0x10]) = r1;\n    *([x29, #-0x18]) = r2;\n    *([x29, #-0x1c]) = r3;\n    r8 = *([x29, #-8]);\n    *([x29, #-8]) = 0;\n    r0 = &stack_buf_20; // [sp + 0x20]\n    ((UltronContext *)sp)->crypto_nonce = r8;\n    r8 = classRef_UltronSentinelCore; // [0x1000040d8]\n    ((UltronSentinelCore *)sp)->_coreName = r8;\n    r1 = @selector(init); // [0x100008190]\n    r0 = [&stack_buf_20 init]; // @selector(init)\n    r1 = r0;\n    r0 = ((UltronContext *)sp)->payload_length;\n    r8 = r1;\n    *([x29, #-8]) = r8;\n    r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, r0);\n    r8 = *([x29, #-8]);\n    if (r8 != 0) {\n        // [Block 0x100000a80 | PostDom: 0x100000a84]\n        goto loc_100000a84;\n        // [Block 0x100000a84 | PostDom: 0x100000aec]\n        r8 = *([x29, #-0x18]);\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->crypto_nonce = r8;\n        r8 = *([x29, #-0x1c]);\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->target_buffer = r8;\n        r9 = *([x29, #-8]);\n        r8 = 0x2328;\n        ((UltronContext *)r9)->session_flags = r8;\n        r9 = *([x29, #-8]);\n        r8 = 1;\n        r8 = 0xa5a50001; // movk lsl #16\n        ((UltronSentinelCore *)r9)->_statusFlags = r8;\n        r10 = *([x29, #-0x1c]);\n        r9 = 2;\n        r8 = 5;\n        r10 = r10 - 8;\n        r8 = (r10 > 0) ? r8 : r9;\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->payload_length = r8;\n        r8 = *([x29, #-8]);\n        r0 = r8 + 0x28;\n        r1 = @\"ULTRON-SENTINEL-MK9\"; // 0x100004088\n        r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, @\"ULTRON-SENTINEL-MK9\");\n        goto loc_100000aec;\n    }\n    // [Block 0x100000aec | PostDom: exit]\n    r8 = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->session_flags = r8;\n    r0 = *([x29, #-8]);\n    r8 = *([x8, #0x38]);\n    r0 = x8(r0, @\"ULTRON-SENTINEL-MK9\");\n    r1 = r0;\n    r0 = ((UltronContext *)sp)->session_flags;\n    ((UltronContext *)sp)->target_buffer = r1;\n    r1 = 0;\n    r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, 0);\n    r0 = ((UltronContext *)sp)->target_buffer;\n    return r0;\n}",
+    "engine": "Ultron Neural AST Synthesizer v3.0",
+    "entry_point": "0x100000a18",
+    "idiomatic_code": "// ─── ULTRON v3.0 NEURAL AST SYNTHESIZER // TARGET: IDIOMATIC RUST (2024 EDITION) ───\n/// Reconstructed from `-[UltronSentinelCore initWithKey:rounds:]` @ `0x100000a18`\n#[allow(unused_mut, unused_variables, clippy::let_and_return)]\npub fn ultronsentinelcore_initwithkey_rounds(mut self_obj: u64, mut cmd_sel: u64) -> u64 {\n    let mut aux_param: u64 = 0;\n    let mut digest_acc: u64 = 0;\n    let mut loop_idx: u64 = 0;\n// @interface UltronSentinelCore : NSObject {\n//     uint64_t _reactorPower; // +0x08 (8B)\n//     int32_t _encryptionRounds; // +0x10 (4B)\n//     uint32_t _statusFlags; // +0x14 (4B)\n//     int32_t _securityLevel; // +0x18 (4B)\n//     uint64_t _cipherKey; // +0x20 (8B)\n//     NSString * _coreName; // +0x28 (8B)\n// }\n// @property (Ti,N,V_securityLevel) securityLevel;\n// @property (TQ,N,V_cipherKey) cipherKey;\n// @property (T@\"NSString\",C,N,V_coreName) coreName;\n// - (uint64_t)reactorDiagnosticDigest; // IMP: 0x100000d30\n// - (id)initWithKey:(uint64_t)self_obj rounds:(int32_t)cmd_sel; // IMP: 0x100000a18\n// - (uint64_t)decryptPayload:(const char *)self_obj length:(uint64_t)cmd_sel; // IMP: 0x100000b28\n// - (int32_t)securityLevel; // IMP: 0x100000c2c\n// - (void)setSecurityLevel:(int32_t)self_obj; // IMP: 0x100000c48\n// - (uint64_t)cipherKey; // IMP: 0x100000c6c\n// - (void)setCipherKey:(uint64_t)self_obj; // IMP: 0x100000c88\n// - (id)coreName; // IMP: 0x100000cac\n// - (void)setCoreName:(id)self_obj; // IMP: 0x100000cc8\n// - (void).cxx_destruct; // IMP: 0x100000d00\n// + (id)sentinelProtocolVersion; // IMP: 0x100000c10\n// @end\n    let mut stack_buf_8: [u8; 64] = [0u8; 64];\n    let mut stack_buf_20: [u8; 64] = [0u8; 64];\n    digest_acc = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->payload_length = digest_acc;\n    *([x29, #-8]) = self_obj;\n    *([x29, #-0x10]) = cmd_sel;\n    *([x29, #-0x18]) = aux_param;\n    *([x29, #-0x1c]) = r3;\n    digest_acc = *([x29, #-8]);\n    *([x29, #-8]) = 0;\n    self_obj = &stack_buf_20; // [sp + 0x20]\n    ((UltronContext *)sp)->crypto_nonce = digest_acc;\n    digest_acc = classRef_UltronSentinelCore; // [0x1000040d8]\n    ((UltronSentinelCore *)sp)->_coreName = digest_acc;\n    cmd_sel = @selector(init); // [0x100008190]\n    self_obj = [&stack_buf_20 init]; // @selector(init)\n    cmd_sel = self_obj;\n    self_obj = ((UltronContext *)sp)->payload_length;\n    digest_acc = cmd_sel;\n    *([x29, #-8]) = digest_acc;\n    self_obj = flirt_dyld_stub_binder_trampoline_11f0(self_obj, self_obj);\n    digest_acc = *([x29, #-8]);\n    if (digest_acc != 0) {\n        // [Block 0x100000a80 | PostDom: 0x100000a84]\n        goto loc_100000a84;\n        // [Block 0x100000a84 | PostDom: 0x100000aec]\n        digest_acc = *([x29, #-0x18]);\n        loop_idx = *([x29, #-8]);\n        ((UltronContext *)loop_idx)->crypto_nonce = digest_acc;\n        digest_acc = *([x29, #-0x1c]);\n        loop_idx = *([x29, #-8]);\n        ((UltronContext *)loop_idx)->target_buffer = digest_acc;\n        loop_idx = *([x29, #-8]);\n        digest_acc = 0x2328;\n        ((UltronContext *)loop_idx)->session_flags = digest_acc;\n        loop_idx = *([x29, #-8]);\n        digest_acc = 1;\n        digest_acc = 0xa5a50001; // movk lsl #16\n        ((UltronSentinelCore *)loop_idx)->_statusFlags = digest_acc;\n        r10 = *([x29, #-0x1c]);\n        loop_idx = 2;\n        digest_acc = 5;\n        r10 = r10 - 8;\n        digest_acc = (r10 > 0) ? digest_acc : loop_idx;\n        loop_idx = *([x29, #-8]);\n        ((UltronContext *)loop_idx)->payload_length = digest_acc;\n        digest_acc = *([x29, #-8]);\n        self_obj = digest_acc + 0x28;\n        cmd_sel = @\"ULTRON-SENTINEL-MK9\"; // 0x100004088\n        self_obj = flirt_dyld_stub_binder_trampoline_11f0(self_obj, @\"ULTRON-SENTINEL-MK9\");\n        goto loc_100000aec;\n    // [Block 0x100000aec | PostDom: exit]\n    digest_acc = &stack_buf_8; // [fp - 0x8]\n    ((UltronContext *)sp)->session_flags = digest_acc;\n    self_obj = *([x29, #-8]);\n    digest_acc = *([x8, #0x38]);\n    self_obj = x8(self_obj, @\"ULTRON-SENTINEL-MK9\");\n    cmd_sel = self_obj;\n    self_obj = ((UltronContext *)sp)->session_flags;\n    ((UltronContext *)sp)->target_buffer = cmd_sel;\n    cmd_sel = 0;\n    self_obj = flirt_dyld_stub_binder_trampoline_11f0(self_obj, 0);\n    self_obj = ((UltronContext *)sp)->target_buffer;\n    return self_obj;\n}",
+    "inferred_variables": [
+      {
+        "inferred_type": "id",
+        "register": "r0",
+        "role": "Objective-C receiver instance (`self`)",
+        "semantic_name": "self_obj"
+      },
+      {
+        "inferred_type": "SEL",
+        "register": "r1",
+        "role": "Objective-C method selector (`_cmd`)",
+        "semantic_name": "cmd_sel"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r2",
+        "role": "Secondary argument / flags",
+        "semantic_name": "aux_param"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r8",
+        "role": "Primary accumulator / state digest register",
+        "semantic_name": "digest_acc"
+      },
+      {
+        "inferred_type": "size_t",
+        "register": "r9",
+        "role": "Induction variable / loop counter",
+        "semantic_name": "loop_idx"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r16",
+        "role": "Outer loop cursor / dispatch scratch",
+        "semantic_name": "row_cursor"
+      },
+      {
+        "inferred_type": "uint64_t",
+        "register": "r17",
+        "role": "Inner loop cursor / stride offset",
+        "semantic_name": "col_cursor"
+      },
+      {
+        "inferred_type": "void *",
+        "register": "r19",
+        "role": "Callee-saved object / context handle",
+        "semantic_name": "saved_handle"
+      },
+      {
+        "inferred_type": "int64_t",
+        "register": "r20",
+        "role": "Callee-saved status / bound register",
+        "semantic_name": "saved_status"
+      }
+    ],
+    "language": "rust",
+    "procedure": "-[UltronSentinelCore initWithKey:rounds:]"
+  },
+  "arch": "arm64",
+  "artifact_inspection": {
+    "artifact_type": "raw_binary_or_unknown_archive",
+    "file_size": 53456,
+    "magic_hex": "cffaedfe0c0000010000000002000000",
+    "path": "samples/ultron_objc_sample",
+    "status": "ok"
+  },
+  "audit": {
+    "crypto_constants": [],
+    "crypto_findings": [],
+    "entropy_map": [
+      {
+        "address": "0x100000a18",
+        "entropy": 5.65,
+        "entropy_bits": 5.65,
+        "entropy_pct": 71.0,
+        "section": "__text",
+        "segment": "__TEXT",
+        "size": 1876,
+        "start": "0x100000a18",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x10000116c",
+        "entropy": 3.3,
+        "entropy_bits": 3.3,
+        "entropy_pct": 41.0,
+        "section": "__stubs",
+        "segment": "__TEXT",
+        "size": 156,
+        "start": "0x10000116c",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001220",
+        "entropy": 3.37,
+        "entropy_bits": 3.37,
+        "entropy_pct": 42.0,
+        "section": "__objc_stubs",
+        "segment": "__TEXT",
+        "size": 256,
+        "start": "0x100001220",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001320",
+        "entropy": 3.61,
+        "entropy_bits": 3.61,
+        "entropy_pct": 45.0,
+        "section": "__objc_methlist",
+        "segment": "__TEXT",
+        "size": 152,
+        "start": "0x100001320",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000013b8",
+        "entropy": 4.74,
+        "entropy_bits": 4.74,
+        "entropy_pct": 59.0,
+        "section": "__objc_methname",
+        "segment": "__TEXT",
+        "size": 346,
+        "start": "0x1000013b8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001512",
+        "entropy": 5.12,
+        "entropy_bits": 5.12,
+        "entropy_pct": 64.0,
+        "section": "__cstring",
+        "segment": "__TEXT",
+        "size": 143,
+        "start": "0x100001512",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000015a1",
+        "entropy": 3.62,
+        "entropy_bits": 3.62,
+        "entropy_pct": 45.0,
+        "section": "__objc_classname",
+        "segment": "__TEXT",
+        "size": 31,
+        "start": "0x1000015a1",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000015c0",
+        "entropy": 3.98,
+        "entropy_bits": 3.98,
+        "entropy_pct": 50.0,
+        "section": "__objc_methtype",
+        "segment": "__TEXT",
+        "size": 112,
+        "start": "0x1000015c0",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001630",
+        "entropy": 0.9,
+        "entropy_bits": 0.9,
+        "entropy_pct": 11.0,
+        "section": "__const",
+        "segment": "__TEXT",
+        "size": 96,
+        "start": "0x100001630",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001690",
+        "entropy": 2.51,
+        "entropy_bits": 2.51,
+        "entropy_pct": 31.0,
+        "section": "__unwind_info",
+        "segment": "__TEXT",
+        "size": 144,
+        "start": "0x100001690",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100004000",
+        "entropy": 1.96,
+        "entropy_bits": 1.96,
+        "entropy_pct": 25.0,
+        "section": "__got",
+        "segment": "__DATA_CONST",
+        "size": 136,
+        "start": "0x100004000",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100004088",
+        "entropy": 1.75,
+        "entropy_bits": 1.75,
+        "entropy_pct": 22.0,
+        "section": "__cfstring",
+        "segment": "__DATA_CONST",
+        "size": 64,
+        "start": "0x100004088",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000040c8",
+        "entropy": 1.55,
+        "entropy_bits": 1.55,
+        "entropy_pct": 19.0,
+        "section": "__objc_classlist",
+        "segment": "__DATA_CONST",
+        "size": 8,
+        "start": "0x1000040c8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000040d0",
+        "entropy": 0.54,
+        "entropy_bits": 0.54,
+        "entropy_pct": 7.0,
+        "section": "__objc_imageinfo",
+        "segment": "__DATA_CONST",
+        "size": 8,
+        "start": "0x1000040d0",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000040d8",
+        "entropy": 1.06,
+        "entropy_bits": 1.06,
+        "entropy_pct": 13.0,
+        "section": "__objc_superrefs",
+        "segment": "__DATA_CONST",
+        "size": 8,
+        "start": "0x1000040d8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100008000",
+        "entropy": 2.18,
+        "entropy_bits": 2.18,
+        "entropy_pct": 27.0,
+        "section": "__objc_const",
+        "segment": "__DATA",
+        "size": 400,
+        "start": "0x100008000",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100008190",
+        "entropy": 2.09,
+        "entropy_bits": 2.09,
+        "entropy_pct": 26.0,
+        "section": "__objc_selrefs",
+        "segment": "__DATA",
+        "size": 104,
+        "start": "0x100008190",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000081f8",
+        "entropy": 1.46,
+        "entropy_bits": 1.46,
+        "entropy_pct": 18.0,
+        "section": "__objc_ivar",
+        "segment": "__DATA",
+        "size": 24,
+        "start": "0x1000081f8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100008210",
+        "entropy": 1.66,
+        "entropy_bits": 1.66,
+        "entropy_pct": 21.0,
+        "section": "__objc_data",
+        "segment": "__DATA",
+        "size": 80,
+        "start": "0x100008210",
+        "status": "NORMAL NATIVE SECTION"
+      }
+    ],
+    "findings": [],
+    "interesting_strings": [
+      {
+        "address": "0x1000013e2",
+        "category": "AUTH / PROTOCOL",
+        "value": "TQ,N,V_cipherKey"
+      },
+      {
+        "address": "0x100001413",
+        "category": "AUTH / PROTOCOL",
+        "value": "_cipherKey"
+      },
+      {
+        "address": "0x100001464",
+        "category": "AUTH / PROTOCOL",
+        "value": "cipherKey"
+      },
+      {
+        "address": "0x100001493",
+        "category": "AUTH / PROTOCOL",
+        "value": "initWithKey:rounds:"
+      },
+      {
+        "address": "0x1000014e5",
+        "category": "AUTH / PROTOCOL",
+        "value": "setCipherKey:"
+      },
+      {
+        "address": "0x100001512",
+        "category": "AUTH / PROTOCOL",
+        "value": "ULTRON-SENTINEL-MK9"
+      },
+      {
+        "address": "0x100001526",
+        "category": "AUTH / PROTOCOL",
+        "value": "ULTRON-OBJC-PROTOCOL-v4.2"
+      },
+      {
+        "address": "0x100001540",
+        "category": "AUTH / PROTOCOL",
+        "value": "ULTRON_TELEMETRY_CORE_AUTH_VECTOR"
+      },
+      {
+        "address": "0x1000015a1",
+        "category": "AUTH / PROTOCOL",
+        "value": "UltronSentinelCore"
+      }
+    ],
+    "mitigations": {
+      "Objective-C ARC": false,
+      "PIE / ASLR": true,
+      "Stack Canary": false,
+      "W^X / NX Pages": true
+    },
+    "neural_audit_summary": {
+      "average_decompilation_confidence": "95.7%",
+      "average_decompilation_confidence_score": 95.7,
+      "max_loop_nesting_count": 3,
+      "procedure_count": 33,
+      "procedures": [
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 2,
+          "entry_point": "0x100000a18",
+          "halstead_volume": 1496.59,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore initWithKey:rounds:]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 3,
+          "entry_point": "0x100000b28",
+          "halstead_volume": 1213.24,
+          "loop_nesting_count": 2,
+          "name": "-[UltronSentinelCore decryptPayload:length:]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000c10",
+          "halstead_volume": 93.77,
+          "loop_nesting_count": 0,
+          "name": "+[UltronSentinelCore sentinelProtocolVersion]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000c2c",
+          "halstead_volume": 96.0,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore securityLevel]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000c48",
+          "halstead_volume": 134.89,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore setSecurityLevel:]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000c6c",
+          "halstead_volume": 93.77,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore cipherKey]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000c88",
+          "halstead_volume": 137.61,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore setCipherKey:]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000cac",
+          "halstead_volume": 93.77,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore coreName]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000cc8",
+          "halstead_volume": 249.98,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore setCoreName:]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000d00",
+          "halstead_volume": 197.15,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore .cxx_destruct]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 98.0,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100000d30",
+          "halstead_volume": 207.45,
+          "loop_nesting_count": 0,
+          "name": "-[UltronSentinelCore reactorDiagnosticDigest]",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 93.0,
+          "cyclomatic_complexity": 10,
+          "entry_point": "0x100000d64",
+          "halstead_volume": 2566.7,
+          "loop_nesting_count": 3,
+          "name": "_matrix_nested_solver",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 96.5,
+          "cyclomatic_complexity": 3,
+          "entry_point": "0x100000f3c",
+          "halstead_volume": 3317.15,
+          "loop_nesting_count": 0,
+          "name": "_main",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x10000116c",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_116c",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001178",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_1178",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001184",
+          "halstead_volume": 20.68,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_1184",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001190",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_1190",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x10000119c",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_119c",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011a8",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11a8",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011b4",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11b4",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011c0",
+          "halstead_volume": 54.0,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11c0",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011d8",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11d8",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011e4",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11e4",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011f0",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11f0",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000011fc",
+          "halstead_volume": 25.27,
+          "loop_nesting_count": 0,
+          "name": "flirt_dyld_stub_binder_trampoline_11fc",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001220",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$UTF8String",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001240",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$coreName",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001260",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$decryptPayload:length:",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001280",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$initWithKey:rounds:",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000012a0",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$reactorDiagnosticDigest",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000012c0",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$securityLevel",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x1000012e0",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$sentinelProtocolVersion",
+          "stack_frame_size": 0
+        },
+        {
+          "ai_decompilation_confidence": 94.5,
+          "cyclomatic_complexity": 1,
+          "entry_point": "0x100001300",
+          "halstead_volume": 81.41,
+          "loop_nesting_count": 0,
+          "name": "_objc_msgSend$setSecurityLevel:",
+          "stack_frame_size": 0
+        }
+      ],
+      "total_cyclomatic_complexity": 47
+    },
+    "risk_score": 0,
+    "section_entropy": [
+      {
+        "address": "0x100000a18",
+        "entropy": 5.65,
+        "entropy_bits": 5.65,
+        "entropy_pct": 71.0,
+        "section": "__text",
+        "segment": "__TEXT",
+        "size": 1876,
+        "start": "0x100000a18",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x10000116c",
+        "entropy": 3.3,
+        "entropy_bits": 3.3,
+        "entropy_pct": 41.0,
+        "section": "__stubs",
+        "segment": "__TEXT",
+        "size": 156,
+        "start": "0x10000116c",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001220",
+        "entropy": 3.37,
+        "entropy_bits": 3.37,
+        "entropy_pct": 42.0,
+        "section": "__objc_stubs",
+        "segment": "__TEXT",
+        "size": 256,
+        "start": "0x100001220",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001320",
+        "entropy": 3.61,
+        "entropy_bits": 3.61,
+        "entropy_pct": 45.0,
+        "section": "__objc_methlist",
+        "segment": "__TEXT",
+        "size": 152,
+        "start": "0x100001320",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000013b8",
+        "entropy": 4.74,
+        "entropy_bits": 4.74,
+        "entropy_pct": 59.0,
+        "section": "__objc_methname",
+        "segment": "__TEXT",
+        "size": 346,
+        "start": "0x1000013b8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001512",
+        "entropy": 5.12,
+        "entropy_bits": 5.12,
+        "entropy_pct": 64.0,
+        "section": "__cstring",
+        "segment": "__TEXT",
+        "size": 143,
+        "start": "0x100001512",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000015a1",
+        "entropy": 3.62,
+        "entropy_bits": 3.62,
+        "entropy_pct": 45.0,
+        "section": "__objc_classname",
+        "segment": "__TEXT",
+        "size": 31,
+        "start": "0x1000015a1",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000015c0",
+        "entropy": 3.98,
+        "entropy_bits": 3.98,
+        "entropy_pct": 50.0,
+        "section": "__objc_methtype",
+        "segment": "__TEXT",
+        "size": 112,
+        "start": "0x1000015c0",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001630",
+        "entropy": 0.9,
+        "entropy_bits": 0.9,
+        "entropy_pct": 11.0,
+        "section": "__const",
+        "segment": "__TEXT",
+        "size": 96,
+        "start": "0x100001630",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100001690",
+        "entropy": 2.51,
+        "entropy_bits": 2.51,
+        "entropy_pct": 31.0,
+        "section": "__unwind_info",
+        "segment": "__TEXT",
+        "size": 144,
+        "start": "0x100001690",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100004000",
+        "entropy": 1.96,
+        "entropy_bits": 1.96,
+        "entropy_pct": 25.0,
+        "section": "__got",
+        "segment": "__DATA_CONST",
+        "size": 136,
+        "start": "0x100004000",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100004088",
+        "entropy": 1.75,
+        "entropy_bits": 1.75,
+        "entropy_pct": 22.0,
+        "section": "__cfstring",
+        "segment": "__DATA_CONST",
+        "size": 64,
+        "start": "0x100004088",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000040c8",
+        "entropy": 1.55,
+        "entropy_bits": 1.55,
+        "entropy_pct": 19.0,
+        "section": "__objc_classlist",
+        "segment": "__DATA_CONST",
+        "size": 8,
+        "start": "0x1000040c8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000040d0",
+        "entropy": 0.54,
+        "entropy_bits": 0.54,
+        "entropy_pct": 7.0,
+        "section": "__objc_imageinfo",
+        "segment": "__DATA_CONST",
+        "size": 8,
+        "start": "0x1000040d0",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000040d8",
+        "entropy": 1.06,
+        "entropy_bits": 1.06,
+        "entropy_pct": 13.0,
+        "section": "__objc_superrefs",
+        "segment": "__DATA_CONST",
+        "size": 8,
+        "start": "0x1000040d8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100008000",
+        "entropy": 2.18,
+        "entropy_bits": 2.18,
+        "entropy_pct": 27.0,
+        "section": "__objc_const",
+        "segment": "__DATA",
+        "size": 400,
+        "start": "0x100008000",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100008190",
+        "entropy": 2.09,
+        "entropy_bits": 2.09,
+        "entropy_pct": 26.0,
+        "section": "__objc_selrefs",
+        "segment": "__DATA",
+        "size": 104,
+        "start": "0x100008190",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x1000081f8",
+        "entropy": 1.46,
+        "entropy_bits": 1.46,
+        "entropy_pct": 18.0,
+        "section": "__objc_ivar",
+        "segment": "__DATA",
+        "size": 24,
+        "start": "0x1000081f8",
+        "status": "NORMAL NATIVE SECTION"
+      },
+      {
+        "address": "0x100008210",
+        "entropy": 1.66,
+        "entropy_bits": 1.66,
+        "entropy_pct": 21.0,
+        "section": "__objc_data",
+        "segment": "__DATA",
+        "size": 80,
+        "start": "0x100008210",
+        "status": "NORMAL NATIVE SECTION"
+      }
+    ],
+    "security_score": 100,
+    "vulnerabilities": [],
+    "vulnerability_count": 0
+  },
+  "bits": 64,
+  "callgraph": {
+    "edges": [
+      {
+        "from": "0x100000a18",
+        "from_name": "-[UltronSentinelCore initWithKey:rounds:]",
+        "is_back_edge": false,
+        "to": "0x1000011a8",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11a8"
+      },
+      {
+        "from": "0x100000a18",
+        "from_name": "-[UltronSentinelCore initWithKey:rounds:]",
+        "is_back_edge": false,
+        "to": "0x1000011f0",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11f0"
+      },
+      {
+        "from": "0x100000cc8",
+        "from_name": "-[UltronSentinelCore setCoreName:]",
+        "is_back_edge": false,
+        "to": "0x1000011e4",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11e4"
+      },
+      {
+        "from": "0x100000d00",
+        "from_name": "-[UltronSentinelCore .cxx_destruct]",
+        "is_back_edge": false,
+        "to": "0x1000011f0",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11f0"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x10000119c",
+        "to_name": "flirt_dyld_stub_binder_trampoline_119c"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001184",
+        "to_name": "flirt_dyld_stub_binder_trampoline_1184"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001280",
+        "to_name": "_objc_msgSend$initWithKey:rounds:"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001300",
+        "to_name": "_objc_msgSend$setSecurityLevel:"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001178",
+        "to_name": "flirt_dyld_stub_binder_trampoline_1178"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000011b4",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11b4"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001260",
+        "to_name": "_objc_msgSend$decryptPayload:length:"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": true,
+        "to": "0x100000d64",
+        "to_name": "_matrix_nested_solver"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000012e0",
+        "to_name": "_objc_msgSend$sentinelProtocolVersion"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000011d8",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11d8"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000011c0",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11c0"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001220",
+        "to_name": "_objc_msgSend$UTF8String"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001240",
+        "to_name": "_objc_msgSend$coreName"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000012c0",
+        "to_name": "_objc_msgSend$securityLevel"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000012a0",
+        "to_name": "_objc_msgSend$reactorDiagnosticDigest"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000011fc",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11fc"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x1000011f0",
+        "to_name": "flirt_dyld_stub_binder_trampoline_11f0"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x100001190",
+        "to_name": "flirt_dyld_stub_binder_trampoline_1190"
+      },
+      {
+        "from": "0x100000f3c",
+        "from_name": "_main",
+        "is_back_edge": false,
+        "to": "0x10000116c",
+        "to_name": "flirt_dyld_stub_binder_trampoline_116c"
+      }
+    ],
+    "entry_point": "0x100000f3c",
+    "hotspots": [
+      {
+        "address": "0x100000a18",
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 2,
+        "in_degree": 0,
+        "name": "-[UltronSentinelCore initWithKey:rounds:]",
+        "out_degree": 2
+      },
+      {
+        "address": "0x100000d64",
+        "category": "CRYPTO_KERNEL",
+        "cyclomatic_complexity": 10,
+        "in_degree": 1,
+        "name": "_matrix_nested_solver",
+        "out_degree": 0
+      },
+      {
+        "address": "0x100000f3c",
+        "category": "ENTRY",
+        "cyclomatic_complexity": 3,
+        "in_degree": 0,
+        "name": "_main",
+        "out_degree": 19
+      },
+      {
+        "address": "0x100001178",
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "in_degree": 2,
+        "name": "flirt_dyld_stub_binder_trampoline_1178",
+        "out_degree": 0
+      },
+      {
+        "address": "0x1000011c0",
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "in_degree": 2,
+        "name": "flirt_dyld_stub_binder_trampoline_11c0",
+        "out_degree": 0
+      },
+      {
+        "address": "0x1000011d8",
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "in_degree": 2,
+        "name": "flirt_dyld_stub_binder_trampoline_11d8",
+        "out_degree": 0
+      },
+      {
+        "address": "0x1000011f0",
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "in_degree": 6,
+        "name": "flirt_dyld_stub_binder_trampoline_11f0",
+        "out_degree": 0
+      },
+      {
+        "address": "0x100001220",
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "in_degree": 2,
+        "name": "_objc_msgSend$UTF8String",
+        "out_degree": 0
+      }
+    ],
+    "nodes": [
+      {
+        "address": "0x100000a18",
+        "basic_block_count": 4,
+        "call_depth": null,
+        "callees_count": 2,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 2,
+        "demangled_name": "-[UltronSentinelCore initWithKey:rounds:]",
+        "id": "0x100000a18",
+        "instruction_count": 68,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore initWithKey:rounds:]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000b28",
+        "basic_block_count": 11,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 3,
+        "demangled_name": "-[UltronSentinelCore decryptPayload:length:]",
+        "id": "0x100000b28",
+        "instruction_count": 58,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore decryptPayload:length:]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000c10",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "+[UltronSentinelCore sentinelProtocolVersion]",
+        "id": "0x100000c10",
+        "instruction_count": 7,
+        "is_recursive": false,
+        "name": "+[UltronSentinelCore sentinelProtocolVersion]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000c2c",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore securityLevel]",
+        "id": "0x100000c2c",
+        "instruction_count": 7,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore securityLevel]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000c48",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore setSecurityLevel:]",
+        "id": "0x100000c48",
+        "instruction_count": 9,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore setSecurityLevel:]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000c6c",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore cipherKey]",
+        "id": "0x100000c6c",
+        "instruction_count": 7,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore cipherKey]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000c88",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore setCipherKey:]",
+        "id": "0x100000c88",
+        "instruction_count": 9,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore setCipherKey:]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000cac",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore coreName]",
+        "id": "0x100000cac",
+        "instruction_count": 7,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore coreName]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000cc8",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 1,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore setCoreName:]",
+        "id": "0x100000cc8",
+        "instruction_count": 14,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore setCoreName:]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000d00",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 1,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore .cxx_destruct]",
+        "id": "0x100000d00",
+        "instruction_count": 12,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore .cxx_destruct]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000d30",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 0,
+        "category": "OBJC_METHOD",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "-[UltronSentinelCore reactorDiagnosticDigest]",
+        "id": "0x100000d30",
+        "instruction_count": 13,
+        "is_recursive": false,
+        "name": "-[UltronSentinelCore reactorDiagnosticDigest]",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000d64",
+        "basic_block_count": 32,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "CRYPTO_KERNEL",
+        "cyclomatic_complexity": 10,
+        "demangled_name": "_matrix_nested_solver",
+        "id": "0x100000d64",
+        "instruction_count": 118,
+        "is_recursive": false,
+        "name": "_matrix_nested_solver",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100000f3c",
+        "basic_block_count": 7,
+        "call_depth": 0,
+        "callees_count": 19,
+        "callers_count": 0,
+        "category": "ENTRY",
+        "cyclomatic_complexity": 3,
+        "demangled_name": "_main",
+        "id": "0x100000f3c",
+        "instruction_count": 140,
+        "is_recursive": false,
+        "name": "_main",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x10000116c",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_116c",
+        "id": "0x10000116c",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_116c",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001178",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 2,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_1178",
+        "id": "0x100001178",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_1178",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001184",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_1184",
+        "id": "0x100001184",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_1184",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001190",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_1190",
+        "id": "0x100001190",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_1190",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x10000119c",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_119c",
+        "id": "0x10000119c",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_119c",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011a8",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11a8",
+        "id": "0x1000011a8",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11a8",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011b4",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11b4",
+        "id": "0x1000011b4",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11b4",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011c0",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 2,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11c0",
+        "id": "0x1000011c0",
+        "instruction_count": 6,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11c0",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011d8",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 2,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11d8",
+        "id": "0x1000011d8",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11d8",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011e4",
+        "basic_block_count": 1,
+        "call_depth": null,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11e4",
+        "id": "0x1000011e4",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11e4",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011f0",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 6,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11f0",
+        "id": "0x1000011f0",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11f0",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000011fc",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "flirt_dyld_stub_binder_trampoline_11fc",
+        "id": "0x1000011fc",
+        "instruction_count": 3,
+        "is_recursive": false,
+        "name": "flirt_dyld_stub_binder_trampoline_11fc",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001220",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 2,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$UTF8String",
+        "id": "0x100001220",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$UTF8String",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001240",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$coreName",
+        "id": "0x100001240",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$coreName",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001260",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$decryptPayload:length:",
+        "id": "0x100001260",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$decryptPayload:length:",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001280",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$initWithKey:rounds:",
+        "id": "0x100001280",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$initWithKey:rounds:",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000012a0",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$reactorDiagnosticDigest",
+        "id": "0x1000012a0",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$reactorDiagnosticDigest",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000012c0",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$securityLevel",
+        "id": "0x1000012c0",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$securityLevel",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x1000012e0",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$sentinelProtocolVersion",
+        "id": "0x1000012e0",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$sentinelProtocolVersion",
+        "stack_frame_size": 0
+      },
+      {
+        "address": "0x100001300",
+        "basic_block_count": 1,
+        "call_depth": 1,
+        "callees_count": 0,
+        "callers_count": 1,
+        "category": "DYLD_STUB",
+        "cyclomatic_complexity": 1,
+        "demangled_name": "_objc_msgSend$setSecurityLevel:",
+        "id": "0x100001300",
+        "instruction_count": 8,
+        "is_recursive": false,
+        "name": "_objc_msgSend$setSecurityLevel:",
+        "stack_frame_size": 0
+      }
+    ],
+    "recursive_cycles": [],
+    "total_call_edges": 23,
+    "total_procedures": 33
+  },
+  "document": "ultron_objc_sample",
+  "entry_point": "0x100000f3c",
+  "flirt_matches": [
+    {
+      "address": "0x100000a18",
+      "address_u64": 4294969880,
+      "applied_symbol": "fast_memcpy_vec",
+      "category": "Memory/SIMD",
+      "confidence": 99,
+      "description": "Vectorized 128-bit/256-bit block memory copy routine",
+      "flirt_name": "fast_memcpy_vec",
+      "library": "libsystem_platform.dylib",
+      "old_name": "-[UltronSentinelCore initWithKey:rounds:]",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000b28",
+      "address_u64": 4294970152,
+      "applied_symbol": "string_length_scan",
+      "category": "Memory/String",
+      "confidence": 99,
+      "description": "Null-terminated C string length scanner (strlen)",
+      "flirt_name": "string_length_scan",
+      "library": "libsystem_c.dylib",
+      "old_name": "-[UltronSentinelCore decryptPayload:length:]",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000c10",
+      "address_u64": 4294970384,
+      "applied_symbol": "objc_retain_release_thunk",
+      "category": "ObjC Runtime",
+      "confidence": 99,
+      "description": "Objective-C ARC reference counting tail-call thunk",
+      "flirt_name": "objc_retain_release_thunk",
+      "library": "libobjc.A.dylib",
+      "old_name": "+[UltronSentinelCore sentinelProtocolVersion]",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000cc8",
+      "address_u64": 4294970568,
+      "applied_symbol": "pthread_mutex_scoped_lock",
+      "category": "Concurrency",
+      "confidence": 98,
+      "description": "POSIX / os_unfair_lock critical section wrapper",
+      "flirt_name": "pthread_mutex_scoped_lock",
+      "library": "libsystem_pthread.dylib",
+      "old_name": "-[UltronSentinelCore setCoreName:]",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000d00",
+      "address_u64": 4294970624,
+      "applied_symbol": "pthread_mutex_scoped_lock",
+      "category": "Concurrency",
+      "confidence": 98,
+      "description": "POSIX / os_unfair_lock critical section wrapper",
+      "flirt_name": "pthread_mutex_scoped_lock",
+      "library": "libsystem_pthread.dylib",
+      "old_name": "-[UltronSentinelCore .cxx_destruct]",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000d30",
+      "address_u64": 4294970672,
+      "applied_symbol": "rotl_mix_cipher",
+      "category": "Crypto/Cipher",
+      "confidence": 99,
+      "description": "ARX (Add-Rotate-XOR) block mixing cipher round function",
+      "flirt_name": "rotl_mix_cipher",
+      "library": "libultron_crypto.a",
+      "old_name": "-[UltronSentinelCore reactorDiagnosticDigest]",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000d64",
+      "address_u64": 4294970724,
+      "applied_symbol": "crc32_bitwise_update",
+      "category": "Crypto/Hash",
+      "confidence": 99,
+      "description": "IEEE 802.3 / Castagnoli CRC-32 polynomial accumulator",
+      "flirt_name": "crc32_bitwise_update",
+      "library": "libz.1.dylib",
+      "old_name": "_matrix_nested_solver",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100000f3c",
+      "address_u64": 4294971196,
+      "applied_symbol": "fast_memcpy_vec",
+      "category": "Memory/SIMD",
+      "confidence": 99,
+      "description": "Vectorized 128-bit/256-bit block memory copy routine",
+      "flirt_name": "fast_memcpy_vec",
+      "library": "libsystem_platform.dylib",
+      "old_name": "_main",
+      "was_stripped": false
+    },
+    {
+      "address": "0x10000116c",
+      "address_u64": 4294971756,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_116c",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_10000116c",
+      "was_stripped": true
+    },
+    {
+      "address": "0x100001178",
+      "address_u64": 4294971768,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_1178",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_100001178",
+      "was_stripped": true
+    },
+    {
+      "address": "0x100001184",
+      "address_u64": 4294971780,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_1184",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_100001184",
+      "was_stripped": true
+    },
+    {
+      "address": "0x100001190",
+      "address_u64": 4294971792,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_1190",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_100001190",
+      "was_stripped": true
+    },
+    {
+      "address": "0x10000119c",
+      "address_u64": 4294971804,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_119c",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_10000119c",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011a8",
+      "address_u64": 4294971816,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11a8",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011a8",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011b4",
+      "address_u64": 4294971828,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11b4",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011b4",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011c0",
+      "address_u64": 4294971840,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11c0",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011c0",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011d8",
+      "address_u64": 4294971864,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11d8",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011d8",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011e4",
+      "address_u64": 4294971876,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11e4",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011e4",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011f0",
+      "address_u64": 4294971888,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11f0",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011f0",
+      "was_stripped": true
+    },
+    {
+      "address": "0x1000011fc",
+      "address_u64": 4294971900,
+      "applied_symbol": "flirt_dyld_stub_binder_trampoline_11fc",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "sub_1000011fc",
+      "was_stripped": true
+    },
+    {
+      "address": "0x100001220",
+      "address_u64": 4294971936,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$UTF8String",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100001240",
+      "address_u64": 4294971968,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$coreName",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100001260",
+      "address_u64": 4294972000,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$decryptPayload:length:",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100001280",
+      "address_u64": 4294972032,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$initWithKey:rounds:",
+      "was_stripped": false
+    },
+    {
+      "address": "0x1000012a0",
+      "address_u64": 4294972064,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$reactorDiagnosticDigest",
+      "was_stripped": false
+    },
+    {
+      "address": "0x1000012c0",
+      "address_u64": 4294972096,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$securityLevel",
+      "was_stripped": false
+    },
+    {
+      "address": "0x1000012e0",
+      "address_u64": 4294972128,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$sentinelProtocolVersion",
+      "was_stripped": false
+    },
+    {
+      "address": "0x100001300",
+      "address_u64": 4294972160,
+      "applied_symbol": "dyld_stub_binder_trampoline",
+      "category": "Dynamic Linker",
+      "confidence": 98,
+      "description": "Mach-O lazy/non-lazy symbol pointer stub trampoline",
+      "flirt_name": "dyld_stub_binder_trampoline",
+      "library": "libdyld.dylib",
+      "old_name": "_objc_msgSend$setSecurityLevel:",
+      "was_stripped": false
+    }
+  ],
+  "format": "Mach-O 64-bit",
+  "instruction_count": 572,
+  "procedure_count": 33,
+  "string_count": 37,
+  "symbolic_z3": {
+    "cfg_path": [
+      "0x100000a18",
+      "0x100000aec"
+    ],
+    "constraints": [
+      {
+        "block_address": "0x100000a18",
+        "branch_address": "0x100000a7c",
+        "expression": "0x7ffeffc0 == 0",
+        "smt2": "(= #x000000007ffeffc0 #x0000000000000000)",
+        "taken_edge": true
+      }
+    ],
+    "procedure": "-[UltronSentinelCore initWithKey:rounds:]",
+    "procedure_entry": "0x100000a18",
+    "reachable": true,
+    "return_symbolic_expr": "0x7ffeffc0",
+    "smt_lib2": "; ─── ULTRON v3.0 SYMBOLIC EXECUTION & Z3 SMT-LIB2 SOLVER ───\n; Procedure: -[UltronSentinelCore initWithKey:rounds:] (0x100000a18) -> Target: 0x100000b24\n(set-logic QF_BV)\n(declare-const arg0 (_ BitVec 64))\n(declare-const arg1 (_ BitVec 64))\n(declare-const arg2 (_ BitVec 64))\n; @ 0x100000a7c: 0x7ffeffc0 == 0\n(assert (= #x000000007ffeffc0 #x0000000000000000))\n(check-sat)\n(get-model)",
+    "solved_inputs": {
+      "arg0_ascii": "\\x00",
+      "arg0_dec": "0",
+      "arg0_hex": "0x0",
+      "arg1_ascii": "\\x00",
+      "arg1_dec": "0",
+      "arg1_hex": "0x0",
+      "arg2_ascii": "\\x00",
+      "arg2_dec": "0",
+      "arg2_hex": "0x0"
+    },
+    "target_address": "0x100000b24",
+    "target_block": "0x100000aec"
+  },
+  "target": "samples/ultron_objc_sample"
+}

@@ -942,7 +942,7 @@ impl UltronNeuralAnalyzer {
                 "CRYPTO / HASHING / CHECKSUM KERNEL",
                 sname.clone(),
                 format!("uint32_t {}(const uint8_t *buf, size_t len, uint32_t seed)", sname),
-                "Contient une boucle arithmétique/bitwise (EOR/XOR + décalages + accumulation) caractéristique d'un calcul de condensat, CRC ou chiffrement par flux.",
+                "Contains an arithmetic/bitwise loop (EOR/XOR + shifts + accumulation) characteristic of a digest, CRC, or stream cipher routine.",
             )
         } else if proc.name.contains("sharedEngine")
             || (objc_calls >= 1 && proc.basic_blocks.len() >= 2 && proc.name.starts_with("+["))
@@ -952,7 +952,7 @@ impl UltronNeuralAnalyzer {
                 "OBJECTIVE-C SINGLETON FACTORY",
                 sname.clone(),
                 "id +[UltronCoreEngine sharedEngine](Class self, SEL _cmd)".to_string(),
-                "Implémente le patron Singleton Objective-C : vérifie le pointeur statique en mémoire (__DATA) et alloue l'instance via objc_alloc_init si nul.",
+                "Implements the Objective-C Singleton pattern: checks static pointer in memory (__DATA) and allocates instance via objc_alloc_init if null.",
             )
         } else if proc.name.contains("verify")
             || proc.strings_referenced.iter().any(|s| s.contains("ULTRON"))
@@ -962,7 +962,7 @@ impl UltronNeuralAnalyzer {
                 "SIGNATURE / LICENSE VERIFIER",
                 sname.clone(),
                 "BOOL -[UltronCoreEngine verifyProtocolSignature:](id self, SEL _cmd, NSString *token)".to_string(),
-                "Valide le préfixe et la longueur d'une chaîne d'entrée Objective-C avant de calculer une empreinte de contrôle.",
+                "Validates Objective-C input string prefix and length before computing a verification digest.",
             )
         } else if proc.name == "_main" || proc.name == "main" {
             let sname = "ultron_main_orchestrator".to_string();
@@ -970,7 +970,7 @@ impl UltronNeuralAnalyzer {
                 "BINARY ENTRY DISPATCHER (MAIN)",
                 sname.clone(),
                 "int main(int argc, const char **argv)".to_string(),
-                "Point d'entrée principal Mach-O : initialise un contexte @autoreleasepool, instancie le moteur principal et affiche le statut de télémétrie.",
+                "Primary Mach-O entry point: initializes @autoreleasepool context, instantiates core engine, and outputs telemetry status.",
             )
         } else {
             let sname = format!("ultron_subroutine_{:x}", proc.entry_point & 0xffff);
@@ -978,7 +978,7 @@ impl UltronNeuralAnalyzer {
                 "GENERAL SUBROUTINE / DISPATCHER",
                 sname.clone(),
                 format!("int64_t {}(int64_t arg0, int64_t arg1)", sname),
-                "Sous-routine native analysée par le graphe de flot de contrôle (CFG) et le moteur de levée SSA.",
+                "Native subroutine analyzed by the Control Flow Graph (CFG) and SSA lifting engine.",
             )
         };
 

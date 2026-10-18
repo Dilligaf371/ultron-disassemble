@@ -63,6 +63,8 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/open", post(api_open))
         .route("/api/pick-file", post(api_pick_file))
         .route("/api/upload-binary", post(api_upload_binary))
+        .route("/api/auto-pipeline", post(api_auto_pipeline))
+        .route("/api/reveal-outputs", post(api_reveal_outputs))
         .route("/api/rename", post(api_rename))
         .route("/api/comment", post(api_comment))
         .route("/api/types", post(api_define_struct))
@@ -715,7 +717,7 @@ async fn api_open(
 
 async fn api_pick_file() -> Json<Value> {
     // Open native macOS Finder dialog to pick any binary, .app bundle, or bytecode file
-    let script = r#"POSIX path of (choose file with prompt "ULTRON DISASSEMBLE // Sélectionnez un fichier binaire à désassembler :" without invisibles)"#;
+    let script = r#"POSIX path of (choose file with prompt "ULTRON DISASSEMBLE // Select a target binary or archive to disassemble:" without invisibles)"#;
     match std::process::Command::new("osascript")
         .arg("-e")
         .arg(script)
@@ -1274,4 +1276,391 @@ async fn api_voice_disassemble() -> impl IntoResponse {
         VOICE_DISASSEMBLE_MP3,
     )
 }
+
+#[derive(Deserialize)]
+struct AutoPipelineReq {
+    path: Option<String>,
+    arch: Option<String>,
+}
+
+async fn api_auto_pipeline(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<AutoPipelineReq>,
+) -> Json<Value> {
+    // Stage 1: Resolve & Load Target Binary if requested
+    if let Some(raw_path) = req.path.as_ref().map(|s| s.trim()).filter(|s| !s.is_empty()) {
+        let (resolved_path, detected_arch) =
+            resolve_and_detect_target(raw_path, req.arch.as_deref());
+        let needs_load = {
+            let cur = state.doc.lock().unwrap();
+            cur.file_path != resolved_path
+        };
+        if needs_load {
+            match UltronBinaryLoader::load(&resolved_path, &detected_arch) {
+                Ok(new_doc) => {
+                    *state.doc.lock().unwrap() = new_doc;
+                    state.emulators.lock().unwrap().clear();
+                }
+                Err(e) => {
+                    return Json(json!({ "error": format!("Failed to load target '{}': {}", resolved_path, e) }));
+                }
+            }
+        }
+    }
+
+    // Stage 2: Demangle Symbols & Run FLIRT/WARP Static Library Signature Recognition
+    let mut doc = state.doc.lock().unwrap();
+    let flirt_matches = UltronFlirtEngine::scan_and_apply_flirt(&mut doc);
+
+    let file_path = doc.file_path.clone();
+    let doc_name = Path::new(&file_path)
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("binary")
+        .to_string();
+    let safe_slug: String = doc_name
+        .chars()
+        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
+        .collect();
+
+    // Stage 3: Security & Vulnerability Audit
+    let audit = UltronSecurityAuditor::audit_document(&doc);
+
+    // Stage 4: Entry & Top Procedures Decompilation + AI Semantic Rewriting + Symbolic Z3 + Call Graph + Frida/LLDB
+    let entry_addr = doc
+        .procedures
+        .keys()
+        .next()
+        .copied()
+        .unwrap_or(doc.entry_point);
+
+    let decomp_opts = DecompileOptions {
+        ssa_form: false,
+        rewrite_objc: true,
+        inline_strings: true,
+        structure_control_flow: true,
+        remove_stack_prologue: true,
+    };
+
+    let ai_rewrite_c23 = UltronAiDecompiler::ai_rewrite_procedure(&doc, entry_addr, "c23");
+    let ai_rewrite_rust = UltronAiDecompiler::ai_rewrite_procedure(&doc, entry_addr, "rust");
+
+    // Pick a branch/exit instruction inside the entry procedure for symbolic solving
+    let target_sym_addr = doc
+        .procedures
+        .get(&entry_addr)
+        .and_then(|p| {
+            p.basic_blocks
+                .iter()
+                .flat_map(|b| b.instructions.iter().map(|ins| ins.address))
+                .last()
+        })
+        .unwrap_or(entry_addr);
+
+    let symbolic = UltronSymbolicSolver::solve_symbolic_path(&doc, entry_addr, target_sym_addr);
+    let callgraph = UltronGlobalCallGraph::build_global_call_graph(&doc);
+    let debug_scripts =
+        UltronDynamicDebugBridge::generate_debug_scripts(&doc, entry_addr, &doc.breakpoints);
+    let artifact_report = UltronArtifactAnalyzer::inspect_artifact(&file_path);
+
+    // Stage 5: Build Output Files on Disk (outputs/<safe_slug>/)
+    let out_dir = Path::new("outputs").join(if safe_slug.is_empty() {
+        "target"
+    } else {
+        &safe_slug
+    });
+    let _ = std::fs::create_dir_all(&out_dir);
+    let abs_out_dir = std::fs::canonicalize(&out_dir).unwrap_or_else(|_| out_dir.clone());
+
+    // 5a. Complete Disassembly Listing (disassembly.asm)
+    let mut asm_buf = String::new();
+    asm_buf.push_str(&format!(
+        "; ============================================================================\n\
+         ; ULTRON DISASSEMBLE v3.0 — ANNOTATED ASSEMBLY LISTING\n\
+         ; Target   : {}\n\
+         ; Format   : {} ({} / {}-bit)\n\
+         ; Entry    : 0x{:x}\n\
+         ; Procs    : {} | Instructions: {}\n\
+         ; ============================================================================\n\n",
+        file_path,
+        doc.format_name,
+        doc.cpu_subfamily,
+        doc.address_space_bits,
+        doc.entry_point,
+        doc.procedures.len(),
+        doc.instructions.len()
+    ));
+    for proc in doc.procedures.values() {
+        let demangled = SymbolDemangler::demangle(&proc.name);
+        asm_buf.push_str(&format!(
+            "\n; ── PROCEDURE: {} (0x{:x} .. 0x{:x}, {} bytes) ──\n{}:\n",
+            demangled,
+            proc.entry_point,
+            proc.end_address,
+            proc.size(),
+            proc.name
+        ));
+        for (&addr, ins) in doc.instructions.range(proc.entry_point..proc.end_address) {
+            let cmt = if ins.comment.is_empty() {
+                String::new()
+            } else {
+                format!(" ; {}", ins.comment)
+            };
+            asm_buf.push_str(&format!(
+                "  0x{:08x}:  {:<14} {:<8} {}{}\n",
+                addr,
+                ins.bytes_hex,
+                ins.mnemonic,
+                ins.op_str,
+                cmt
+            ));
+        }
+    }
+    let asm_path = abs_out_dir.join("disassembly.asm");
+    let _ = std::fs::write(&asm_path, &asm_buf);
+
+    // 5b. Decompiled C + AI C23/Rust Source (decompiled.c)
+    let mut c_buf = String::new();
+    c_buf.push_str(&format!(
+        "/* ============================================================================\n\
+         * ULTRON DISASSEMBLE v3.0 — OPTIMIZING SSA & AI DECOMPILED SOURCE\n\
+         * Target : {}\n\
+         * Format : {} ({})\n\
+         * ============================================================================ */\n\n\
+         #include <stdint.h>\n#include <stdbool.h>\n\n",
+        file_path, doc.format_name, doc.cpu_subfamily
+    ));
+    for proc in doc.procedures.values().take(40) {
+        let decomp = UltronDecompiler::decompile(&doc, proc, &decomp_opts);
+        c_buf.push_str(&format!(
+            "// ── {} @ 0x{:x} ({} basic blocks) ──\n{}\n\n",
+            SymbolDemangler::demangle(&proc.name),
+            proc.entry_point,
+            proc.basic_blocks.len(),
+            decomp
+        ));
+    }
+    if let Some(ai_c) = ai_rewrite_c23
+        .get("rewritten_code")
+        .or_else(|| ai_rewrite_c23.get("code"))
+        .and_then(|v| v.as_str())
+    {
+        c_buf.push_str("\n/* ── AI SEMANTIC REWRITE (C23) ── */\n");
+        c_buf.push_str(ai_c);
+        c_buf.push('\n');
+    }
+    if let Some(ai_rs) = ai_rewrite_rust
+        .get("rewritten_code")
+        .or_else(|| ai_rewrite_rust.get("code"))
+        .and_then(|v| v.as_str())
+    {
+        c_buf.push_str("\n/* ── AI SEMANTIC REWRITE (RUST) ──\n");
+        c_buf.push_str(ai_rs);
+        c_buf.push_str("\n*/\n");
+    }
+    let c_path = abs_out_dir.join("decompiled.c");
+    let _ = std::fs::write(&c_path, &c_buf);
+
+    // 5c. Frida & LLDB Scripts (frida_hook.js & lldb_trace.py)
+    let frida_code = debug_scripts
+        .get("frida_script")
+        .and_then(|v| v.as_str())
+        .unwrap_or("// Frida hook script");
+    let lldb_code = debug_scripts
+        .get("lldb_script")
+        .and_then(|v| v.as_str())
+        .unwrap_or("# LLDB script");
+    let frida_path = abs_out_dir.join("frida_hook.js");
+    let lldb_path = abs_out_dir.join("lldb_trace.py");
+    let _ = std::fs::write(&frida_path, frida_code);
+    let _ = std::fs::write(&lldb_path, lldb_code);
+
+    // 5d. Save .ultron Project Database
+    let _ = UltronProjectManager::save_project(&doc, &safe_slug, &doc.breakpoints);
+
+    // 5e. Build Comprehensive Markdown Report (REPORT.md)
+    let risk_score = audit
+        .get("risk_score")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
+    let risk_level = audit
+        .get("risk_level")
+        .and_then(|v| v.as_str())
+        .unwrap_or("LOW");
+    let mitigations = audit.get("mitigations").cloned().unwrap_or_else(|| json!({}));
+
+    let mut report_md = String::new();
+    report_md.push_str(&format!(
+        "# ULTRON DISASSEMBLE v3.0 — AUTONOMOUS REVERSE ENGINEERING REPORT\n\n\
+         - **Target Binary**: `{}`\n\
+         - **Container Format**: `{}`\n\
+         - **Architecture**: `{} ({})` ({}-bit)\n\
+         - **Entry Point**: `0x{:x}`\n\
+         - **Procedures Recovered**: `{}`\n\
+         - **Instructions Disassembled**: `{}`\n\
+         - **Strings Extracted**: `{}`\n\
+         - **FLIRT / WARP Library Matches**: `{}`\n\
+         - **Security Risk Assessment**: `{} / 100 ({})`\n\
+         - **Output Directory**: `{}`\n\n",
+        file_path,
+        doc.format_name,
+        doc.cpu_family,
+        doc.cpu_subfamily,
+        doc.address_space_bits,
+        doc.entry_point,
+        doc.procedures.len(),
+        doc.instructions.len(),
+        doc.string_entries.len(),
+        flirt_matches.len(),
+        risk_score,
+        risk_level,
+        abs_out_dir.display()
+    ));
+
+    report_md.push_str("## 1. Binary Hardening & Mitigations\n\n");
+    report_md.push_str("| Mitigation | Status |\n|---|---|\n");
+    if let Some(obj) = mitigations.as_object() {
+        for (k, v) in obj {
+            let status = if v.as_bool().unwrap_or(false) {
+                "ENABLED"
+            } else {
+                "DISABLED"
+            };
+            report_md.push_str(&format!("| `{}` | **{}** |\n", k.to_uppercase(), status));
+        }
+    }
+
+    report_md.push_str("\n## 2. Discovered Procedures (Top 25)\n\n");
+    report_md.push_str("| Entry Address | Name / Demangled | Size (B) | Basic Blocks | Section |\n|---|---|---|---|---|\n");
+    for proc in doc.procedures.values().take(25) {
+        report_md.push_str(&format!(
+            "| `0x{:x}` | `{}` | {} | {} | `{}:{}` |\n",
+            proc.entry_point,
+            SymbolDemangler::demangle(&proc.name),
+            proc.size(),
+            proc.basic_blocks.len(),
+            proc.segment_name,
+            proc.section_name
+        ));
+    }
+
+    report_md.push_str("\n## 3. AI Semantic Decompilation (C23 & Rust)\n\n### C23 Reconstruction\n```c\n");
+    report_md.push_str(
+        ai_rewrite_c23
+            .get("rewritten_code")
+            .or_else(|| ai_rewrite_c23.get("code"))
+            .and_then(|v| v.as_str())
+            .unwrap_or("// N/A"),
+    );
+    report_md.push_str("\n```\n\n### Idiomatic Rust Reconstruction\n```rust\n");
+    report_md.push_str(
+        ai_rewrite_rust
+            .get("rewritten_code")
+            .or_else(|| ai_rewrite_rust.get("code"))
+            .and_then(|v| v.as_str())
+            .unwrap_or("// N/A"),
+    );
+    report_md.push_str("\n```\n");
+
+    report_md.push_str("\n## 4. Symbolic Execution & Z3 Constraint Model\n\n```smt2\n");
+    report_md.push_str(
+        symbolic
+            .get("smt_lib2")
+            .or_else(|| symbolic.get("smt_lib2_script"))
+            .and_then(|v| v.as_str())
+            .unwrap_or("; Z3 model"),
+    );
+    report_md.push_str("\n```\n");
+
+    if !doc.string_entries.is_empty() {
+        report_md.push_str("\n## 5. Extracted Strings (Sample)\n\n");
+        for s in doc.string_entries.iter().take(25) {
+            report_md.push_str(&format!(
+                "- `0x{:x}`: `{}`\n",
+                s.address,
+                s.value.replace('\n', "\\n")
+            ));
+        }
+    }
+
+    let report_path = abs_out_dir.join("REPORT.md");
+    let _ = std::fs::write(&report_path, &report_md);
+
+    // 5f. Complete Structured JSON Dossier (analysis_dossier.json)
+    let dossier_json = json!({
+        "target": file_path,
+        "document": doc_name,
+        "format": doc.format_name,
+        "arch": doc.cpu_subfamily,
+        "bits": doc.address_space_bits,
+        "entry_point": format!("0x{:x}", doc.entry_point),
+        "procedure_count": doc.procedures.len(),
+        "instruction_count": doc.instructions.len(),
+        "string_count": doc.string_entries.len(),
+        "audit": audit,
+        "flirt_matches": flirt_matches,
+        "ai_rewrite_c23": ai_rewrite_c23,
+        "ai_rewrite_rust": ai_rewrite_rust,
+        "symbolic_z3": symbolic,
+        "callgraph": callgraph,
+        "artifact_inspection": artifact_report,
+    });
+    let json_path = abs_out_dir.join("analysis_dossier.json");
+    let _ = std::fs::write(
+        &json_path,
+        serde_json::to_string_pretty(&dossier_json).unwrap_or_default(),
+    );
+
+    let output_files = vec![
+        json!({ "name": "REPORT.md", "label": "Executive & Technical Report (Markdown)", "path": report_path.to_string_lossy(), "bytes": report_md.len() }),
+        json!({ "name": "disassembly.asm", "label": "Full Annotated Assembly Listing", "path": asm_path.to_string_lossy(), "bytes": asm_buf.len() }),
+        json!({ "name": "decompiled.c", "label": "Optimizing SSA & AI C23/Rust Source", "path": c_path.to_string_lossy(), "bytes": c_buf.len() }),
+        json!({ "name": "analysis_dossier.json", "label": "Structured Telemetry Dossier (JSON)", "path": json_path.to_string_lossy(), "bytes": std::fs::metadata(&json_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "frida_hook.js", "label": "Dynamic Frida Instrumentation Script", "path": frida_path.to_string_lossy(), "bytes": frida_code.len() }),
+        json!({ "name": "lldb_trace.py", "label": "Automated LLDB Trace Script", "path": lldb_path.to_string_lossy(), "bytes": lldb_code.len() }),
+    ];
+
+    Json(json!({
+        "ok": true,
+        "target": file_path,
+        "document": doc_name,
+        "format": doc.format_name,
+        "arch": doc.cpu_subfamily,
+        "procedure_count": doc.procedures.len(),
+        "instruction_count": doc.instructions.len(),
+        "string_count": doc.string_entries.len(),
+        "output_dir": abs_out_dir.to_string_lossy(),
+        "output_files": output_files,
+        "report_markdown": report_md,
+        "audit": audit,
+        "flirt": {
+            "ok": true,
+            "matched_count": flirt_matches.len(),
+            "matches": flirt_matches,
+        },
+        "ai_rewrite": ai_rewrite_c23,
+        "ai_rewrite_rust": ai_rewrite_rust,
+        "symbolic": symbolic,
+        "callgraph": callgraph,
+        "debug_scripts": debug_scripts,
+        "artifact_report": artifact_report,
+    }))
+}
+
+#[derive(Deserialize)]
+struct RevealOutputsReq {
+    path: Option<String>,
+}
+
+async fn api_reveal_outputs(Json(req): Json<RevealOutputsReq>) -> Json<Value> {
+    let target = req.path.unwrap_or_else(|| "outputs".to_string());
+    let p = Path::new(&target);
+    let _ = if p.is_file() {
+        std::process::Command::new("open").arg("-R").arg(p).spawn()
+    } else {
+        std::process::Command::new("open").arg(p).spawn()
+    };
+    Json(json!({ "ok": true, "path": target }))
+}
+
 
