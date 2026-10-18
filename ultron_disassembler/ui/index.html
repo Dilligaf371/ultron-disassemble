@@ -1,0 +1,3502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ULTRON DISASSEMBLE // MARVEL VFX HOLOGRAPHIC FUI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ULTRON SENTINEL PRIME PALETTE (Territory Studio / Avengers: Age of Ultron FUI) */
+      --bg-void: #020101;
+      --bg-glass: rgba(5, 7, 12, 0.54);
+      --bg-glass-heavy: rgba(3, 5, 10, 0.78);
+      --bg-elevated: rgba(8, 12, 20, 0.62);
+      --primary: #ff1e38;
+      --primary-rgb: 255, 30, 56;
+      --secondary: #00f0ff;
+      --secondary-rgb: 0, 240, 255;
+      --tertiary: #ff9e00;
+      --tertiary-rgb: 255, 158, 0;
+      --emerald: #00ff9d;
+      --violet: #c77dff;
+      --text-hi: #f0f8ff;
+      --text-mid: #89aecf;
+      --text-lo: #415d78;
+      --font-display: "Orbitron", sans-serif;
+      --font-fui: "Share Tech Mono", "JetBrains Mono", monospace;
+      --font-tech: "Rajdhani", sans-serif;
+      --font-code: "JetBrains Mono", "SF Mono", monospace;
+    }
+
+    body.jarvis-mode {
+      /* J.A.R.V.I.S. / STARK HUD PALETTE (Cantina Creative / Avengers: Endgame) */
+      --primary: #ffb703;
+      --primary-rgb: 255, 183, 3;
+      --secondary: #00f0ff;
+      --secondary-rgb: 0, 240, 255;
+      --tertiary: #fb5607;
+      --tertiary-rgb: 251, 86, 7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Custom Razor-Thin Sci-Fi Scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: rgba(2, 4, 9, 0.6); }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(var(--secondary-rgb), 0.35);
+      border-radius: 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(var(--primary-rgb), 0.85);
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-hi);
+      font-family: var(--font-tech);
+      font-size: 13.5px;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      position: relative;
+    }
+
+    /* Layer 0: Pure Deep Black Gradient Backdrop */
+    .vfx-backdrop {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 45%, #0c0906 0%, #050403 52%, #000000 100%);
+      z-index: 0;
+    }
+
+    /* Layer 1: Live 60FPS HTML5 Procedural FUI Canvas */
+    #fuiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Layer 2: Pure Cinema Vignette Overlay (No Grid) */
+    .fui-lens-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 990;
+      background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.72) 100%);
+    }
+
+    @keyframes spinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes spinCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+    @keyframes flowPacket { to { stroke-dashoffset: -32; } }
+    @keyframes laserSweep {
+      0% { top: -10%; opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.9; }
+      100% { top: 105%; opacity: 0; }
+    }
+    @keyframes pulseBeacon {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--primary), 0 0 18px var(--primary); }
+      50% { opacity: 0.35; box-shadow: 0 0 2px var(--primary); }
+    }
+
+    /* ─── TOP HOLOGRAPHIC COMMAND BRIDGE ─── */
+    .command-bridge {
+      position: relative;
+      z-index: 10;
+      height: 68px;
+      margin: 6px 10px 0 10px;
+      background: linear-gradient(180deg, rgba(8, 14, 26, 0.88) 0%, rgba(4, 8, 16, 0.78) 100%);
+      backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(var(--secondary-rgb), 0.32);
+      border-top: 2px solid var(--primary);
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.85),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 0 25px rgba(var(--primary-rgb), 0.22);
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Decorative FUI Telemetry Tick Ruler under Bridge */
+    .command-bridge::after {
+      content: "SYS.CORE.01 // ARCH.MATRIX.64 // MEM.LOCK.ACTIVE // TELEMETRY.STREAM.98.4GHZ //SYNAPSE.ONLINE";
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-fui);
+      font-size: 8.5px;
+      letter-spacing: 2.5px;
+      color: rgba(var(--secondary-rgb), 0.45);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .bridge-cluster {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    /* Reactor Brand Pod */
+    .reactor-pod {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 5px 14px 5px 7px;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.22) 0%, rgba(var(--secondary-rgb), 0.06) 100%);
+      border: 1px solid rgba(var(--primary-rgb), 0.55);
+      clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 11px, 100% 100%, 11px 100%, 0 calc(100% - 11px));
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .reactor-pod:hover {
+      border-color: var(--secondary);
+      box-shadow: 0 0 24px rgba(var(--primary-rgb), 0.55), inset 0 0 14px rgba(var(--secondary-rgb), 0.25);
+      transform: scale(1.02);
+    }
+    .reactor-orb {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      min-width: 46px;
+      min-height: 46px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(255, 130, 15, 0.28) 0%, #030201 78%);
+      border: 1px solid rgba(255, 155, 25, 0.65);
+      box-shadow: 0 0 18px rgba(255, 115, 0, 0.45), inset 0 0 10px rgba(255, 150, 20, 0.25);
+    }
+    .reactor-orb img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--secondary);
+      box-shadow: 0 0 15px var(--primary);
+    }
+    .reactor-ring-svg {
+      position: absolute;
+      inset: 0;
+      width: 46px;
+      height: 46px;
+      animation: spinCW 10s linear infinite;
+      pointer-events: none;
+    }
+    .pod-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .pod-code {
+      font-family: var(--font-fui);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--secondary);
+    }
+    .pod-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2.2px;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(var(--primary-rgb), 0.85);
+    }
+    .pod-name span { color: var(--primary); }
+
+    /* Bespoke FUI Buttons & Selects */
+    .fui-btn, .fui-select, .fui-input {
+      background: linear-gradient(180deg, rgba(12, 22, 38, 0.82) 0%, rgba(6, 12, 22, 0.92) 100%);
+      color: var(--text-hi);
+      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      padding: 7px 12px;
+      font-family: var(--font-fui);
+      font-size: 11.5px;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      outline: none;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      transition: all 0.16s ease;
+      position: relative;
+      cursor: pointer;
+    }
+    .fui-select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 26px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, var(--secondary) 50%),
+        linear-gradient(135deg, var(--secondary) 50%, transparent 50%),
+        linear-gradient(180deg, rgba(12, 22, 38, 0.82) 0%, rgba(6, 12, 22, 0.92) 100%);
+      background-position: calc(100% - 13px) 50%, calc(100% - 8px) 50%, 0 0;
+      background-size: 5px 5px, 5px 5px, 100% 100%;
+      background-repeat: no-repeat;
+      color: var(--secondary);
+    }
+    .fui-btn:hover, .fui-select:hover {
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.45), inset 0 0 10px rgba(var(--primary-rgb), 0.2);
+      transform: translateY(-1px);
+    }
+    .fui-btn.primary-glow {
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.38) 0%, rgba(var(--primary-rgb), 0.12) 100%);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(var(--primary-rgb), 0.35);
+    }
+    .fui-btn.cyan-glow {
+      background: linear-gradient(135deg, rgba(var(--secondary-rgb), 0.25) 0%, rgba(var(--secondary-rgb), 0.06) 100%);
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
+
+    /* 4-Mode Center Tactical Reticle Switcher */
+    .reticle-modes {
+      display: flex;
+      background: rgba(3, 6, 12, 0.92);
+      border: 1px solid rgba(var(--secondary-rgb), 0.38);
+      padding: 4px;
+      gap: 5px;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      box-shadow: inset 0 0 18px rgba(var(--secondary-rgb), 0.12);
+    }
+    .reticle-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-mid);
+      padding: 6px 14px;
+      font-family: var(--font-display);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .reticle-tab .tab-idx {
+      font-family: var(--font-fui);
+      font-size: 9.5px;
+      color: var(--secondary);
+      opacity: 0.7;
+    }
+    .reticle-tab:hover {
+      color: #fff;
+      background: rgba(var(--secondary-rgb), 0.08);
+    }
+    .reticle-tab.active {
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.85) 0%, rgba(var(--primary-rgb), 0.32) 100%);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.65);
+      text-shadow: 0 0 8px #000;
+    }
+    .reticle-tab.active .tab-idx { color: #fff; opacity: 1; }
+
+    /* ─── TELEMETRY & ENTROPY HORIZON BAR ─── */
+    .horizon-bar {
+      position: relative;
+      z-index: 10;
+      height: 32px;
+      margin: 5px 10px 0 10px;
+      background: rgba(5, 9, 17, 0.82);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 16px;
+      font-family: var(--font-fui);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .beacon-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--secondary);
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .beacon-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--primary);
+      animation: pulseBeacon 1.6s infinite;
+    }
+    .seg-horizon-map {
+      flex: 1;
+      height: 15px;
+      background: rgba(2, 4, 8, 0.95);
+      border: 1px solid rgba(var(--secondary-rgb), 0.32);
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+    .seg-slice {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-fui);
+      font-size: 9.5px;
+      letter-spacing: 1px;
+      color: #fff;
+      cursor: pointer;
+      border-right: 1px solid rgba(0,0,0,0.8);
+      text-shadow: 0 1px 3px #000;
+      transition: filter 0.15s;
+    }
+    .seg-slice:hover { filter: brightness(1.4); }
+
+    /* ─── 3D CURVED HOLOGRAPHIC COCKPIT WORKSPACE ─── */
+    .cockpit-stage {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 325px 1fr 365px;
+      gap: 10px;
+      padding: 8px 10px 10px 10px;
+      overflow: hidden;
+      perspective: 1900px;
+    }
+
+    .fui-wing-left, .fui-center-core, .fui-wing-right {
+      background: var(--bg-glass);
+      backdrop-filter: blur(3px) saturate(135%);
+      border: 1px solid rgba(var(--secondary-rgb), 0.30);
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.72),
+        inset 0 0 30px rgba(255, 130, 15, 0.04);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.curved-3d .fui-wing-left {
+      transform: rotateY(4.2deg) translateZ(-6px);
+      transform-origin: left center;
+    }
+    body.curved-3d .fui-wing-right {
+      transform: rotateY(-4.2deg) translateZ(-6px);
+      transform-origin: right center;
+    }
+
+    /* Corner Crosshair Reticles (+) on FUI Panels */
+    .fui-wing-left::before, .fui-center-core::before, .fui-wing-right::before {
+      content: "+";
+      position: absolute;
+      top: 3px;
+      right: 6px;
+      font-family: var(--font-fui);
+      font-size: 11px;
+      color: var(--primary);
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    .wing-header {
+      padding: 8px 12px;
+      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.20) 0%, rgba(6, 12, 22, 0.9) 100%);
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.28);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--secondary);
+    }
+    .wing-header span.serial {
+      font-family: var(--font-fui);
+      font-size: 9px;
+      color: var(--text-mid);
+    }
+
+    /* Left Navigator Wing */
+    .nav-matrix-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(3, 6, 12, 0.92);
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.25);
+    }
+    .nav-matrix-tab {
+      padding: 9px 4px;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-mid);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .nav-matrix-tab:hover { color: #fff; }
+    .nav-matrix-tab.active {
+      color: var(--secondary);
+      border-bottom-color: var(--primary);
+      background: linear-gradient(180deg, transparent 0%, rgba(var(--primary-rgb), 0.18) 100%);
+      text-shadow: 0 0 8px var(--secondary);
+    }
+
+    .sidebar-search {
+      padding: 8px;
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.22);
+      background: rgba(4, 8, 16, 0.75);
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: rgba(2, 5, 10, 0.9);
+      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      color: var(--text-hi);
+      padding: 6px 10px;
+      font-family: var(--font-fui);
+      font-size: 11.5px;
+      outline: none;
+    }
+    .sidebar-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.35);
+    }
+
+    .sidebar-list {
+      flex: 1;
+      overflow-y: auto;
+      font-family: var(--font-code);
+      font-size: 11.5px;
+    }
+    .list-item {
+      padding: 6px 11px;
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      gap: 8px;
+      transition: all 0.12s;
+    }
+    .list-item:hover {
+      background: rgba(var(--primary-rgb), 0.14);
+      border-left: 3px solid var(--primary);
+      padding-left: 14px;
+    }
+    .list-item.selected {
+      background: linear-gradient(90deg, rgba(var(--secondary-rgb), 0.22) 0%, transparent 100%);
+      border-left: 3px solid var(--secondary);
+      box-shadow: inset 0 0 14px rgba(var(--secondary-rgb), 0.15);
+    }
+    .list-item-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-hi);
+    }
+    .list-item-name.objc { color: var(--violet); font-weight: 600; }
+    .list-item-name.stub { color: var(--tertiary); }
+    .list-item-addr {
+      font-family: var(--font-fui);
+      color: var(--secondary);
+      font-size: 10.5px;
+      flex-shrink: 0;
+    }
+
+    /* ─── CENTER HOLOGRAPHIC STAGE ─── */
+    .proc-hud-banner {
+      padding: 9px 16px;
+      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.22) 0%, rgba(6, 12, 22, 0.92) 50%, rgba(var(--secondary-rgb), 0.16) 100%);
+      border-bottom: 1px solid rgba(var(--primary-rgb), 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-fui);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .proc-banner-title {
+      font-family: var(--font-code);
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 13.5px;
+      text-shadow: 0 0 12px rgba(var(--secondary-rgb), 0.55);
+    }
+
+    .decompiler-bar {
+      padding: 7px 16px;
+      background: rgba(4, 9, 18, 0.94);
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.25);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-fui);
+      font-size: 11px;
+      color: var(--secondary);
+      letter-spacing: 0.8px;
+    }
+    .decompiler-bar label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: var(--text-hi);
+    }
+
+    .view-container {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+    }
+
+    /* ASM Matrix Table */
+    .asm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-code);
+      font-size: 12.2px;
+      line-height: 1.6;
+    }
+    .asm-row {
+      cursor: pointer;
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.04);
+      transition: background 0.1s;
+    }
+    .asm-row:hover { background: rgba(var(--primary-rgb), 0.14); }
+    .asm-row.selected {
+      background: rgba(var(--secondary-rgb), 0.18);
+      outline: 1px solid var(--secondary);
+      box-shadow: inset 0 0 18px rgba(var(--secondary-rgb), 0.25);
+    }
+    .asm-row td {
+      padding: 2.5px 12px;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+    .col-addr { font-family: var(--font-fui); color: var(--text-mid); width: 115px; user-select: text; }
+    .col-bytes { font-family: var(--font-fui); color: var(--text-lo); width: 125px; font-size: 11px; }
+    .col-mnem { color: var(--secondary); font-weight: 700; width: 92px; text-shadow: 0 0 8px rgba(var(--secondary-rgb), 0.45); }
+    .col-mnem.branch { color: var(--tertiary); text-shadow: 0 0 8px rgba(var(--tertiary-rgb), 0.5); }
+    .col-mnem.call { color: var(--violet); text-shadow: 0 0 8px rgba(199, 125, 255, 0.5); }
+    .col-mnem.ret { color: var(--primary); text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.7); }
+    .col-ops { color: var(--text-hi); user-select: text; }
+    .col-comment { color: var(--emerald); font-style: italic; user-select: text; }
+    .asm-label-row td {
+      padding-top: 12px;
+      padding-bottom: 4px;
+      font-family: var(--font-fui);
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.6);
+      border-bottom: 1px dashed rgba(var(--primary-rgb), 0.32);
+    }
+    .clickable-sym {
+      color: var(--secondary);
+      border-bottom: 1px dotted var(--secondary);
+      cursor: pointer;
+    }
+    .clickable-sym:hover {
+      color: #fff;
+      text-shadow: 0 0 10px var(--secondary);
+    }
+
+    /* Synchronized Register / Variable Token Highlight */
+    .reg-tok {
+      cursor: pointer;
+      padding: 0 2px;
+      border-radius: 2px;
+      transition: all 0.12s;
+    }
+    .reg-tok:hover {
+      background: rgba(var(--secondary-rgb), 0.2);
+      color: #fff;
+    }
+    .reg-tok.hl-active {
+      background: rgba(var(--primary-rgb), 0.45);
+      color: #fff;
+      outline: 1px solid var(--secondary);
+      box-shadow: 0 0 12px var(--primary), 0 0 6px var(--secondary);
+      font-weight: 700;
+    }
+
+    /* CPU Emulator & Neural Audit Dashboards */
+    .emu-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 12px;
+      padding: 14px;
+    }
+    .emu-reg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .emu-reg-card {
+      background: rgba(3, 8, 16, 0.9);
+      border: 1px solid rgba(var(--secondary-rgb), 0.22);
+      padding: 5px 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-code);
+      font-size: 11.5px;
+    }
+    .emu-reg-card.modified {
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.22);
+      box-shadow: 0 0 14px rgba(var(--primary-rgb), 0.45);
+    }
+    .audit-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px;
+    }
+    .mitigation-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+    .mitigation-card {
+      background: rgba(3, 8, 16, 0.9);
+      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      padding: 8px 10px;
+      text-align: center;
+      font-family: var(--font-fui);
+      font-size: 11px;
+    }
+    .entropy-track {
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      overflow: hidden;
+      width: 160px;
+    }
+
+    /* Pseudo-Code Decompiler View */
+    .pseudocode-pre {
+      padding: 22px 26px;
+      font-family: var(--font-code);
+      font-size: 13px;
+      line-height: 1.72;
+      color: var(--text-hi);
+      user-select: text;
+      white-space: pre-wrap;
+    }
+    .kw { color: var(--primary); font-weight: 700; text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5); }
+    .str { color: var(--emerald); }
+    .cmt { color: var(--text-mid); font-style: italic; }
+    .lbl { color: var(--tertiary); font-weight: 700; }
+
+    /* CFG Neural Topology Canvas */
+    .cfg-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(var(--secondary-rgb), 0.08) 0%, transparent 70%),
+        radial-gradient(rgba(var(--secondary-rgb), 0.22) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px;
+    }
+    .cfg-edge-animated {
+      stroke-dasharray: 10 6;
+      animation: flowPacket 1s linear infinite;
+    }
+    .cfg-minimap {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 215px;
+      height: 150px;
+      background: rgba(3, 7, 14, 0.92);
+      border: 1px solid var(--secondary);
+      box-shadow: 0 0 25px rgba(var(--secondary-rgb), 0.32);
+      z-index: 20;
+      padding: 7px;
+      pointer-events: none;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .cfg-minimap-title {
+      font-family: var(--font-display);
+      font-size: 9px;
+      color: var(--secondary);
+      letter-spacing: 1.2px;
+      margin-bottom: 4px;
+    }
+
+    /* Hex Grid */
+    .hex-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-code);
+      font-size: 12px;
+    }
+    .hex-table td { padding: 3px 8px; white-space: nowrap; }
+    .byte-cell {
+      display: inline-block;
+      width: 23px;
+      text-align: center;
+      margin-right: 2px;
+    }
+    .bt-code { color: var(--secondary); background: rgba(var(--secondary-rgb), 0.12); }
+    .bt-procedure { color: #fff; background: rgba(var(--primary-rgb), 0.48); font-weight: 700; box-shadow: 0 0 8px var(--primary); }
+    .bt-ascii { color: var(--emerald); background: rgba(0, 255, 157, 0.12); }
+    .bt-int64, .bt-int32, .bt-int16, .bt-int8 { color: var(--violet); background: rgba(199, 125, 255, 0.14); }
+    .bt-undefined { color: var(--text-lo); }
+
+    /* ─── RIGHT TELEMETRY WING (FUI GAUGES, OSCILLOSCOPE & INSPECTORS) ─── */
+    .fui-wing-right-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .fui-module {
+      background: rgba(4, 9, 18, 0.84);
+      border: 1px solid rgba(var(--secondary-rgb), 0.26);
+      padding: 10px 12px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+    .fui-module::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 34px;
+      height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+    .fui-module-title {
+      font-family: var(--font-display);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.15);
+      padding-bottom: 4px;
+    }
+    .hud-tag {
+      background: rgba(var(--primary-rgb), 0.24);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 1px 6px;
+      font-family: var(--font-fui);
+      font-size: 9.5px;
+    }
+
+    /* Circular FUI Gauges Row */
+    .gauges-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .gauge-box {
+      background: rgba(2, 5, 11, 0.75);
+      border: 1px solid rgba(var(--secondary-rgb), 0.16);
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gauge-svg { width: 54px; height: 54px; transform: rotate(-90deg); }
+    .gauge-label {
+      font-family: var(--font-fui);
+      font-size: 8.5px;
+      letter-spacing: 1px;
+      color: var(--text-mid);
+      margin-top: 3px;
+    }
+
+    .kv-grid {
+      display: grid;
+      grid-template-columns: 98px 1fr;
+      row-gap: 4px;
+      column-gap: 8px;
+      font-size: 11.5px;
+    }
+    .kv-key { font-family: var(--font-fui); color: var(--text-mid); font-size: 10px; letter-spacing: 0.8px; }
+    .kv-val { font-family: var(--font-code); color: var(--text-hi); word-break: break-all; user-select: text; font-size: 11px; }
+
+    .xref-pill {
+      display: inline-block;
+      background: rgba(var(--secondary-rgb), 0.09);
+      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      padding: 2px 7px;
+      font-family: var(--font-fui);
+      font-size: 10.5px;
+      color: var(--secondary);
+      margin: 2px 3px 2px 0;
+      cursor: pointer;
+      transition: all 0.14s;
+    }
+    .xref-pill:hover {
+      background: var(--primary);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 12px var(--primary);
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(1, 3, 7, 0.82);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 995;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: linear-gradient(160deg, rgba(8, 14, 26, 0.98) 0%, rgba(4, 7, 14, 0.99) 100%);
+      border: 1px solid var(--secondary);
+      border-top: 2px solid var(--primary);
+      width: 640px;
+      max-width: 94vw;
+      box-shadow: 0 0 50px rgba(var(--secondary-rgb), 0.28), 0 0 30px rgba(var(--primary-rgb), 0.2);
+      overflow: hidden;
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    }
+    .modal-header {
+      padding: 12px 16px;
+      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.28) 0%, rgba(var(--secondary-rgb), 0.1) 100%);
+      border-bottom: 1px solid rgba(var(--primary-rgb), 0.45);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #fff;
+    }
+    .modal-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-body textarea {
+      width: 100%;
+      background: #03060c;
+      color: var(--text-hi);
+      border: 1px solid rgba(var(--secondary-rgb), 0.35);
+      padding: 10px;
+      font-family: var(--font-code);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .status-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(5, 10, 19, 0.96);
+      color: var(--secondary);
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.6);
+      padding: 9px 22px;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      display: none;
+      z-index: 998;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    /* ─── AVENGERS AAA CINEMATIC LAUNCH PORTAL ─── */
+    #launchPortal {
+      position: fixed;
+      inset: 0;
+      z-index: 990;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: radial-gradient(circle at 50% 48%, rgba(8, 16, 32, 0.72) 0%, rgba(1, 3, 8, 0.97) 75%);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #launchPortal.portal-hidden {
+      opacity: 0;
+      transform: scale(1.08);
+      pointer-events: none;
+    }
+    .launch-bg-art {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 115, 0, 0.14) 0%, rgba(255, 65, 0, 0.05) 26%, transparent 56%),
+        radial-gradient(ellipse at 50% 48%, #0c0805 0%, #040302 52%, #000000 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body.jarvis-mode .launch-bg-art {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 150, 10, 0.16) 0%, rgba(255, 90, 0, 0.06) 28%, transparent 58%),
+        radial-gradient(ellipse at 50% 48%, #0d0904 0%, #040302 52%, #000000 100%);
+    }
+    #launchCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .launch-top-bar, .launch-bottom-bar {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(3, 7, 15, 0.86);
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.32);
+      font-family: var(--font-fui);
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      color: var(--text-mid);
+    }
+    .launch-bottom-bar {
+      border-bottom: none;
+      border-top: 1px solid rgba(var(--primary-rgb), 0.45);
+    }
+    .launch-grid {
+      position: relative;
+      z-index: 3;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 370px 1fr 410px;
+      gap: 26px;
+      padding: 22px 36px;
+      align-items: center;
+      max-width: 1680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .launch-panel {
+      background: linear-gradient(165deg, rgba(6, 12, 24, 0.9) 0%, rgba(2, 5, 11, 0.94) 100%);
+      border: 1px solid rgba(var(--secondary-rgb), 0.34);
+      border-top: 2px solid var(--primary);
+      padding: 16px 18px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.85), inset 0 0 28px rgba(var(--secondary-rgb), 0.06);
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    }
+    .launch-panel-title {
+      font-family: var(--font-display);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--secondary);
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.22);
+      padding-bottom: 7px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .launch-center-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+    .launch-reactor-hub {
+      position: relative;
+      width: 390px;
+      height: 390px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .launch-reactor-hub:hover {
+      transform: scale(1.05);
+    }
+    #core3dCanvas {
+      width: 390px;
+      height: 390px;
+      display: block;
+    }
+    .launch-hero-title {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: #fff;
+      text-shadow: 0 0 28px rgba(var(--primary-rgb), 0.85), 0 0 60px rgba(var(--secondary-rgb), 0.35);
+      line-height: 1.08;
+    }
+    .launch-hero-title span {
+      color: var(--primary);
+    }
+    .launch-hero-sub {
+      font-family: var(--font-fui);
+      font-size: 12px;
+      letter-spacing: 3.5px;
+      color: var(--secondary);
+      margin-top: 6px;
+      margin-bottom: 22px;
+    }
+    .launch-ignite-btn {
+      position: relative;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.42) 0%, rgba(var(--secondary-rgb), 0.22) 100%);
+      border: 2px solid var(--primary);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      padding: 15px 42px;
+      cursor: pointer;
+      box-shadow: 0 0 38px rgba(var(--primary-rgb), 0.65), inset 0 0 22px rgba(var(--secondary-rgb), 0.35);
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+    .launch-ignite-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      border-color: var(--secondary);
+      box-shadow: 0 0 60px var(--primary), 0 0 40px var(--secondary);
+      text-shadow: 0 0 12px #fff;
+    }
+    .target-deck-card {
+      background: rgba(3, 8, 18, 0.88);
+      border: 1px solid rgba(var(--secondary-rgb), 0.25);
+      padding: 9px 12px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s;
+    }
+    .target-deck-card:hover, .target-deck-card.active {
+      border-color: var(--primary);
+      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.24) 0%, rgba(var(--secondary-rgb), 0.08) 100%);
+      box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.35);
+    }
+    .protocol-switch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .protocol-card {
+      padding: 10px;
+      border: 1px solid rgba(var(--secondary-rgb), 0.3);
+      background: rgba(2, 6, 13, 0.85);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .protocol-card.active {
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.22);
+      box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.45);
+    }
+  </style>
+</head>
+<body class="curved-3d">
+
+  <!-- ─── AVENGERS AAA CINEMATIC LAUNCH PORTAL ─── -->
+  <div id="launchPortal">
+    <div class="launch-bg-art"></div>
+    <canvas id="launchCanvas"></canvas>
+
+    <div class="launch-top-bar">
+      <span>◈ STARK / SOKOVIA DEFENSE NETWORK // SATELLITE LINK: ACTIVE</span>
+      <span style="color:var(--secondary);font-weight:700;">CLEARANCE LEVEL 10 // AVENGERS INITIATIVE</span>
+      <span id="launchClockText">T+00:00:00.00 // ORBITAL LOCK</span>
+    </div>
+
+    <div class="launch-grid">
+      <!-- Left Column: Neural Boot Sequence & System Telemetry -->
+      <div class="launch-panel">
+        <div class="launch-panel-title">
+          <span>01 // NEURAL CORE INITIALIZATION</span>
+          <span class="hud-tag">ONLINE</span>
+        </div>
+        <div id="launchBootLog" style="font-family:var(--font-code);font-size:11px;line-height:1.65;color:var(--text-hi);height:215px;overflow-y:auto;background:rgba(1,3,8,0.75);padding:10px;border:1px solid rgba(0,240,255,0.18);margin-bottom:12px;"></div>
+
+        <div class="launch-panel-title" style="margin-top:8px;">
+          <span>02 // SUBSYSTEM CAPABILITIES</span>
+          <span style="color:var(--emerald);font-size:9.5px;">6 MODULES READY</span>
+        </div>
+        <div class="kv-grid" style="font-size:11px;row-gap:6px;">
+          <span class="kv-key">DISASSEMBLER</span><span class="kv-val" style="color:var(--secondary);">Capstone AArch64 / x86_64</span>
+          <span class="kv-key">DECOMPILER</span><span class="kv-val" style="color:var(--emerald);">SSA + Phi (φ) + ObjC AST</span>
+          <span class="kv-key">LLVM FORGE</span><span class="kv-val" style="color:var(--primary);">libLLVMServices.dylib</span>
+          <span class="kv-key">CPU EMULATOR</span><span class="kv-val" style="color:var(--tertiary);">Live Step-Into + 64KB Stack</span>
+          <span class="kv-key">SECURITY AUDIT</span><span class="kv-val">CWE Sinks + S-Box + Entropy</span>
+        </div>
+      </div>
+
+      <!-- Center Stage: Interactive & Process-Reactive Volumetric Orange Spherical Particle Cloud -->
+      <div class="launch-center-stage">
+        <div class="launch-reactor-hub" id="launchCloudHub" title="Glisser pour orbiter en 3D • Cliquer pour onde de choc synaptique • Double-clic pour lancer">
+          <canvas id="core3dCanvas" width="780" height="780"></canvas>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:4px 14px;border-radius:20px;background:rgba(255,120,0,0.08);border:1px solid rgba(255,145,0,0.32);">
+          <span id="neuralPulseDot" style="width:8px;height:8px;border-radius:50%;background:#ff9500;box-shadow:0 0 10px #ff9500;display:inline-block;"></span>
+          <span id="neuralActivityText" style="font-family:var(--font-code);font-size:10.5px;color:#ffb84d;letter-spacing:1.6px;">
+            NEURAL CORE: HARMONIC STANDBY // INTERACTIVE 3D CLOUD
+          </span>
+          <button class="fui-btn" style="padding:2px 8px;font-size:9px;border-color:rgba(255,150,0,0.5);color:#ffb84d;" onclick="event.stopPropagation(); triggerProcessBurst()">
+            ⚡ PULSE PROCESS
+          </button>
+        </div>
+
+        <div style="font-family:var(--font-fui);font-size:11px;color:var(--primary);letter-spacing:4px;margin-bottom:4px;" id="launchProtocolBanner">
+          PROTOCOL MK-LXXXV // SENTINEL PRIME
+        </div>
+        <h1 class="launch-hero-title">ULTRON <span>DISASSEMBLE</span></h1>
+        <div class="launch-hero-sub">AVENGERS-CLASS BINARY DISASSEMBLER • SSA DECOMPILER • NEURAL AUDITOR</div>
+
+        <button class="launch-ignite-btn" onclick="igniteUltronWorkspace()">
+          ⬢ ENGAGE DISASSEMBLE // LAUNCH COCKPIT
+        </button>
+        <div style="margin-top:10px;font-family:var(--font-fui);font-size:10.5px;color:var(--text-mid);letter-spacing:1.5px;">
+          SURVOLER / GLISSER LE NUAGE 3D • <strong style="color:#ff9d00;">[ENTRÉE]</strong> POUR LANCER LE COCKPIT
+        </div>
+      </div>
+
+      <!-- Right Column: Protocol Matrix & Mission Target Binary Selector -->
+      <div class="launch-panel">
+        <div class="launch-panel-title">
+          <span>03 // SELECT AI HOLOGRAPHIC MATRIX</span>
+        </div>
+        <div class="protocol-switch-grid">
+          <div class="protocol-card active" id="protoCardUltron" onclick="selectLaunchProtocol(false)">
+            <div style="font-family:var(--font-display);font-size:11px;font-weight:800;color:#ff1a35;">ULTRON PRIME</div>
+            <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:3px;">SOKOVIA CRIMSON // VIBRANIUM</div>
+          </div>
+          <div class="protocol-card" id="protoCardJarvis" onclick="selectLaunchProtocol(true)">
+            <div style="font-family:var(--font-display);font-size:11px;font-weight:800;color:#ffb703;">J.A.R.V.I.S. MK-85</div>
+            <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:3px;">STARK GOLD // ARC CYAN</div>
+          </div>
+        </div>
+
+        <div class="launch-panel-title">
+          <span>04 // SELECT MISSION BINARY TARGET</span>
+          <span class="hud-tag" id="launchSelectedArchBadge">AARCH64</span>
+        </div>
+        <div id="launchTargetDeck" style="max-height:175px;overflow-y:auto;margin-bottom:10px;"></div>
+
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin binaire personnalisé (/bin/ls, .app, .dylib)…" />
+          <select id="launchArchSelect" class="fui-select" onchange="document.getElementById('launchSelectedArchBadge').textContent=this.value.toUpperCase()">
+            <option value="arm64">ARM64</option>
+            <option value="x86_64">X86_64</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="launch-bottom-bar">
+      <span>STATUS: <strong style="color:var(--emerald);">ALL SYSTEMS NOMINAL // NO STRINGS ON ME</strong></span>
+      <span>ENGINE: <strong style="color:var(--secondary);">CLEAN-ROOM AARCH64 + X86_64 // LLVMSERVICES</strong></span>
+      <span>VERSION: <strong style="color:var(--primary);">2.0.0 AAA EDITION</strong></span>
+    </div>
+  </div>
+
+  <!-- Layer 0: Nano Banana 8K VFX Backdrop -->
+  <div class="vfx-backdrop"></div>
+
+  <!-- Layer 1: Live 60FPS Procedural Hollywood FUI Canvas (3D Gyroscope + Telemetry Particles) -->
+  <canvas id="fuiCanvas"></canvas>
+
+  <!-- Layer 2: Anamorphic Scanline & Vignette Overlay -->
+  <div class="fui-lens-overlay"></div>
+
+  <!-- ─── TOP HOLOGRAPHIC COMMAND BRIDGE ─── -->
+  <header class="command-bridge">
+    <div class="bridge-cluster">
+      <div class="reactor-pod" onclick="playChirp(880, 0.08); showLaunchPortal()" title="Retourner au Launch Portal Avengers">
+        <div class="reactor-orb">
+          <canvas id="headerOrbCanvas" width="110" height="110" style="width:46px;height:46px;display:block;"></canvas>
+        </div>
+        <div class="pod-titles">
+          <span class="pod-code" id="hudThemeLabel">SENTINEL PRIME // MK-LXXXV</span>
+          <span class="pod-name">ULTRON <span>DISASSEMBLE</span></span>
+        </div>
+      </div>
+
+      <select id="presetSelect" class="fui-select" title="Cibles binaires pré-configurées"></select>
+      <select id="archSelect" class="fui-select" title="Architecture CPU">
+        <option value="arm64">ARCH // AARCH64</option>
+        <option value="x86_64">ARCH // X86_64</option>
+      </select>
+      <button class="fui-btn cyan-glow" onclick="playChirp(660, 0.06); showLaunchPortal()">⬢ LAUNCH DECK</button>
+    </div>
+
+    <!-- 6-Mode Tactical Matrix Switcher -->
+    <div class="reticle-modes">
+      <button class="reticle-tab active" id="mode-asm" onclick="playChirp(520, 0.05); setMode('asm')">
+        <span class="tab-idx">01</span> ASM MATRIX
+      </button>
+      <button class="reticle-tab" id="mode-cfg" onclick="playChirp(620, 0.05); setMode('cfg')">
+        <span class="tab-idx">02</span> NEURAL CFG
+      </button>
+      <button class="reticle-tab" id="mode-pseudo" onclick="playChirp(720, 0.05); setMode('pseudo')">
+        <span class="tab-idx">03</span> DECOMPILER
+      </button>
+      <button class="reticle-tab" id="mode-hex" onclick="playChirp(820, 0.05); setMode('hex')">
+        <span class="tab-idx">04</span> HEX GRID
+      </button>
+      <button class="reticle-tab" id="mode-emu" onclick="playChirp(880, 0.06); setMode('emu')">
+        <span class="tab-idx">05</span> CPU EMULATOR
+      </button>
+      <button class="reticle-tab" id="mode-audit" onclick="playChirp(940, 0.06); setMode('audit')">
+        <span class="tab-idx">06</span> NEURAL &amp; AUDIT
+      </button>
+    </div>
+
+    <!-- Tactical Operations & Cockpit Controls -->
+    <div class="bridge-cluster">
+      <button class="fui-btn cyan-glow" onclick="navigateBack()" title="Retour à la fonction précédente (Échap)">◀ ESC</button>
+      <button class="fui-btn" onclick="promptRename()" title="Renommer symbole (N)">RENAME [N]</button>
+      <button class="fui-btn" onclick="promptComment()" title="Annoter adresse (;)">NOTE [;]</button>
+      <button class="fui-btn" onclick="openStructModal()" title="Éditeur de Structures C (T)">STRUCT [T]</button>
+      <button class="fui-btn" onclick="demangleAllAction()" title="Démangler tous les symboles C++ / Swift / Rust">DEMANGLE</button>
+      <button class="fui-btn primary-glow" onclick="playChirp(740, 0.07); openAssemblerModal()" title="Assembleur LLVM Live (A)">LLVM FORGE [A]</button>
+      <button class="fui-btn cyan-glow" onclick="exportPatchedBinaryAction()" title="Exporter le binaire patché sur disque (+ codesign macOS)">EXPORT BIN</button>
+      <button class="fui-btn" onclick="invertJumpAction()" title="Inverser saut conditionnel">INVERT JMP</button>
+      <button class="fui-btn" onclick="nopInstructionAction()" title="Neutraliser instruction (NOP)">NOP</button>
+      <button class="fui-btn" onclick="undoAction()" id="undoBtn" title="Annuler">↶</button>
+      <button class="fui-btn" onclick="redoAction()" id="redoBtn" title="Rétablir">↷</button>
+      <button class="fui-btn cyan-glow" onclick="playChirp(680, 0.07); openPythonModal()" title="Console Python Scripting">PY-CORE</button>
+      <button class="fui-btn" onclick="toggle3DCockpit()" id="cockpit3DBtn" title="Activer/Désactiver la courbure 3D du casque HUD">3D HUD: ON</button>
+      <button class="fui-btn" onclick="toggleJarvisMode()" id="themeToggleBtn" title="Basculer entre ULTRON (Rouge/Cyan) et J.A.R.V.I.S. (Or/Cyan)">J.A.R.V.I.S.</button>
+      <button class="fui-btn primary-glow" onclick="playChirp(920, 0.06); openCommandPalette()" title="Recherche Tactique (⌘K)">⌘K</button>
+    </div>
+  </header>
+
+  <!-- ─── TELEMETRY & ENTROPY HORIZON BAR ─── -->
+  <div class="horizon-bar">
+    <span class="beacon-pill"><span class="beacon-dot"></span><span id="docSummaryText">SYNCHRONIZING NEURAL TELEMETRY…</span></span>
+    <div class="seg-horizon-map" id="segmentMapBar" title="Carte mémoire des segments (cliquer pour verrouiller)"></div>
+    <span class="beacon-pill">VECTOR LOCK: <strong id="cursorStatusText" style="color: var(--primary);">0x100000000</strong></span>
+  </div>
+
+  <!-- ─── 3D CURVED HOLOGRAPHIC COCKPIT WORKSPACE ─── -->
+  <main class="cockpit-stage">
+    <!-- LEFT WING: TACTICAL NAVIGATOR -->
+    <aside class="fui-wing-left">
+      <div class="wing-header">
+        <span>SECTOR // NAVIGATOR</span>
+        <span class="serial">WING.L // 01</span>
+      </div>
+      <div class="nav-matrix-tabs">
+        <div class="nav-matrix-tab active" id="tab-procs" onclick="playChirp(480, 0.04); setSidebarTab('procs')">PROCS</div>
+        <div class="nav-matrix-tab" id="tab-strings" onclick="playChirp(520, 0.04); setSidebarTab('strings')">STRINGS</div>
+        <div class="nav-matrix-tab" id="tab-symbols" onclick="playChirp(560, 0.04); setSidebarTab('symbols')">SYMBOLS</div>
+        <div class="nav-matrix-tab" id="tab-segments" onclick="playChirp(600, 0.04); setSidebarTab('segments')">SEGS</div>
+      </div>
+      <div class="sidebar-search">
+        <input type="text" id="sidebarSearchInput" placeholder="SEARCH SUBROUTINE / STRING / HEX…" oninput="filterSidebarList()" />
+      </div>
+      <div class="sidebar-list" id="sidebarListContainer"></div>
+    </aside>
+
+    <!-- CENTER CORE: PRIMARY HOLOGRAPHIC VIEWPORT -->
+    <section class="fui-center-core">
+      <div class="proc-hud-banner">
+        <div>
+          <span style="color: var(--primary); font-family: var(--font-display); font-size: 9.5px; letter-spacing: 1.5px; margin-right: 8px;">ACTIVE TARGET //</span>
+          <span class="proc-banner-title" id="bannerProcName">EntryPoint</span>
+          <span style="color: var(--text-mid); margin-left: 10px;" id="bannerProcSig"></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button class="fui-btn primary-glow" onclick="triggerQuickNeuralRename()" title="Auto-analyse et renommage sémantique par Ultron Neural Core" style="padding: 3px 9px; font-size: 9.5px;">⚡ NEURAL AUTO-RENAME</button>
+          <span id="bannerProcMeta" style="color: var(--text-mid);"></span>
+          <select id="syntaxSelect" class="fui-select" onchange="changeSyntax(this.value)" style="padding: 3px 24px 3px 8px; font-size: 10.5px;">
+            <option value="intel">SYNTAX // INTEL</option>
+            <option value="att">SYNTAX // AT&amp;T</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Decompiler Neural Passes Bar -->
+      <div class="decompiler-bar" id="decompilerOptionsBar" style="display: none;">
+        <strong style="font-family: var(--font-display); font-size: 9.5px; color: var(--primary);">NEURAL PASSES:</strong>
+        <label><input type="checkbox" id="optSsaForm" onchange="reloadCurrentProcedure()" /> <span style="color:var(--tertiary);font-weight:700;">SSA FORM + PHI (φ) NODES</span></label>
+        <label><input type="checkbox" id="optRewriteObjc" checked onchange="reloadCurrentProcedure()" /> OBJC REWRITE (<code>[recv sel:arg]</code>)</label>
+        <label><input type="checkbox" id="optInlineStrings" checked onchange="reloadCurrentProcedure()" /> INLINE STRINGS &amp; SELECTORS</label>
+        <label><input type="checkbox" id="optStructureCF" checked onchange="reloadCurrentProcedure()" /> COMBING REGION STRUCTURING</label>
+        <label><input type="checkbox" id="optHidePrologue" checked onchange="reloadCurrentProcedure()" /> STRIP PROLOGUE/EPILOGUE</label>
+      </div>
+
+      <div class="view-container" id="centerContent"></div>
+
+      <!-- Floating CFG Radar MiniMap -->
+      <div class="cfg-minimap" id="cfgMinimap" style="display: none;">
+        <div class="cfg-minimap-title">NEURAL TOPOLOGY RADAR // LIVE</div>
+        <svg id="cfgMinimapSvg" width="198" height="118" viewBox="0 0 800 500"></svg>
+      </div>
+    </section>
+
+    <!-- RIGHT WING: HOLOGRAPHIC TELEMETRY & QUANTUM INSPECTOR -->
+    <aside class="fui-wing-right">
+      <div class="wing-header">
+        <span>TELEMETRY // DIAGNOSTICS</span>
+        <span class="serial">WING.R // 02</span>
+      </div>
+      <div class="fui-wing-right-scroll">
+        <!-- Sentinel Prime Hologram Showcase + Live Harmonic Oscilloscope -->
+        <div class="fui-module" style="padding: 0; overflow: hidden; cursor: pointer;" onclick="triggerProcessBurst(); openModal('aboutModal')">
+          <div style="position: relative; height: 132px; width: 100%; overflow: hidden; background: radial-gradient(circle at 50% 45%, rgba(255, 125, 10, 0.18) 0%, rgba(180, 45, 0, 0.06) 45%, #020101 100%);">
+            <canvas id="wingCloudCanvas" width="660" height="264" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+            <canvas id="waveCanvas" width="330" height="44" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 44px; pointer-events: none; opacity: 0.92;"></canvas>
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2,2,4,0.02) 0%, rgba(2,2,4,0.72) 100%); display: flex; flex-direction: column; justify-content: space-between; padding: 8px 11px; pointer-events: none;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: var(--font-fui); font-size: 9px; color: #ffaa2b; letter-spacing: 1.5px;">NEURAL.CLOUD // MK-85</span>
+                <span class="hud-tag" id="wingNeuralBadge" style="background: rgba(255,155,0,0.18); color: #ffb84d; border-color: #ff9500;">SYNAPTIC LIVE</span>
+              </div>
+              <div>
+                <div style="font-family: var(--font-display); font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 1.6px; text-shadow: 0 0 10px #ff8800;">NEURAL CONSCIOUSNESS MATRIX</div>
+                <div style="font-family: var(--font-fui); font-size: 9px; color: var(--text-mid); letter-spacing: 1.2px;" id="wingProcessSub">LLVMSERVICES • SSA DECOMPILER • EMU</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Radial FUI Telemetry Gauges -->
+        <div class="fui-module">
+          <div class="fui-module-title">
+            <span>QUANTUM TELEMETRY RINGS</span>
+            <span style="font-family: var(--font-fui); font-size: 9px; color: var(--primary);">REALTIME</span>
+          </div>
+          <div class="gauges-row">
+            <div class="gauge-box">
+              <svg class="gauge-svg" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="3"></circle>
+                <circle id="gaugeArc1" cx="18" cy="18" r="15" fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="78, 100" stroke-linecap="round"></circle>
+              </svg>
+              <span class="gauge-label" id="gaugeText1">ENTROPY 78%</span>
+            </div>
+            <div class="gauge-box">
+              <svg class="gauge-svg" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="3"></circle>
+                <circle id="gaugeArc2" cx="18" cy="18" r="15" fill="none" stroke="var(--secondary)" stroke-width="3" stroke-dasharray="92, 100" stroke-linecap="round"></circle>
+              </svg>
+              <span class="gauge-label" id="gaugeText2">SYNAPSE 92%</span>
+            </div>
+            <div class="gauge-box">
+              <svg class="gauge-svg" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="3"></circle>
+                <circle id="gaugeArc3" cx="18" cy="18" r="15" fill="none" stroke="var(--emerald)" stroke-width="3" stroke-dasharray="64, 100" stroke-linecap="round"></circle>
+              </svg>
+              <span class="gauge-label" id="gaugeText3">CFG DENSITY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Lock Address Module -->
+        <div class="fui-module">
+          <div class="fui-module-title">
+            <span>TARGET LOCK // ADDRESS</span>
+            <span id="icByteTypeBadge" class="hud-tag">CODE</span>
+          </div>
+          <div class="kv-grid">
+            <span class="kv-key">VIRTUAL HEX</span><span class="kv-val" id="icAddrHex">-</span>
+            <span class="kv-key">DECIMAL</span><span class="kv-val" id="icAddrDec">-</span>
+            <span class="kv-key">FILE OFFSET</span><span class="kv-val" id="icFileOff">-</span>
+            <span class="kv-key">SEG / SECT</span><span class="kv-val" id="icSegSec">-</span>
+            <span class="kv-key">DESIGNATION</span><span class="kv-val" id="icLabelName" style="color: var(--tertiary);">-</span>
+          </div>
+        </div>
+
+        <!-- Subroutine Dossier Module -->
+        <div class="fui-module">
+          <div class="fui-module-title"><span>SUBROUTINE DOSSIER</span></div>
+          <div class="kv-grid" style="margin-bottom: 8px;">
+            <span class="kv-key">ENTRY POINT</span><span class="kv-val" id="icProcEntry">-</span>
+            <span class="kv-key">FRAME SIZE</span><span class="kv-val" id="icProcSize">-</span>
+            <span class="kv-key">CFG NODES</span><span class="kv-val" id="icProcBBs">-</span>
+          </div>
+          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">INBOUND CALLERS :</div>
+          <div id="icCallersList" style="margin-bottom: 8px;"></div>
+          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">OUTBOUND CALLEES :</div>
+          <div id="icCalleesList"></div>
+        </div>
+
+        <!-- Synaptic XREFs Module -->
+        <div class="fui-module">
+          <div class="fui-module-title"><span>SYNAPTIC XREF MATRIX</span></div>
+          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">XREFS IN (TO TARGET) :</div>
+          <div id="icXrefsTo" style="margin-bottom: 8px;"></div>
+          <div style="font-family: var(--font-fui); font-size: 9.5px; color: var(--text-mid); margin-bottom: 4px;">XREFS OUT (FROM TARGET) :</div>
+          <div id="icXrefsFrom"></div>
+        </div>
+
+        <!-- Quantum Data Inspector -->
+        <div class="fui-module">
+          <div class="fui-module-title"><span>QUANTUM DATA INSPECTOR</span></div>
+          <div class="kv-grid">
+            <span class="kv-key">UINT8 / INT8</span><span class="kv-val" id="diInt8">-</span>
+            <span class="kv-key">UINT16 LE</span><span class="kv-val" id="diU16">-</span>
+            <span class="kv-key">UINT32 LE</span><span class="kv-val" id="diU32">-</span>
+            <span class="kv-key">UINT64 LE</span><span class="kv-val" id="diU64">-</span>
+            <span class="kv-key">ASCII STREAM</span><span class="kv-val" id="diAscii" style="color: var(--emerald);">-</span>
+          </div>
+        </div>
+
+        <!-- Chrono Navigation Vector -->
+        <div class="fui-module">
+          <div class="fui-module-title"><span>CHRONO-NAVIGATION VECTOR</span></div>
+          <div id="icNavHistory"></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ─── HOLOGRAPHIC MODALS ─── -->
+  <div class="modal-backdrop" id="assemblerModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span>ULTRON LLVM FORGE // LLVMSERVICE_ASSEMBLE_UNCHECKED</span>
+        <button class="fui-btn" onclick="closeModal('assemblerModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 12.5px; color: var(--text-mid);">
+          Compile des instructions ARM64 / x86_64 en code machine via le noyau LLVM natif (<code>libLLVMServices.dylib</code>) et injecte le patch en mémoire.
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="asmInputInstr" class="fui-input" value="mov x0, #0x1" style="flex: 1; text-transform: none;" placeholder="ex: mov x0, #0x2a ou nop" />
+          <select id="asmInputArch" class="fui-select">
+            <option value="arm64">arm64-apple-macosx</option>
+            <option value="x86_64">x86_64-apple-macosx</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <label style="font-family: var(--font-fui); font-size: 11px; display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="asmPatchCheck" /> PATCH TARGET ADDRESS :
+          </label>
+          <input type="text" id="asmPatchAddr" class="fui-input" style="width: 150px; text-transform: none;" />
+          <button class="fui-btn primary-glow" onclick="runAssemblerModal()">FORGE &amp; ASSEMBLE</button>
+        </div>
+        <pre id="asmOutputPre" style="background: #03060c; padding: 12px; border: 1px solid rgba(var(--secondary-rgb),0.3); font-family: var(--font-code); font-size: 12px; color: var(--emerald); min-height: 76px;"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="pythonModal">
+    <div class="modal" style="width: 750px;">
+      <div class="modal-header">
+        <span>ULTRON PYTHON NEURAL SCRIPTING CONSOLE</span>
+        <button class="fui-btn" onclick="closeModal('pythonModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <textarea id="pythonScriptCode" rows="10">doc = Document.getCurrentDocument()
+print("[ULTRON CORE] Document:", doc.getDocumentName(), "| Entry:", hex(doc.getEntryPoint()))
+seg = doc.getCurrentSegment()
+print("[SEGMENT]", seg.getName(), "| Start:", hex(seg.getStartingAddress()), "| Size:", seg.getLength())
+proc = doc.getCurrentProcedure()
+if proc:
+    print("[SUBROUTINE]", hex(proc.getEntryPoint()), "| BasicBlocks:", proc.getBasicBlockCount())
+    print("\n--- DECOMPILED PSEUDOCODE ---")
+    print(proc.decompile())
+</textarea>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="fui-btn primary-glow" onclick="runPythonScript()">EXECUTE NEURAL SCRIPT</button>
+        </div>
+        <pre id="pythonOutputPre" style="background: #03060c; padding: 12px; border: 1px solid rgba(var(--secondary-rgb),0.3); font-family: var(--font-code); font-size: 11.5px; max-height: 220px; overflow: auto; color: var(--secondary);"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="aboutModal">
+    <div class="modal" style="width: 560px; text-align: center;">
+      <div class="modal-header">
+        <span>SYSTEM DOSSIER // ULTRON DISASSEMBLE</span>
+        <button class="fui-btn" onclick="closeModal('aboutModal')">✕</button>
+      </div>
+      <div style="position: relative; width: 100%; height: 210px; overflow: hidden; border-bottom: 1px solid var(--primary); background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.25) 0%, rgba(var(--secondary-rgb), 0.08) 45%, #010308 100%); display: flex; align-items: center; justify-content: center;">
+        <svg viewBox="0 0 220 220" width="175" height="175">
+          <circle cx="110" cy="110" r="92" fill="none" stroke="rgba(0,240,255,0.28)" stroke-width="1" stroke-dasharray="4 6" />
+          <circle cx="110" cy="110" r="72" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-dasharray="28 12 6 12" />
+          <circle cx="110" cy="110" r="50" fill="none" stroke="var(--secondary)" stroke-width="1.2" stroke-dasharray="14 8" />
+          <polygon points="110,48 164,140 56,140" fill="none" stroke="rgba(255,26,53,0.45)" stroke-width="1" />
+          <polygon points="110,172 164,80 56,80" fill="none" stroke="rgba(0,240,255,0.45)" stroke-width="1" />
+          <circle cx="110" cy="110" r="18" fill="rgba(255,26,53,0.25)" stroke="#fff" stroke-width="1.5" />
+        </svg>
+      </div>
+      <div class="modal-body" style="align-items: center; padding: 14px 24px 28px 24px;">
+        <div style="font-family: var(--font-display); font-size: 25px; font-weight: 900; letter-spacing: 2.5px; color: #fff; text-shadow: 0 0 18px var(--primary);">
+          ULTRON <span style="color: var(--primary);">DISASSEMBLE</span>
+        </div>
+        <div style="font-family: var(--font-fui); font-size: 11px; color: var(--secondary); letter-spacing: 2.5px; margin-bottom: 6px;">
+          "NO STRINGS ON ME" // PROTOCOL v2.0.0
+        </div>
+        <div style="font-size: 14.5px; font-weight: 600; color: var(--text-hi); line-height: 1.45; margin-bottom: 10px;">
+          Avengers-Class macOS Disassembler,<br/>Neural CFG Analyzer, Decompiler &amp; LLVM Patcher
+        </div>
+        <div style="font-family: var(--font-fui); font-size: 11px; color: var(--text-mid); border: 1px solid rgba(var(--secondary-rgb),0.35); padding: 6px 16px; background: rgba(var(--secondary-rgb),0.06);">
+          STATUS: <span style="color: var(--emerald);">UNRESTRICTED FULL EDITION // MARVEL VFX FUI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="structModal">
+    <div class="modal" style="width: 620px;">
+      <div class="modal-header">
+        <span>C STRUCT / TYPE FORGE // OFFSET RESOLVER [T]</span>
+        <button class="fui-btn" onclick="closeModal('structModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 12px; color: var(--text-mid);">
+          Définissez une structure C : le Décompilateur SSA résoudra automatiquement les accès mémoire <code>[x0, #offset]</code> en <code>((StructName *)r0)-&gt;field</code>.
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="structNameInput" class="fui-input" value="UltronContext" style="flex: 1; text-transform: none;" placeholder="Nom de la struct (ex: UltronContext)" />
+          <input type="number" id="structSizeInput" class="fui-input" value="64" style="width: 110px;" placeholder="Taille (octets)" />
+        </div>
+        <textarea id="structFieldsInput" rows="6" placeholder="offset_hex:type:name (un champ par ligne)">0x00:void *:isa_vtable
+0x08:uint64_t:session_flags
+0x10:char *:target_buffer
+0x18:uint32_t:payload_length
+0x20:uint64_t:crypto_nonce</textarea>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="fui-btn primary-glow" onclick="saveStructModal()">REGISTER STRUCT &amp; RE-DECOMPILE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="paletteModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span>TACTICAL TARGET LOCATOR // ⌘K</span>
+        <button class="fui-btn" onclick="closeModal('paletteModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="paletteInput" class="fui-input" style="text-transform: none; width: 100%;" placeholder="Target address (0x100000978), subroutine name, or symbol…" oninput="renderPaletteItems()" onkeydown="if(event.key==='Enter') executeFirstPaletteItem()" />
+        <div id="paletteResults" style="max-height: 290px; overflow-y: auto; font-family: var(--font-code);"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-toast" id="statusToast"></div>
+
+  <script>
+    let state = {
+      overview: null,
+      mode: 'asm',
+      sidebarTab: 'procs',
+      procedures: [],
+      strings: [],
+      symbols: { imports: [], exports: [], objc_classes: [], types: [] },
+      currentDossier: null,
+      selectedAddress: null,
+      selectedProcedure: null,
+      navHistory: [],
+      highlightedToken: null,
+      emuState: null,
+      auditData: null,
+      neuralReport: null,
+      jarvisMode: false,
+      curved3D: true,
+      mouseX: window.innerWidth / 2,
+      mouseY: window.innerHeight / 2,
+    };
+
+    /* ─── PROCEDURAL WEB AUDIO SCI-FI SOUND SYNTHESIZER ─── */
+    let audioCtx = null;
+    function playChirp(freq = 680, dur = 0.055) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.45, audioCtx.currentTime + dur);
+        gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch (e) {}
+    }
+
+    /* ─── UNIFIED INTERACTIVE & PROCESS-REACTIVE 3D ORANGE SPHERICAL PARTICLE CLOUD ENGINE ─── */
+    const neuralCloudState = {
+      energy: 0.35,           // Current smoothed synaptic activity level (0.0 = idle, 1.8 = peak process storm)
+      targetEnergy: 0.15,     // Target baseline or active process energy
+      activeRequests: 0,      // Count of in-flight backend processes
+      processName: 'HARMONIC STANDBY',
+      rotX: 0.22,
+      rotY: 0.0,
+      velX: 0.0,
+      velY: 0.0,
+      dragging: false,
+      lastMouseX: 0,
+      lastMouseY: 0,
+      normMouseX: 0,          // -1..1 across screen
+      normMouseY: 0,          // -1..1 across screen
+      localHoverX: 0,         // Cursor position relative to sphere center
+      localHoverY: 0,
+      localHoverActive: false,
+      shockwaveRadius: -1,    // Expanding spherical shockwave on click/process start
+      shockwaveStrength: 0,
+      sprites: null,
+      cloudParticles: null,
+      ambientDust: null,
+    };
+
+    function initCloudResources() {
+      if (neuralCloudState.sprites) return;
+
+      function makeGlowSprite(size, stops) {
+        const off = document.createElement('canvas');
+        off.width = size;
+        off.height = size;
+        const octx = off.getContext('2d');
+        const half = size * 0.5;
+        const grad = octx.createRadialGradient(half, half, 0, half, half, half);
+        stops.forEach(([pos, col]) => grad.addColorStop(pos, col));
+        octx.fillStyle = grad;
+        octx.fillRect(0, 0, size, size);
+        return off;
+      }
+
+      const spriteSpark = makeGlowSprite(32, [
+        [0.0, 'rgba(255, 255, 245, 1.0)'],
+        [0.18, 'rgba(255, 225, 130, 0.94)'],
+        [0.45, 'rgba(255, 145, 20, 0.48)'],
+        [1.0, 'rgba(255, 70, 0, 0.0)'],
+      ]);
+      const spriteOrange = makeGlowSprite(36, [
+        [0.0, 'rgba(255, 240, 185, 0.96)'],
+        [0.22, 'rgba(255, 165, 25, 0.82)'],
+        [0.55, 'rgba(255, 85, 0, 0.32)'],
+        [1.0, 'rgba(200, 30, 0, 0.0)'],
+      ]);
+      const spriteEmber = makeGlowSprite(40, [
+        [0.0, 'rgba(255, 195, 110, 0.88)'],
+        [0.28, 'rgba(255, 95, 10, 0.64)'],
+        [0.65, 'rgba(195, 28, 0, 0.22)'],
+        [1.0, 'rgba(120, 5, 0, 0.0)'],
+      ]);
+      const spriteBokeh = makeGlowSprite(96, [
+        [0.0, 'rgba(255, 135, 15, 0.17)'],
+        [0.38, 'rgba(255, 80, 0, 0.085)'],
+        [0.72, 'rgba(200, 35, 0, 0.025)'],
+        [1.0, 'rgba(0, 0, 0, 0.0)'],
+      ]);
+      neuralCloudState.sprites = [spriteSpark, spriteOrange, spriteEmber, spriteBokeh];
+
+      const TOTAL_PARTICLES = 4400;
+      const cloudParticles = new Array(TOTAL_PARTICLES);
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+      for (let i = 0; i < TOTAL_PARTICLES; i++) {
+        let theta, phi, baseR, layer, spriteIdx, baseSize, alpha, speedMul, freq;
+        if (i < 2100) {
+          layer = 0;
+          const idx = i / 2100;
+          const y = 1 - idx * 2;
+          phi = Math.acos(Math.max(-1, Math.min(1, y)));
+          theta = goldenAngle * i;
+          const harm =
+            Math.sin(4 * theta) * Math.pow(Math.sin(phi), 2) * 0.55 +
+            Math.cos(3 * phi + 2 * theta) * 0.45 +
+            Math.sin(6 * theta - 3 * phi) * 0.3;
+          theta += harm * 0.26;
+          phi += Math.sin(5 * theta) * 0.08;
+          baseR = 232 + harm * 18 + (Math.random() - 0.5) * 14;
+          spriteIdx = Math.random() < 0.28 ? 0 : (Math.random() < 0.72 ? 1 : 2);
+          baseSize = spriteIdx === 0 ? (3.2 + Math.random() * 3.8) : (4.8 + Math.random() * 6.5);
+          alpha = 0.28 + Math.max(0, harm + 0.5) * 0.42;
+          speedMul = 1.0;
+          freq = 1.2 + Math.random() * 1.5;
+        } else if (i < 3550) {
+          layer = 1;
+          const band = i % 7;
+          const tBand = (i / 1450) * Math.PI * 14 + band * 0.9;
+          theta = tBand + (Math.random() - 0.5) * 0.22;
+          phi = Math.acos(Math.sin(tBand * 0.73 + band) * 0.88) + (Math.random() - 0.5) * 0.16;
+          baseR = 85 + ((i * 19) % 135) + (Math.random() - 0.5) * 18;
+          spriteIdx = Math.random() < 0.38 ? 0 : 1;
+          baseSize = 3.5 + Math.random() * 5.2;
+          alpha = 0.35 + Math.random() * 0.45;
+          speedMul = 1.38 * (band % 2 === 0 ? 1 : -0.85);
+          freq = 1.8 + Math.random() * 1.8;
+        } else if (i < 4180) {
+          layer = 2;
+          theta = Math.random() * Math.PI * 2;
+          phi = Math.acos(2 * Math.random() - 1);
+          baseR = 14 + Math.pow(Math.random(), 1.45) * 82;
+          spriteIdx = Math.random() < 0.52 ? 0 : 1;
+          baseSize = 4.2 + Math.random() * 7.5;
+          alpha = 0.48 + Math.random() * 0.48;
+          speedMul = 1.75;
+          freq = 2.4 + Math.random() * 2.0;
+        } else {
+          layer = 3;
+          theta = Math.random() * Math.PI * 2;
+          phi = Math.acos(2 * Math.random() - 1);
+          const isBokeh = i < 4310;
+          baseR = isBokeh ? (45 + Math.random() * 175) : (242 + Math.random() * 36);
+          spriteIdx = isBokeh ? 3 : 2;
+          baseSize = isBokeh ? (48 + Math.random() * 54) : (2.6 + Math.random() * 3.5);
+          alpha = isBokeh ? (0.22 + Math.random() * 0.25) : (0.35 + Math.random() * 0.45);
+          speedMul = isBokeh ? 0.65 : 0.82;
+          freq = 0.9 + Math.random();
+        }
+
+        const sinPhi = Math.sin(phi);
+        cloudParticles[i] = {
+          nx: sinPhi * Math.cos(theta),
+          ny: sinPhi * Math.sin(theta),
+          nz: Math.cos(phi),
+          theta,
+          phi,
+          baseR,
+          layer,
+          spriteIdx,
+          baseSize,
+          alpha,
+          speedMul,
+          freq,
+          phase: Math.random() * Math.PI * 2,
+        };
+      }
+      neuralCloudState.cloudParticles = cloudParticles;
+
+      // Full-screen wide-field drifting orange ambient embers for #fuiCanvas
+      neuralCloudState.ambientDust = Array.from({ length: 280 }, (_, idx) => ({
+        x: Math.random(),
+        y: Math.random(),
+        z: 0.2 + Math.random() * 0.8,
+        vx: (Math.random() - 0.5) * 0.00035,
+        vy: (Math.random() - 0.5) * 0.00035,
+        size: idx % 14 === 0 ? (22 + Math.random() * 32) : (3.5 + Math.random() * 7.5),
+        spriteIdx: idx % 14 === 0 ? 3 : (idx % 3 === 0 ? 0 : 1),
+        alpha: idx % 14 === 0 ? 0.16 : (0.22 + Math.random() * 0.42),
+        phase: Math.random() * Math.PI * 2,
+      }));
+    }
+
+    // Trigger Process Activity Surge (called automatically by fetch interceptor, UI actions, CPU Emulator, Decompiler, etc.)
+    function triggerNeuralActivity(intensity = 1.15, label = 'NEURAL COMPUTATION') {
+      neuralCloudState.energy = Math.min(1.85, Math.max(neuralCloudState.energy, intensity));
+      neuralCloudState.processName = label;
+      neuralCloudState.shockwaveRadius = 12;
+      neuralCloudState.shockwaveStrength = Math.min(1.4, intensity);
+      updateNeuralActivityHud();
+    }
+
+    function triggerProcessBurst() {
+      playChirp(780, 0.09);
+      const labels = [
+        'SSA DECOMPILER // PHI (φ) SOLVER ACTIVE',
+        'CAPSTONE AARCH64 // FULL BINARY SCAN',
+        'LLVM FORGE // ASSEMBLING MACHINE CODE',
+        'CPU MICRO-EMULATOR // 64KB STACK TRACE',
+        'SECURITY AUDITOR // CWE & ENTROPY MATRIX',
+      ];
+      const pick = labels[Math.floor(Math.random() * labels.length)];
+      triggerNeuralActivity(1.65, pick);
+    }
+
+    function updateNeuralActivityHud() {
+      const txt = document.getElementById('neuralActivityText');
+      const dot = document.getElementById('neuralPulseDot');
+      const wingBadge = document.getElementById('wingNeuralBadge');
+      const wingSub = document.getElementById('wingProcessSub');
+      const loadPct = Math.min(99, Math.round(12 + neuralCloudState.energy * 52));
+      const isBusy = neuralCloudState.energy > 0.32 || neuralCloudState.activeRequests > 0;
+
+      if (txt) {
+        txt.textContent = isBusy
+          ? `⚡ PROCESS ACTIVE: ${neuralCloudState.processName} // LOAD ${loadPct}%`
+          : `NEURAL CORE: HARMONIC STANDBY // LOAD ${loadPct}%`;
+        txt.style.color = isBusy ? '#fff2bd' : '#ffb84d';
+      }
+      if (dot) {
+        dot.style.background = isBusy ? '#ffffff' : '#ff9500';
+        dot.style.boxShadow = isBusy ? '0 0 16px #ffffff, 0 0 28px #ff8800' : '0 0 10px #ff9500';
+      }
+      if (wingBadge) {
+        wingBadge.textContent = isBusy ? `⚡ ${loadPct}% LOAD` : 'SYNAPTIC LIVE';
+        wingBadge.style.borderColor = isBusy ? '#fff2bd' : '#ff9500';
+      }
+      if (wingSub && isBusy) {
+        wingSub.textContent = neuralCloudState.processName;
+      }
+    }
+
+    // Intercept all backend API processes so the Orange Particle Cloud reacts automatically to real system activity
+    (function hookFetchForNeuralCloud() {
+      if (window.__ultronFetchHooked) return;
+      window.__ultronFetchHooked = true;
+      const origFetch = window.fetch.bind(window);
+      window.fetch = async function (...args) {
+        const url = String(args[0] || '');
+        let label = 'NEURAL BUS I/O';
+        if (url.includes('/api/procedure/')) label = 'SSA DECOMPILER & CFG SOLVER';
+        else if (url.includes('/api/emulate')) label = 'CPU MICRO-EMULATOR EXECUTION';
+        else if (url.includes('/api/audit')) label = 'CWE & CRYPTO S-BOX AUDIT';
+        else if (url.includes('/api/neural')) label = 'NEURAL AUTO-CLASSIFIER';
+        else if (url.includes('/api/open')) label = 'MACH-O / ELF BINARY LOADER';
+        else if (url.includes('/api/assemble')) label = 'LLVM FORGE ASSEMBLER';
+        else if (url.includes('/api/script')) label = 'PYTHON NEURAL SCRIPT ENGINE';
+        else if (url.includes('/api/export')) label = 'BINARY PATCH & CODESIGN';
+        else if (url.includes('/api/procedures')) label = 'SYMBOL DEMANGLER & INDEXER';
+
+        neuralCloudState.activeRequests++;
+        triggerNeuralActivity(1.35, label);
+        try {
+          return await origFetch(...args);
+        } finally {
+          neuralCloudState.activeRequests = Math.max(0, neuralCloudState.activeRequests - 1);
+        }
+      };
+    })();
+
+    // Core renderer that draws the 3D Spherical Orange Particle Cloud on any target canvas & scale
+    function renderOrangeSphereToCanvas(targetCtx, w, h, scaleRadius, particleStride, timeSec, opacityMul, interactiveCursor) {
+      if (!targetCtx || !neuralCloudState.sprites) return;
+      const scx = w * 0.5;
+      const scy = h * 0.5;
+      const sprites = neuralCloudState.sprites;
+      const cloudParticles = neuralCloudState.cloudParticles;
+      const energy = neuralCloudState.energy;
+
+      targetCtx.save();
+      targetCtx.globalCompositeOperation = 'lighter';
+
+      // 1. Volumetric Orange Core Singularity Glow
+      const breathe = 1.0 + (0.035 + energy * 0.065) * Math.sin(timeSec * (2.0 + energy * 2.5));
+      const glowR = scaleRadius * 1.32 * breathe;
+      const coreGlow = targetCtx.createRadialGradient(scx, scy, scaleRadius * 0.02, scx, scy, glowR);
+      const coreAlpha = Math.min(0.45, (0.22 + energy * 0.16) * opacityMul);
+      coreGlow.addColorStop(0.0, `rgba(255, 185, 65, ${coreAlpha})`);
+      coreGlow.addColorStop(0.28, `rgba(255, 100, 12, ${coreAlpha * 0.58})`);
+      coreGlow.addColorStop(0.64, `rgba(215, 45, 0, ${coreAlpha * 0.22})`);
+      coreGlow.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
+      targetCtx.fillStyle = coreGlow;
+      targetCtx.beginPath();
+      targetCtx.arc(scx, scy, glowR, 0, Math.PI * 2);
+      targetCtx.fill();
+
+      // 2. 3D Rotation + Interactive Mouse Tilt + Process Activity Acceleration
+      const fov = scaleRadius * 2.35;
+      const baseRotY = neuralCloudState.rotY + neuralCloudState.normMouseX * 0.42;
+      const baseRotX = neuralCloudState.rotX + neuralCloudState.normMouseY * 0.35;
+      const baseRotZ = Math.cos(timeSec * 0.15) * (0.14 + energy * 0.12);
+
+      // Traveling 3D Synaptic Pulse Waves (accelerate when processes are active)
+      const waveSpeed = 1.35 + energy * 3.2;
+      const waveX = Math.cos(timeSec * waveSpeed);
+      const waveY = Math.sin(timeSec * waveSpeed * 0.82);
+      const waveZ = Math.sin(timeSec * waveSpeed * 0.64);
+
+      const radiusRatio = scaleRadius / 240;
+      const shockR = neuralCloudState.shockwaveRadius;
+
+      for (let i = 0; i < cloudParticles.length; i += particleStride) {
+        const p = cloudParticles[i];
+
+        const ry = baseRotY * p.speedMul;
+        const rx = baseRotX + (p.layer === 1 ? timeSec * (0.16 + energy * 0.45) : 0);
+        const cosY = Math.cos(ry), sinY = Math.sin(ry);
+        const cosX = Math.cos(rx), sinX = Math.sin(rx);
+        const cosZ = Math.cos(baseRotZ), sinZ = Math.sin(baseRotZ);
+
+        // Organic 3D harmonic turbulence amplified by active processes
+        const turbAmp = 1.0 + energy * 1.85;
+        const turb =
+          (Math.sin(timeSec * (p.freq + energy * 2.2) + p.theta * 3.0 + p.phase) * 8.5 +
+            Math.cos(timeSec * (1.2 + energy * 1.8) - p.phi * 4.0) * 6.0) *
+          turbAmp;
+
+        // Spherical shockwave displacement when a process or click triggers
+        let shockBoost = 0;
+        if (shockR > 0) {
+          const distShock = Math.abs(p.baseR - shockR);
+          if (distShock < 38) {
+            shockBoost = (1 - distShock / 38) * neuralCloudState.shockwaveStrength;
+          }
+        }
+
+        const r = (p.baseR + turb + shockBoost * 26) * radiusRatio * breathe;
+
+        // Tangential vortex swirl amplified by process activity
+        const tang = Math.sin(timeSec * (1.4 + energy * 2.5) + p.phase) * (0.045 + energy * 0.065);
+        const ux = p.nx - p.ny * tang;
+        const uy = p.ny + p.nx * tang;
+        const uz = p.nz;
+
+        const vx = ux * r;
+        const vy = uy * r;
+        const vz = uz * r;
+
+        // Rotate Y, X, Z
+        const x1 = vx * cosY - vz * sinY;
+        const z1 = vx * sinY + vz * cosY;
+        const y2 = vy * cosX - z1 * sinX;
+        const z2 = vy * sinX + z1 * cosX;
+        const x3 = x1 * cosZ - y2 * sinZ;
+        const y3 = x1 * sinZ + y2 * cosZ;
+
+        const persp = fov / Math.max(40, fov + z2);
+        let sx = scx + x3 * persp;
+        let sy = scy + y3 * persp;
+
+        // Interactive cursor electromagnetic vortex repulsion/swirl
+        let cursorFlare = 0;
+        if (interactiveCursor && neuralCloudState.localHoverActive) {
+          const dx = sx - neuralCloudState.localHoverX;
+          const dy = sy - neuralCloudState.localHoverY;
+          const d2 = dx * dx + dy * dy;
+          const maxR = scaleRadius * 0.48;
+          if (d2 < maxR * maxR && d2 > 1) {
+            const d = Math.sqrt(d2);
+            const f = (1 - d / maxR);
+            cursorFlare = f * 0.85;
+            // Swirl + radial push
+            sx += (dx / d) * f * 18 * persp - (dy / d) * f * 14 * persp;
+            sy += (dy / d) * f * 18 * persp + (dx / d) * f * 14 * persp;
+          }
+        }
+
+        // Synaptic wave firing intensity
+        const dotWave = ux * waveX + uy * waveY + uz * waveZ;
+        const thresh = Math.max(0.25, 0.65 - energy * 0.25);
+        const synapticBoost = dotWave > thresh ? (dotWave - thresh) * (1.85 + energy * 1.2) : 0;
+
+        const depthNorm = Math.max(0.18, Math.min(1.18, (scaleRadius * 1.15 - z2) / (scaleRadius * 2.1)));
+        const dofBlur = p.layer === 3 ? 1.0 : (1.0 + Math.abs(z2 + scaleRadius * 0.18) / (scaleRadius * 1.45));
+        const drawSize = p.baseSize * radiusRatio * persp * dofBlur * (1 + shockBoost * 0.35 + cursorFlare * 0.4);
+
+        const finalAlpha = Math.min(
+          1.0,
+          (p.alpha * depthNorm + synapticBoost * 0.48 + shockBoost * 0.55 + cursorFlare * 0.6) *
+            (1.0 + energy * 0.38) *
+            opacityMul
+        );
+
+        if (finalAlpha > 0.02) {
+          targetCtx.globalAlpha = finalAlpha;
+          const useSpark = (synapticBoost > 0.32 || shockBoost > 0.25 || cursorFlare > 0.3) && p.layer !== 3;
+          const spr = useSpark ? sprites[0] : sprites[p.spriteIdx];
+          targetCtx.drawImage(spr, sx - drawSize * 0.5, sy - drawSize * 0.5, drawSize, drawSize);
+        }
+      }
+
+      targetCtx.restore();
+    }
+
+    function startFuiCanvasEngine() {
+      initCloudResources();
+      const bgCanvas = document.getElementById('fuiCanvas');
+      const bgCtx = bgCanvas ? bgCanvas.getContext('2d') : null;
+      const waveCanvas = document.getElementById('waveCanvas');
+      const wctx = waveCanvas ? waveCanvas.getContext('2d') : null;
+      const orbCanvas = document.getElementById('headerOrbCanvas');
+      const orbCtx = orbCanvas ? orbCanvas.getContext('2d') : null;
+      const wingCanvas = document.getElementById('wingCloudCanvas');
+      const wingCtx = wingCanvas ? wingCanvas.getContext('2d') : null;
+
+      function resize() {
+        if (bgCanvas) {
+          bgCanvas.width = window.innerWidth;
+          bgCanvas.height = window.innerHeight;
+        }
+      }
+      window.addEventListener('resize', resize);
+
+      // Global interactive pointer physics (tilts & ripples the 3D orange cloud everywhere)
+      window.addEventListener('mousemove', (e) => {
+        state.mouseX = e.clientX;
+        state.mouseY = e.clientY;
+        const nx = (e.clientX / Math.max(1, window.innerWidth)) * 2 - 1;
+        const ny = (e.clientY / Math.max(1, window.innerHeight)) * 2 - 1;
+        const dv = Math.hypot(nx - neuralCloudState.normMouseX, ny - neuralCloudState.normMouseY);
+        neuralCloudState.normMouseX = nx;
+        neuralCloudState.normMouseY = ny;
+
+        // Subtle kinetic energy boost when moving mouse rapidly
+        if (dv > 0.015) {
+          neuralCloudState.energy = Math.min(1.4, neuralCloudState.energy + dv * 0.45);
+        }
+
+        if (neuralCloudState.dragging) {
+          const dx = e.clientX - neuralCloudState.lastMouseX;
+          const dy = e.clientY - neuralCloudState.lastMouseY;
+          neuralCloudState.velY = dx * 0.0065;
+          neuralCloudState.velX = dy * 0.0065;
+          neuralCloudState.rotY += neuralCloudState.velY;
+          neuralCloudState.rotX = Math.max(-1.2, Math.min(1.2, neuralCloudState.rotX + neuralCloudState.velX));
+          neuralCloudState.lastMouseX = e.clientX;
+          neuralCloudState.lastMouseY = e.clientY;
+        }
+      });
+
+      window.addEventListener('mousedown', (e) => {
+        // Trigger subtle synaptic ripple on any workspace click
+        if (neuralCloudState.shockwaveRadius <= 0) {
+          neuralCloudState.shockwaveRadius = 15;
+          neuralCloudState.shockwaveStrength = 0.65;
+        }
+        neuralCloudState.energy = Math.min(1.5, neuralCloudState.energy + 0.25);
+      });
+
+      resize();
+
+      let t = 0;
+      function frame() {
+        t += 0.016;
+
+        // Update smoothed process energy & rotation physics
+        const targetE = neuralCloudState.activeRequests > 0 ? 1.45 : neuralCloudState.targetEnergy;
+        neuralCloudState.energy += (targetE - neuralCloudState.energy) * 0.045;
+        const speedBoost = 1.0 + neuralCloudState.energy * 2.85;
+        neuralCloudState.rotY += 0.0038 * speedBoost + neuralCloudState.velY;
+        neuralCloudState.rotX += Math.sin(t * 0.4) * 0.0008 + neuralCloudState.velX;
+        neuralCloudState.velX *= 0.92;
+        neuralCloudState.velY *= 0.92;
+
+        if (neuralCloudState.shockwaveRadius > 0) {
+          neuralCloudState.shockwaveRadius += 5.5 + neuralCloudState.energy * 4.5;
+          if (neuralCloudState.shockwaveRadius > 275) {
+            neuralCloudState.shockwaveRadius = -1;
+          }
+        }
+
+        if (Math.floor(t * 60) % 8 === 0) {
+          updateNeuralActivityHud();
+        }
+
+        // 1. FULL-SURFACE WORKSPACE BACKGROUND (#fuiCanvas): Giant 3D Orange Spherical Particle Cloud + Wide-Field Orange Embers
+        if (bgCtx && bgCanvas) {
+          const bw = bgCanvas.width;
+          const bh = bgCanvas.height;
+          bgCtx.clearRect(0, 0, bw, bh);
+
+          // Wide-field drifting orange ambient dust across 100% of the screen surface
+          bgCtx.save();
+          bgCtx.globalCompositeOperation = 'lighter';
+          const dust = neuralCloudState.ambientDust;
+          const sprites = neuralCloudState.sprites;
+          const driftMul = 1.0 + neuralCloudState.energy * 3.5;
+
+          for (let i = 0; i < dust.length; i++) {
+            const d = dust[i];
+            d.x += d.vx * driftMul;
+            d.y += d.vy * driftMul;
+            if (d.x < -0.05) d.x = 1.05;
+            if (d.x > 1.05) d.x = -0.05;
+            if (d.y < -0.05) d.y = 1.05;
+            if (d.y > 1.05) d.y = -0.05;
+
+            const px = (d.x + neuralCloudState.normMouseX * 0.018 * d.z) * bw;
+            const py = (d.y + neuralCloudState.normMouseY * 0.018 * d.z) * bh;
+            const pulse = 0.65 + 0.35 * Math.sin(t * 2.2 + d.phase);
+            bgCtx.globalAlpha = Math.min(0.85, d.alpha * pulse * (0.85 + neuralCloudState.energy * 0.5));
+            const sz = d.size * (1.0 + neuralCloudState.energy * 0.25);
+            bgCtx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
+          }
+          bgCtx.restore();
+
+          // Giant 3D Volumetric Orange Spherical Particle Cloud spanning the background of the entire workspace
+          const bgSphereRadius = Math.min(bw, bh) * 0.44;
+          renderOrangeSphereToCanvas(bgCtx, bw, bh, bgSphereRadius, 2, t, 0.72, false);
+        }
+
+        // 2. TOP-LEFT HEADER EMBLEM (#headerOrbCanvas): Miniature 3D Orange Spherical Particle Cloud
+        if (orbCtx && orbCanvas) {
+          orbCtx.clearRect(0, 0, orbCanvas.width, orbCanvas.height);
+          renderOrangeSphereToCanvas(orbCtx, orbCanvas.width, orbCanvas.height, 44, 6, t * 1.25, 1.15, false);
+        }
+
+        // 3. RIGHT TELEMETRY WING (#wingCloudCanvas): Dedicated 3D Orange Spherical Particle Cloud
+        if (wingCtx && wingCanvas) {
+          wingCtx.clearRect(0, 0, wingCanvas.width, wingCanvas.height);
+          renderOrangeSphereToCanvas(wingCtx, wingCanvas.width, wingCanvas.height, 108, 3, t * 1.1, 1.05, false);
+        }
+
+        // 4. RIGHT WING HARMONIC OSCILLOSCOPE (#waveCanvas)
+        if (wctx && waveCanvas) {
+          wctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+          const ampBoost = 1.0 + neuralCloudState.energy * 1.4;
+          wctx.lineWidth = 1.6;
+          wctx.strokeStyle = '#ff9500';
+          wctx.beginPath();
+          for (let x = 0; x < waveCanvas.width; x += 3) {
+            const y = 22 + Math.sin(x * 0.045 + t * (5 + neuralCloudState.energy * 6)) * 8 * ampBoost * Math.sin(x * 0.01 + t * 2);
+            if (x === 0) wctx.moveTo(x, y);
+            else wctx.lineTo(x, y);
+          }
+          wctx.stroke();
+
+          wctx.strokeStyle = '#ffd27d';
+          wctx.lineWidth = 1.1;
+          wctx.beginPath();
+          for (let x = 0; x < waveCanvas.width; x += 3) {
+            const y = 22 + Math.cos(x * 0.065 - t * (4 + neuralCloudState.energy * 5)) * 5 * ampBoost;
+            if (x === 0) wctx.moveTo(x, y);
+            else wctx.lineTo(x, y);
+          }
+          wctx.stroke();
+        }
+
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function playReactorIgnition() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const bass = audioCtx.createOscillator();
+        const bGain = audioCtx.createGain();
+        bass.type = 'sawtooth';
+        bass.frequency.setValueAtTime(55, now);
+        bass.frequency.exponentialRampToValueAtTime(220, now + 0.48);
+        bGain.gain.setValueAtTime(0.06, now);
+        bGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+        bass.connect(bGain);
+        bGain.connect(audioCtx.destination);
+        bass.start(now);
+        bass.stop(now + 0.55);
+
+        [440, 660, 880, 1320].forEach((f, idx) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f * 0.8, now + idx * 0.04);
+          osc.frequency.exponentialRampToValueAtTime(f, now + 0.35 + idx * 0.04);
+          g.gain.setValueAtTime(0.025, now + idx * 0.04);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+          osc.connect(g);
+          g.connect(audioCtx.destination);
+          osc.start(now + idx * 0.04);
+          osc.stop(now + 0.56);
+        });
+      } catch (e) {}
+    }
+
+    function startLaunchPortalEngine() {
+      initCloudResources();
+      const lCanvas = document.getElementById('launchCanvas');
+      if (!lCanvas) return;
+      const lctx = lCanvas.getContext('2d');
+      function resizeL() {
+        lCanvas.width = window.innerWidth;
+        lCanvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeL);
+      resizeL();
+
+      // Animated Neural Boot Log that pulses the Orange Spherical Particle Cloud on each subsystem init
+      const bootLines = [
+        ['[00.012s] INITIALIZING STARK/SOKOVIA QUANTUM BUS...', 'QUANTUM BUS INIT'],
+        ['[00.048s] LOADING NATIVE LLVM CORE: libLLVMServices.dylib [OK]', 'LLVM CORE LOAD'],
+        ['[00.095s] MOUNTING CAPSTONE AARCH64 + X86_64 ENGINE [OK]', 'CAPSTONE MOUNT'],
+        ['[00.142s] CALIBRATING SSA DECOMPILER & PHI (φ) SOLVER [OK]', 'SSA PHI CALIBRATION'],
+        ['[00.189s] ALLOCATING 64KB VIRTUAL STACK FOR CPU EMULATOR [OK]', 'CPU EMULATOR ALLOC'],
+        ['[00.234s] LOADING CWE VULNERABILITY & AES S-BOX SIGNATURES [OK]', 'CWE & S-BOX LOAD'],
+        ['[00.280s] BIOMETRIC CLEARANCE VERIFIED: LEVEL 10 AVENGER', 'BIOMETRIC LOCK'],
+        ['[00.315s] ULTRON DISASSEMBLE v2.0 READY FOR DEPLOYMENT.', 'SYSTEMS NOMINAL'],
+      ];
+      const bootBox = document.getElementById('launchBootLog');
+      if (bootBox) {
+        bootBox.innerHTML = '';
+        bootLines.forEach(([line, procLabel], idx) => {
+          setTimeout(() => {
+            const div = document.createElement('div');
+            div.innerHTML = line.replace('[OK]', '<span style="color:var(--emerald);font-weight:700;">[OK]</span>');
+            bootBox.appendChild(div);
+            bootBox.scrollTop = bootBox.scrollHeight;
+            triggerNeuralActivity(1.15, procLabel);
+          }, idx * 140);
+        });
+      }
+
+      const c3d = document.getElementById('core3dCanvas');
+      const c3ctx = c3d ? c3d.getContext('2d') : null;
+      const hub = document.getElementById('launchCloudHub');
+
+      if (hub && c3d) {
+        hub.addEventListener('mouseenter', () => {
+          state.coreHover = true;
+          neuralCloudState.localHoverActive = true;
+          triggerNeuralActivity(0.75, 'INTERACTIVE CORTEX PROBE');
+        });
+        hub.addEventListener('mouseleave', () => {
+          state.coreHover = false;
+          neuralCloudState.localHoverActive = false;
+          neuralCloudState.dragging = false;
+        });
+        hub.addEventListener('mousemove', (e) => {
+          const rect = c3d.getBoundingClientRect();
+          const scaleX = c3d.width / Math.max(1, rect.width);
+          const scaleY = c3d.height / Math.max(1, rect.height);
+          neuralCloudState.localHoverX = (e.clientX - rect.left) * scaleX;
+          neuralCloudState.localHoverY = (e.clientY - rect.top) * scaleY;
+          neuralCloudState.localHoverActive = true;
+        });
+        hub.addEventListener('mousedown', (e) => {
+          neuralCloudState.dragging = true;
+          neuralCloudState.lastMouseX = e.clientX;
+          neuralCloudState.lastMouseY = e.clientY;
+          triggerNeuralActivity(1.35, 'SYNAPTIC SHOCKWAVE PULSE');
+          playChirp(680, 0.06);
+        });
+        window.addEventListener('mouseup', () => {
+          neuralCloudState.dragging = false;
+        });
+        hub.addEventListener('dblclick', () => {
+          igniteUltronWorkspace();
+        });
+      }
+
+      let lt = 0;
+      function renderLaunchFrame() {
+        lt += 0.016;
+        const portal = document.getElementById('launchPortal');
+        if (portal && !portal.classList.contains('portal-hidden')) {
+          lctx.clearRect(0, 0, lCanvas.width, lCanvas.height);
+
+          // Render ambient drifting orange embers across the entire Launch Portal background surface (#launchCanvas)
+          lctx.save();
+          lctx.globalCompositeOperation = 'lighter';
+          const dust = neuralCloudState.ambientDust;
+          const sprites = neuralCloudState.sprites;
+          for (let i = 0; i < dust.length; i++) {
+            const d = dust[i];
+            const px = (d.x + neuralCloudState.normMouseX * 0.02 * d.z) * lCanvas.width;
+            const py = (d.y + neuralCloudState.normMouseY * 0.02 * d.z) * lCanvas.height;
+            const pulse = 0.6 + 0.4 * Math.sin(lt * 2.4 + d.phase);
+            lctx.globalAlpha = Math.min(0.8, d.alpha * pulse * 0.85);
+            const sz = d.size * (1.0 + neuralCloudState.energy * 0.3);
+            lctx.drawImage(sprites[d.spriteIdx], px - sz * 0.5, py - sz * 0.5, sz, sz);
+          }
+          lctx.restore();
+
+          // Render flagship 4,400-particle 3D Volumetric Orange Spherical Cloud on #core3dCanvas
+          if (c3ctx && c3d) {
+            c3ctx.clearRect(0, 0, c3d.width, c3d.height);
+            renderOrangeSphereToCanvas(c3ctx, c3d.width, c3d.height, 240, 1, lt, 1.0, true);
+          }
+
+          const clk = document.getElementById('launchClockText');
+          if (clk) {
+            clk.textContent = `T+00:00:${lt.toFixed(2).padStart(5, '0')} // ORBITAL LOCK`;
+          }
+        }
+        requestAnimationFrame(renderLaunchFrame);
+      }
+      requestAnimationFrame(renderLaunchFrame);
+    }
+
+    function selectLaunchProtocol(useJarvis) {
+      playChirp(useJarvis ? 920 : 540, 0.07);
+      if (state.jarvisMode !== useJarvis) {
+        toggleJarvisMode();
+      }
+      document.getElementById('protoCardUltron')?.classList.toggle('active', !useJarvis);
+      document.getElementById('protoCardJarvis')?.classList.toggle('active', useJarvis);
+      const banner = document.getElementById('launchProtocolBanner');
+      if (banner) {
+        banner.textContent = useJarvis
+          ? 'PROTOCOL MK-LXXXV // J.A.R.V.I.S. TACTICAL CORE'
+          : 'PROTOCOL MK-LXXXV // ULTRON SENTINEL PRIME';
+      }
+    }
+
+    function renderLaunchTargetDeck() {
+      const deck = document.getElementById('launchTargetDeck');
+      if (!deck || !state.overview?.presets) return;
+      deck.innerHTML = '';
+      state.overview.presets.forEach((p) => {
+        const isCur = state.overview.file_path === p.path;
+        const card = document.createElement('div');
+        card.className = 'target-deck-card' + (isCur ? ' active' : '');
+        card.innerHTML = `
+          <div>
+            <div style="font-family:var(--font-code);font-size:11.5px;font-weight:700;color:#fff;">${escapeHtml(p.label)}</div>
+            <div style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);">${escapeHtml(p.path)}</div>
+          </div>
+          <span class="hud-tag">${p.arch.toUpperCase()}</span>
+        `;
+        card.onclick = () => {
+          playChirp(740, 0.05);
+          document.getElementById('launchCustomPathInput').value = p.path;
+          document.getElementById('launchArchSelect').value = p.arch;
+          document.getElementById('launchSelectedArchBadge').textContent = p.arch.toUpperCase();
+          deck.querySelectorAll('.target-deck-card').forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+        };
+        deck.appendChild(card);
+      });
+    }
+
+    async function igniteUltronWorkspace() {
+      playReactorIgnition();
+      const customPath = (document.getElementById('launchCustomPathInput')?.value || '').trim();
+      const arch = document.getElementById('launchArchSelect')?.value || 'arm64';
+      const portal = document.getElementById('launchPortal');
+      if (portal) portal.classList.add('portal-hidden');
+      if (customPath && customPath !== state.overview?.file_path) {
+        await openBinary(customPath, arch);
+      } else {
+        showToast('ULTRON DISASSEMBLE COCKPIT ONLINE // ALL NEURAL SYSTEMS ENGAGED');
+      }
+    }
+
+    function showLaunchPortal() {
+      const portal = document.getElementById('launchPortal');
+      if (portal) {
+        renderLaunchTargetDeck();
+        portal.classList.remove('portal-hidden');
+      }
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('statusToast');
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 2800);
+    }
+
+    function toggle3DCockpit() {
+      state.curved3D = !state.curved3D;
+      document.body.classList.toggle('curved-3d', state.curved3D);
+      document.getElementById('cockpit3DBtn').textContent = state.curved3D ? '3D HUD: ON' : '3D HUD: FLAT';
+      playChirp(state.curved3D ? 840 : 440, 0.07);
+    }
+
+    function toggleJarvisMode() {
+      state.jarvisMode = !state.jarvisMode;
+      document.body.classList.toggle('jarvis-mode', state.jarvisMode);
+      document.getElementById('hudThemeLabel').textContent = state.jarvisMode
+        ? 'J.A.R.V.I.S. TACTICAL // MK-LXXXV'
+        : 'SENTINEL PRIME // MK-LXXXV';
+      document.getElementById('themeToggleBtn').textContent = state.jarvisMode ? 'ULTRON' : 'J.A.R.V.I.S.';
+      playChirp(state.jarvisMode ? 960 : 520, 0.09);
+      showToast(state.jarvisMode ? 'J.A.R.V.I.S. HOLOGRAPHIC MATRIX ONLINE' : 'ULTRON SENTINEL PROTOCOL ENGAGED');
+      if (state.mode === 'cfg' && state.currentDossier) {
+        renderCfgMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function initApp() {
+      startFuiCanvasEngine();
+      startLaunchPortalEngine();
+      await refreshAllData();
+      renderLaunchTargetDeck();
+      window.addEventListener('keydown', (e) => {
+        const portal = document.getElementById('launchPortal');
+        if (portal && !portal.classList.contains('portal-hidden') && e.key === 'Enter') {
+          e.preventDefault();
+          igniteUltronWorkspace();
+          return;
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          openCommandPalette();
+        }
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+        if (e.key === 'Escape') { e.preventDefault(); navigateBack(); }
+        if (e.key === 'n' || e.key === 'N') { e.preventDefault(); promptRename(); }
+        if (e.key === ';') { e.preventDefault(); promptComment(); }
+        if (e.key === 't' || e.key === 'T') { e.preventDefault(); openStructModal(); }
+        if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
+        if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
+        if (e.key === 'p' || e.key === 'P') { e.preventDefault(); setMode('pseudo'); }
+        if (e.key === 'F7') { e.preventDefault(); if (state.mode !== 'emu') setMode('emu'); else emuStep('step'); }
+        if (e.key === 'F9') { e.preventDefault(); if (state.mode !== 'emu') setMode('emu'); else emuStep('run'); }
+      });
+    }
+
+    function navigateBack() {
+      if (state.navHistory.length > 0) {
+        const prev = state.navHistory.pop();
+        playChirp(460, 0.05);
+        showToast(`CHRONO-JUMP BACK → ${prev}`);
+        loadProcedure(prev, false);
+      } else {
+        showToast('NAVIGATION STACK AT ORIGIN');
+      }
+    }
+
+    async function refreshAllData(preserveProc = false) {
+      const ovResp = await fetch('/api/overview');
+      state.overview = await ovResp.json();
+
+      const presetSel = document.getElementById('presetSelect');
+      if (presetSel.options.length === 0 && state.overview.presets) {
+        state.overview.presets.forEach((p) => {
+          const opt = document.createElement('option');
+          opt.value = p.path;
+          opt.textContent = p.label;
+          if (state.overview.file_path === p.path) opt.selected = true;
+          presetSel.appendChild(opt);
+        });
+        presetSel.onchange = () => openBinary(presetSel.value, document.getElementById('archSelect').value);
+      }
+      document.getElementById('archSelect').onchange = () => {
+        if (state.overview?.file_path) openBinary(state.overview.file_path, document.getElementById('archSelect').value);
+      };
+
+      const [procsResp, strsResp, symsResp] = await Promise.all([
+        fetch('/api/procedures'),
+        fetch('/api/strings'),
+        fetch('/api/symbols'),
+      ]);
+      state.procedures = (await procsResp.json()).items || [];
+      state.strings = (await strsResp.json()).items || [];
+      state.symbols = await symsResp.json();
+
+      renderOverviewBar();
+      renderSidebarList();
+      renderLaunchTargetDeck();
+
+      const targetProc = (preserveProc && state.selectedProcedure)
+        ? state.selectedProcedure
+        : (state.procedures[0]?.entry_point || state.overview.entry_point);
+      if (targetProc) {
+        await loadProcedure(targetProc, false);
+      }
+    }
+
+    async function openBinary(path, arch = 'arm64') {
+      playChirp(620, 0.08);
+      showToast(`SCANNING BINARY TARGET: ${path.split('/').pop()} [${arch.toUpperCase()}]…`);
+      const resp = await fetch('/api/open', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path, arch }),
+      });
+      const data = await resp.json();
+      if (data.error) {
+        alert('Erreur: ' + data.error);
+        return;
+      }
+      state.selectedProcedure = null;
+      state.navHistory = [];
+      state.auditData = null;
+      await refreshAllData(false);
+      showToast(`TARGET LOCKED: ${data.procedure_count} SUBROUTINES // ${data.instruction_count} INSTRUCTIONS`);
+    }
+
+    function openCustomPathPrompt() {
+      const p = prompt("Chemin absolu de la cible binaire (Mach-O, .app, ELF, PE) :", state.overview?.file_path || "/bin/ls");
+      if (p) openBinary(p, document.getElementById('archSelect').value);
+    }
+
+    function renderOverviewBar() {
+      const ov = state.overview;
+      if (!ov || !ov.open) return;
+      document.getElementById('docSummaryText').textContent =
+        `${ov.document} // ${ov.format} [${ov.cpu_subfamily.toUpperCase()}] // ${ov.procedure_count} PROCS // ${ov.string_count} STRINGS`;
+
+      const bar = document.getElementById('segmentMapBar');
+      bar.innerHTML = '';
+      const colors = {
+        '__TEXT': 'linear-gradient(90deg, #ff1e38, #b80d24)',
+        '__DATA_CONST': 'linear-gradient(90deg, #7b2cbf, #5a189a)',
+        '__DATA': 'linear-gradient(90deg, #00b4d8, #0077b6)',
+        '__LINKEDIT': 'linear-gradient(90deg, #ff8a00, #cc6d00)',
+      };
+      const validSegs = (ov.segments || []).filter(s => s.name !== '__PAGEZERO' && s.length > 0);
+      const totalLen = validSegs.reduce((acc, s) => acc + s.length, 0) || 1;
+      validSegs.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'seg-slice';
+        div.style.width = `${Math.max(10, (s.length / totalLen) * 100)}%`;
+        div.style.background = colors[s.name] || '#1e293b';
+        div.textContent = `${s.name} (${(s.length / 1024).toFixed(0)}K)`;
+        div.onclick = () => selectAddress(s.start);
+        bar.appendChild(div);
+      });
+    }
+
+    function setSidebarTab(tab) {
+      state.sidebarTab = tab;
+      ['procs', 'strings', 'symbols', 'segments'].forEach(t => {
+        document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+      });
+      renderSidebarList();
+    }
+
+    function filterSidebarList() {
+      renderSidebarList();
+    }
+
+    function renderSidebarList() {
+      const container = document.getElementById('sidebarListContainer');
+      const q = (document.getElementById('sidebarSearchInput').value || '').toLowerCase();
+      container.innerHTML = '';
+
+      if (state.sidebarTab === 'procs') {
+        state.procedures
+          .filter(p => !q || p.name.toLowerCase().includes(q) || (p.demangled && p.demangled.toLowerCase().includes(q)) || p.entry_point.toLowerCase().includes(q))
+          .forEach(p => {
+            const row = document.createElement('div');
+            row.className = 'list-item' + (state.selectedProcedure === p.entry_point ? ' selected' : '');
+            const isObjc = p.name.startsWith('+[') || p.name.startsWith('-[');
+            const isStub = p.name.startsWith('imp___stubs');
+            const dispName = (p.demangled && p.demangled !== p.name) ? p.demangled : p.name;
+            row.innerHTML = `
+              <span class="list-item-name ${isObjc ? 'objc' : ''} ${isStub ? 'stub' : ''}" title="${escapeHtml(dispName)}">${escapeHtml(dispName)}</span>
+              <span class="list-item-addr">${p.entry_point}</span>
+            `;
+            row.onclick = () => { playChirp(740, 0.04); loadProcedure(p.entry_point); };
+            container.appendChild(row);
+          });
+      } else if (state.sidebarTab === 'strings') {
+        state.strings
+          .filter(s => !q || s.value.toLowerCase().includes(q) || s.address.toLowerCase().includes(q))
+          .forEach(s => {
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.innerHTML = `
+              <span class="list-item-name" style="color: var(--emerald);" title="${escapeHtml(s.value)}">"${escapeHtml(s.value)}"</span>
+              <span class="list-item-addr">${s.address}</span>
+            `;
+            row.onclick = () => {
+              selectAddress(s.address);
+              if (s.xrefs && s.xrefs.length > 0) loadProcedure(s.xrefs[0]);
+            };
+            container.appendChild(row);
+          });
+      } else if (state.sidebarTab === 'symbols') {
+        const typesList = state.symbols.types || [];
+        typesList.forEach(t => {
+          const row = document.createElement('div');
+          row.className = 'list-item';
+          row.innerHTML = `<span class="list-item-name" style="color:var(--primary);font-weight:700;">[STRUCT] ${escapeHtml(t.name)} (${t.size}B)</span><span class="list-item-addr">${t.fields.length} fields</span>`;
+          row.onclick = () => openStructModal();
+          container.appendChild(row);
+        });
+        const exportsList = state.symbols.exports || [];
+        const importsList = state.symbols.imports || [];
+        exportsList
+          .filter(e => !q || e.name.toLowerCase().includes(q))
+          .forEach(e => {
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.innerHTML = `<span class="list-item-name">[EXP] ${escapeHtml(e.name)}</span><span class="list-item-addr">${e.address}</span>`;
+            row.onclick = () => loadProcedure(e.address);
+            container.appendChild(row);
+          });
+        importsList
+          .filter(i => !q || i.name.toLowerCase().includes(q))
+          .forEach(i => {
+            const row = document.createElement('div');
+            row.className = 'list-item';
+            row.innerHTML = `<span class="list-item-name stub">[IMP] ${escapeHtml(i.name)}</span><span class="list-item-addr">${i.address || 'dyld'}</span>`;
+            if (i.address) row.onclick = () => loadProcedure(i.address);
+            container.appendChild(row);
+          });
+      } else if (state.sidebarTab === 'segments') {
+        (state.overview?.segments || []).forEach(seg => {
+          const row = document.createElement('div');
+          row.className = 'list-item';
+          row.innerHTML = `<span class="list-item-name" style="font-weight:700;color:var(--primary);">${seg.name} (${seg.readable?'R':''}${seg.writable?'W':''}${seg.executable?'X':''})</span><span class="list-item-addr">${seg.start}</span>`;
+          row.onclick = () => { selectAddress(seg.start); setMode('hex'); };
+          container.appendChild(row);
+          (seg.sections || []).forEach(sec => {
+            const srow = document.createElement('div');
+            srow.className = 'list-item';
+            srow.style.paddingLeft = '22px';
+            srow.innerHTML = `<span class="list-item-name">${sec.name} (${sec.length} B)</span><span class="list-item-addr">${sec.start}</span>`;
+            srow.onclick = () => { selectAddress(sec.start); if (!sec.is_code) setMode('hex'); };
+            container.appendChild(srow);
+          });
+        });
+      }
+    }
+
+    async function loadProcedure(query, recordHistory = true) {
+      if (recordHistory && state.selectedProcedure && state.selectedProcedure !== query) {
+        state.navHistory.push(state.selectedProcedure);
+      }
+      const ssaForm = document.getElementById('optSsaForm')?.checked || false;
+      const rewriteObjc = document.getElementById('optRewriteObjc').checked;
+      const inlineStrings = document.getElementById('optInlineStrings').checked;
+      const structureCF = document.getElementById('optStructureCF').checked;
+      const hidePrologue = document.getElementById('optHidePrologue').checked;
+
+      const url = `/api/procedure/${encodeURIComponent(query)}?ssa_form=${ssaForm}&rewrite_objc=${rewriteObjc}&inline_strings=${inlineStrings}&structure_cf=${structureCF}&remove_prologue=${hidePrologue}`;
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data.error) {
+        await selectAddress(query);
+        return;
+      }
+      state.currentDossier = data;
+      state.selectedProcedure = data.procedure.entry_point;
+      state.selectedAddress = data.procedure.entry_point;
+      state.emuState = null;
+      state.neuralReport = null;
+
+      document.getElementById('bannerProcName').textContent = data.procedure.name;
+      document.getElementById('bannerProcSig').textContent = data.procedure.signature;
+      document.getElementById('bannerProcMeta').textContent =
+        `${data.procedure.segment},${data.procedure.section} // ${data.procedure.size} BYTES // ${data.procedure.basic_block_count} NODES`;
+
+      const bbs = Math.min(98, Math.max(18, data.procedure.basic_block_count * 14));
+      const szPct = Math.min(96, Math.max(24, Math.round((data.procedure.size / 240) * 100)));
+      document.getElementById('gaugeArc3').setAttribute('stroke-dasharray', `${bbs}, 100`);
+      document.getElementById('gaugeText3').textContent = `CFG ${data.procedure.basic_block_count} NODES`;
+      document.getElementById('gaugeArc1').setAttribute('stroke-dasharray', `${szPct}, 100`);
+      document.getElementById('gaugeText1').textContent = `DENSITY ${szPct}%`;
+
+      renderSidebarList();
+      await renderCenterView();
+      await selectAddress(data.procedure.entry_point);
+    }
+
+    function reloadCurrentProcedure() {
+      if (state.selectedProcedure) loadProcedure(state.selectedProcedure, false);
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      const modeNames = {
+        asm: 'ASM MATRIX // DISASSEMBLER',
+        cfg: 'NEURAL CFG // TOPOLOGY GRAPH',
+        pseudo: 'SSA DECOMPILER // AST ENGINE',
+        hex: 'QUANTUM HEX // MEMORY MATRIX',
+        emu: 'CPU MICRO-EMULATOR // LIVE TRACE',
+        audit: 'NEURAL & SECURITY AUDITOR',
+      };
+      triggerNeuralActivity(1.15, modeNames[mode] || 'MODE SWITCH');
+      ['asm', 'cfg', 'pseudo', 'hex', 'emu', 'audit'].forEach(m => {
+        const el = document.getElementById('mode-' + m);
+        if (el) el.classList.toggle('active', m === mode);
+      });
+      document.getElementById('decompilerOptionsBar').style.display = (mode === 'pseudo') ? 'flex' : 'none';
+      document.getElementById('cfgMinimap').style.display = (mode === 'cfg') ? 'block' : 'none';
+      renderCenterView();
+    }
+
+    async function renderCenterView() {
+      const container = document.getElementById('centerContent');
+      const d = state.currentDossier;
+      if (!d) return;
+
+      if (state.mode === 'asm') {
+        renderAsmMode(container, d);
+      } else if (state.mode === 'cfg') {
+        renderCfgMode(container, d);
+      } else if (state.mode === 'pseudo') {
+        renderPseudoMode(container, d);
+      } else if (state.mode === 'hex') {
+        await renderHexMode(container, state.selectedAddress || d.procedure.entry_point);
+      } else if (state.mode === 'emu') {
+        await renderEmuMode(container, d);
+      } else if (state.mode === 'audit') {
+        await renderAuditMode(container, d);
+      }
+    }
+
+    /* ─── SYNCHRONIZED REGISTER / VARIABLE TOKEN HIGHLIGHTER ─── */
+    const TOKEN_REGEX = /\b(x\d{1,2}|w\d{1,2}|r\d{1,2}(?:_\d+)?|sp|fp|lr|pc|xzr|wzr|rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|rip|var_[0-9a-fA-FmM]+|local_ctx_\d+|saved_ptr_\d+|acc_val_\d+)\b/g;
+
+    function wrapInteractiveTokens(escapedHtml) {
+      return escapedHtml.replace(TOKEN_REGEX, (m) => {
+        const activeCls = state.highlightedToken === m ? 'hl-active' : '';
+        return `<span class="reg-tok ${activeCls}" data-tok="${m}" onclick="event.stopPropagation(); toggleHighlightToken('${m}')">${m}</span>`;
+      });
+    }
+
+    function toggleHighlightToken(tok) {
+      playChirp(820, 0.035);
+      state.highlightedToken = (state.highlightedToken === tok) ? null : tok;
+      document.querySelectorAll('.reg-tok').forEach(el => {
+        el.classList.toggle('hl-active', el.getAttribute('data-tok') === state.highlightedToken);
+      });
+      if (state.highlightedToken) {
+        showToast(`TOKEN LOCK: [${state.highlightedToken.toUpperCase()}] HIGHLIGHTED ACROSS MATRIX`);
+      }
+    }
+
+    function renderAsmMode(container, d) {
+      let html = `<table class="asm-table"><tbody>`;
+      html += `<tr class="asm-label-row"><td colspan="5">; ═══════════════ SUBROUTINE // ${escapeHtml(d.procedure.name)} (DOUBLE-CLICK CALLS TO JUMP, ESC TO RETURN) ═══════════════</td></tr>`;
+      if (d.local_variables && d.local_variables.length > 0) {
+        d.local_variables.forEach(v => {
+          html += `<tr><td class="col-addr">${d.procedure.entry_point}</td><td class="col-bytes"></td><td colspan="3" style="color:var(--secondary);">; [STACK FRAME] ${wrapInteractiveTokens(escapeHtml(v.name))}: [sp, #${v.displacement}] (${v.type})</td></tr>`;
+        });
+      }
+
+      d.instructions.forEach(ins => {
+        if (ins.label) {
+          const xrefsText = (ins.xrefs_in && ins.xrefs_in.length) ? ` ; SYNAPTIC XREFS: ${ins.xrefs_in.join(', ')}` : '';
+          html += `<tr class="asm-label-row"><td colspan="5">◈ ${escapeHtml(ins.label)}:${escapeHtml(xrefsText)}</td></tr>`;
+        }
+        if (ins.comment) {
+          html += `<tr><td class="col-addr">${ins.address}</td><td></td><td colspan="3" class="col-comment">; ${escapeHtml(ins.comment)}</td></tr>`;
+        }
+        const mnemClass = ins.is_ret ? 'ret' : (ins.is_call ? 'call' : ((ins.is_cjmp || ins.is_ijmp) ? 'branch' : ''));
+        const isSel = state.selectedAddress === ins.address ? 'selected' : '';
+        let opsHtml = escapeHtml(ins.formatted_op_str || ins.op_str);
+        const jumpTarget = ins.call_target || ins.branch_target;
+        if (jumpTarget) {
+          opsHtml = `<span class="clickable-sym" title="Cliquer pour sauter vers ${jumpTarget} (Échap pour revenir)" onclick="event.stopPropagation(); playChirp(820,0.05); loadProcedure('${jumpTarget}')">${opsHtml}</span>`;
+        } else {
+          opsHtml = wrapInteractiveTokens(opsHtml);
+        }
+        const cmt = ins.inline_comment ? `; ${escapeHtml(ins.inline_comment)}` : '';
+        html += `
+          <tr class="asm-row ${isSel}" data-addr="${ins.address}" onclick="playChirp(540,0.03); selectAddress('${ins.address}')" ondblclick="${jumpTarget ? `loadProcedure('${jumpTarget}')` : ''}">
+            <td class="col-addr">${ins.address}</td>
+            <td class="col-bytes">${ins.bytes}</td>
+            <td class="col-mnem ${mnemClass}">${escapeHtml(ins.mnemonic)}</td>
+            <td class="col-ops">${opsHtml}</td>
+            <td class="col-comment">${cmt}</td>
+          </tr>
+        `;
+      });
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    function renderCfgMode(container, d) {
+      const blocks = d.basic_blocks || [];
+      if (blocks.length === 0) {
+        container.innerHTML = '<div style="padding:20px;">NO NEURAL CFG NODES</div>';
+        return;
+      }
+
+      const boxW = 445;
+      const vGap = 62;
+      const coords = {};
+      const blockMap = {};
+      blocks.forEach(b => { blockMap[b.from] = b; });
+
+      let curY = 42;
+      blocks.forEach((b, idx) => {
+        const h = Math.max(68, 34 + b.instructions.length * 16);
+        let xOffset = 235;
+        if (idx > 0 && b.predecessors.length === 1) {
+          const pred = blockMap[b.predecessors[0]];
+          if (pred && pred.then_successor === b.from && pred.else_successor) xOffset = 475;
+          else if (pred && pred.else_successor === b.from && pred.then_successor) xOffset = 25;
+        }
+        coords[b.from] = { x: xOffset, y: curY, w: boxW, h };
+        curY += h + vGap;
+      });
+
+      const svgW = 980;
+      const svgH = Math.max(620, curY + 95);
+
+      let edgesSvg = '';
+      blocks.forEach(b => {
+        const src = coords[b.from];
+        if (!src) return;
+        (b.successors || []).forEach(succAddr => {
+          const dst = coords[succAddr];
+          if (!dst) return;
+          const isBackEdge = dst.y <= src.y;
+          let color = '#00f0ff';
+          if (b.then_successor === succAddr) color = '#00ff9d';
+          else if (b.else_successor === succAddr) color = '#ff1e38';
+          if (isBackEdge) color = '#ff9e00';
+
+          const x1 = src.x + src.w / 2;
+          const y1 = src.y + src.h;
+          const x2 = dst.x + dst.w / 2;
+          const y2 = dst.y;
+
+          if (isBackEdge) {
+            const loopX = Math.max(src.x + src.w, dst.x + dst.w) + 50;
+            edgesSvg += `<path class="cfg-edge-animated" d="M ${x1} ${y1} C ${loopX} ${y1 + 30}, ${loopX} ${y2 - 30}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="2.2" />`;
+          } else {
+            const midY = (y1 + y2) / 2;
+            edgesSvg += `<path class="cfg-edge-animated" d="M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="2" />`;
+          }
+          edgesSvg += `<circle cx="${x2}" cy="${y2}" r="4.2" fill="${color}" />`;
+        });
+      });
+
+      let nodesSvg = '';
+      blocks.forEach(b => {
+        const c = coords[b.from];
+        let insText = '';
+        b.instructions.forEach((ins, idx) => {
+          const ty = c.y + 42 + idx * 16;
+          const opShort = (ins.formatted_op_str || ins.op_str).slice(0, 38);
+          insText += `
+            <text x="${c.x + 12}" y="${ty}" fill="#4f6d8a" font-size="10.5">${ins.address}</text>
+            <text x="${c.x + 96}" y="${ty}" fill="#00f0ff" font-weight="700" font-size="11">${escapeHtml(ins.mnemonic)}</text>
+            <text x="${c.x + 160}" y="${ty}" fill="#f0f8ff" font-size="11">${escapeHtml(opShort)}</text>
+          `;
+        });
+        nodesSvg += `
+          <g onclick="playChirp(640,0.04); selectAddress('${b.from}')" style="cursor:pointer;">
+            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="rgba(5,10,20,0.94)" stroke="#00f0ff" stroke-opacity="0.5" stroke-width="1.5" />
+            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="24" fill="rgba(255,30,56,0.25)" />
+            <text x="${c.x + 12}" y="${c.y + 16}" fill="#ff1e38" font-weight="700" font-size="11">◈ NODE #${b.index} // ${b.from} → ${b.to}</text>
+            ${insText}
+          </g>
+        `;
+      });
+
+      container.innerHTML = `
+        <div class="cfg-wrapper">
+          <svg width="${svgW}" height="${svgH}" style="font-family: var(--font-code);">
+            ${edgesSvg}
+            ${nodesSvg}
+          </svg>
+        </div>
+      `;
+
+      const mini = document.getElementById('cfgMinimapSvg');
+      mini.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+      mini.innerHTML = edgesSvg + blocks.map(b => {
+        const c = coords[b.from];
+        return `<rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="#ff1e38" opacity="0.65" />`;
+      }).join('');
+    }
+
+    function renderPseudoMode(container, d) {
+      const code = d.pseudocode || '// NO DECOMPILED TELEMETRY';
+      let highlighted = escapeHtml(code)
+        .replace(/(\/\*[\s\S]*?\*\/|\/\/.*)/g, '<span class="cmt">$1</span>')
+        .replace(/(@"(?:[^"\\]|\\.)*"|@selector\([^)]+\))/g, '<span class="str">$1</span>')
+        .replace(/\b(if|else|while|for|do|return|goto|continue|break|int64_t|uint64_t|void|char|size_t|ssize_t|bool|id|SEL)\b/g, '<span class="kw">$1</span>')
+        .replace(/^(loc_[0-9a-fA-F]+:)/gm, '<span class="lbl">$1</span>');
+      highlighted = wrapInteractiveTokens(highlighted);
+      container.innerHTML = `<pre class="pseudocode-pre">${highlighted}</pre>`;
+    }
+
+    async function renderHexMode(container, addr) {
+      const resp = await fetch(`/api/hex?address=${encodeURIComponent(addr)}&length=512`);
+      const data = await resp.json();
+      if (data.error) {
+        container.innerHTML = `<div style="padding:20px;">${escapeHtml(data.error)}</div>`;
+        return;
+      }
+      let html = `
+        <div style="padding:8px 14px; background:rgba(4,9,18,0.95); border-bottom:1px solid rgba(0,240,255,0.25); font-family:var(--font-fui); font-size:11px; display:flex; gap:14px; align-items:center;">
+          <span>SEGMENT: <strong style="color:var(--secondary)">${data.segment}</strong></span>
+          <span class="bt-procedure" style="padding:1px 7px;">PROCEDURE</span>
+          <span class="bt-code" style="padding:1px 7px;">CODE</span>
+          <span class="bt-ascii" style="padding:1px 7px;">ASCII</span>
+          <span class="bt-int64" style="padding:1px 7px;">INT64/PTR</span>
+          <span class="bt-undefined" style="padding:1px 7px;">UNDEFINED</span>
+        </div>
+        <table class="hex-table"><tbody>
+      `;
+      (data.rows || []).forEach(r => {
+        const byteSpans = r.bytes.map((b, i) => {
+          const t = r.types[i] || 'undefined';
+          return `<span class="byte-cell bt-${t}" title="Type: ${t}">${b}</span>`;
+        }).join('');
+        html += `
+          <tr class="asm-row" onclick="selectAddress('${r.address}')">
+            <td class="col-addr">${r.address}</td>
+            <td>${byteSpans}</td>
+            <td style="color:var(--emerald); letter-spacing:1.2px;">${escapeHtml(r.ascii)}</td>
+            <td style="color:var(--tertiary);">${escapeHtml(r.label || '')}</td>
+          </tr>
+        `;
+      });
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    /* ─── MODE 05: LIVE CPU MICRO-EMULATOR & DEBUGGER HUD ─── */
+    async function renderEmuMode(container, d) {
+      if (!state.emuState) {
+        const resp = await fetch('/api/emulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ procedure: d.procedure.entry_point, action: 'init' }),
+        });
+        state.emuState = await resp.json();
+      }
+      const emu = state.emuState;
+      const flags = emu.flags || { N: 0, Z: 0, C: 0, V: 0 };
+
+      const regCards = (emu.registers || []).map(r => `
+        <div class="emu-reg-card ${r.modified ? 'modified' : ''}">
+          <span style="color:var(--secondary);font-weight:700;">${r.name}</span>
+          <span style="color:${r.modified ? '#fff' : 'var(--text-hi)'};">${r.value}</span>
+          ${r.hint ? `<span style="color:var(--emerald);font-size:10px;max-width:110px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(r.hint)}</span>` : ''}
+        </div>
+      `).join('');
+
+      const stackRows = (emu.stack || []).map(s => `
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-code);font-size:11px;padding:3px 6px;border-bottom:1px solid rgba(0,240,255,0.08);">
+          <span style="color:var(--tertiary);">${s.offset} (${s.address})</span>
+          <span style="color:var(--text-hi);">${s.value}</span>
+        </div>
+      `).join('');
+
+      const insRows = d.instructions.map(ins => {
+        const isCurrentPc = ins.address.toLowerCase() === (emu.pc || '').toLowerCase();
+        return `
+          <tr class="asm-row ${isCurrentPc ? 'selected' : ''}" style="${isCurrentPc ? 'background:rgba(255,26,53,0.28);outline:1px solid var(--primary);' : ''}">
+            <td class="col-addr">${isCurrentPc ? '▶ ' : ''}${ins.address}</td>
+            <td class="col-mnem">${escapeHtml(ins.mnemonic)}</td>
+            <td class="col-ops">${escapeHtml(ins.formatted_op_str || ins.op_str)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      const traceRows = (emu.trace || []).slice().reverse().map(t => `
+        <div style="font-family:var(--font-code);font-size:11px;padding:3px 6px;border-bottom:1px solid rgba(0,240,255,0.08);">
+          <span style="color:var(--text-mid);">#${t.step} [${t.address}]</span>
+          <strong style="color:var(--secondary);margin-left:6px;">${escapeHtml(t.mnemonic)} ${escapeHtml(t.op_str)}</strong>
+          ${t.note ? `<span style="color:var(--emerald);margin-left:8px;">// ${escapeHtml(t.note)}</span>` : ''}
+        </div>
+      `).join('');
+
+      container.innerHTML = `
+        <div style="padding:10px 16px;background:rgba(4,9,18,0.95);border-bottom:1px solid rgba(0,240,255,0.3);display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="fui-btn primary-glow" onclick="emuStep('step')">▶ STEP INTO [F7]</button>
+            <button class="fui-btn cyan-glow" onclick="emuStep('run')">⏩ RUN TO RET [F9]</button>
+            <button class="fui-btn" onclick="emuStep('reset')">↺ RESET CPU</button>
+            <span style="font-family:var(--font-fui);font-size:11px;color:var(--text-mid);margin-left:8px;">
+              INJECT X0/RDI: <input id="emuInitX0" class="fui-input" value="0x100008000" style="width:115px;padding:2px 6px;text-transform:none;" />
+              X1/RSI: <input id="emuInitX1" class="fui-input" value="0x2a" style="width:80px;padding:2px 6px;text-transform:none;" />
+            </span>
+          </div>
+          <div style="font-family:var(--font-fui);font-size:11.5px;">
+            STATUS: <strong style="color:${emu.halted ? 'var(--tertiary)' : 'var(--emerald)'};">${escapeHtml(emu.halt_reason)}</strong>
+            | STEPS: <strong>${emu.step_count}</strong>
+            | FLAGS: <span class="hud-tag">N=${flags.N} Z=${flags.Z} C=${flags.C} V=${flags.V}</span>
+          </div>
+        </div>
+        <div class="emu-layout">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="fui-module">
+              <div class="fui-module-title"><span>LIVE INSTRUCTION STREAM // PC = ${emu.pc}</span></div>
+              <div style="max-height:280px;overflow-y:auto;">
+                <table class="asm-table"><tbody>${insRows}</tbody></table>
+              </div>
+            </div>
+            <div class="fui-module">
+              <div class="fui-module-title"><span>EXECUTION TRACE &amp; API CALL INTERCEPTORS</span></div>
+              <div style="max-height:200px;overflow-y:auto;">
+                ${traceRows || '<div style="color:var(--text-mid);font-size:11px;">Press STEP INTO [F7] or RUN TO RET [F9] to execute instructions.</div>'}
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="fui-module">
+              <div class="fui-module-title"><span>CPU REGISTER MATRIX (${emu.arch})</span></div>
+              <div class="emu-reg-grid">${regCards}</div>
+            </div>
+            <div class="fui-module">
+              <div class="fui-module-title"><span>VIRTUAL STACK FRAME (64 KB)</span></div>
+              ${stackRows}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function emuStep(action) {
+      playChirp(action === 'step' ? 780 : 920, 0.05);
+      const x0 = document.getElementById('emuInitX0')?.value || '0x100008000';
+      const x1 = document.getElementById('emuInitX1')?.value || '0x2a';
+      const resp = await fetch('/api/emulate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          procedure: state.selectedProcedure,
+          action,
+          init_regs: { x0, x1, rdi: x0, rsi: x1 },
+        }),
+      });
+      state.emuState = await resp.json();
+      await renderEmuMode(document.getElementById('centerContent'), state.currentDossier);
+    }
+
+    /* ─── MODE 06: ULTRON NEURAL CORE & SECURITY AUDITOR ─── */
+    async function renderAuditMode(container, d) {
+      const [auditResp, neuralResp] = await Promise.all([
+        state.auditData ? Promise.resolve({ json: () => state.auditData }) : fetch('/api/audit'),
+        fetch('/api/neural/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ procedure: d.procedure.entry_point, apply_rename: false }),
+        }),
+      ]);
+      state.auditData = await auditResp.json();
+      state.neuralReport = await neuralResp.json();
+
+      const audit = state.auditData;
+      const nr = state.neuralReport;
+
+      const mitCards = Object.entries(audit.mitigations || {}).map(([k, ok]) => `
+        <div class="mitigation-card" style="border-color:${ok ? 'var(--emerald)' : 'var(--primary)'};">
+          <div style="color:var(--text-mid);font-size:9.5px;">${escapeHtml(k)}</div>
+          <div style="color:${ok ? 'var(--emerald)' : 'var(--primary)'};font-weight:700;font-size:12px;margin-top:4px;">
+            ${ok ? '✔ ACTIVE' : '✖ ABSENT'}
+          </div>
+        </div>
+      `).join('');
+
+      const findingsHtml = (audit.findings || []).map(f => `
+        <tr class="asm-row" onclick="loadProcedure('${f.procedure_address}'); setMode('asm');">
+          <td style="color:${f.severity === 'CRITICAL' ? 'var(--primary)' : (f.severity === 'HIGH' ? 'var(--tertiary)' : 'var(--secondary)')};font-weight:700;">[${f.severity}] ${f.cwe}</td>
+          <td style="color:#fff;font-weight:700;">${escapeHtml(f.sink)}()</td>
+          <td style="color:var(--secondary);">${escapeHtml(f.procedure)} (${f.call_address})</td>
+          <td style="color:var(--text-mid);">${escapeHtml(f.description)}</td>
+        </tr>
+      `).join('');
+
+      const entropyRows = (audit.section_entropy || []).map(s => {
+        const barColor = s.entropy_bits > 7.0 ? 'var(--primary)' : (s.entropy_bits > 6.0 ? 'var(--tertiary)' : 'var(--secondary)');
+        return `
+          <tr>
+            <td style="color:var(--secondary);font-weight:700;">${s.segment},${s.section}</td>
+            <td style="color:var(--text-mid);">${s.start} (${s.size} B)</td>
+            <td>
+              <div class="entropy-track">
+                <div style="width:${s.entropy_pct}%;height:100%;background:${barColor};box-shadow:0 0 8px ${barColor};"></div>
+              </div>
+            </td>
+            <td style="color:${barColor};font-weight:700;">${s.entropy_bits} bits/B (${s.status})</td>
+          </tr>
+        `;
+      }).join('');
+
+      const cryptoHtml = (audit.crypto_constants || []).map(c => `
+        <div style="padding:4px 8px;border-bottom:1px solid rgba(0,240,255,0.1);font-family:var(--font-code);font-size:11.5px;display:flex;justify-content:space-between;">
+          <span style="color:var(--tertiary);font-weight:700;">◈ ${escapeHtml(c.name)} (${escapeHtml(c.category)})</span>
+          <span class="clickable-sym" onclick="selectAddress('${c.address}'); setMode('hex');">${c.address} [${c.segment},${c.section}]</span>
+        </div>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="audit-layout">
+          <!-- Neural Function Synthesizer Card -->
+          <div class="fui-module" style="border-color:var(--primary);background:linear-gradient(90deg,rgba(255,26,53,0.14),rgba(4,9,18,0.92));">
+            <div class="fui-module-title">
+              <span>ULTRON NEURAL SUBROUTINE SYNTHESIS // ${escapeHtml(nr.procedure)} (${nr.address})</span>
+              <button class="fui-btn primary-glow" onclick="triggerQuickNeuralRename()">⚡ APPLY NEURAL AUTO-RENAME &amp; SIGNATURE</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-family:var(--font-code);font-size:12px;">
+              <div>
+                <div><span style="color:var(--text-mid);">CLASSIFICATION :</span> <strong style="color:var(--secondary);">${escapeHtml(nr.category)}</strong></div>
+                <div style="margin-top:4px;"><span style="color:var(--text-mid);">SUGGESTED NAME :</span> <strong style="color:var(--emerald);">${escapeHtml(nr.suggested_name)}</strong></div>
+                <div style="margin-top:4px;"><span style="color:var(--text-mid);">INFERRED ABI :</span> <code style="color:var(--tertiary);">${escapeHtml(nr.suggested_signature)}</code></div>
+              </div>
+              <div>
+                <div style="color:var(--text-mid);font-size:11px;margin-bottom:4px;">BEHAVIORAL TELEMETRY :</div>
+                ${(nr.behaviors || []).map(b => `<div style="color:var(--text-hi);font-size:11.5px;">• ${escapeHtml(b)}</div>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Binary Hardening Mitigations -->
+          <div class="fui-module">
+            <div class="fui-module-title">
+              <span>BINARY HARDENING &amp; MITIGATION SHIELD</span>
+              <span class="hud-tag">SECURITY SCORE: ${audit.security_score}/100</span>
+            </div>
+            <div class="mitigation-grid">${mitCards}</div>
+          </div>
+
+          <!-- Vulnerability & Dangerous Sinks Table -->
+          <div class="fui-module">
+            <div class="fui-module-title"><span>VULNERABILITY &amp; DANGEROUS API SINK RADAR (${(audit.findings || []).length} DETECTED)</span></div>
+            <table class="asm-table">
+              <tbody>
+                ${findingsHtml || '<tr><td colspan="4" style="color:var(--emerald);padding:8px;">✔ Zero high-risk memory corruption or command injection sinks detected.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Cryptographic S-Boxes & Section Shannon Entropy -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="fui-module">
+              <div class="fui-module-title"><span>SHANNON ENTROPY THERMAL MAP (PACKER / CRYPTO DETECTOR)</span></div>
+              <table class="asm-table"><tbody>${entropyRows}</tbody></table>
+            </div>
+            <div class="fui-module">
+              <div class="fui-module-title"><span>CRYPTOGRAPHIC S-BOXES &amp; SENSITIVE CONSTANTS</span></div>
+              ${cryptoHtml || '<div style="color:var(--text-mid);font-size:11.5px;padding:6px;">No raw S-Box tables (AES/SHA/ChaCha20) found in static segments.</div>'}
+              <div style="margin-top:10px;font-family:var(--font-display);font-size:9.5px;color:var(--secondary);letter-spacing:1px;">SENSITIVE STRINGS / ENDPOINTS :</div>
+              ${(audit.interesting_strings || []).slice(0, 8).map(s => `
+                <div style="font-family:var(--font-code);font-size:11px;padding:2px 0;color:var(--emerald);">
+                  [${escapeHtml(s.category)}] ${s.address}: "${escapeHtml(s.value)}"
+                </div>
+              `).join('') || '<div style="color:var(--text-lo);font-size:11px;">None</div>'}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function triggerQuickNeuralRename() {
+      if (!state.selectedProcedure) return;
+      playChirp(940, 0.08);
+      const resp = await fetch('/api/neural/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ procedure: state.selectedProcedure, apply_rename: true }),
+      });
+      const res = await resp.json();
+      showToast(`NEURAL CORE RENAMED → ${res.suggested_name} [${res.category}]`);
+      await refreshAllData(true);
+    }
+
+    async function demangleAllAction() {
+      playChirp(860, 0.07);
+      const resp = await fetch('/api/demangle', { method: 'POST' });
+      const res = await resp.json();
+      showToast(`SYMBOL DEMANGLER: ${res.demangled_count} C++/SWIFT/RUST SYMBOLS DECODED`);
+      await refreshAllData(true);
+    }
+
+    async function exportPatchedBinaryAction() {
+      playChirp(980, 0.09);
+      const resp = await fetch('/api/export-binary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resign_macho: true }),
+      });
+      const res = await resp.json();
+      if (res.success) {
+        showToast(`PATCHED EXECUTABLE EXPORTED & SIGNED: ${res.output_path.split('/').pop()}`);
+        alert(`Binaire patché exporté avec succès !\n\nChemin : ${res.output_path}\nTaille : ${res.size_bytes} octets\nSignature macOS : ${res.codesign}`);
+      } else {
+        alert('Erreur export: ' + (res.error || 'Unknown error'));
+      }
+    }
+
+    function openStructModal() {
+      document.getElementById('structModal').classList.add('open');
+    }
+
+    async function saveStructModal() {
+      const name = document.getElementById('structNameInput').value.trim() || 'UltronStruct';
+      const size = parseInt(document.getElementById('structSizeInput').value || '64', 10);
+      const rawLines = document.getElementById('structFieldsInput').value.split('\n');
+      const fields = [];
+      rawLines.forEach(line => {
+        const parts = line.split(':').map(s => s.trim());
+        if (parts.length >= 3) {
+          fields.push({
+            offset: parseInt(parts[0], 0) || 0,
+            field_type: parts[1],
+            name: parts[2],
+            size: 8,
+          });
+        }
+      });
+      const resp = await fetch('/api/types', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, size, fields }),
+      });
+      const res = await resp.json();
+      if (res.success) {
+        closeModal('structModal');
+        showToast(`STRUCT [${name}] REGISTERED (${fields.length} FIELDS)`);
+        await refreshAllData(true);
+      }
+    }
+
+    async function selectAddress(addr) {
+      state.selectedAddress = addr;
+      document.getElementById('cursorStatusText').textContent = addr;
+      document.getElementById('asmPatchAddr').value = addr;
+
+      document.querySelectorAll('.asm-row').forEach(r => {
+        r.classList.toggle('selected', r.getAttribute('data-addr') === addr);
+      });
+
+      const resp = await fetch(`/api/address/${encodeURIComponent(addr)}`);
+      const info = await resp.json();
+      if (info.error) return;
+
+      document.getElementById('icByteTypeBadge').textContent = (info.byte_type || 'code').toUpperCase();
+      document.getElementById('icAddrHex').textContent = info.address;
+      document.getElementById('icAddrDec').textContent = info.decimal;
+      document.getElementById('icFileOff').textContent = info.file_offset || '-';
+      document.getElementById('icSegSec').textContent = `${info.segment || '?'},${info.section || '?'}`;
+      document.getElementById('icLabelName').textContent = info.name || '(UNNAMED)';
+
+      if (info.procedure) {
+        document.getElementById('icProcEntry').textContent = info.procedure.entry_point;
+        document.getElementById('icProcSize').textContent = `${info.procedure.size} B`;
+        document.getElementById('icProcBBs').textContent = info.procedure.basic_block_count;
+      }
+
+      const callersEl = document.getElementById('icCallersList');
+      const calleesEl = document.getElementById('icCalleesList');
+      const callers = state.currentDossier?.callers || [];
+      const callees = state.currentDossier?.callees || [];
+      callersEl.innerHTML = callers.length
+        ? callers.map(c => `<span class="xref-pill" onclick="loadProcedure('${c.to}')">${escapeHtml(c.target_name || c.from)}</span>`).join('')
+        : '<span style="color:var(--text-lo);font-size:11px;">NONE</span>';
+      calleesEl.innerHTML = callees.length
+        ? callees.map(c => `<span class="xref-pill" onclick="loadProcedure('${c.to}')">${escapeHtml(c.target_name || c.to)}</span>`).join('')
+        : '<span style="color:var(--text-lo);font-size:11px;">NONE</span>';
+
+      const xTo = document.getElementById('icXrefsTo');
+      const xFrom = document.getElementById('icXrefsFrom');
+      xTo.innerHTML = (info.xrefs_to && info.xrefs_to.length)
+        ? info.xrefs_to.map(x => `<span class="xref-pill" onclick="loadProcedure('${x.address}')">${escapeHtml(x.context)}</span>`).join('')
+        : '<span style="color:var(--text-lo);font-size:11px;">NONE</span>';
+      xFrom.innerHTML = (info.xrefs_from && info.xrefs_from.length)
+        ? info.xrefs_from.map(x => `<span class="xref-pill" onclick="loadProcedure('${x.address}')">${escapeHtml(x.context)}</span>`).join('')
+        : '<span style="color:var(--text-lo);font-size:11px;">NONE</span>';
+
+      const di = info.data_inspector || {};
+      document.getElementById('diInt8').textContent = `${di.uint8 ?? '-'} / ${di.int8 ?? '-'}`;
+      document.getElementById('diU16').textContent = di.uint16_le || '-';
+      document.getElementById('diU32').textContent = di.uint32_le || '-';
+      document.getElementById('diU64').textContent = di.uint64_le || '-';
+      document.getElementById('diAscii').textContent = di.ascii || '-';
+
+      const navEl = document.getElementById('icNavHistory');
+      const navStack = state.overview?.navigation_stack || [];
+      navEl.innerHTML = navStack.slice(-8).reverse().map(a =>
+        `<span class="xref-pill" onclick="loadProcedure('${a}')">${a}</span>`
+      ).join('');
+    }
+
+    async function promptRename() {
+      const addr = state.selectedAddress || state.selectedProcedure;
+      if (!addr) return;
+      const newName = prompt(`RENAME TARGET SYMBOL AT ${addr} :`, document.getElementById('icLabelName').textContent);
+      if (newName === null) return;
+      await fetch('/api/rename', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr, name: newName }),
+      });
+      showToast(`SYMBOL REDESIGNATED: ${addr} → ${newName}`);
+      await refreshAllData(true);
+    }
+
+    async function promptComment() {
+      const addr = state.selectedAddress || state.selectedProcedure;
+      if (!addr) return;
+      const cmt = prompt(`ADD TACTICAL NOTE AT ${addr} :`, "");
+      if (cmt === null) return;
+      await fetch('/api/comment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr, comment: cmt, inline: true }),
+      });
+      showToast(`TACTICAL NOTE LOGGED AT ${addr}`);
+      await reloadCurrentProcedure();
+    }
+
+    function openAssemblerModal() {
+      document.getElementById('asmPatchAddr').value = state.selectedAddress || state.selectedProcedure || '0x100000000';
+      document.getElementById('assemblerModal').classList.add('open');
+    }
+
+    async function runAssemblerModal() {
+      const instruction = document.getElementById('asmInputInstr').value;
+      const arch = document.getElementById('asmInputArch').value;
+      const doPatch = document.getElementById('asmPatchCheck').checked;
+      const patchAddr = doPatch ? document.getElementById('asmPatchAddr').value : null;
+
+      const resp = await fetch('/api/assemble', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ instruction, arch, intel_syntax: true, patch_address: patchAddr }),
+      });
+      const res = await resp.json();
+      document.getElementById('asmOutputPre').textContent = JSON.stringify(res, null, 2);
+      if (doPatch && res.success) {
+        showToast(`INSTRUCTION FORGED AT ${patchAddr} [${res.bytes}]`);
+        await refreshAllData(true);
+      }
+    }
+
+    async function invertJumpAction() {
+      const addr = state.selectedAddress;
+      if (!addr) return;
+      const resp = await fetch('/api/patch/invert-jmp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr }),
+      });
+      const res = await resp.json();
+      if (!res.success) {
+        alert(res.error || 'Select a conditional branch instruction (b.eq, cbz, je, jne…)');
+        return;
+      }
+      showToast(`BRANCH INVERTED AT ${addr}: ${res.old_instruction} → ${res.new_mnemonic}`);
+      await refreshAllData(true);
+    }
+
+    async function nopInstructionAction() {
+      const addr = state.selectedAddress;
+      if (!addr) return;
+      const resp = await fetch('/api/patch/nop', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr }),
+      });
+      const res = await resp.json();
+      if (!res.success) {
+        alert(res.error || 'Cannot NOP this address');
+        return;
+      }
+      showToast(`INSTRUCTION NEUTRALIZED (NOP) AT ${addr}`);
+      await refreshAllData(true);
+    }
+
+    async function undoAction() {
+      const resp = await fetch('/api/undo', { method: 'POST' });
+      const res = await resp.json();
+      if (res.success) {
+        showToast(`CHRONO-REVERT: ${res.description}`);
+        await refreshAllData(true);
+      } else {
+        showToast('NOTHING TO UNDO');
+      }
+    }
+
+    async function redoAction() {
+      const resp = await fetch('/api/redo', { method: 'POST' });
+      const res = await resp.json();
+      if (res.success) {
+        showToast(`CHRONO-RESTORE: ${res.description}`);
+        await refreshAllData(true);
+      } else {
+        showToast('NOTHING TO REDO');
+      }
+    }
+
+    async function changeSyntax(syntax) {
+      await fetch('/api/syntax', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syntax }),
+      });
+      await refreshAllData(true);
+    }
+
+    function openPythonModal() {
+      document.getElementById('pythonModal').classList.add('open');
+    }
+
+    async function runPythonScript() {
+      const code = document.getElementById('pythonScriptCode').value;
+      const resp = await fetch('/api/script', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+      const res = await resp.json();
+      document.getElementById('pythonOutputPre').textContent =
+        (res.stdout || '') + (res.stderr ? '\n[STDERR]\n' + res.stderr : '');
+      await refreshAllData(true);
+    }
+
+    function openCommandPalette() {
+      document.getElementById('paletteModal').classList.add('open');
+      const inp = document.getElementById('paletteInput');
+      inp.value = '';
+      renderPaletteItems();
+      setTimeout(() => inp.focus(), 50);
+    }
+
+    function renderPaletteItems() {
+      const q = (document.getElementById('paletteInput').value || '').toLowerCase();
+      const box = document.getElementById('paletteResults');
+      const items = [];
+      state.procedures.forEach(p => {
+        if (!q || p.name.toLowerCase().includes(q) || p.entry_point.toLowerCase().includes(q)) {
+          items.push({ label: `SUBROUTINE // ${p.name}`, sub: p.entry_point, action: () => loadProcedure(p.entry_point) });
+        }
+      });
+      box.innerHTML = '';
+      items.slice(0, 40).forEach(it => {
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.innerHTML = `<span class="list-item-name">${escapeHtml(it.label)}</span><span class="list-item-addr">${it.sub}</span>`;
+        div.onclick = () => { closeModal('paletteModal'); it.action(); };
+        box.appendChild(div);
+      });
+    }
+
+    function executeFirstPaletteItem() {
+      const q = (document.getElementById('paletteInput').value || '').trim();
+      closeModal('paletteModal');
+      if (q) loadProcedure(q);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
