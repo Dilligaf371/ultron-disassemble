@@ -102,6 +102,9 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/v4/cpp-rtti", post(api_v4_cpp_rtti))
         .route("/api/v4/type-propagation", post(api_v4_type_propagation))
         .route("/api/v4/zero-goto", post(api_v4_zero_goto))
+        .route("/api/v4/sigint-attribution", post(api_v4_sigint_attribution))
+        .route("/api/v4/rop-gadgets", post(api_v4_rop_gadgets))
+        .route("/api/v4/forensic-dossier", post(api_v4_forensic_dossier))
         .route("/api/mcp", post(api_mcp_rpc))
         .route("/api/ultron-voice", get(api_ultron_voice))
         .route("/api/voice/ultron-active.mp3", get(api_voice_active))
@@ -1598,12 +1601,15 @@ async fn api_auto_pipeline(
         }
     }
 
-    // Stage 6 (Legendary, Final Boss, God-Tier & Compiler Engineering Engines)
+    // Stage 6 (Legendary, Final Boss, God-Tier, Compiler & Sovereign SIGINT Engines)
     let neural_vault = UltronLegendEngine::sync_neural_symbol_vault(&mut doc);
     let auto_structs = UltronLegendEngine::recover_auto_structs(&mut doc, &abs_out_dir);
     let cpp_rtti = UltronLegendEngine::reconstruct_cpp_rtti_and_vtables(&mut doc, &abs_out_dir);
     let type_propagation = UltronLegendEngine::propagate_os_type_signatures(&doc, &abs_out_dir);
     let zero_goto = UltronLegendEngine::decompile_zero_goto_structured(&doc, Some(entry_addr), &abs_out_dir);
+    let sigint_attribution = UltronLegendEngine::generate_sigint_threat_attribution(&doc, &abs_out_dir);
+    let rop_gadgets = UltronLegendEngine::synthesize_rop_jop_gadgets(&doc, &abs_out_dir);
+    let forensic_dossier = UltronLegendEngine::extract_c2_crypto_and_chain_of_custody(&doc, &abs_out_dir);
     let taint_audit = UltronLegendEngine::run_interprocedural_taint_audit(&doc);
     let reconstruction = UltronLegendEngine::reconstruct_compilable_project(&doc, &abs_out_dir);
     let deobfuscation = UltronLegendEngine::deobfuscate_and_verify(&doc);
@@ -1659,9 +1665,17 @@ async fn api_auto_pipeline(
         .get("typed_procedures_count")
         .and_then(|v| v.as_u64())
         .unwrap_or(0);
+    let mitre_count = sigint_attribution
+        .get("mitre_techniques_count")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
+    let rop_count = rop_gadgets
+        .get("gadgets_count")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
 
     report_md.push_str(&format!(
-        "\n## 6. Autonomous Compilable Reconstruction & God-Tier Telemetry\n\n\
+        "\n## 6. Autonomous Compilable Reconstruction & Sovereign SIGINT Telemetry\n\n\
          - **Project Directory**: `{}`\n\
          - **Clang Compilation (`clang -O2 -std=c17`)**: **{}** ({} bytes)\n\
          - **Live Binary Execution Verification**: `{}`\n\
@@ -1671,6 +1685,8 @@ async fn api_auto_pipeline(
          - **C++ RTTI & VTable Hierarchy (`cpp_classes.hpp`)**: `{} polymorphic classes reconstructed`\n\
          - **OS Type Library Propagation (`typed_signatures.h`)**: `{} procedures typed via POSIX/Darwin .TIL`\n\
          - **Zero-Goto Structural Decompiler (`structured_zero_goto.c`)**: `0 remaining gotos (Phoenix Post-Dominator AST)`\n\
+         - **MITRE ATT&CK & YARA-X Threat Rule (`threat_hunting.yar`)**: `{} ATT&CK TTPs mapped`\n\
+         - **ROP / JOP Exploit Primitives (`rop_primitives.py`)**: `{} gadgets synthesized`\n\
          - **Protocol & File Grammar (`protocol_grammar.hexpat` + `wireshark_dissector.lua`)**: `Magic {}`\n\
          - **Inter-Procedural Taint Chains (`Source -> Sink`)**: `{} data-flow paths audited`\n\
          - **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `{} structural fingerprints indexed`\n",
@@ -1687,6 +1703,8 @@ async fn api_auto_pipeline(
         auto_structs_count,
         cpp_classes_count,
         typed_procs_count,
+        mitre_count,
+        rop_count,
         inferred_magic,
         taint_chains_count,
         vault_total
@@ -1720,6 +1738,9 @@ async fn api_auto_pipeline(
         "cpp_rtti": cpp_rtti,
         "type_propagation": type_propagation,
         "zero_goto": zero_goto,
+        "sigint_attribution": sigint_attribution,
+        "rop_gadgets": rop_gadgets,
+        "forensic_dossier": forensic_dossier,
         "taint_audit": taint_audit,
         "neural_vault": neural_vault,
         "fuzzer_report": fuzzer_report,
@@ -1738,6 +1759,9 @@ async fn api_auto_pipeline(
     let cpp_hpp_path = abs_out_dir.join("cpp_classes.hpp");
     let til_h_path = abs_out_dir.join("typed_signatures.h");
     let zero_goto_path = abs_out_dir.join("structured_zero_goto.c");
+    let yara_path = abs_out_dir.join("threat_hunting.yar");
+    let rop_py_path = abs_out_dir.join("rop_primitives.py");
+    let forensic_json_path = abs_out_dir.join("forensic_sigint_dossier.json");
     let hexpat_path = abs_out_dir.join("protocol_grammar.hexpat");
     let lua_path = abs_out_dir.join("wireshark_dissector.lua");
 
@@ -1752,6 +1776,9 @@ async fn api_auto_pipeline(
         json!({ "name": "recovered_structs.h", "label": "Auto-Inferred Memory Structs Header", "path": structs_h_path.to_string_lossy(), "bytes": std::fs::metadata(&structs_h_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "cpp_classes.hpp", "label": "C++ RTTI & VTable Class Hierarchy", "path": cpp_hpp_path.to_string_lossy(), "bytes": std::fs::metadata(&cpp_hpp_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "typed_signatures.h", "label": "OS .TIL Propagated Function Signatures", "path": til_h_path.to_string_lossy(), "bytes": std::fs::metadata(&til_h_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "threat_hunting.yar", "label": "Sovereign SIGINT YARA-X Threat Rule", "path": yara_path.to_string_lossy(), "bytes": std::fs::metadata(&yara_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "rop_primitives.py", "label": "Automated ROP/JOP Exploit Primitives", "path": rop_py_path.to_string_lossy(), "bytes": std::fs::metadata(&rop_py_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "forensic_sigint_dossier.json", "label": "Judicial Chain-of-Custody & C2 IOCs", "path": forensic_json_path.to_string_lossy(), "bytes": std::fs::metadata(&forensic_json_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "protocol_grammar.hexpat", "label": "ImHex Binary Format Grammar", "path": hexpat_path.to_string_lossy(), "bytes": std::fs::metadata(&hexpat_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "wireshark_dissector.lua", "label": "Wireshark Network Protocol Dissector", "path": lua_path.to_string_lossy(), "bytes": std::fs::metadata(&lua_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "analysis_dossier.json", "label": "Structured Telemetry Dossier (JSON)", "path": json_path.to_string_lossy(), "bytes": std::fs::metadata(&json_path).map(|m| m.len()).unwrap_or(0) }),
@@ -1790,6 +1817,9 @@ async fn api_auto_pipeline(
         "cpp_rtti": cpp_rtti,
         "type_propagation": type_propagation,
         "zero_goto": zero_goto,
+        "sigint_attribution": sigint_attribution,
+        "rop_gadgets": rop_gadgets,
+        "forensic_dossier": forensic_dossier,
         "taint_audit": taint_audit,
         "neural_vault": neural_vault,
         "fuzzer_report": fuzzer_report,
@@ -1976,6 +2006,24 @@ async fn api_v4_zero_goto(
     let addr = req.proc_address.and_then(|s| parse_addr(&s));
     let abs_out_dir = current_output_dir_for_doc(&doc);
     Json(UltronLegendEngine::decompile_zero_goto_structured(&doc, addr, &abs_out_dir))
+}
+
+async fn api_v4_sigint_attribution(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::generate_sigint_threat_attribution(&doc, &abs_out_dir))
+}
+
+async fn api_v4_rop_gadgets(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::synthesize_rop_jop_gadgets(&doc, &abs_out_dir))
+}
+
+async fn api_v4_forensic_dossier(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::extract_c2_crypto_and_chain_of_custody(&doc, &abs_out_dir))
 }
 
 

@@ -4590,6 +4590,48 @@ if proc:
       }
     }
 
+    async function runSigintAttribution() {
+      showToast('🛰️ MAPPING MITRE ATT&CK TTPs, IMPHASH & SYNTHESIZING YARA-X RULE...');
+      const resp = await fetch('/api/v4/sigint-attribution', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      state.sigintReport = await resp.json();
+      showToast(`🛰️ SIGINT READY: ${state.sigintReport.mitre_techniques_count || 0} MITRE ATT&CK TTPs → threat_hunting.yar`);
+      if (state.mode === 'audit' && state.currentDossier) {
+        await renderAuditMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function runRopGadgetScanner() {
+      showToast('⛓️ SCANNING EXECUTABLE SEGMENTS FOR ARM64/X86_64 ROP & JOP GADGETS...');
+      const resp = await fetch('/api/v4/rop-gadgets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      state.ropReport = await resp.json();
+      showToast(`⛓️ ROP/JOP HARNESS READY: ${state.ropReport.gadgets_count || 0} GADGETS → rop_primitives.py`);
+      if (state.mode === 'audit' && state.currentDossier) {
+        await renderAuditMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    async function runForensicDossier() {
+      showToast('🛡️ COMPUTING SHA-256 CHAIN-OF-CUSTODY & EXTRACTING C2 / CRYPTO IOCS...');
+      const resp = await fetch('/api/v4/forensic-dossier', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      state.forensicReport = await resp.json();
+      showToast(`🛡️ FORENSIC DOSSIER SEALED (${state.forensicReport.extracted_iocs_count || 0} IOCS) → forensic_sigint_dossier.json`);
+      if (state.mode === 'audit' && state.currentDossier) {
+        await renderAuditMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
     async function runLiveLldbTelemetry() {
       showToast('🔴 LAUNCHING NATIVE LLDB KERNEL TELEMETRY BRIDGE...');
       const resp = await fetch('/api/v4/live-lldb', {
@@ -4951,6 +4993,52 @@ if proc:
                 ${(nr.behaviors || []).map(b => `<div style="color:var(--text-hi);font-size:11.5px;">• ${escapeHtml(b)}</div>`).join('')}
               </div>
             </div>
+          </div>
+
+          <!-- Sovereign SIGINT & Cyber-Defense Command Deck (MITRE ATT&CK + YARA-X, ROP/JOP Primitives, Forensic Chain-of-Custody) -->
+          <div class="fui-module" style="border-color:var(--emerald);">
+            <div class="fui-module-title">
+              <span>🛰️ SOVEREIGN SIGINT &amp; CYBER-DEFENSE DOCTRINE (MITRE ATT&amp;CK • YARA-X • ROP/JOP • CHAIN-OF-CUSTODY)</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runSigintAttribution()">🛰️ MITRE ATT&amp;CK + YARA-X</button>
+                <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runRopGadgetScanner()">⛓️ SCAN ROP/JOP GADGETS</button>
+                <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="runForensicDossier()">🛡️ CHAIN-OF-CUSTODY &amp; C2 IOCS</button>
+              </div>
+            </div>
+            ${state.sigintReport ? `
+              <div style="margin-bottom:8px;padding:8px 10px;background:rgba(0,242,255,0.06);border:1px solid rgba(0,242,255,0.28);font-family:var(--font-code);font-size:10.5px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <strong style="color:var(--neon-cyan);">🛰️ SIGINT ATTRIBUTION // IMPHASH: ${escapeHtml(state.sigintReport.structural_imphash)} • DNA: ${escapeHtml(state.sigintReport.opcode_dna_hash)}</strong>
+                  <span style="color:var(--emerald);">${state.sigintReport.mitre_techniques_count} MITRE ATT&amp;CK TTPs → threat_hunting.yar</span>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
+                  ${(state.sigintReport.mitre_techniques || []).map(t => `<span class="hud-tag" style="border-color:var(--neon-cyan);color:#e0f2fe;">[${escapeHtml(t.technique_id)}] ${escapeHtml(t.tactic)}: ${escapeHtml(t.description)}</span>`).join('')}
+                </div>
+                <pre style="margin:0;max-height:110px;overflow-y:auto;color:#d1fae5;">${escapeHtml(state.sigintReport.yara_source || '')}</pre>
+              </div>
+            ` : ''}
+            ${state.ropReport ? `
+              <div style="margin-bottom:8px;padding:8px 10px;background:rgba(255,158,0,0.06);border:1px solid rgba(255,158,0,0.28);font-family:var(--font-code);font-size:10.5px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <strong style="color:var(--tertiary);">⛓️ ROP / JOP EXPLOIT PRIMITIVE HARNESS (${state.ropReport.gadgets_count} GADGETS → rop_primitives.py)</strong>
+                </div>
+                <pre style="margin:0;max-height:110px;overflow-y:auto;color:#fef3c7;">${escapeHtml(state.ropReport.rop_script_source || '')}</pre>
+              </div>
+            ` : ''}
+            ${state.forensicReport ? `
+              <div style="padding:8px 10px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.28);font-family:var(--font-code);font-size:10.5px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <strong style="color:var(--emerald);">🛡️ JUDICIAL CHAIN-OF-CUSTODY // SHA-256: ${escapeHtml(state.forensicReport.chain_of_custody?.sha256_digest || '')}</strong>
+                  <span class="hud-tag">${state.forensicReport.extracted_iocs_count || 0} IOCs • ${(state.forensicReport.crypto_key_schedule_candidates || []).length} KEY CONSTANTS</span>
+                </div>
+                <div>${(state.forensicReport.extracted_iocs || []).slice(0, 6).map(i => `<div>• [${escapeHtml(i.ioc_type)}] <code>${escapeHtml(i.address)}</code> → <strong style="color:#fff;">${escapeHtml(i.value)}</strong></div>`).join('')}</div>
+              </div>
+            ` : ''}
+            ${(!state.sigintReport && !state.ropReport && !state.forensicReport) ? `
+              <div style="font-family:var(--font-code);font-size:11px;color:var(--text-mid);">
+                Click <strong>🛰️ MITRE ATT&amp;CK + YARA-X</strong>, <strong>⛓️ SCAN ROP/JOP GADGETS</strong>, or <strong>🛡️ CHAIN-OF-CUSTODY &amp; C2 IOCS</strong> to generate sovereign SIGINT &amp; forensic artifacts.
+              </div>
+            ` : ''}
           </div>
 
           <!-- Inter-Procedural Source -> Sink Taint Chains -->

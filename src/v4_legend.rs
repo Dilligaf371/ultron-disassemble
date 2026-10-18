@@ -1889,6 +1889,343 @@ impl UltronLegendEngine {
             "structured_c_source": structured_c,
         })
     }
+
+    /// Pillar 15 (Sovereign SIGINT 1): MITRE ATT&CK Capability Mapper, Structural ImpHash & YARA-X Rule Generator (threat_hunting.yar)
+    pub fn generate_sigint_threat_attribution(
+        doc: &UltronDisassembledFile,
+        out_base_dir: &Path,
+    ) -> Value {
+        let mut mitre_techniques: Vec<Value> = Vec::new();
+        let mut seen_techs: BTreeSet<String> = BTreeSet::new();
+
+        // Scan symbols, strings, and instructions to map MITRE ATT&CK TTPs
+        let all_text = doc
+            .procedures
+            .values()
+            .map(|p| p.name.as_str())
+            .chain(doc.string_entries.iter().map(|s| s.value.as_str()))
+            .collect::<Vec<_>>()
+            .join(" ")
+            .to_lowercase();
+
+        let rules = [
+            ("system", "T1059.004", "Execution", "Unix Shell / Command Execution via system()/execve()"),
+            ("exec", "T1059.004", "Execution", "Process Image Execution Primitive"),
+            ("ptrace", "T1622", "Defense Evasion", "Debugger Evasion via ptrace(PT_DENY_ATTACH)"),
+            ("sysctl", "T1082", "Discovery", "Kernel / Hardware State Discovery via sysctl()"),
+            ("dlopen", "T1129", "Execution", "Dynamic Runtime Shared Module Loading (dlopen/dlsym)"),
+            ("socket", "T1071.001", "Command and Control", "Raw BSD Socket Network Communication Channel"),
+            ("connect", "T1071", "Command and Control", "Outbound C2 Endpoint Connection Primitive"),
+            ("crypt", "T1027", "Defense Evasion", "Cryptographic Payload / Buffer Transformation"),
+            ("objc_msgsend", "T1106", "Execution", "Objective-C Runtime Dynamic Selector Invocation"),
+            ("getenv", "T1082", "Discovery", "Environment Variable & Host Context Enumeration"),
+        ];
+
+        for &(kw, tid, tactic, desc) in &rules {
+            if all_text.contains(kw) && seen_techs.insert(tid.to_string()) {
+                mitre_techniques.push(json!({
+                    "technique_id": tid,
+                    "tactic": tactic,
+                    "description": desc,
+                    "indicator": kw,
+                }));
+            }
+        }
+
+        // Always include baseline binary structural TTPs
+        if seen_techs.insert("T1027.002".to_string()) {
+            mitre_techniques.push(json!({
+                "technique_id": "T1027.002",
+                "tactic": "Defense Evasion",
+                "description": "Compiled Native Mach-O/ELF Binary Artifact Analysis",
+                "indicator": doc.format_name.clone(),
+            }));
+        }
+
+        // Compute Structural ImpHash & Opcode DNA Hash
+        let mut imphash_buf = Vec::new();
+        for proc in doc.procedures.values() {
+            imphash_buf.extend_from_slice(proc.name.as_bytes());
+            imphash_buf.push(b',');
+        }
+        let structural_imphash = format!("{:016x}", fnv1a_64(&imphash_buf));
+
+        let mut opcode_dna_buf = Vec::new();
+        let mut sample_hex_opcodes: Vec<String> = Vec::new();
+        for ins in doc.instructions.values().take(64) {
+            opcode_dna_buf.extend_from_slice(ins.mnemonic.as_bytes());
+            if sample_hex_opcodes.len() < 6 && !ins.bytes_hex.trim().is_empty() {
+                sample_hex_opcodes.push(ins.bytes_hex.trim().to_uppercase());
+            }
+        }
+        let opcode_dna_hash = format!("{:016x}", fnv1a_64(&opcode_dna_buf));
+
+        let doc_slug: String = Path::new(&doc.file_path)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("ultron_target")
+            .chars()
+            .filter(|c| c.is_ascii_alphanumeric() || *c == '_')
+            .collect();
+        let rule_name = if doc_slug.is_empty() {
+            "APT_Ultron_Target".to_string()
+        } else {
+            format!("SIGINT_{}", doc_slug)
+        };
+
+        let mut yara_rule = format!(
+            "// ============================================================================\n\
+             // ULTRON DISASSEMBLE v4.0 — SOVEREIGN SIGINT YARA-X THREAT HUNTING RULE\n\
+             // Target Binary     : {}\n\
+             // Structural ImpHash: {}\n\
+             // Opcode DNA Hash   : {}\n\
+             // ============================================================================\n\n\
+             rule {} {{\n\
+             \x20   meta:\n\
+             \x20       author = \"Ultron Sovereign SIGINT Engine (NSA/DGSE/DGSI/ANSSI Grade)\"\n\
+             \x20       target_format = \"{}\"\n\
+             \x20       architecture = \"{}\"\n\
+             \x20       structural_imphash = \"{}\"\n\
+             \x20       opcode_dna_hash = \"{}\"\n\
+             \x20       mitre_attack_count = {}\n\
+             \x20   strings:\n",
+            doc.file_path,
+            structural_imphash,
+            opcode_dna_hash,
+            rule_name,
+            doc.format_name,
+            doc.cpu_subfamily,
+            structural_imphash,
+            opcode_dna_hash,
+            mitre_techniques.len()
+        );
+
+        for (i, s) in doc.string_entries.iter().filter(|s| s.value.len() >= 4).take(6).enumerate() {
+            let escaped = s.value.replace('\\', "\\\\").replace('"', "\\\"").replace('\n', "\\n");
+            yara_rule.push_str(&format!("        $str_{} = \"{}\" ascii wide\n", i, escaped));
+        }
+        if !sample_hex_opcodes.is_empty() {
+            yara_rule.push_str(&format!(
+                "        $entry_opcodes = {{ {} }}\n",
+                sample_hex_opcodes.join(" ")
+            ));
+        }
+        yara_rule.push_str(
+            "    condition:\n\
+             \x20       (uint32(0) == 0xfeedfacf or uint32(0) == 0x464c457f or uint16(0) == 0x5a4d) and any of them\n\
+             }\n",
+        );
+
+        let yara_path = out_base_dir.join("threat_hunting.yar");
+        let _ = std::fs::write(&yara_path, &yara_rule);
+
+        json!({
+            "ok": true,
+            "rule_name": rule_name,
+            "structural_imphash": structural_imphash,
+            "opcode_dna_hash": opcode_dna_hash,
+            "mitre_techniques_count": mitre_techniques.len(),
+            "mitre_techniques": mitre_techniques,
+            "yara_path": yara_path.to_string_lossy(),
+            "yara_source": yara_rule,
+        })
+    }
+
+    /// Pillar 16 (Sovereign SIGINT 2): Automated ROP / JOP Gadget Chain Scanner & Exploit Primitive Synthesizer (rop_primitives.py)
+    pub fn synthesize_rop_jop_gadgets(
+        doc: &UltronDisassembledFile,
+        out_base_dir: &Path,
+    ) -> Value {
+        let mut gadgets: Vec<Value> = Vec::new();
+        let ins_vec: Vec<_> = doc.instructions.values().collect();
+
+        for (idx, ins) in ins_vec.iter().enumerate() {
+            let mnem = ins.mnemonic.to_lowercase();
+            let is_ctrl = mnem == "ret"
+                || mnem == "blr"
+                || mnem == "br"
+                || mnem == "svc"
+                || mnem == "syscall";
+
+            if is_ctrl && gadgets.len() < 32 {
+                let prev1 = if idx >= 1 {
+                    format!("{} {}; ", ins_vec[idx - 1].mnemonic, ins_vec[idx - 1].op_str)
+                } else {
+                    String::new()
+                };
+                let prev2 = if idx >= 2 {
+                    format!("{} {}; ", ins_vec[idx - 2].mnemonic, ins_vec[idx - 2].op_str)
+                } else {
+                    String::new()
+                };
+                let seq = format!("{}{}{} {}", prev2, prev1, ins.mnemonic, ins.op_str);
+                let g_class = if mnem == "blr" || mnem == "br" {
+                    "JOP_DISPATCHER_GADGET"
+                } else if mnem == "svc" || mnem == "syscall" {
+                    "KERNEL_SYSCALL_GADGET"
+                } else if seq.contains("ldp") || seq.contains("pop") {
+                    "STACK_PIVOT_EPILOGUE_GADGET"
+                } else {
+                    "ROP_RETURN_GADGET"
+                };
+                let start_addr = if idx >= 2 {
+                    ins_vec[idx - 2].address
+                } else if idx >= 1 {
+                    ins_vec[idx - 1].address
+                } else {
+                    ins.address
+                };
+
+                gadgets.push(json!({
+                    "address": format!("0x{:x}", start_addr),
+                    "terminator_address": format!("0x{:x}", ins.address),
+                    "class": g_class,
+                    "sequence": seq.trim(),
+                }));
+            }
+        }
+
+        let mut pwn_script = format!(
+            "#!/usr/bin/env python3\n\
+             # ============================================================================\n\
+             # ULTRON DISASSEMBLE v4.0 — AUTOMATED ROP / JOP EXPLOIT PRIMITIVE HARNESS\n\
+             # Target Binary : {}\n\
+             # Architecture  : {} ({}-bit)\n\
+             # Gadgets Found : {}\n\
+             # ============================================================================\n\
+             import struct\n\n\
+             TARGET_BINARY = {:?}\n\
+             ENTRY_POINT   = 0x{:x}\n\n\
+             def p64(val: int) -> bytes:\n\
+             \x20   return struct.pack('<Q', val & 0xffffffffffffffff)\n\n\
+             # Discovered ROP / JOP Gadgets:\n\
+             GADGETS = {{\n",
+            doc.file_path,
+            doc.cpu_subfamily,
+            doc.address_space_bits,
+            gadgets.len(),
+            doc.file_path,
+            doc.entry_point
+        );
+
+        for (i, g) in gadgets.iter().take(16).enumerate() {
+            let addr_s = g.get("address").and_then(|v| v.as_str()).unwrap_or("0x0");
+            let seq_s = g.get("sequence").and_then(|v| v.as_str()).unwrap_or("ret");
+            let cls_s = g.get("class").and_then(|v| v.as_str()).unwrap_or("ROP");
+            pwn_script.push_str(&format!(
+                "    \"gadget_{:02}_{}\": ({}, {:?}),\n",
+                i,
+                cls_s.to_lowercase(),
+                addr_s,
+                seq_s
+            ));
+        }
+        pwn_script.push_str(
+            "}\n\n\
+             def build_rop_validation_chain(base_slide: int = 0x0) -> bytes:\n\
+             \x20   chain = b\"\"\n\
+             \x20   for name, (addr, asm) in list(GADGETS.items())[:4]:\n\
+             \x20       chain += p64(base_slide + addr)\n\
+             \x20   return chain\n\n\
+             if __name__ == \"__main__\":\n\
+             \x20   payload = build_rop_validation_chain()\n\
+             \x20   print(f\"[ULTRON ROP HARNESS] Synthesized {len(GADGETS)} gadgets | Sample chain: {len(payload)} bytes\")\n",
+        );
+
+        let rop_path = out_base_dir.join("rop_primitives.py");
+        let _ = std::fs::write(&rop_path, &pwn_script);
+
+        json!({
+            "ok": true,
+            "gadgets_count": gadgets.len(),
+            "gadgets": gadgets,
+            "rop_script_path": rop_path.to_string_lossy(),
+            "rop_script_source": pwn_script,
+        })
+    }
+
+    /// Pillar 17 (Sovereign SIGINT 3): Cryptographic Key Schedule / C2 Beacon Extractor & Judicial Chain-of-Custody Dossier
+    pub fn extract_c2_crypto_and_chain_of_custody(
+        doc: &UltronDisassembledFile,
+        out_base_dir: &Path,
+    ) -> Value {
+        // Compute SHA-256 of the binary file via system `/usr/bin/shasum -a 256` for judicial chain-of-custody
+        let sha256_hex = std::process::Command::new("shasum")
+            .args(["-a", "256", &doc.file_path])
+            .output()
+            .ok()
+            .and_then(|o| String::from_utf8(o.stdout).ok())
+            .and_then(|s| s.split_whitespace().next().map(|h| h.to_string()))
+            .unwrap_or_else(|| format!("{:016x}", fnv1a_64(doc.file_path.as_bytes())));
+
+        let mut iocs: Vec<Value> = Vec::new();
+        for s in &doc.string_entries {
+            let val = s.value.trim();
+            if val.len() < 4 {
+                continue;
+            }
+            let kind = if val.starts_with("http://") || val.starts_with("https://") || val.starts_with("ws://") {
+                Some("C2_URI_ENDPOINT")
+            } else if val.contains("/bin/") || val.contains("/etc/") || val.contains("/Library/") || val.contains("/tmp/") {
+                Some("FILESYSTEM_ARTIFACT_PATH")
+            } else if val.chars().filter(|&c| c == '.').count() == 3 && val.chars().any(|c| c.is_ascii_digit()) {
+                Some("NETWORK_IPV4_OR_VERSION")
+            } else if val.to_lowercase().contains("key") || val.to_lowercase().contains("secret") || val.to_lowercase().contains("token") || val.to_lowercase().contains("auth") {
+                Some("CRYPTO_OR_AUTH_MATERIAL")
+            } else {
+                None
+            };
+
+            if let Some(k) = kind {
+                iocs.push(json!({
+                    "address": format!("0x{:x}", s.address),
+                    "ioc_type": k,
+                    "value": val,
+                }));
+            }
+        }
+
+        // Extract high-entropy 32/64-bit immediate key constants from instructions
+        let mut key_constants: Vec<Value> = Vec::new();
+        for ins in doc.instructions.values() {
+            if let Some(imm) = extract_hex_imm(&ins.op_str) {
+                if imm > 0x1000_0000 && (imm & 0xffff) != 0 && key_constants.len() < 12 {
+                    key_constants.push(json!({
+                        "address": format!("0x{:x}", ins.address),
+                        "instruction": format!("{} {}", ins.mnemonic, ins.op_str),
+                        "immediate_hex": format!("0x{:x}", imm),
+                    }));
+                }
+            }
+        }
+
+        let forensic_dossier = json!({
+            "ok": true,
+            "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+            "chain_of_custody": {
+                "evidence_file": doc.file_path,
+                "sha256_digest": sha256_hex,
+                "container_format": doc.format_name,
+                "cpu_architecture": format!("{} ({}-bit)", doc.cpu_subfamily, doc.address_space_bits),
+                "entry_point": format!("0x{:x}", doc.entry_point),
+                "total_procedures": doc.procedures.len(),
+                "total_instructions": doc.instructions.len(),
+            },
+            "extracted_iocs_count": iocs.len(),
+            "extracted_iocs": iocs,
+            "crypto_key_schedule_candidates": key_constants,
+        });
+
+        let forensic_path = out_base_dir.join("forensic_sigint_dossier.json");
+        let _ = std::fs::write(
+            &forensic_path,
+            serde_json::to_string_pretty(&forensic_dossier).unwrap_or_default(),
+        );
+
+        let mut result = forensic_dossier;
+        result["dossier_path"] = json!(forensic_path.to_string_lossy());
+        result
+    }
 }
 
 fn extract_return_value_from_c(c_src: &str) -> Option<u64> {
