@@ -1595,9 +1595,16 @@
           </button>
         </div>
 
-        <!-- Compact Target Selector Row -->
-        <div style="display:flex;gap:6px;width:100%;max-width:560px;margin-bottom:16px;">
-          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Target binary (.app, Mach-O, ELF, PE, .wasm, .asar, .evm, .dex)…" />
+        <!-- Target Binary File Selector Row -->
+        <input type="file" id="globalBinaryFileInput" style="display:none;" onchange="handleBrowserFileSelected(event)" />
+        <div style="display:flex;gap:6px;width:100%;max-width:640px;margin-bottom:14px;align-items:center;">
+          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin du fichier à désassembler (.app, Mach-O, ELF, PE, .wasm, .asar, .evm, .dex)…" />
+          <button class="fui-btn primary-glow" type="button" onclick="event.stopPropagation(); pickFileToDisassemble('launch')" title="Ouvrir le sélecteur de fichier macOS natif (Finder)">
+            📂 CHOISIR FICHIER…
+          </button>
+          <button class="fui-btn" type="button" onclick="event.stopPropagation(); triggerBrowserFileUpload('launch')" title="Importer ou glisser-déposer un fichier local via le navigateur">
+            📤 IMPORT
+          </button>
           <select id="launchArchSelect" class="fui-select" onchange="const b=document.getElementById('launchSelectedArchBadge'); if(b) b.textContent=this.value.toUpperCase()">
             <option value="arm64">ARM64</option>
             <option value="arm32">ARM32</option>
@@ -1612,15 +1619,15 @@
         </div>
 
         <!-- Compact Preset Pills -->
-        <div id="launchTargetDeck" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:6px;width:100%;max-width:560px;max-height:92px;overflow-y:auto;margin-bottom:20px;"></div>
+        <div id="launchTargetDeck" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:6px;width:100%;max-width:640px;max-height:92px;overflow-y:auto;margin-bottom:20px;"></div>
 
         <div id="launchBootLog" style="display:none;"></div>
 
         <button class="launch-ignite-btn" onclick="igniteUltronWorkspace()">
-          PROCEED TO WORKSPACE
+          ⚡ DISASSEMBLE // PROCEED TO WORKSPACE
         </button>
         <div style="margin-top:10px;font-family:var(--font-fui);font-size:9.5px;color:var(--text-lo);letter-spacing:1.4px;">
-          [P] 3D PARTICLE CLOUD ON/OFF • [ENTER] PROCEED
+          [O] CHOISIR UN FICHIER • [GLISSER-DÉPOSER] BINAIRE • [P] 3D CLOUD ON/OFF • [ENTER] DISASSEMBLE
         </div>
       </div>
     </div>
@@ -1654,6 +1661,9 @@
         </div>
       </div>
 
+      <button class="fui-btn primary-glow" onclick="pickFileToDisassemble('workspace')" title="Choisir un fichier binaire à désassembler [Raccourci: O]">
+        📂 DISASSEMBLE…
+      </button>
       <select id="presetSelect" class="fui-select" title="Cibles binaires pré-configurées"></select>
       <select id="archSelect" class="fui-select" title="Architecture CPU">
         <option value="arm64">ARM64</option>
@@ -3175,12 +3185,25 @@ if proc:
         if (e.key === 't' || e.key === 'T') { e.preventDefault(); openStructModal(); }
         if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
         if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleBreakpoint(state.selectedAddr || state.selectedAddress); }
+        if (e.key === 'o' || e.key === 'O') { e.preventDefault(); pickFileToDisassemble('workspace'); }
         if (e.key === 'v' || e.key === 'V') { e.preventDefault(); toggleSplitViewMode(); }
         if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
         if (e.key === 'p' || e.key === 'P') { e.preventDefault(); toggle3DCloud(); }
         if (e.key === 'd' || e.key === 'D') { e.preventDefault(); setMode('pseudo'); }
         if (e.key === 'F7') { e.preventDefault(); if (state.mode !== 'emu') setMode('emu'); else emuStep('step'); }
         if (e.key === 'F9') { e.preventDefault(); if (state.mode !== 'emu') setMode('emu'); else emuStep('run'); }
+      });
+
+      // Global Drag-and-Drop Binary File Disassembly
+      window.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+      window.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer?.files?.[0];
+        if (file) {
+          await uploadAndDisassembleFile(file, 'drop');
+        }
       });
     }
 
@@ -3201,15 +3224,30 @@ if proc:
       state.presets = state.overview.presets || [];
 
       const presetSel = document.getElementById('presetSelect');
-      if (presetSel.options.length === 0 && state.overview.presets) {
+      if (presetSel && state.overview.presets) {
+        presetSel.innerHTML = '';
+        let matchedPreset = false;
         state.overview.presets.forEach((p) => {
           const opt = document.createElement('option');
           opt.value = p.path;
           opt.textContent = p.label;
-          if (state.overview.file_path === p.path) opt.selected = true;
+          if (state.overview.file_path === p.path) {
+            opt.selected = true;
+            matchedPreset = true;
+          }
           presetSel.appendChild(opt);
         });
-        presetSel.onchange = () => openBinary(presetSel.value, document.getElementById('archSelect').value);
+        if (!matchedPreset && state.overview.file_path) {
+          const customOpt = document.createElement('option');
+          customOpt.value = state.overview.file_path;
+          customOpt.textContent = `📂 ${state.overview.document || state.overview.file_path.split('/').pop()}`;
+          customOpt.selected = true;
+          presetSel.insertBefore(customOpt, presetSel.firstChild);
+        }
+        presetSel.onchange = () => {
+          playUltronDisassembleClip();
+          openBinary(presetSel.value, document.getElementById('archSelect').value);
+        };
       }
       document.getElementById('archSelect').onchange = () => {
         if (state.overview?.file_path) openBinary(state.overview.file_path, document.getElementById('archSelect').value);
@@ -3243,7 +3281,7 @@ if proc:
 
     async function openBinary(path, arch = 'arm64') {
       playChirp(620, 0.05);
-      showToast(`LOADING TARGET: ${path.split('/').pop()} [${arch.toUpperCase()}]…`);
+      showToast(`DISASSEMBLING TARGET: ${path.split('/').pop()} [${arch.toUpperCase()}]…`);
       const resp = await fetch('/api/open', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -3253,6 +3291,12 @@ if proc:
       if (data.error) {
         alert('Erreur: ' + data.error);
         return;
+      }
+      if (data.arch) {
+        const aSel = document.getElementById('archSelect');
+        if (aSel) aSel.value = data.arch;
+        const lSel = document.getElementById('launchArchSelect');
+        if (lSel) lSel.value = data.arch;
       }
       state.selectedProcedure = null;
       state.navHistory = [];
@@ -3264,12 +3308,103 @@ if proc:
       state.symbolicSolveResult = null;
       state.globalCallGraph = null;
       await refreshAllData(false);
-      showToast(`TARGET LOADED: ${data.procedure_count} PROCS // ${data.instruction_count} INSTRS`);
+      showToast(`ULTRON DISASSEMBLE // ${data.procedure_count} PROCS • ${data.instruction_count} INSTRS`);
+    }
+
+    let pendingUploadOrigin = 'launch';
+
+    function triggerBrowserFileUpload(origin = 'launch') {
+      pendingUploadOrigin = origin;
+      const inp = document.getElementById('globalBinaryFileInput');
+      if (inp) {
+        inp.value = '';
+        inp.click();
+      }
+    }
+
+    async function handleBrowserFileSelected(event) {
+      const file = event.target?.files?.[0];
+      if (!file) return;
+      await uploadAndDisassembleFile(file, pendingUploadOrigin);
+    }
+
+    async function uploadAndDisassembleFile(file, origin = 'workspace') {
+      try {
+        playChirp(740, 0.05);
+        showToast(`IMPORTING & DISASSEMBLING: ${file.name}…`);
+        const buf = await file.arrayBuffer();
+        const bytes = Array.from(new Uint8Array(buf));
+        const arch = (origin === 'launch'
+          ? document.getElementById('launchArchSelect')?.value
+          : document.getElementById('archSelect')?.value) || 'arm64';
+
+        const resp = await fetch('/api/upload-binary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name, bytes, arch }),
+        });
+        const data = await resp.json();
+        if (data.error) {
+          alert('Erreur lors du désassemblage : ' + data.error);
+          return;
+        }
+        if (data.path) {
+          const inp = document.getElementById('launchCustomPathInput');
+          if (inp) inp.value = data.path;
+        }
+        if (data.arch) {
+          const aSel = document.getElementById('archSelect');
+          if (aSel) aSel.value = data.arch;
+          const lSel = document.getElementById('launchArchSelect');
+          if (lSel) lSel.value = data.arch;
+        }
+        const portal = document.getElementById('launchPortal');
+        if (portal && !portal.classList.contains('portal-hidden')) {
+          portal.classList.add('portal-hidden');
+        }
+        playUltronDisassembleClip();
+        state.selectedProcedure = null;
+        state.navHistory = [];
+        await refreshAllData(false);
+        showToast(`DISASSEMBLED: ${file.name} (${data.procedure_count} PROCS // ${data.instruction_count} INSTRS)`);
+      } catch (e) {
+        alert('Erreur import fichier : ' + e.message);
+      }
+    }
+
+    async function pickFileToDisassemble(origin = 'launch') {
+      playChirp(680, 0.04);
+      showToast('OPENING NATIVE FILE SELECTOR…');
+      try {
+        const resp = await fetch('/api/pick-file', { method: 'POST' });
+        const data = await resp.json();
+        if (data.cancelled) {
+          return;
+        }
+        if (data.ok && data.path) {
+          const inp = document.getElementById('launchCustomPathInput');
+          if (inp) inp.value = data.path;
+          if (data.arch) {
+            const lSel = document.getElementById('launchArchSelect');
+            if (lSel) lSel.value = data.arch;
+            const aSel = document.getElementById('archSelect');
+            if (aSel) aSel.value = data.arch;
+          }
+          if (origin === 'workspace') {
+            playUltronDisassembleClip();
+            await openBinary(data.path, data.arch || 'arm64');
+          } else {
+            showToast(`SELECTED: ${data.path.split('/').pop()} [${(data.arch || 'arm64').toUpperCase()}] — CLICK DISASSEMBLE`);
+          }
+          return;
+        }
+      } catch (e) {}
+      // Fallback to browser file upload dialog if native picker is unavailable
+      triggerBrowserFileUpload(origin);
     }
 
     function openCustomPathPrompt() {
-      const p = prompt("Chemin absolu de la cible binaire (Mach-O, .app, ELF, PE) :", state.overview?.file_path || "/bin/ls");
-      if (p) openBinary(p, document.getElementById('archSelect').value);
+      pickFileToDisassemble('workspace');
     }
 
     function renderOverviewBar() {

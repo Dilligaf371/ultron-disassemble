@@ -61,6 +61,8 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/neural/analyze", post(api_neural_analyze))
         .route("/api/emulate", post(api_emulate))
         .route("/api/open", post(api_open))
+        .route("/api/pick-file", post(api_pick_file))
+        .route("/api/upload-binary", post(api_upload_binary))
         .route("/api/rename", post(api_rename))
         .route("/api/comment", post(api_comment))
         .route("/api/types", post(api_define_struct))
@@ -626,6 +628,61 @@ async fn api_emulate(
     Json(emu.to_json())
 }
 
+fn resolve_and_detect_target(raw_path: &str, requested_arch: Option<&str>) -> (String, String) {
+    let mut resolved = raw_path.trim().trim_end_matches('/').to_string();
+    let p = Path::new(&resolved);
+
+    // If user selected a macOS .app bundle directory, automatically resolve Contents/MacOS/<executable>
+    if p.is_dir() && resolved.ends_with(".app") {
+        let macos_dir = p.join("Contents").join("MacOS");
+        if let Ok(entries) = std::fs::read_dir(&macos_dir) {
+            for entry in entries.flatten() {
+                let ep = entry.path();
+                if ep.is_file() {
+                    resolved = ep.to_string_lossy().to_string();
+                    break;
+                }
+            }
+        }
+    }
+
+    let lower = resolved.to_lowercase();
+    let auto_arch = if lower.ends_with(".wasm") {
+        Some("wasm32")
+    } else if lower.ends_with(".evm") || lower.ends_with(".bin-runtime") {
+        Some("evm")
+    } else if lower.ends_with(".dex") || lower.ends_with(".apk") {
+        Some("dex")
+    } else if lower.ends_with(".asar") {
+        Some("asar")
+    } else if let Ok(bytes) = std::fs::read(&resolved) {
+        if bytes.starts_with(b"\0asm") {
+            Some("wasm32")
+        } else if bytes.starts_with(b"dex\n") {
+            Some("dex")
+        } else if bytes.len() >= 18 && &bytes[0..4] == b"\x7fELF" {
+            let e_machine = u16::from_le_bytes([bytes[18], bytes[19]]);
+            match e_machine {
+                0x3E => Some("x86_64"),
+                0x03 => Some("x86"),
+                0x28 => Some("arm32"),
+                0xB7 => Some("arm64"),
+                _ => None,
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    };
+
+    let final_arch = auto_arch
+        .or(requested_arch)
+        .unwrap_or("arm64")
+        .to_string();
+    (resolved, final_arch)
+}
+
 #[derive(Deserialize)]
 struct OpenReq {
     path: String,
@@ -636,15 +693,91 @@ async fn api_open(
     State(state): State<Arc<AppState>>,
     Json(req): Json<OpenReq>,
 ) -> Json<Value> {
-    let arch = req.arch.as_deref().unwrap_or("arm64");
-    match UltronBinaryLoader::load(&req.path, arch) {
+    let (resolved_path, arch) = resolve_and_detect_target(&req.path, req.arch.as_deref());
+    match UltronBinaryLoader::load(&resolved_path, &arch) {
         Ok(new_doc) => {
             let p_count = new_doc.procedures.len();
             let i_count = new_doc.instructions.len();
+            let file_path = new_doc.file_path.clone();
             *state.doc.lock().unwrap() = new_doc;
             state.emulators.lock().unwrap().clear();
             Json(json!({
                 "ok": true,
+                "path": file_path,
+                "arch": arch,
+                "procedure_count": p_count,
+                "instruction_count": i_count,
+            }))
+        }
+        Err(e) => Json(json!({ "error": e.to_string() })),
+    }
+}
+
+async fn api_pick_file() -> Json<Value> {
+    // Open native macOS Finder dialog to pick any binary, .app bundle, or bytecode file
+    let script = r#"POSIX path of (choose file with prompt "ULTRON DISASSEMBLE // Sélectionnez un fichier binaire à désassembler :" without invisibles)"#;
+    match std::process::Command::new("osascript")
+        .arg("-e")
+        .arg(script)
+        .output()
+    {
+        Ok(out) if out.status.success() => {
+            let raw = String::from_utf8_lossy(&out.stdout).trim().to_string();
+            if raw.is_empty() {
+                return Json(json!({ "cancelled": true }));
+            }
+            let (resolved_path, detected_arch) = resolve_and_detect_target(&raw, None);
+            Json(json!({
+                "ok": true,
+                "path": resolved_path,
+                "arch": detected_arch,
+            }))
+        }
+        _ => Json(json!({ "cancelled": true })),
+    }
+}
+
+#[derive(Deserialize)]
+struct UploadBinaryReq {
+    filename: String,
+    bytes: Vec<u8>,
+    arch: Option<String>,
+}
+
+async fn api_upload_binary(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<UploadBinaryReq>,
+) -> Json<Value> {
+    let upload_dir = std::env::temp_dir().join("ultron_uploads");
+    let _ = std::fs::create_dir_all(&upload_dir);
+    let safe_name: String = req
+        .filename
+        .chars()
+        .map(|c| if c.is_ascii_alphanumeric() || c == '.' || c == '_' || c == '-' { c } else { '_' })
+        .collect();
+    let dest_path = upload_dir.join(if safe_name.is_empty() {
+        "uploaded_binary.bin".to_string()
+    } else {
+        safe_name
+    });
+
+    if let Err(e) = std::fs::write(&dest_path, &req.bytes) {
+        return Json(json!({ "error": format!("Failed to save uploaded binary: {}", e) }));
+    }
+
+    let dest_str = dest_path.to_string_lossy().to_string();
+    let (resolved_path, arch) = resolve_and_detect_target(&dest_str, req.arch.as_deref());
+    match UltronBinaryLoader::load(&resolved_path, &arch) {
+        Ok(new_doc) => {
+            let p_count = new_doc.procedures.len();
+            let i_count = new_doc.instructions.len();
+            let file_path = new_doc.file_path.clone();
+            *state.doc.lock().unwrap() = new_doc;
+            state.emulators.lock().unwrap().clear();
+            Json(json!({
+                "ok": true,
+                "path": file_path,
+                "arch": arch,
                 "procedure_count": p_count,
                 "instruction_count": i_count,
             }))
