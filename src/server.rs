@@ -30,6 +30,9 @@ use std::sync::{Arc, Mutex};
 use tower_http::cors::CorsLayer;
 
 const INDEX_HTML: &str = include_str!("../ultron_disassembler/ui/index.html");
+const VOICE_ACTIVE_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_active.mp3");
+const VOICE_REA_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/rea_protocol_ready.mp3");
+const VOICE_DISASSEMBLE_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_disassemble.mp3");
 
 pub struct AppState {
     pub doc: Mutex<UltronDisassembledFile>,
@@ -82,6 +85,9 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/v3/observe-calls", post(api_v3_observe_calls))
         .route("/api/mcp", post(api_mcp_rpc))
         .route("/api/ultron-voice", get(api_ultron_voice))
+        .route("/api/voice/ultron-active.mp3", get(api_voice_active))
+        .route("/api/voice/rea-ready.mp3", get(api_voice_rea_ready))
+        .route("/api/voice/ultron-disassemble.mp3", get(api_voice_disassemble))
         .layer(CorsLayer::permissive())
         .with_state(shared);
 
@@ -1106,33 +1112,33 @@ async fn api_mcp_rpc(
 }
 
 async fn api_ultron_voice() -> impl IntoResponse {
-    let wav_path = "/tmp/ultron_rea_voice_v4.wav";
-    if !Path::new(wav_path).exists() {
-        let status = std::process::Command::new("/usr/bin/say")
-            .args([
-                "-v",
-                "Daniel",
-                "-r",
-                "142",
-                "--data-format=LEI16@22050",
-                "-o",
-                wav_path,
-                "Ultron active. [[slnc 180]] R E A protocol ready to proceed. [[slnc 220]] Ultron, [[slnc 120]] disassemble.",
-            ])
-            .status();
-        if status.map(|s| !s.success()).unwrap_or(true) {
-            let _ = std::process::Command::new("/usr/bin/say")
-                .args([
-                    "-r",
-                    "142",
-                    "--data-format=LEI16@22050",
-                    "-o",
-                    wav_path,
-                    "Ultron active. R E A protocol ready to proceed. Ultron, disassemble.",
-                ])
-                .status();
-        }
-    }
-    let bytes = std::fs::read(wav_path).unwrap_or_default();
-    ([(axum::http::header::CONTENT_TYPE, "audio/wav")], bytes)
+    let mut combined = Vec::with_capacity(
+        VOICE_ACTIVE_MP3.len() + VOICE_REA_MP3.len() + VOICE_DISASSEMBLE_MP3.len(),
+    );
+    combined.extend_from_slice(VOICE_ACTIVE_MP3);
+    combined.extend_from_slice(VOICE_REA_MP3);
+    combined.extend_from_slice(VOICE_DISASSEMBLE_MP3);
+    ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], combined)
 }
+
+async fn api_voice_active() -> impl IntoResponse {
+    (
+        [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
+        VOICE_ACTIVE_MP3,
+    )
+}
+
+async fn api_voice_rea_ready() -> impl IntoResponse {
+    (
+        [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
+        VOICE_REA_MP3,
+    )
+}
+
+async fn api_voice_disassemble() -> impl IntoResponse {
+    (
+        [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
+        VOICE_DISASSEMBLE_MP3,
+    )
+}
+

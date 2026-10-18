@@ -1170,8 +1170,388 @@
       transition: all 0.14s;
     }
     .target-deck-card:hover, .target-deck-card.active {
+      border-color: #00f0ff;
+      background: rgba(0, 240, 255, 0.08);
+      box-shadow:
+        0 0 12px rgba(0, 240, 255, 0.35),
+        0 0 28px rgba(0, 240, 255, 0.14),
+        inset 0 0 12px rgba(0, 240, 255, 0.12);
+    }
+
+    /* ─── NEON MICRO-INTERACTION & ACTION GLOW ENGINE (DARK FUI / NEON SWEEP) ─── */
+    :root {
+      --neon-cyan: #00f0ff;
+      --neon-cyan-rgb: 0, 240, 255;
+      --neon-amber: #ff7b00;
+      --neon-amber-rgb: 255, 123, 0;
+      --neon-emerald: #00ffa3;
+      --neon-crimson: #ff2a5f;
+      --neon-white: #ffffff;
+    }
+
+    body.slate-mode {
+      --neon-cyan: #ff7b00;
+      --neon-cyan-rgb: 255, 123, 0;
+    }
+
+    @keyframes neonSweepLine {
+      0% { transform: translateX(-120%) skewX(-22deg); opacity: 0; }
+      35% { opacity: 0.95; }
+      100% { transform: translateX(220%) skewX(-22deg); opacity: 0; }
+    }
+
+    @keyframes neonBorderPulse {
+      0%, 100% {
+        box-shadow:
+          0 0 8px rgba(var(--neon-cyan-rgb), 0.45),
+          0 0 22px rgba(var(--neon-cyan-rgb), 0.18),
+          inset 0 0 10px rgba(var(--neon-cyan-rgb), 0.14);
+      }
+      50% {
+        box-shadow:
+          0 0 14px rgba(var(--neon-cyan-rgb), 0.78),
+          0 0 34px rgba(var(--neon-cyan-rgb), 0.32),
+          inset 0 0 16px rgba(var(--neon-cyan-rgb), 0.24);
+      }
+    }
+
+    @keyframes neonClickShockwave {
+      0% {
+        transform: translate(-50%, -50%) scale(0.15);
+        opacity: 0.95;
+        border-width: 2.5px;
+      }
+      70% {
+        opacity: 0.45;
+        border-width: 1px;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.8);
+        opacity: 0;
+        border-width: 0.5px;
+      }
+    }
+
+    /* Interactive cursor-tracking neon spotlight on buttons, tabs, rows, cards & panels */
+    .fui-btn,
+    .reticle-tab,
+    .nav-matrix-tab,
+    .list-item,
+    .target-deck-card,
+    .launch-ignite-btn,
+    .xref-pill,
+    .emu-reg-card,
+    .mitigation-card,
+    .fui-module,
+    .resuite-panel,
+    .omniv3-panel,
+    .reactor-pod {
+      position: relative;
+      overflow: hidden;
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    /* Cursor-following radial neon aura inside interactive items */
+    .fui-btn::before,
+    .reticle-tab::before,
+    .nav-matrix-tab::before,
+    .list-item::before,
+    .target-deck-card::before,
+    .launch-ignite-btn::before,
+    .fui-module::before,
+    .resuite-panel::before,
+    .omniv3-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      background: radial-gradient(
+        130px circle at var(--mx) var(--my),
+        rgba(var(--neon-cyan-rgb), 0.22),
+        rgba(255, 255, 255, 0.06) 45%,
+        transparent 75%
+      );
+      z-index: 0;
+    }
+
+    .fui-btn:hover::before,
+    .reticle-tab:hover::before,
+    .nav-matrix-tab:hover::before,
+    .list-item:hover::before,
+    .target-deck-card:hover::before,
+    .launch-ignite-btn:hover::before,
+    .fui-module:hover::before,
+    .resuite-panel:hover::before,
+    .omniv3-panel:hover::before {
+      opacity: 1;
+    }
+
+    /* Laser light-sweep streak across buttons, tabs, and cards on hover/action */
+    .fui-btn::after,
+    .reticle-tab::after,
+    .launch-ignite-btn::after,
+    .target-deck-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 48%;
+      pointer-events: none;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(var(--neon-cyan-rgb), 0.28) 45%,
+        rgba(255, 255, 255, 0.65) 50%,
+        rgba(var(--neon-cyan-rgb), 0.28) 55%,
+        transparent 100%
+      );
+      transform: translateX(-140%) skewX(-22deg);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .fui-btn:hover::after,
+    .reticle-tab:hover::after,
+    .launch-ignite-btn:hover::after,
+    .target-deck-card:hover::after {
+      animation: neonSweepLine 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Neon tube glow on button hover & active press */
+    .fui-btn:hover, .fui-select:hover {
+      border-color: var(--neon-cyan);
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.75);
+      box-shadow:
+        0 0 10px rgba(var(--neon-cyan-rgb), 0.42),
+        0 0 24px rgba(var(--neon-cyan-rgb), 0.16),
+        inset 0 0 10px rgba(var(--neon-cyan-rgb), 0.15);
+      transform: translateY(-1px);
+    }
+
+    .fui-btn:active,
+    .reticle-tab:active,
+    .launch-ignite-btn:active,
+    .xref-pill:active {
+      transform: translateY(0) scale(0.97);
+      border-color: #ffffff !important;
+      box-shadow:
+        0 0 18px #ffffff,
+        0 0 36px rgba(var(--neon-cyan-rgb), 0.85),
+        inset 0 0 16px rgba(var(--neon-cyan-rgb), 0.45) !important;
+    }
+
+    .fui-btn.primary-glow {
+      border-color: rgba(var(--neon-cyan-rgb), 0.55);
+      box-shadow:
+        0 0 10px rgba(var(--neon-cyan-rgb), 0.25),
+        inset 0 0 8px rgba(var(--neon-cyan-rgb), 0.12);
+    }
+    .fui-btn.primary-glow:hover {
+      background: rgba(var(--neon-cyan-rgb), 0.16);
+      color: #ffffff;
       border-color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
+      text-shadow: 0 0 10px #ffffff, 0 0 18px var(--neon-cyan);
+      box-shadow:
+        0 0 14px rgba(var(--neon-cyan-rgb), 0.75),
+        0 0 32px rgba(var(--neon-cyan-rgb), 0.35),
+        inset 0 0 14px rgba(var(--neon-cyan-rgb), 0.28);
+    }
+
+    /* Mode Switcher Tabs (01 ASM .. 08 OMNI-V3) Neon Active & Hover State */
+    .reticle-tab:hover {
+      color: #ffffff;
+      border-color: rgba(var(--neon-cyan-rgb), 0.45);
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.65);
+      box-shadow: 0 0 12px rgba(var(--neon-cyan-rgb), 0.22);
+    }
+    .reticle-tab.active {
+      background: rgba(var(--neon-cyan-rgb), 0.14);
+      border-color: var(--neon-cyan);
+      color: #ffffff;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px var(--neon-cyan);
+      animation: neonBorderPulse 2.6s infinite ease-in-out;
+    }
+    .reticle-tab.active .tab-idx {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 6px var(--neon-cyan);
+    }
+
+    /* Left Navigator Matrix Tabs (PROCS / SYMS / STRS / OBJC) Neon Underline Bar */
+    .nav-matrix-tab:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.65);
+    }
+    .nav-matrix-tab.active {
+      color: #ffffff;
+      border-bottom: 2px solid var(--neon-cyan);
+      background: linear-gradient(180deg, transparent 0%, rgba(var(--neon-cyan-rgb), 0.12) 100%);
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.75);
+      box-shadow: 0 4px 14px -4px rgba(var(--neon-cyan-rgb), 0.55);
+    }
+
+    /* Sidebar Symbol / Procedure Rows Neon Edge Bar & Glow */
+    .list-item {
+      border-left: 2px solid transparent;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .list-item:hover {
+      background: linear-gradient(90deg, rgba(var(--neon-cyan-rgb), 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border-left: 2px solid rgba(var(--neon-cyan-rgb), 0.75);
+      padding-left: 14px;
+      box-shadow: inset 4px 0 12px -4px rgba(var(--neon-cyan-rgb), 0.45);
+    }
+    .list-item:hover .list-item-name {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.55);
+    }
+    .list-item.selected {
+      background: linear-gradient(90deg, rgba(var(--neon-cyan-rgb), 0.2) 0%, rgba(var(--neon-cyan-rgb), 0.03) 90%);
+      border-left: 3px solid var(--neon-cyan);
+      box-shadow:
+        inset 6px 0 16px -4px rgba(var(--neon-cyan-rgb), 0.65),
+        0 0 14px rgba(var(--neon-cyan-rgb), 0.18);
+    }
+    .list-item.selected .list-item-name {
+      color: #ffffff;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.75);
+    }
+    .list-item.selected .list-item-addr {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 6px rgba(var(--neon-cyan-rgb), 0.55);
+    }
+
+    /* Disassembly Instruction Rows & Decompiler Sync Lines Neon Laser Bar */
+    .asm-row {
+      transition: background 0.12s ease, box-shadow 0.12s ease;
+    }
+    .asm-row:hover {
+      background: linear-gradient(90deg, rgba(var(--neon-cyan-rgb), 0.1) 0%, rgba(255, 255, 255, 0.02) 65%, transparent 100%);
+      box-shadow: inset 3px 0 0 var(--neon-cyan), inset 8px 0 14px -6px rgba(var(--neon-cyan-rgb), 0.5);
+    }
+    .asm-row:hover .col-mnem {
+      text-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.8);
+    }
+    .asm-row.selected {
+      background: linear-gradient(90deg, rgba(var(--neon-cyan-rgb), 0.2) 0%, rgba(var(--neon-cyan-rgb), 0.05) 75%, transparent 100%) !important;
+      outline: 1px solid rgba(var(--neon-cyan-rgb), 0.55);
+      box-shadow:
+        inset 3px 0 0 #ffffff,
+        0 0 16px rgba(var(--neon-cyan-rgb), 0.25),
+        inset 0 0 12px rgba(var(--neon-cyan-rgb), 0.14);
+    }
+    .asm-row.selected .col-addr {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 6px rgba(var(--neon-cyan-rgb), 0.65);
+    }
+    .decomp-line:hover {
+      background: linear-gradient(90deg, rgba(var(--neon-cyan-rgb), 0.1) 0%, transparent 90%);
+      border-left-color: rgba(var(--neon-cyan-rgb), 0.65);
+    }
+    .decomp-line.hl-sync, .asm-row.hl-sync {
+      background: linear-gradient(90deg, rgba(var(--neon-cyan-rgb), 0.22) 0%, rgba(var(--neon-cyan-rgb), 0.04) 85%, transparent 100%) !important;
+      border-left: 3px solid var(--neon-cyan) !important;
+      box-shadow: 0 0 14px rgba(var(--neon-cyan-rgb), 0.22);
+    }
+
+    /* Register Token & XREF Pill Neon Illumination */
+    .reg-tok:hover {
+      background: rgba(var(--neon-cyan-rgb), 0.2);
+      color: #ffffff;
+      box-shadow: 0 0 8px rgba(var(--neon-cyan-rgb), 0.5);
+      text-shadow: 0 0 6px var(--neon-cyan);
+    }
+    .reg-tok.hl-active {
+      background: var(--neon-cyan);
+      color: #000000;
+      box-shadow: 0 0 12px var(--neon-cyan), 0 0 24px rgba(var(--neon-cyan-rgb), 0.6);
+    }
+    .xref-pill:hover {
+      background: rgba(var(--neon-cyan-rgb), 0.18);
+      border-color: var(--neon-cyan);
+      color: #ffffff;
+      text-shadow: 0 0 8px var(--neon-cyan);
+      box-shadow:
+        0 0 12px rgba(var(--neon-cyan-rgb), 0.55),
+        inset 0 0 8px rgba(var(--neon-cyan-rgb), 0.25);
+      transform: translateY(-1px);
+    }
+
+    /* Launch Portal Ignite Button & Reactor Pod Neon Halo */
+    .launch-ignite-btn {
+      border-color: rgba(var(--neon-cyan-rgb), 0.6);
+      box-shadow:
+        0 0 16px rgba(var(--neon-cyan-rgb), 0.25),
+        inset 0 0 12px rgba(var(--neon-cyan-rgb), 0.12);
+    }
+    .launch-ignite-btn:hover {
+      background: rgba(var(--neon-cyan-rgb), 0.15);
+      color: #ffffff;
+      border-color: #ffffff;
+      text-shadow: 0 0 10px #ffffff, 0 0 20px var(--neon-cyan);
+      box-shadow:
+        0 0 20px rgba(var(--neon-cyan-rgb), 0.8),
+        0 0 45px rgba(var(--neon-cyan-rgb), 0.4),
+        inset 0 0 18px rgba(var(--neon-cyan-rgb), 0.35);
+      transform: translateY(-1px) scale(1.02);
+    }
+    .reactor-pod:hover {
+      border-color: var(--neon-cyan);
+      box-shadow:
+        0 0 14px rgba(var(--neon-cyan-rgb), 0.4),
+        inset 0 0 10px rgba(var(--neon-cyan-rgb), 0.15);
+    }
+
+    /* Panels & Modules Subtle Neon Edge Awakening on Hover */
+    .fui-module:hover,
+    .resuite-panel:hover,
+    .omniv3-panel:hover {
+      border-color: rgba(var(--neon-cyan-rgb), 0.38);
+      box-shadow:
+        0 0 18px rgba(var(--neon-cyan-rgb), 0.12),
+        inset 0 0 14px rgba(var(--neon-cyan-rgb), 0.05);
+    }
+
+    /* Search & Inputs Neon Focus Ring */
+    .sidebar-search input:focus,
+    .fui-input:focus,
+    .resuite-code-box:focus,
+    .modal-body textarea:focus {
+      border-color: var(--neon-cyan) !important;
+      box-shadow:
+        0 0 12px rgba(var(--neon-cyan-rgb), 0.45),
+        inset 0 0 8px rgba(var(--neon-cyan-rgb), 0.15) !important;
+    }
+
+    /* Transient Click Shockwave Element */
+    .neon-click-wave {
+      position: fixed;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-cyan);
+      box-shadow:
+        0 0 14px var(--neon-cyan),
+        inset 0 0 10px var(--neon-cyan);
+      pointer-events: none;
+      z-index: 9999;
+      animation: neonClickShockwave 0.52s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Action Flash Class triggered on any item activation */
+    .neon-action-flash {
+      border-color: #ffffff !important;
+      box-shadow:
+        0 0 18px #ffffff,
+        0 0 36px var(--neon-cyan),
+        inset 0 0 18px rgba(var(--neon-cyan-rgb), 0.45) !important;
+      transition: none !important;
     }
   </style>
 </head>
@@ -1849,92 +2229,115 @@ if proc:
       }
     }
 
+    const ULTRON_VOICE_CLIPS = [
+      {
+        url: '/api/voice/ultron-active.mp3',
+        caption: 'ULTRON ACTIVE',
+        pulse: 1.35,
+        label: 'ULTRON ACTIVE'
+      },
+      {
+        url: '/api/voice/rea-ready.mp3',
+        caption: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED.',
+        pulse: 1.55,
+        label: 'REA PROTOCOL READY TO PROCEED'
+      },
+      {
+        url: '/api/voice/ultron-disassemble.mp3',
+        caption: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE',
+        pulse: 1.85,
+        label: 'ULTRON, DISASSEMBLE'
+      }
+    ];
+
+    let activeVoiceAudio = null;
+    let voiceSequenceAbortId = 0;
+
+    function playSingleVoiceClip(url) {
+      return new Promise((resolve) => {
+        try {
+          if (activeVoiceAudio) {
+            try { activeVoiceAudio.pause(); } catch (e) {}
+          }
+          const audio = new Audio(url);
+          audio.preload = 'auto';
+          audio.volume = 1.0;
+          audio.playbackRate = 1.0;
+          activeVoiceAudio = audio;
+          let settled = false;
+          const finish = (ok) => {
+            if (settled) return;
+            settled = true;
+            resolve(ok);
+          };
+          audio.onended = () => finish(true);
+          audio.onerror = () => finish(false);
+          const p = audio.play();
+          if (p && typeof p.then === 'function') {
+            p.catch(() => finish(false));
+          }
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
+    async function playUltronDisassembleClip() {
+      triggerNeuralActivity(1.6, 'ULTRON, DISASSEMBLE');
+      await playSingleVoiceClip('/api/voice/ultron-disassemble.mp3');
+    }
+
     async function playUltronGenesisVoice(force = false) {
       if (neuralCloudState.voicePlayed && !force) return;
       neuralCloudState.voicePlayed = true;
-      typeVoiceSubtitle('ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE');
-      triggerNeuralActivity(1.45, 'ULTRON ACTIVE // REA PROTOCOL');
+      const mySeqId = ++voiceSequenceAbortId;
 
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') {
           try { await audioCtx.resume(); } catch (e) {}
         }
+        if (audioCtx && audioCtx.state === 'running') {
+          const now = audioCtx.currentTime;
+          const drone = audioCtx.createOscillator();
+          const droneGain = audioCtx.createGain();
+          drone.type = 'sine';
+          drone.frequency.setValueAtTime(52, now);
+          drone.frequency.exponentialRampToValueAtTime(74, now + 2.4);
+          droneGain.gain.setValueAtTime(0.001, now);
+          droneGain.gain.linearRampToValueAtTime(0.06, now + 0.35);
+          droneGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+          drone.connect(droneGain);
+          droneGain.connect(audioCtx.destination);
+          drone.start(now);
+          drone.stop(now + 2.85);
+        }
+      } catch (e) {}
 
-        // If browser blocked AudioContext before user gesture, queue immediate playback on first gesture & try Web Speech
-        if (audioCtx.state === 'suspended') {
+      for (let i = 0; i < ULTRON_VOICE_CLIPS.length; i++) {
+        if (mySeqId !== voiceSequenceAbortId) return;
+        const step = ULTRON_VOICE_CLIPS[i];
+        typeVoiceSubtitle(step.caption);
+        triggerNeuralActivity(step.pulse, step.label);
+        const ok = await playSingleVoiceClip(step.url);
+        if (!ok) {
+          // Browser blocked autoplay prior to first user interaction: arm gesture unlock
           neuralCloudState.voicePendingUnlock = true;
+          typeVoiceSubtitle('ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE');
           speakFallbackWebSpeech();
           return;
         }
-
         neuralCloudState.voicePendingUnlock = false;
-        const now = audioCtx.currentTime;
-
-        // 1. Subtle Singularity Halo Sub-Bass Drone (55Hz -> 73Hz)
-        const drone = audioCtx.createOscillator();
-        const droneGain = audioCtx.createGain();
-        drone.type = 'sine';
-        drone.frequency.setValueAtTime(52, now);
-        drone.frequency.exponentialRampToValueAtTime(74, now + 2.4);
-        droneGain.gain.setValueAtTime(0.001, now);
-        droneGain.gain.linearRampToValueAtTime(0.08, now + 0.35);
-        droneGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
-        drone.connect(droneGain);
-        droneGain.connect(audioCtx.destination);
-        drone.start(now);
-        drone.stop(now + 2.85);
-
-        // 2. Fetch & Decode Native Synthesized Voice WAV + Deep Dual-Pitch Ultron DSP
-        if (!neuralCloudState.rawVoiceBytes) {
-          const resp = await fetch('/api/ultron-voice');
-          if (resp.ok) {
-            neuralCloudState.rawVoiceBytes = await resp.arrayBuffer();
-          }
-        }
-
-        if (neuralCloudState.rawVoiceBytes && neuralCloudState.rawVoiceBytes.byteLength > 256) {
-          const copyBuf = neuralCloudState.rawVoiceBytes.slice(0);
-          const audioBuf = await audioCtx.decodeAudioData(copyBuf);
-          const t0 = audioCtx.currentTime + 0.05;
-
-          // Low-shelf bass boost for deep resonant chest timbre
-          const bassBoost = audioCtx.createBiquadFilter();
-          bassBoost.type = 'lowshelf';
-          bassBoost.frequency.value = 160;
-          bassBoost.gain.value = 7.5;
-          bassBoost.connect(audioCtx.destination);
-
-          // Primary Deep Layer (0.87x pitch)
-          const srcMain = audioCtx.createBufferSource();
-          const gainMain = audioCtx.createGain();
-          srcMain.buffer = audioBuf;
-          srcMain.playbackRate.value = 0.87;
-          gainMain.gain.value = 0.95;
-          srcMain.connect(gainMain);
-          gainMain.connect(bassBoost);
-          srcMain.start(t0);
-
-          // Sub-Harmonic Metallic Double Layer (0.75x pitch + 16ms delay)
-          const srcSub = audioCtx.createBufferSource();
-          const gainSub = audioCtx.createGain();
-          srcSub.buffer = audioBuf;
-          srcSub.playbackRate.value = 0.75;
-          gainSub.gain.value = 0.36;
-          srcSub.connect(gainSub);
-          gainSub.connect(bassBoost);
-          srcSub.start(t0 + 0.016);
-        } else {
-          speakFallbackWebSpeech();
-        }
-      } catch (e) {
-        speakFallbackWebSpeech();
       }
     }
 
     function replayGenesisSequence() {
       neuralCloudState.genesisTime = 0.0;
       neuralCloudState.voicePlayed = false;
+      voiceSequenceAbortId++;
+      if (activeVoiceAudio) {
+        try { activeVoiceAudio.pause(); } catch (e) {}
+      }
       ['launchTopChrome', 'launchCenterChrome', 'launchBottomChrome'].forEach(id => {
         document.getElementById(id)?.classList.remove('chrome-visible');
       });
@@ -1943,7 +2346,7 @@ if proc:
       setTimeout(() => playUltronGenesisVoice(true), 650);
     }
 
-    // Unlock audio on first pointer/key interaction if browser autoplay policy suspended AudioContext
+    // Unlock audio on first pointer/key interaction if browser autoplay policy blocked initial playback
     (function setupGestureVoiceUnlock() {
       const unlock = () => {
         if (neuralCloudState.voicePendingUnlock) {
@@ -1953,6 +2356,45 @@ if proc:
       };
       window.addEventListener('pointerdown', unlock, { passive: true });
       window.addEventListener('keydown', unlock, { passive: true });
+    })();
+
+    /* ─── NEON ITEM ACTION & CURSOR SPOTLIGHT CONTROLLER ─── */
+    (function setupNeonItemInteractions() {
+      const NEON_SELECTOR = '.fui-btn, .reticle-tab, .nav-matrix-tab, .list-item, .asm-row, .target-deck-card, .launch-ignite-btn, .xref-pill, .emu-reg-card, .mitigation-card, .fui-module, .resuite-panel, .omniv3-panel, .reactor-pod, .decomp-line';
+
+      // Track mouse coordinates inside interactive items for radial neon border/surface spotlight
+      window.addEventListener('pointermove', (e) => {
+        const el = e.target && e.target.closest ? e.target.closest(NEON_SELECTOR) : null;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        el.style.setProperty('--mx', `${mx}px`);
+        el.style.setProperty('--my', `${my}px`);
+      }, { passive: true });
+
+      // Trigger neon shockwave & border flash on item click/action
+      window.addEventListener('pointerdown', (e) => {
+        const el = e.target && e.target.closest ? e.target.closest(NEON_SELECTOR) : null;
+        if (!el) return;
+
+        // 1. Spawn expanding neon shockwave ring at click coordinates
+        const wave = document.createElement('div');
+        wave.className = 'neon-click-wave';
+        wave.style.left = `${e.clientX}px`;
+        wave.style.top = `${e.clientY}px`;
+        document.body.appendChild(wave);
+        setTimeout(() => wave.remove(), 540);
+
+        // 2. Flash neon border bloom on the clicked item
+        el.classList.add('neon-action-flash');
+        setTimeout(() => el.classList.remove('neon-action-flash'), 240);
+
+        // 3. Synchronize subtle 3D particle cloud energy ripple
+        if (typeof triggerNeuralActivity === 'function') {
+          triggerNeuralActivity(0.55, 'NEON ACTION PULSE');
+        }
+      }, { passive: true });
     })();
 
     function initCloudResources() {
@@ -2658,6 +3100,8 @@ if proc:
 
     async function igniteUltronWorkspace() {
       playReactorIgnition();
+      voiceSequenceAbortId++;
+      playUltronDisassembleClip();
       const customPath = (document.getElementById('launchCustomPathInput')?.value || '').trim();
       const arch = document.getElementById('launchArchSelect')?.value || 'arm64';
       const portal = document.getElementById('launchPortal');
@@ -2665,7 +3109,7 @@ if proc:
       if (customPath && customPath !== state.overview?.file_path) {
         await openBinary(customPath, arch);
       } else {
-        showToast('ULTRON ACTIVE // PROTOCOL REA WORKSPACE READY');
+        showToast('ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE');
       }
     }
 
