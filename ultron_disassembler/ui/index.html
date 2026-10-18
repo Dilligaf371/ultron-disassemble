@@ -1716,6 +1716,7 @@
       <button class="fui-btn" onclick="demangleAllAction()" title="Demangle all C++ / Swift / Rust symbols">DEMANGLE</button>
       <button class="fui-btn" onclick="openAssemblerModal()" title="Live LLVM Assembler & Patcher (A)">LLVM [A]</button>
       <button class="fui-btn primary-glow" onclick="openAutoReportModal()" id="reportOutputsBtn" title="View Autonomous Reverse Engineering Report & Generated Output Files [Shortcut: R]">📄 REPORT &amp; OUTPUTS</button>
+      <button class="fui-btn cyan-glow" onclick="toggleTimeTravelDock()" id="timeTravelTopBtn" title="Toggle Time-Travel Execution Scrubber & Live Neon CFG Coverage Lighthouse [Shortcut: L]">⏱ TIME-TRAVEL [L]</button>
       <button class="fui-btn" onclick="exportPatchedBinaryAction()" title="Export patched binary to disk">EXPORT</button>
       <button class="fui-btn" onclick="invertJumpAction()" title="Invert conditional branch">INV JMP</button>
       <button class="fui-btn" onclick="nopInstructionAction()" title="NOP selected instruction">NOP</button>
@@ -1797,6 +1798,28 @@
       </div>
 
       <div class="view-container" id="centerContent"></div>
+
+      <!-- ─── TIME-TRAVEL EXECUTION SCRUBBER & LIVE NEON COVERAGE DOCK ─── -->
+      <div id="timeTravelDock" style="display:none;background:rgba(6,7,10,0.96);border-top:1px solid var(--neon-cyan);padding:8px 14px;font-family:var(--font-fui);font-size:10.5px;flex-shrink:0;box-shadow:0 -4px 20px rgba(0,240,255,0.16);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="beacon-dot" style="background:var(--neon-cyan);box-shadow:0 0 8px var(--neon-cyan);"></span>
+            <strong style="color:#ffffff;letter-spacing:1px;">⏱ TIME-TRAVEL EXECUTION SCRUBBER &amp; CFG LIGHTHOUSE</strong>
+            <span class="hud-tag" id="ttCoverageBadge" style="border-color:var(--emerald);color:var(--emerald);">COVERAGE: 100%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button class="fui-btn primary-glow" id="ttPlayBtn" style="padding:2px 9px;font-size:9.5px;" onclick="toggleTimeTravelPlayback()">▶ PLAY TRACE</button>
+            <button class="fui-btn" style="padding:2px 8px;font-size:9.5px;" onclick="setMode('cfg')">VIEW CFG LIGHTHOUSE</button>
+            <button class="fui-btn" style="padding:2px 7px;font-size:9.5px;" onclick="toggleTimeTravelDock()">✕</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span id="ttStepLabel" style="color:var(--neon-cyan);min-width:110px;font-weight:600;">STEP 0 / 0 (0 ns)</span>
+          <input type="range" id="ttScrubberInput" min="0" max="10" value="0" style="flex:1;accent-color:var(--neon-cyan);cursor:pointer;" oninput="scrubTimeTravelStep(Number(this.value))" />
+          <span id="ttInsnLabel" style="font-family:var(--font-code);color:#ffffff;min-width:220px;text-align:right;">0x100000000: mov x0, #0</span>
+        </div>
+        <div id="ttRegBar" style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;font-family:var(--font-code);font-size:10px;color:var(--text-mid);"></div>
+      </div>
 
       <!-- Floating CFG MiniMap -->
       <div class="cfg-minimap" id="cfgMinimap" style="display: none;">
@@ -3229,6 +3252,7 @@ if proc:
         if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleBreakpoint(state.selectedAddr || state.selectedAddress); }
         if (e.key === 'o' || e.key === 'O') { e.preventDefault(); pickFileToDisassemble('workspace'); }
         if (e.key === 'r' || e.key === 'R') { e.preventDefault(); openAutoReportModal(); }
+        if (e.key === 'l' || e.key === 'L') { e.preventDefault(); toggleTimeTravelDock(); }
         if (e.key === 'v' || e.key === 'V') { e.preventDefault(); toggleSplitViewMode(); }
         if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
         if (e.key === 'p' || e.key === 'P') { e.preventDefault(); toggle3DCloud(); }
@@ -3390,13 +3414,21 @@ if proc:
         state.globalCallGraph = data.callgraph || null;
         state.debugScripts = data.debug_scripts || null;
         state.artifactReport = data.artifact_report || null;
+        state.reconstructedProject = data.reconstruction || data.reconstructed_project || null;
+        state.deobfuscationReport = data.deobfuscation || null;
+        state.timeTravelTrace = data.time_travel_trace || data.time_travel || null;
+        state.timeTravelStep = 0;
         state.lastAutoPipelineReport = data;
 
         await refreshAllData(false);
-        setPipelineBannerStage(5, 5, `PIPELINE COMPLETE // ${data.procedure_count} PROCS • ${data.instruction_count} INSTRS • 6 OUTPUT FILES GENERATED`, data.output_dir || 'outputs/');
+        if (state.timeTravelTrace && state.timeTravelTrace.frames && state.timeTravelTrace.frames.length > 0) {
+          initTimeTravelDockUI(state.timeTravelTrace);
+        }
+        const totalFiles = (data.output_files || []).length;
+        setPipelineBannerStage(5, 5, `PIPELINE COMPLETE // ${data.procedure_count} PROCS • ${data.instruction_count} INSTRS • ${totalFiles} ARTIFACTS + NATIVE RECOMPILE READY`, data.output_dir || 'outputs/');
         setTimeout(() => hidePipelineBanner(), 2400);
 
-        showToast(`⚡ PIPELINE COMPLETE: ${data.procedure_count} PROCS • REPORT & OUTPUTS READY`);
+        showToast(`⚡ PIPELINE COMPLETE: ${data.procedure_count} PROCS • ${totalFiles} OUTPUTS + NATIVE BINARY READY`);
         if (showModalOnComplete) {
           openAutoReportModal();
         }
@@ -3410,10 +3442,93 @@ if proc:
       await runAutonomousDisassemblePipeline(path, arch, true);
     }
 
+    function initTimeTravelDockUI(trace) {
+      const dock = document.getElementById('timeTravelDock');
+      const slider = document.getElementById('timeTravelSlider');
+      if (!dock || !slider || !trace || !trace.frames || !trace.frames.length) return;
+      slider.max = Math.max(0, trace.frames.length - 1);
+      slider.value = 0;
+      dock.style.display = 'flex';
+      scrubTimeTravelStep(0, false);
+    }
+
+    async function toggleTimeTravelDock() {
+      const dock = document.getElementById('timeTravelDock');
+      if (!dock) return;
+      if (dock.style.display === 'none' || !dock.style.display) {
+        if (!state.timeTravelTrace || !state.timeTravelTrace.frames || !state.timeTravelTrace.frames.length) {
+          const resp = await fetch('/api/v4/time-travel-trace', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ proc_address: state.selectedProcedure || null }),
+          });
+          state.timeTravelTrace = await resp.json();
+        }
+        initTimeTravelDockUI(state.timeTravelTrace);
+        showToast('⏱ TIME-TRAVEL EXECUTION SCRUBBER ONLINE');
+      } else {
+        if (state.timeTravelTimer) {
+          clearInterval(state.timeTravelTimer);
+          state.timeTravelTimer = null;
+        }
+        dock.style.display = 'none';
+      }
+    }
+
+    function scrubTimeTravelStep(stepIdx, playAudio = true) {
+      const trace = state.timeTravelTrace;
+      if (!trace || !trace.frames || !trace.frames.length) return;
+      const idx = Math.max(0, Math.min(trace.frames.length - 1, Number(stepIdx) || 0));
+      state.timeTravelStep = idx;
+      const frame = trace.frames[idx];
+      const slider = document.getElementById('timeTravelSlider');
+      if (slider && Number(slider.value) !== idx) slider.value = idx;
+
+      const stepTag = document.getElementById('ttStepLabel');
+      if (stepTag) stepTag.textContent = `STEP ${idx + 1}/${trace.frames.length} • ${frame.timestamp_ns}ns`;
+      const covTag = document.getElementById('ttCoverageTag');
+      if (covTag) covTag.textContent = `COVERAGE: ${frame.coverage_pct}% (${(frame.visited_blocks || []).length} BLOCKS)`;
+      const pcBar = document.getElementById('ttPcDesc');
+      if (pcBar) {
+        const r0 = frame.registers?.x0 || frame.registers?.rax || '0x0';
+        const r1 = frame.registers?.x1 || frame.registers?.rdi || '0x0';
+        const sp = frame.registers?.sp || frame.registers?.rsp || '0x0';
+        pcBar.textContent = `PC: ${frame.pc} │ ${frame.instruction} │ R0=${r0} R1=${r1} SP=${sp} │ NZCV=${frame.flags}`;
+      }
+
+      if (playAudio && typeof playChirp === 'function') playChirp(520 + (idx % 12) * 28, 0.018);
+
+      // Highlight active instruction row in ASM view or active node in CFG view
+      state.selectedAddress = frame.pc;
+      document.querySelectorAll('.asm-row').forEach(r => {
+        const a = r.getAttribute('data-addr');
+        r.classList.toggle('selected', a === frame.pc);
+      });
+      if (state.mode === 'cfg' && state.currentDossier) {
+        renderCfgMode(document.getElementById('centerContent'), state.currentDossier);
+      }
+    }
+
+    function toggleTimeTravelPlayback() {
+      const btn = document.getElementById('ttPlayBtn');
+      if (state.timeTravelTimer) {
+        clearInterval(state.timeTravelTimer);
+        state.timeTravelTimer = null;
+        if (btn) btn.textContent = '▶ PLAY';
+        return;
+      }
+      if (!state.timeTravelTrace || !state.timeTravelTrace.frames?.length) return;
+      if (btn) btn.textContent = '⏸ PAUSE';
+      state.timeTravelTimer = setInterval(() => {
+        const total = state.timeTravelTrace.frames.length;
+        const next = ((state.timeTravelStep || 0) + 1) % total;
+        scrubTimeTravelStep(next, false);
+      }, 240);
+    }
+
     function openAutoReportModal() {
       const rep = state.lastAutoPipelineReport;
       if (!rep) {
-        // Run pipeline on current binary if not run yet
         runAutonomousDisassemblePipeline(state.overview?.file_path || '', document.getElementById('archSelect')?.value || 'arm64', true);
         return;
       }
@@ -3429,6 +3544,11 @@ if proc:
       const riskScore = rep.audit?.risk_score ?? 0;
       const riskLevel = rep.audit?.risk_level || 'LOW';
       const flirtCount = rep.flirt?.matched_count ?? 0;
+      const reconObj = rep.reconstruction || rep.reconstructed_project || {};
+      const compiledOk = Boolean(reconObj.compiled_ok);
+      const deobfObj = rep.deobfuscation || {};
+      const deobfStrings = (deobfObj.stack_strings_recovered || []).length + (deobfObj.xor_operations_detected || []).length;
+      const opaqueCount = (deobfObj.opaque_predicates_simplified || []).length + (deobfObj.flattened_dispatchers_recovered || []).length;
 
       const sumBar = document.getElementById('autoReportSummaryBar');
       if (sumBar) {
@@ -3436,9 +3556,9 @@ if proc:
           <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">FORMAT</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${escapeHtml(rep.format || 'BINARY')}</div></div>
           <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">PROCEDURES</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${rep.procedure_count ?? 0}</div></div>
           <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">INSTRUCTIONS</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${rep.instruction_count ?? 0}</div></div>
-          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">STRINGS</div><div style="color:var(--emerald);font-weight:600;margin-top:3px;">${rep.string_count ?? 0}</div></div>
-          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">FLIRT MATCHES</div><div style="color:#ffffff;font-weight:600;margin-top:3px;">${flirtCount}</div></div>
-          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">RISK SCORE</div><div style="color:var(--tertiary);font-weight:600;margin-top:3px;">${riskScore}/100 (${escapeHtml(riskLevel)})</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">NATIVE RECOMPILE</div><div style="color:${compiledOk ? 'var(--emerald)' : 'var(--tertiary)'};font-weight:600;margin-top:3px;">${compiledOk ? 'CLANG PASS ✓' : 'SOURCE READY'}</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">DEOBFUSCATED</div><div style="color:var(--neon-cyan);font-weight:600;margin-top:3px;">${deobfStrings} STR • ${opaqueCount} OPAQUE</div></div>
+          <div class="mitigation-card"><div style="color:var(--text-mid);font-size:9px;">RISK & FLIRT</div><div style="color:var(--tertiary);font-weight:600;margin-top:3px;">${riskScore}/100 • ${flirtCount} SIGS</div></div>
         `;
       }
 
@@ -4238,23 +4358,41 @@ if proc:
       });
 
       let nodesSvg = '';
+      const activeFrame = (state.timeTravelTrace && state.timeTravelTrace.frames)
+        ? state.timeTravelTrace.frames[state.timeTravelStep || 0]
+        : null;
+      const visitedSet = new Set(activeFrame?.visited_blocks || state.timeTravelTrace?.visited_blocks || []);
+      const activeBlockAddr = activeFrame?.block_address || null;
+      const activePcAddr = activeFrame?.pc || null;
+
       blocks.forEach(b => {
         const c = coords[b.from];
+        const isActiveBlock = activeBlockAddr === b.from || b.instructions.some(i => i.address === activePcAddr);
+        const isVisitedBlock = isActiveBlock || visitedSet.has(b.from);
+        const strokeColor = isActiveBlock ? '#00f2ff' : (isVisitedBlock ? '#10b981' : '#e5e7eb');
+        const strokeWidth = isActiveBlock ? '2.4' : (isVisitedBlock ? '1.8' : '1.5');
+        const headerBg = isActiveBlock
+          ? 'rgba(0,242,255,0.28)'
+          : (isVisitedBlock ? 'rgba(16,185,129,0.22)' : 'rgba(255,255,255,0.25)');
+        const badgeText = isActiveBlock ? ' ⚡ LIVE PC' : (isVisitedBlock ? ' ✓ COVERED' : '');
+
         let insText = '';
         b.instructions.forEach((ins, idx) => {
           const ty = c.y + 42 + idx * 16;
           const opShort = (ins.formatted_op_str || ins.op_str).slice(0, 38);
+          const isCurPc = ins.address === activePcAddr;
           insText += `
-            <text x="${c.x + 12}" y="${ty}" fill="#4f6d8a" font-size="10.5">${ins.address}</text>
-            <text x="${c.x + 96}" y="${ty}" fill="#e5e7eb" font-weight="700" font-size="11">${escapeHtml(ins.mnemonic)}</text>
+            ${isCurPc ? `<rect x="${c.x + 4}" y="${ty - 11}" width="${c.w - 8}" height="15" fill="rgba(0,242,255,0.20)" rx="2" />` : ''}
+            <text x="${c.x + 12}" y="${ty}" fill="${isCurPc ? '#00f2ff' : '#4f6d8a'}" font-size="10.5">${ins.address}</text>
+            <text x="${c.x + 96}" y="${ty}" fill="${isCurPc ? '#ffffff' : '#e5e7eb'}" font-weight="700" font-size="11">${escapeHtml(ins.mnemonic)}</text>
             <text x="${c.x + 160}" y="${ty}" fill="#f0f8ff" font-size="11">${escapeHtml(opShort)}</text>
           `;
         });
         nodesSvg += `
           <g onclick="playChirp(640,0.04); selectAddress('${b.from}')" style="cursor:pointer;">
-            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="rgba(12,13,17,0.94)" stroke="#e5e7eb" stroke-opacity="0.5" stroke-width="1.5" />
-            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="24" fill="rgba(255,255,255,0.25)" />
-            <text x="${c.x + 12}" y="${c.y + 16}" fill="#f3f4f6" font-weight="700" font-size="11">◈ NODE #${b.index} // ${b.from} → ${b.to}</text>
+            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="rgba(12,13,17,0.94)" stroke="${strokeColor}" stroke-opacity="${isActiveBlock ? '0.95' : '0.65'}" stroke-width="${strokeWidth}" />
+            <rect x="${c.x}" y="${c.y}" width="${c.w}" height="24" fill="${headerBg}" />
+            <text x="${c.x + 12}" y="${c.y + 16}" fill="${isActiveBlock ? '#00f2ff' : '#f3f4f6'}" font-weight="700" font-size="11">◈ NODE #${b.index} // ${b.from} → ${b.to}${badgeText}</text>
             ${insText}
           </g>
         `;

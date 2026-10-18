@@ -1,0 +1,248 @@
+{
+  "engine": "Ultron Disassemble v3.0 (Omni-Core Native Rust Edition)",
+  "analysis_target": "media_1792339102066_75326f41.zip",
+  "target_title": "Dungeons & Dragons: Shadow over Mystara (USA 960209 Release 1)",
+  "romset_id": "ddsomur1",
+  "parent_romset": "ddsom",
+  "hardware_platform": "Capcom Play System 2 (CPS-2)",
+  "board_type": "B-Board 93646B-4 / 93646B-5",
+  "release_date": "1996-02-09",
+  "region": "USA / Canada / North America",
+  "encryption": {
+    "status": "CPS-2 Battery-Backed Volatile Key Encrypted (Opcodes) + Data Clear",
+    "key_file": "ddsomu.key",
+    "key_crc32": "0x09ae0f7c",
+    "key_size_bytes": 20,
+    "algorithm": "Dual 4-round Feistel Network with Address Seed Expansion (FN1 & FN2)"
+  },
+  "subsystems": {
+    "main_cpu": {
+      "chip": "Motorola 68EC000",
+      "clock_mhz": 16.0,
+      "address_space": "4 MB (0x000000 - 0x3FFFFF)",
+      "work_ram": "64 KB (0xFF0000 - 0xFFFFFF)",
+      "rom_files_count": 8,
+      "total_rom_bytes": 4194304
+    },
+    "audio_cpu": {
+      "chip": "Zilog Z80",
+      "clock_mhz": 8.0,
+      "driver_version": "1.15 (1996/JANUARY)",
+      "total_rom_bytes": 262144
+    },
+    "audio_dsp": {
+      "chip": "Capcom DL-1425 QSound DSP",
+      "channels": 16,
+      "total_sample_bytes": 4194304
+    },
+    "graphics": {
+      "chip": "CPS-2 Custom ASIC Blitter & Tile Generator",
+      "bus_width": "64-bit interleaved",
+      "sprites_max": 1024,
+      "color_depth": "12-bit / 16-bit RGB (Palette RAM 0x660000)",
+      "total_rom_bytes": 25165824
+    }
+  },
+  "rom_manifest": [
+    {
+      "filename": "dd2.01",
+      "size_bytes": 131072,
+      "crc32": "0x99d657e5",
+      "sha1": "1528dd6b07a0e79951a35c0457c8a9c9770e9c78",
+      "md5": "be6d1b559dd7427e45bce58830c436a6",
+      "subsystem": "Audio CPU (Zilog Z80)",
+      "role": "Sound Program / Music Sequence",
+      "bus_load_range": "0x00000 - 0x28000"
+    },
+    {
+      "filename": "dd2.02",
+      "size_bytes": 131072,
+      "crc32": "0x117a3824",
+      "sha1": "14f3a12170b601c5466c93af9d2f24e0b386b4e4",
+      "md5": "d34a081701f529440d72de6891e1d8d0",
+      "subsystem": "Audio CPU (Zilog Z80)",
+      "role": "Sound Program / Music Sequence",
+      "bus_load_range": "0x28000 - 0x48000"
+    },
+    {
+      "filename": "dd2.05d",
+      "size_bytes": 524288,
+      "crc32": "0xb23061f3",
+      "sha1": "471a1238770a5109f34a0b450b214a5490cc6ecb",
+      "md5": "36c60ad7e297f88561692e3ecd8a499f",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x100000 - 0x17FFFF"
+    },
+    {
+      "filename": "dd2.06d",
+      "size_bytes": 524288,
+      "crc32": "0x8bf1d8ce",
+      "sha1": "384dda9dfa2a851d30432f29bba456e138a5ca28",
+      "md5": "017772a24eb9a08588a646061d9aa566",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x180000 - 0x1FFFFF"
+    },
+    {
+      "filename": "dd2.07",
+      "size_bytes": 524288,
+      "crc32": "0x909a0b8b",
+      "sha1": "58bda17c36063a79df8b5031755c7909a9bda221",
+      "md5": "5906fc3f37798f572f162530e7fe3a79",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x200000 - 0x27FFFF"
+    },
+    {
+      "filename": "dd2.08",
+      "size_bytes": 524288,
+      "crc32": "0xe53c4d01",
+      "sha1": "bad872e4e793a39f68bc0e580772e982714b5876",
+      "md5": "ee1153e6d353b5e192ef35d97522d943",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x280000 - 0x2FFFFF"
+    },
+    {
+      "filename": "dd2.09",
+      "size_bytes": 524288,
+      "crc32": "0x5f86279f",
+      "sha1": "c2a454e5f821b1cdd49f2cf0602e9bfb7ba63340",
+      "md5": "be38541e8fc895c8948eb0897981caec",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x300000 - 0x37FFFF"
+    },
+    {
+      "filename": "dd2.10",
+      "size_bytes": 524288,
+      "crc32": "0xad954c26",
+      "sha1": "468c01735dbdb1114b37060546a660678290a97f",
+      "md5": "f3ddf59690b92c57c5379e73f7409d4e",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x380000 - 0x3FFFFF"
+    },
+    {
+      "filename": "dd2.11m",
+      "size_bytes": 2097152,
+      "crc32": "0x98d0c325",
+      "sha1": "7406e8d943d77c468eb418c4113261f4ab973bbf",
+      "md5": "26b8dbb69b0b70228496df4da853f09f",
+      "subsystem": "QSound Audio DSP",
+      "role": "ADPCM Audio & SFX Samples",
+      "bus_load_range": "0x000000 - 0x1FFFFF"
+    },
+    {
+      "filename": "dd2.12m",
+      "size_bytes": 2097152,
+      "crc32": "0x5ea2e7fa",
+      "sha1": "0e6a9fd007f637adcb2226c902394f07de45e803",
+      "md5": "32728a7fe7eccf4cefa269428379829f",
+      "subsystem": "QSound Audio DSP",
+      "role": "ADPCM Audio & SFX Samples",
+      "bus_load_range": "0x200000 - 0x3FFFFF"
+    },
+    {
+      "filename": "dd2.13m",
+      "size_bytes": 4194304,
+      "crc32": "0xa46b4e6e",
+      "sha1": "fb90f42868c581c481b4ceff9f692753fb186b30",
+      "md5": "fc97df1a4ffd773ba488796c8fb4ee90",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.14m",
+      "size_bytes": 2097152,
+      "crc32": "0x6d824ce2",
+      "sha1": "0ccfe6c8a944937718e28a1a373b5822c7b7001b",
+      "md5": "0bdc49c4aad5203e6944be5cc3e06c2f",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.15m",
+      "size_bytes": 4194304,
+      "crc32": "0xd5fc50fc",
+      "sha1": "bc692f17b18bb47a724cd5152377cd5ccd6e184a",
+      "md5": "20ee5e9f603aead33ee27d8e2b7e3eb6",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.16m",
+      "size_bytes": 2097152,
+      "crc32": "0x79682ae5",
+      "sha1": "ee84f4791c29ce9e2bae06ba3ec47ff4d2cd7054",
+      "md5": "0cfd07aba413fd04bbad29a0ccb56cad",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.17m",
+      "size_bytes": 4194304,
+      "crc32": "0x837c0867",
+      "sha1": "3d6db290a8f76299a23543f0ccf6a7905e1088ac",
+      "md5": "7f8f0511ebb182ddb0981b52ca1db716",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.18m",
+      "size_bytes": 2097152,
+      "crc32": "0xacddd149",
+      "sha1": "7f50de9b2d1cc733594c642be1804190519caffa",
+      "md5": "3b5383c9950e1b04576f58f0a3fef850",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.19m",
+      "size_bytes": 4194304,
+      "crc32": "0xbb0ec21c",
+      "sha1": "e43ccc1cf63ccd2b504cc9fd701af849a7321914",
+      "md5": "b98cb22f3a71e987d7a84fb9d760c353",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2.20m",
+      "size_bytes": 2097152,
+      "crc32": "0x117fb0c0",
+      "sha1": "15c01fa1a71b6469b0e1bde0ce5835c5ff9d938c",
+      "md5": "7ff3b8bb6557b5599da61e648327952c",
+      "subsystem": "Capcom CPS-2 Custom GPU",
+      "role": "64-bit Interleaved Word Graphics (Sprites & Tiles)",
+      "bus_load_range": "0x0000000 - 0x17FFFFF"
+    },
+    {
+      "filename": "dd2u.03d",
+      "size_bytes": 524288,
+      "crc32": "0x0f700d84",
+      "sha1": "f4788d4046e0f6aba146c18a930196f5f9f8f14a",
+      "md5": "0d3eadb6775b0d2ce6014bf3da022920",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x000000 - 0x07FFFF"
+    },
+    {
+      "filename": "dd2u.04d",
+      "size_bytes": 524288,
+      "crc32": "0xb99eb254",
+      "sha1": "507ad31b0d77dfbaaaf0fa5830c4ef14845a80de",
+      "md5": "a316abf380d2eb4f54f1fb24378f016a",
+      "subsystem": "Main CPU (Motorola 68000)",
+      "role": "Game Engine / Logic / Scripts / Data",
+      "bus_load_range": "0x080000 - 0x0FFFFF"
+    }
+  ]
+}

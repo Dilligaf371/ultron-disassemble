@@ -1,6 +1,6 @@
 # ULTRON DISASSEMBLE v3.0 — AUTONOMOUS REVERSE ENGINEERING REPORT
 
-- **Target Binary**: `samples/ultron_objc_sample`
+- **Target Binary**: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample`
 - **Container Format**: `Mach-O 64-bit`
 - **Architecture**: `ARM64 (AArch64) (arm64)` (64-bit)
 - **Entry Point**: `0x100000f3c`
@@ -104,3 +104,11 @@
 - `0x100001512`: `ULTRON-SENTINEL-MK9`
 - `0x100001526`: `ULTRON-OBJC-PROTOCOL-v4.2`
 - `0x100001540`: `ULTRON_TELEMETRY_CORE_AUTH_VECTOR`
+
+## 6. Autonomous Compilable Reconstruction & Clang Verification
+
+- **Project Directory**: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/reconstructed_project`
+- **Clang Compilation (`clang -O2 -std=c17`)**: **VERIFIED & COMPILED** (53760 bytes)
+- **Live Binary Execution Verification**: `[ULTRON RECONSTRUCTED BINARY] Target: ultron_objc_sample | Format: Mach-O 64-bit | Procs: 33
+[ULTRON] Executed entry subroutine '-[UltronSentinelCore initWithKey:rounds:]' (@ 0x100000a18) -> 0x100001a1a004ce`
+- **Time-Travel Execution Trace**: `48 steps (75.0% CFG block coverage)`

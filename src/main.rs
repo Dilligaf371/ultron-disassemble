@@ -9,6 +9,7 @@ mod server;
 mod types;
 mod v3_intelligence;
 mod v3_targets;
+mod v4_legend;
 
 use crate::advanced_re::{UltronBinDiffEngine, UltronDynamicDebugBridge, UltronFlirtEngine};
 use crate::assembler::UltronLlvmAssembler;
