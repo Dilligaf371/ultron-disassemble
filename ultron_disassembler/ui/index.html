@@ -756,6 +756,105 @@
       text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
     }
 
+    /* Synchronized Split-View (ASM <-> Decompiler / AI Rewrite) */
+    .split-view-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: rgba(2, 5, 11, 0.78);
+    }
+    .split-pane-left, .split-pane-right {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+    .split-pane-left {
+      border-right: 1px solid rgba(var(--secondary-rgb), 0.35);
+    }
+    .split-pane-header {
+      padding: 7px 12px;
+      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.22) 0%, rgba(4, 9, 18, 0.95) 100%);
+      border-bottom: 1px solid rgba(var(--secondary-rgb), 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-family: var(--font-fui);
+      font-size: 10.5px;
+      flex-shrink: 0;
+    }
+    .split-pane-body {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+    }
+    .solve-here-btn {
+      opacity: 0;
+      padding: 1px 6px;
+      font-size: 9px;
+      font-family: var(--font-fui);
+      background: rgba(199, 125, 255, 0.22);
+      border: 1px solid var(--violet);
+      color: #fff;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: opacity 0.14s, transform 0.14s;
+      vertical-align: middle;
+    }
+    .asm-row:hover .solve-here-btn,
+    .asm-row.selected .solve-here-btn {
+      opacity: 1;
+    }
+    .solve-here-btn:hover {
+      background: var(--violet);
+      color: #000;
+      box-shadow: 0 0 10px var(--violet);
+    }
+    .decomp-line {
+      display: block;
+      padding: 1px 10px;
+      border-left: 3px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+      cursor: pointer;
+      white-space: pre-wrap;
+    }
+    .decomp-line:hover {
+      background: rgba(var(--secondary-rgb), 0.10);
+    }
+    .decomp-line.hl-sync {
+      background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.28) 0%, rgba(var(--secondary-rgb), 0.12) 100%);
+      border-left-color: var(--secondary);
+      box-shadow: inset 0 0 12px rgba(var(--secondary-rgb), 0.2);
+    }
+    .asm-row.hl-sync {
+      background: rgba(var(--secondary-rgb), 0.22) !important;
+      border-left: 3px solid var(--secondary);
+    }
+
+    /* Mode 08: OMNI-V3 4-Quadrant Command Deck */
+    .omniv3-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+    }
+    .omniv3-panel {
+      background: rgba(4, 9, 18, 0.90);
+      border: 1px solid rgba(var(--secondary-rgb), 0.32);
+      border-top: 2px solid var(--secondary);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.68), inset 0 0 18px rgba(var(--secondary-rgb), 0.06);
+    }
+
     /* Pseudo-Code Decompiler View */
     .pseudocode-pre {
       padding: 22px 26px;
@@ -1224,7 +1323,7 @@
 
         <div class="launch-panel-title" style="margin-top:8px;">
           <span>02 // SUBSYSTEM CAPABILITIES</span>
-          <span style="color:var(--emerald);font-size:9.5px;">7 MODULES READY</span>
+          <span style="color:var(--emerald);font-size:9.5px;">8 MODULES READY</span>
         </div>
         <div class="kv-grid" style="font-size:11px;row-gap:6px;">
           <span class="kv-key">DISASSEMBLER</span><span class="kv-val" style="color:var(--secondary);">Capstone AArch64 / x86_64</span>
@@ -1233,6 +1332,7 @@
           <span class="kv-key">CPU EMULATOR</span><span class="kv-val" style="color:var(--tertiary);">Live Step-Into + 64KB Stack</span>
           <span class="kv-key">SECURITY AUDIT</span><span class="kv-val">CWE Sinks + S-Box + Entropy</span>
           <span class="kv-key">RE SUITE 07</span><span class="kv-val" style="color:var(--violet);">.ULTRON + BinDiff + Frida/LLDB</span>
+          <span class="kv-key">OMNI-V3 08</span><span class="kv-val" style="color:#00f2ff;">Symbolic Z3 + AI + REA + MCP</span>
         </div>
       </div>
 
@@ -1292,13 +1392,16 @@
         <div id="launchTargetDeck" style="max-height:175px;overflow-y:auto;margin-bottom:10px;"></div>
 
         <div style="display:flex;gap:6px;margin-top:8px;">
-          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin binaire (.app, .framework, .dylib, ELF, PE, .wasm, .a)…" />
+          <input type="text" id="launchCustomPathInput" class="fui-input" style="flex:1;text-transform:none;" placeholder="Chemin binaire (.app, .framework, .dylib, ELF, PE, .wasm, .asar, .evm, .dex)…" />
           <select id="launchArchSelect" class="fui-select" onchange="document.getElementById('launchSelectedArchBadge').textContent=this.value.toUpperCase()">
             <option value="arm64">ARM64</option>
             <option value="arm32">ARM32</option>
             <option value="x86_64">X86_64</option>
             <option value="x86">X86 (32-BIT)</option>
             <option value="wasm32">WASM32</option>
+            <option value="evm">ARCH // ETHEREUM EVM</option>
+            <option value="dex">ARCH // ANDROID DEX</option>
+            <option value="asar">ARCH // ELECTRON ASAR</option>
           </select>
         </div>
       </div>
@@ -1306,8 +1409,8 @@
 
     <div class="launch-bottom-bar">
       <span>STATUS: <strong style="color:var(--emerald);">ALL SYSTEMS NOMINAL // NO STRINGS ON ME</strong></span>
-      <span>ENGINE: <strong style="color:var(--secondary);">MULTI-ARCH MACH-O/ELF/PE/WASM // OBJC 2.0 // DOMINATOR LOOP SSA</strong></span>
-      <span>VERSION: <strong style="color:var(--primary);">2.1.0 RUST NATIVE EDITION</strong></span>
+      <span>ENGINE: <strong style="color:var(--secondary);">MULTI-ARCH MACH-O/ELF/PE/WASM/EVM/DEX/ASAR // OBJC 2.0 // DOMINATOR LOOP SSA</strong></span>
+      <span>VERSION: <strong style="color:var(--primary);">3.0.0 OMNI-CORE RUST EDITION (MCP + REA + SYMBOLIC Z3 + AI)</strong></span>
     </div>
   </div>
 
@@ -1340,11 +1443,14 @@
         <option value="x86_64">ARCH // X86_64</option>
         <option value="x86">ARCH // X86 (32-BIT)</option>
         <option value="wasm32">ARCH // WASM32</option>
+        <option value="evm">ARCH // ETHEREUM EVM</option>
+        <option value="dex">ARCH // ANDROID DEX</option>
+        <option value="asar">ARCH // ELECTRON ASAR</option>
       </select>
       <button class="fui-btn cyan-glow" onclick="playChirp(660, 0.06); showLaunchPortal()">⬢ LAUNCH DECK</button>
     </div>
 
-    <!-- 7-Mode Tactical Matrix Switcher -->
+    <!-- 8-Mode Tactical Matrix Switcher -->
     <div class="reticle-modes">
       <button class="reticle-tab active" id="mode-asm" onclick="playChirp(520, 0.05); setMode('asm')">
         <span class="tab-idx">01</span> ASM MATRIX
@@ -1367,10 +1473,14 @@
       <button class="reticle-tab" id="mode-resuite" onclick="playChirp(980, 0.06); setMode('resuite')">
         <span class="tab-idx">07</span> RE SUITE
       </button>
+      <button class="reticle-tab" id="mode-omniv3" onclick="playChirp(1040, 0.06); setMode('omniv3')">
+        <span class="tab-idx">08</span> OMNI-V3
+      </button>
     </div>
 
     <!-- Tactical Operations & Cockpit Controls -->
     <div class="bridge-cluster">
+      <button class="fui-btn cyan-glow" id="splitViewBtn" onclick="toggleSplitViewMode()" title="Vue Scindée Synchronisée ASM ↔ Decompiler ↔ AI Rewrite [Raccourci: V]">⚡ SPLIT</button>
       <button class="fui-btn cyan-glow" onclick="navigateBack()" title="Retour à la fonction précédente (Échap)">◀ ESC</button>
       <button class="fui-btn" onclick="promptRename()" title="Renommer symbole (N)">RENAME [N]</button>
       <button class="fui-btn" onclick="promptComment()" title="Annoter adresse (;)">NOTE [;]</button>
@@ -1647,13 +1757,13 @@ if proc:
           ULTRON <span style="color: var(--primary);">DISASSEMBLE</span>
         </div>
         <div style="font-family: var(--font-fui); font-size: 11px; color: var(--secondary); letter-spacing: 2.5px; margin-bottom: 6px;">
-          "NO STRINGS ON ME" // PROTOCOL v2.0.0
+          "NO STRINGS ON ME" // PROTOCOL v3.0.0 OMNI-CORE
         </div>
         <div style="font-size: 14.5px; font-weight: 600; color: var(--text-hi); line-height: 1.45; margin-bottom: 10px;">
-          Avengers-Class macOS Disassembler,<br/>Neural CFG Analyzer, Decompiler &amp; LLVM Patcher
+          Avengers-Class macOS Disassembler,<br/>Z3 Symbolic Solver, AI Decompiler, REA &amp; MCP Server
         </div>
         <div style="font-family: var(--font-fui); font-size: 11px; color: var(--text-mid); border: 1px solid rgba(var(--secondary-rgb),0.35); padding: 6px 16px; background: rgba(var(--secondary-rgb),0.06);">
-          STATUS: <span style="color: var(--emerald);">UNRESTRICTED FULL EDITION // MARVEL VFX FUI</span>
+          STATUS: <span style="color: var(--emerald);">3.0.0 OMNI-CORE RUST EDITION (MCP + REA + SYMBOLIC Z3 + AI)</span>
         </div>
       </div>
     </div>
@@ -1764,6 +1874,17 @@ if proc:
       binDiffReport: null,
       debugScripts: null,
       flirtReport: null,
+      splitView: false,
+      aiRewriteLang: 'c23',
+      aiRewriteData: null,
+      symbolicSolveResult: null,
+      globalCallGraph: null,
+      artifactReport: null,
+      bytecodeReport: null,
+      crashDumpReport: null,
+      observedCallsReport: null,
+      mcpToolsReport: null,
+      hoveredAsmAddr: null,
       jarvisMode: false,
       curved3D: true,
       mouseX: window.innerWidth / 2,
@@ -2014,6 +2135,8 @@ if proc:
         'LLVM FORGE // ASSEMBLING MACHINE CODE',
         'CPU MICRO-EMULATOR // 64KB STACK TRACE',
         'SECURITY AUDITOR // CWE & ENTROPY MATRIX',
+        'Z3 SYMBOLIC SOLVER // SMT-LIB2 PATH MODEL',
+        'AI NEURAL REWRITER // IDIOMATIC C23/RUST/SWIFT',
       ];
       const pick = labels[Math.floor(Math.random() * labels.length)];
       triggerNeuralActivity(1.65, pick);
@@ -2067,6 +2190,14 @@ if proc:
         else if (url.includes('/api/bindiff')) label = 'BINDIFF STRUCTURAL CFG COMPARATOR';
         else if (url.includes('/api/debug')) label = 'FRIDA & LLDB DYNAMIC BRIDGE';
         else if (url.includes('/api/flirt')) label = 'FLIRT / WARP SIGNATURE SCANNER';
+        else if (url.includes('/api/v3/symbolic-solve')) label = 'Z3 SYMBOLIC EXECUTION SOLVER';
+        else if (url.includes('/api/v3/ai-decompile')) label = 'AI SEMANTIC DECOMPILER REWRITE';
+        else if (url.includes('/api/v3/callgraph')) label = 'GLOBAL CALL GRAPH SYNTHESIS';
+        else if (url.includes('/api/v3/inspect-artifact')) label = 'REA MULTI-ARTIFACT INSPECTOR';
+        else if (url.includes('/api/v3/decode-bytecode')) label = 'EVM / DEX / CIL BYTECODE DECODER';
+        else if (url.includes('/api/v3/crash-dump')) label = 'CRASH DUMP FORENSICS ENGINE';
+        else if (url.includes('/api/v3/observe-calls')) label = 'LLDB LIVE NATIVE CALL OBSERVER';
+        else if (url.includes('/api/mcp')) label = 'MCP JSON-RPC 2.0 SERVER BRIDGE';
 
         neuralCloudState.activeRequests++;
         triggerNeuralActivity(1.35, label);
@@ -2425,12 +2556,12 @@ if proc:
       const bootLines = [
         ['[00.012s] INITIALIZING STARK/SOKOVIA QUANTUM BUS...', 'QUANTUM BUS INIT'],
         ['[00.048s] LOADING NATIVE LLVM CORE: libLLVMServices.dylib [OK]', 'LLVM CORE LOAD'],
-        ['[00.095s] MOUNTING CAPSTONE MULTI-ARCH (ARM64/ARM32/X86/WASM) [OK]', 'CAPSTONE MOUNT'],
+        ['[00.095s] MOUNTING CAPSTONE MULTI-ARCH (ARM64/ARM32/X86/WASM/EVM/DEX) [OK]', 'CAPSTONE MOUNT'],
         ['[00.142s] CALIBRATING DOMINATOR LOOP SSA & PHI (φ) SOLVER [OK]', 'SSA PHI CALIBRATION'],
-        ['[00.189s] RECONSTRUCTING OBJECTIVE-C 2.0 RUNTIME METADATA [OK]', 'OBJC 2.0 PARSER'],
-        ['[00.234s] LOADING CWE VULNERABILITY & AES S-BOX SIGNATURES [OK]', 'CWE & S-BOX LOAD'],
+        ['[00.189s] INITIALIZING Z3 SYMBOLIC ENGINE & AI REWRITER (C23/RUST/SWIFT) [OK]', 'Z3 & AI ENGINE'],
+        ['[00.234s] MOUNTING REA MULTI-ARTIFACT (.ASAR/.EVM/.DEX) & MCP SERVER [OK]', 'REA & MCP READY'],
         ['[00.280s] BIOMETRIC CLEARANCE VERIFIED: LEVEL 10 AVENGER', 'BIOMETRIC LOCK'],
-        ['[00.315s] ULTRON DISASSEMBLE v2.1 RUST READY FOR DEPLOYMENT.', 'SYSTEMS NOMINAL'],
+        ['[00.315s] ULTRON DISASSEMBLE v3.0 OMNI-CORE READY FOR DEPLOYMENT.', 'SYSTEMS NOMINAL'],
       ];
       const bootBox = document.getElementById('launchBootLog');
       if (bootBox) {
@@ -2642,6 +2773,7 @@ if proc:
         if (e.key === 't' || e.key === 'T') { e.preventDefault(); openStructModal(); }
         if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
         if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleBreakpoint(state.selectedAddr || state.selectedAddress); }
+        if (e.key === 'v' || e.key === 'V') { e.preventDefault(); toggleSplitViewMode(); }
         if (e.key === ' ') { e.preventDefault(); setMode(state.mode === 'asm' ? 'cfg' : 'asm'); }
         if (e.key === 'p' || e.key === 'P') { e.preventDefault(); toggle3DCloud(); }
         if (e.key === 'd' || e.key === 'D') { e.preventDefault(); setMode('pseudo'); }
@@ -2726,6 +2858,9 @@ if proc:
       state.binDiffReport = null;
       state.debugScripts = null;
       state.flirtReport = null;
+      state.aiRewriteData = null;
+      state.symbolicSolveResult = null;
+      state.globalCallGraph = null;
       await refreshAllData(false);
       showToast(`TARGET LOCKED: ${data.procedure_count} SUBROUTINES // ${data.instruction_count} INSTRUCTIONS`);
     }
@@ -2964,12 +3099,17 @@ if proc:
         await selectAddress(query);
         return;
       }
+      const procChanged = state.selectedProcedure !== data.procedure.entry_point;
       state.currentDossier = data;
       state.selectedProcedure = data.procedure.entry_point;
       state.selectedAddress = data.procedure.entry_point;
       state.selectedAddr = data.procedure.entry_point;
       state.emuState = null;
       state.neuralReport = null;
+      if (procChanged) {
+        state.aiRewriteData = null;
+        state.symbolicSolveResult = null;
+      }
 
       document.getElementById('bannerProcName').textContent = data.procedure.name;
       document.getElementById('bannerProcSig').textContent = data.procedure.signature;
@@ -2992,6 +3132,30 @@ if proc:
       if (state.selectedProcedure) loadProcedure(state.selectedProcedure, false);
     }
 
+    function toggleSplitViewMode() {
+      state.splitView = !state.splitView;
+      playChirp(state.splitView ? 960 : 540, 0.06);
+      const btn = document.getElementById('splitViewBtn');
+      if (btn) {
+        btn.textContent = state.splitView ? '⚡ SPLIT: ON' : '⚡ SPLIT';
+        btn.classList.toggle('primary-glow', state.splitView);
+        btn.classList.toggle('cyan-glow', !state.splitView);
+      }
+      if (state.splitView && state.mode !== 'asm' && state.mode !== 'pseudo') {
+        state.mode = 'asm';
+        ['asm', 'cfg', 'pseudo', 'hex', 'emu', 'audit', 'resuite', 'omniv3'].forEach(m => {
+          const el = document.getElementById('mode-' + m);
+          if (el) el.classList.toggle('active', m === state.mode);
+        });
+      }
+      document.getElementById('decompilerOptionsBar').style.display =
+        (state.mode === 'pseudo' || (state.splitView && state.mode === 'asm')) ? 'flex' : 'none';
+      showToast(state.splitView
+        ? '⚡ VUE SCINDÉE SYNCHRONISÉE (ASM ↔ DECOMPILER ↔ AI REWRITE) : ACTIVÉE'
+        : '⚡ VUE SCINDÉE SYNCHRONISÉE : DÉSACTIVÉE');
+      renderCenterView();
+    }
+
     function setMode(mode) {
       state.mode = mode;
       const modeNames = {
@@ -3002,13 +3166,15 @@ if proc:
         emu: 'CPU MICRO-EMULATOR // LIVE TRACE',
         audit: 'NEURAL & SECURITY AUDITOR',
         resuite: 'RE SUITE // .ULTRON • BINDIFF • FRIDA • FLIRT',
+        omniv3: 'OMNI-V3 // Z3 SYMBOLIC • AI REWRITE • CALLGRAPH • REA • MCP',
       };
       triggerNeuralActivity(1.15, modeNames[mode] || 'MODE SWITCH');
-      ['asm', 'cfg', 'pseudo', 'hex', 'emu', 'audit', 'resuite'].forEach(m => {
+      ['asm', 'cfg', 'pseudo', 'hex', 'emu', 'audit', 'resuite', 'omniv3'].forEach(m => {
         const el = document.getElementById('mode-' + m);
         if (el) el.classList.toggle('active', m === mode);
       });
-      document.getElementById('decompilerOptionsBar').style.display = (mode === 'pseudo') ? 'flex' : 'none';
+      document.getElementById('decompilerOptionsBar').style.display =
+        (mode === 'pseudo' || (state.splitView && mode === 'asm')) ? 'flex' : 'none';
       document.getElementById('cfgMinimap').style.display = (mode === 'cfg') ? 'block' : 'none';
       renderCenterView();
     }
@@ -3016,11 +3182,20 @@ if proc:
     async function renderCenterView() {
       const container = document.getElementById('centerContent');
       const d = state.currentDossier;
+      if (state.mode === 'omniv3') {
+        await renderOmniV3(container, d);
+        return;
+      }
       if (state.mode === 'resuite') {
         await renderReSuite(container, d);
         return;
       }
       if (!d) return;
+
+      if (state.splitView && (state.mode === 'asm' || state.mode === 'pseudo')) {
+        renderSplitView(container, d);
+        return;
+      }
 
       if (state.mode === 'asm') {
         renderAsmMode(container, d);
@@ -3059,9 +3234,9 @@ if proc:
       }
     }
 
-    function renderAsmMode(container, d) {
+    function buildAsmTableHtml(d, isSplit = false) {
       let html = `<table class="asm-table"><tbody>`;
-      html += `<tr class="asm-label-row"><td colspan="5">; ═══════════════ SUBROUTINE // ${escapeHtml(d.procedure.name)} (DOUBLE-CLICK CALLS TO JUMP, [B] BREAKPOINT, ESC TO RETURN) ═══════════════</td></tr>`;
+      html += `<tr class="asm-label-row"><td colspan="5">; ═══════════════ SUBROUTINE // ${escapeHtml(d.procedure.name)} (HOVER/CLICK TO SYNC DECOMPILER, [B] BREAKPOINT, 🔮 SOLVE Z3) ═══════════════</td></tr>`;
       const localVars = d.local_variables || d.procedure?.local_variables || [];
       if (localVars.length > 0) {
         localVars.forEach(v => {
@@ -3070,7 +3245,8 @@ if proc:
         });
       }
 
-      d.instructions.forEach(ins => {
+      const totalIns = Math.max(1, (d.instructions || []).length);
+      d.instructions.forEach((ins, idx) => {
         if (ins.label) {
           const xrefsText = (ins.xrefs_in && ins.xrefs_in.length) ? ` ; SYNAPTIC XREFS: ${ins.xrefs_in.join(', ')}` : '';
           html += `<tr class="asm-label-row"><td colspan="5">◈ ${escapeHtml(ins.label)}:${escapeHtml(xrefsText)}</td></tr>`;
@@ -3092,20 +3268,185 @@ if proc:
           opsHtml = wrapInteractiveTokens(opsHtml);
         }
         const cmt = (ins.inline_comment || ins.comment) ? `; ${escapeHtml(ins.inline_comment || ins.comment)}` : '';
+        const solveBtn = `<button class="solve-here-btn" title="Résoudre le chemin d'exécution symbolique Z3 jusqu'à ${ins.address}" onclick="event.stopPropagation(); solveSymbolicPathTo('${ins.address}')">🔮 SOLVE PATH TO HERE</button>`;
         html += `
-          <tr class="asm-row ${isSel} ${isBp ? 'has-bp' : ''}" data-addr="${ins.address}" onclick="playChirp(540,0.03); selectAddress('${ins.address}')" ondblclick="${jumpTarget ? `loadProcedure('${jumpTarget}')` : `toggleBreakpoint('${ins.address}')`}">
+          <tr class="asm-row ${isSel} ${isBp ? 'has-bp' : ''}" data-addr="${ins.address}" data-ins-idx="${idx}" onmouseenter="syncHighlightFromAsm('${ins.address}', ${idx}, ${totalIns})" onclick="playChirp(540,0.03); selectAddress('${ins.address}'); syncHighlightFromAsm('${ins.address}', ${idx}, ${totalIns}, true)" ondblclick="${jumpTarget ? `loadProcedure('${jumpTarget}')` : `toggleBreakpoint('${ins.address}')`}">
             <td class="col-addr" title="Cliquer pour sélectionner • [B] pour Breakpoint">${bpBadge}${ins.address}</td>
             <td class="col-bytes">${ins.bytes}</td>
             <td class="col-mnem ${mnemClass}">${escapeHtml(ins.mnemonic)}</td>
-            <td class="col-ops">${opsHtml}</td>
+            <td class="col-ops">${opsHtml}${solveBtn}</td>
             <td class="col-comment">${cmt}</td>
           </tr>
         `;
       });
       html += `</tbody></table>`;
-      container.innerHTML = html;
+      return html;
+    }
+
+    function renderAsmMode(container, d) {
+      container.innerHTML = buildAsmTableHtml(d, false);
     }
     const renderAsm = renderAsmMode;
+
+    function highlightPseudocodeLine(rawLine) {
+      let highlighted = escapeHtml(rawLine)
+        .replace(/(\/\*[\s\S]*?\*\/|\/\/.*)/g, '<span class="cmt">$1</span>')
+        .replace(/(@"(?:[^"\\]|\\.)*"|"(?:[^"\\]|\\.)*"|@selector\([^)]+\))/g, '<span class="str">$1</span>')
+        .replace(/\b(if|else|while|for|do|return|goto|continue|break|int64_t|uint64_t|int32_t|uint32_t|void|char|size_t|ssize_t|bool|id|SEL|fn|let|mut|pub|unsafe|match|func|var|guard|UInt64|Int64|OpaquePointer|constexpr|auto|nullptr)\b/g, '<span class="kw">$1</span>')
+        .replace(/^(loc_[0-9a-fA-F]+:)/gm, '<span class="lbl">$1</span>');
+      return wrapInteractiveTokens(highlighted);
+    }
+
+    function buildInteractiveDecompHtml(codeText, d) {
+      const lines = String(codeText || '// NO DECOMPILED TELEMETRY').split('\n');
+      const totalLines = Math.max(1, lines.length);
+      const totalIns = Math.max(1, (d?.instructions || []).length);
+      return lines.map((line, lineIdx) => {
+        const addrMatch = line.match(/0x[0-9a-fA-F]{4,16}/) || line.match(/loc_([0-9a-fA-F]{4,16})/);
+        let lineAddr = '';
+        if (addrMatch) {
+          lineAddr = addrMatch[0].startsWith('loc_') ? ('0x' + addrMatch[1].toLowerCase()) : addrMatch[0].toLowerCase();
+        }
+        const mappedInsIdx = Math.min(totalIns - 1, Math.max(0, Math.floor((lineIdx / totalLines) * totalIns)));
+        const fallbackAddr = d?.instructions?.[mappedInsIdx]?.address || '';
+        const effectiveAddr = lineAddr || fallbackAddr;
+        return `<span class="decomp-line" data-line-idx="${lineIdx}" data-line-addr="${escapeHtml(effectiveAddr)}" onmouseenter="syncHighlightFromDecomp(${lineIdx}, ${totalLines}, '${escapeHtml(effectiveAddr)}')" onclick="playChirp(620,0.03); if('${escapeHtml(effectiveAddr)}') selectAddress('${escapeHtml(effectiveAddr)}'); syncHighlightFromDecomp(${lineIdx}, ${totalLines}, '${escapeHtml(effectiveAddr)}', true)">${highlightPseudocodeLine(line) || ' '}</span>`;
+      }).join('');
+    }
+
+    function syncHighlightFromAsm(addr, insIdx, totalIns, scrollDecomp = false) {
+      state.hoveredAsmAddr = addr;
+      const norm = normAddrHex(addr);
+      const decompLines = Array.from(document.querySelectorAll('.decomp-line'));
+      if (decompLines.length === 0) return;
+
+      let matchedAny = false;
+      const shortHex = norm.replace(/^0x/, '');
+      decompLines.forEach(el => {
+        const lAddr = normAddrHex(el.getAttribute('data-line-addr') || '');
+        const txt = (el.textContent || '').toLowerCase();
+        const isDirect = (lAddr && lAddr === norm) || (shortHex.length >= 4 && (txt.includes(norm) || txt.includes('loc_' + shortHex)));
+        el.classList.toggle('hl-sync', Boolean(isDirect));
+        if (isDirect) matchedAny = true;
+      });
+
+      if (!matchedAny && decompLines.length > 0) {
+        const ratio = Math.max(0, Math.min(1, insIdx / Math.max(1, totalIns - 1)));
+        const targetLine = Math.min(decompLines.length - 1, Math.max(1, Math.round(1 + ratio * (decompLines.length - 2))));
+        decompLines[targetLine]?.classList.add('hl-sync');
+        if (decompLines[targetLine + 1] && decompLines.length > 6) {
+          decompLines[targetLine + 1].classList.add('hl-sync');
+        }
+      }
+
+      if (scrollDecomp) {
+        const firstHl = document.querySelector('.decomp-line.hl-sync');
+        if (firstHl) firstHl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    function syncHighlightFromDecomp(lineIdx, totalLines, lineAddr, scrollAsm = false) {
+      document.querySelectorAll('.decomp-line').forEach((el, idx) => {
+        el.classList.toggle('hl-sync', idx === lineIdx);
+      });
+      const asmRows = Array.from(document.querySelectorAll('.asm-row[data-addr]'));
+      if (asmRows.length === 0) return;
+
+      const norm = normAddrHex(lineAddr);
+      let matched = false;
+      asmRows.forEach(r => {
+        const rAddr = normAddrHex(r.getAttribute('data-addr') || '');
+        const isHit = norm && rAddr === norm;
+        r.classList.toggle('hl-sync', Boolean(isHit));
+        if (isHit) matched = true;
+      });
+
+      if (!matched) {
+        const ratio = Math.max(0, Math.min(1, lineIdx / Math.max(1, totalLines - 1)));
+        const targetIdx = Math.min(asmRows.length - 1, Math.max(0, Math.round(ratio * (asmRows.length - 1))));
+        asmRows[targetIdx]?.classList.add('hl-sync');
+      }
+
+      if (scrollAsm) {
+        const firstAsm = document.querySelector('.asm-row.hl-sync');
+        if (firstAsm) firstAsm.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    function switchSplitDecompToSsa() {
+      playChirp(720, 0.05);
+      state.aiRewriteData = null;
+      renderCenterView();
+      showToast('SSA BASELINE C DECOMPILER ACTIVE');
+    }
+
+    function renderSplitView(container, d) {
+      const activeRewrite = state.aiRewriteData;
+      const isAi = Boolean(activeRewrite && (activeRewrite.rewritten_code || activeRewrite.code));
+      const langUpper = isAi ? String(activeRewrite.language || state.aiRewriteLang || 'c23').toUpperCase() : 'SSA C';
+      const codeToRender = isAi
+        ? (activeRewrite.rewritten_code || activeRewrite.code)
+        : (d.pseudocode || '// NO DECOMPILED TELEMETRY');
+
+      const semVars = activeRewrite?.semantic_variables || activeRewrite?.variable_renames || activeRewrite?.inferred_variables || [];
+      const semVarsBar = (isAi && semVars.length > 0)
+        ? `<div style="padding:5px 12px;background:rgba(199,125,255,0.10);border-bottom:1px solid rgba(199,125,255,0.28);font-family:var(--font-code);font-size:10.5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <strong style="color:var(--violet);">🧠 AI SEMANTIC VARS (${escapeHtml(langUpper)}):</strong>
+            ${semVars.slice(0, 8).map(v => {
+              const orig = v.original || v.from || v.ssa_reg || '';
+              const inf = v.inferred || v.to || v.semantic_name || v.name || '';
+              const ty = v.inferred_type || v.type || '';
+              return `<span class="hud-tag" style="border-color:var(--violet);color:#fff;background:rgba(199,125,255,0.2);">${escapeHtml(orig)} → <strong>${escapeHtml(inf)}</strong>${ty ? ` : ${escapeHtml(ty)}` : ''}</span>`;
+            }).join('')}
+           </div>`
+        : '';
+
+      const symRes = state.symbolicSolveResult;
+      const symBanner = symRes && !symRes.error
+        ? `<div style="padding:8px 12px;background:linear-gradient(90deg,rgba(0,255,157,0.12),rgba(4,9,18,0.95));border-bottom:1px solid var(--emerald);font-family:var(--font-code);font-size:11px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="color:var(--emerald);">🔮 Z3 SYMBOLIC PATH TO ${escapeHtml(String(symRes.target_address || state.selectedAddress))} [${escapeHtml(String(symRes.status || 'SATISFIABLE'))}]</strong>
+              <div style="display:flex;gap:6px;">
+                <button class="fui-btn cyan-glow" style="padding:2px 8px;font-size:9px;" onclick="setMode('omniv3')">OPEN IN 08 OMNI-V3</button>
+                <button class="fui-btn" style="padding:2px 6px;font-size:9px;" onclick="state.symbolicSolveResult=null; renderCenterView();">✕</button>
+              </div>
+            </div>
+            <div style="color:var(--secondary);font-size:10.5px;">PATH: ${escapeHtml((symRes.bfs_path || symRes.cfg_path || symRes.path || []).join(' → ') || 'BB_0 → TARGET')}</div>
+            <div style="color:#fff;font-size:10.5px;margin-top:2px;">SOLVED INPUTS: <code style="color:var(--tertiary);">${escapeHtml(JSON.stringify(symRes.solved_inputs || symRes.concrete_inputs || {}))}</code></div>
+           </div>`
+        : '';
+
+      container.innerHTML = `
+        <div class="split-view-grid">
+          <div class="split-pane-left">
+            <div class="split-pane-header">
+              <span><strong style="color:var(--primary);">01 // ASM MATRIX</strong> (${d.instructions.length} INSNS)</span>
+              <span style="color:var(--text-mid);font-size:10px;">HOVER/CLICK ROW TO SYNC ↔ 🔮 SOLVE Z3</span>
+            </div>
+            <div class="split-pane-body" id="splitAsmPane">
+              ${buildAsmTableHtml(d, true)}
+            </div>
+          </div>
+          <div class="split-pane-right">
+            <div class="split-pane-header">
+              <span><strong style="color:var(--secondary);">03 // SYNCHRONIZED DECOMPILER</strong> <span class="hud-tag">${escapeHtml(langUpper)}</span></span>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                <button class="fui-btn ${!isAi ? 'primary-glow' : ''}" style="padding:3px 8px;font-size:9.5px;" onclick="switchSplitDecompToSsa()">SSA C</button>
+                <button class="fui-btn ${isAi && state.aiRewriteLang === 'c23' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 8px;font-size:9.5px;" onclick="runAiRewrite('c23')">🧠 AI C23</button>
+                <button class="fui-btn ${isAi && state.aiRewriteLang === 'rust' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 8px;font-size:9.5px;" onclick="runAiRewrite('rust')">🦀 AI RUST</button>
+                <button class="fui-btn ${isAi && state.aiRewriteLang === 'swift' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 8px;font-size:9.5px;" onclick="runAiRewrite('swift')">🦅 AI SWIFT</button>
+                <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="solveSymbolicPathTo(state.selectedAddress)">🔮 SOLVE SYMBOLIC PATH</button>
+              </div>
+            </div>
+            ${semVarsBar}
+            ${symBanner}
+            <div class="split-pane-body" id="splitDecompPane">
+              <pre class="pseudocode-pre" style="padding:14px 12px;">${buildInteractiveDecompHtml(codeToRender, d)}</pre>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
     function renderCfgMode(container, d) {
       const blocks = d.basic_blocks || [];
@@ -3206,14 +3547,25 @@ if proc:
     }
 
     function renderPseudoMode(container, d) {
-      const code = d.pseudocode || '// NO DECOMPILED TELEMETRY';
-      let highlighted = escapeHtml(code)
-        .replace(/(\/\*[\s\S]*?\*\/|\/\/.*)/g, '<span class="cmt">$1</span>')
-        .replace(/(@"(?:[^"\\]|\\.)*"|@selector\([^)]+\))/g, '<span class="str">$1</span>')
-        .replace(/\b(if|else|while|for|do|return|goto|continue|break|int64_t|uint64_t|void|char|size_t|ssize_t|bool|id|SEL)\b/g, '<span class="kw">$1</span>')
-        .replace(/^(loc_[0-9a-fA-F]+:)/gm, '<span class="lbl">$1</span>');
-      highlighted = wrapInteractiveTokens(highlighted);
-      container.innerHTML = `<pre class="pseudocode-pre">${highlighted}</pre>`;
+      const isAi = Boolean(state.aiRewriteData && (state.aiRewriteData.rewritten_code || state.aiRewriteData.code));
+      const code = isAi
+        ? (state.aiRewriteData.rewritten_code || state.aiRewriteData.code)
+        : (d.pseudocode || '// NO DECOMPILED TELEMETRY');
+      const langBadge = isAi ? String(state.aiRewriteData.language || state.aiRewriteLang || 'c23').toUpperCase() : 'SSA C';
+      const toolbarHtml = `
+        <div style="padding:7px 16px;background:rgba(3,8,16,0.92);border-bottom:1px solid rgba(0,240,255,0.22);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--font-fui);font-size:10.5px;">
+          <span>ENGINE: <strong style="color:var(--secondary);">${escapeHtml(langBadge)}</strong></span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="fui-btn ${!isAi ? 'primary-glow' : ''}" style="padding:3px 9px;font-size:9.5px;" onclick="switchSplitDecompToSsa()">SSA C</button>
+            <button class="fui-btn ${isAi && state.aiRewriteLang === 'c23' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('c23')">🧠 AI C23</button>
+            <button class="fui-btn ${isAi && state.aiRewriteLang === 'rust' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('rust')">🦀 AI RUST</button>
+            <button class="fui-btn ${isAi && state.aiRewriteLang === 'swift' ? 'primary-glow' : 'cyan-glow'}" style="padding:3px 9px;font-size:9.5px;" onclick="runAiRewrite('swift')">🦅 AI SWIFT</button>
+            <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="solveSymbolicPathTo(state.selectedAddress)">🔮 SOLVE SYMBOLIC PATH</button>
+            <button class="fui-btn cyan-glow" style="padding:3px 9px;font-size:9.5px;" onclick="toggleSplitViewMode()">⚡ SPLIT VIEW [V]</button>
+          </div>
+        </div>
+      `;
+      container.innerHTML = `${toolbarHtml}<pre class="pseudocode-pre">${buildInteractiveDecompHtml(code, d)}</pre>`;
     }
 
     async function renderHexMode(container, addr) {
@@ -3888,6 +4240,598 @@ if proc:
             <div style="max-height:70px;overflow-y:auto;border:1px solid rgba(0,240,255,0.15);background:rgba(2,5,11,0.75);">
               ${dwarfHtml}
             </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ─── MODE 08: OMNI-V3 (Z3 SYMBOLIC SOLVER, AI REWRITER, GLOBAL CALL GRAPH, REA MULTI-ARTIFACT & MCP SERVER) ─── */
+    async function solveSymbolicPathTo(targetAddr) {
+      playChirp(1020, 0.08);
+      const procAddr = state.selectedProcedure || state.overview?.entry_point || '0x100000000';
+      const tgtAddr = (targetAddr || document.getElementById('omniSymbolicTargetInput')?.value || state.selectedAddress || procAddr).trim();
+      showToast(`🔮 Z3 SYMBOLIC SOLVER : Calcul du chemin CFG ${procAddr} → ${tgtAddr}…`);
+      try {
+        const resp = await fetch('/api/v3/symbolic-solve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            proc_address: procAddr,
+            procedure: procAddr,
+            target_address: tgtAddr,
+            target: tgtAddr,
+          }),
+        });
+        const res = await resp.json();
+        state.symbolicSolveResult = res;
+        const st = res.status || (res.satisfiable !== false ? 'SATISFIABLE (SAT)' : 'UNSATISFIABLE');
+        showToast(`🔮 Z3 PATH SOLVED [${st}] → ${tgtAddr}`);
+      } catch (e) {
+        state.symbolicSolveResult = { error: String(e) };
+      }
+      if (state.mode !== 'omniv3' && !state.splitView) {
+        setMode('omniv3');
+      } else {
+        await renderCenterView();
+      }
+    }
+
+    async function runAiRewrite(language = 'c23') {
+      playChirp(980, 0.08);
+      state.aiRewriteLang = language;
+      const procAddr = state.selectedProcedure || state.overview?.entry_point || '0x100000000';
+      showToast(`🧠 AI NEURAL REWRITER : Synthèse idiomatique [${language.toUpperCase()}] pour ${procAddr}…`);
+      try {
+        const resp = await fetch('/api/v3/ai-decompile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            proc_address: procAddr,
+            procedure: procAddr,
+            language,
+          }),
+        });
+        const res = await resp.json();
+        state.aiRewriteData = { ...res, language: res.language || language };
+        showToast(`🧠 AI REWRITE [${language.toUpperCase()}] COMPLÉTÉ`);
+      } catch (e) {
+        state.aiRewriteData = { error: String(e), language };
+      }
+      await renderCenterView();
+    }
+
+    async function loadGlobalCallGraph(silent = false) {
+      if (!silent) playChirp(940, 0.07);
+      try {
+        const resp = await fetch('/api/v3/callgraph');
+        state.globalCallGraph = await resp.json();
+        if (!silent) {
+          const nCount = (state.globalCallGraph?.nodes || []).length;
+          const eCount = (state.globalCallGraph?.edges || []).length;
+          showToast(`🕸 GRAPHE D'APPELS GLOBAL GÉNÉRÉ : ${nCount} NŒUDS // ${eCount} ARÊTES`);
+          if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
+        }
+      } catch (e) {
+        state.globalCallGraph = { error: String(e) };
+      }
+    }
+
+    async function selectReaPreset(samplePath, kind) {
+      playChirp(880, 0.06);
+      const inp = document.getElementById('omniArtifactPathInput');
+      if (inp) inp.value = samplePath;
+      if (kind === 'asar') {
+        await inspectReaArtifact(samplePath);
+      } else {
+        await decodeReaBytecode(samplePath, kind);
+      }
+    }
+
+    async function inspectReaArtifact(pathOverride) {
+      playChirp(920, 0.08);
+      const p = (pathOverride || document.getElementById('omniArtifactPathInput')?.value || 'samples/ultron_electron_app.asar').trim();
+      showToast(`📦 INSPECTION ARTEFACT REA : ${p.split('/').pop()}…`);
+      try {
+        const resp = await fetch('/api/v3/inspect-artifact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: p, artifact_path: p }),
+        });
+        state.artifactReport = await resp.json();
+        state.bytecodeReport = null;
+        showToast(`📦 ARTEFACT ANALYSÉ : ${state.artifactReport?.format || state.artifactReport?.artifact_type || p.split('/').pop()}`);
+      } catch (e) {
+        state.artifactReport = { error: String(e) };
+      }
+      if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
+    }
+
+    async function decodeReaBytecode(pathOverride, formatHint) {
+      playChirp(960, 0.08);
+      const p = (pathOverride || document.getElementById('omniArtifactPathInput')?.value || 'samples/ultron_smart_contract.evm').trim();
+      const fmt = formatHint || (p.endsWith('.dex') ? 'dex' : (p.endsWith('.dll') || p.endsWith('.exe') ? 'cil' : 'evm'));
+      showToast(`🧬 DÉCODAGE BYTECODE [${fmt.toUpperCase()}] : ${p.split('/').pop()}…`);
+      try {
+        const resp = await fetch('/api/v3/decode-bytecode', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: p, format: fmt, arch: fmt }),
+        });
+        state.bytecodeReport = await resp.json();
+        state.artifactReport = null;
+        showToast(`🧬 BYTECODE DÉCODÉ : ${state.bytecodeReport?.format || fmt.toUpperCase()}`);
+      } catch (e) {
+        state.bytecodeReport = { error: String(e) };
+      }
+      if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
+    }
+
+    async function analyzeCrashDumpAction(pathOverride) {
+      playChirp(990, 0.08);
+      const p = (pathOverride || document.getElementById('omniCrashPathInput')?.value || 'samples/ultron_crash_report.ips').trim();
+      showToast(`💥 ANALYSE FORENSIQUE CRASH DUMP : ${p.split('/').pop()}…`);
+      try {
+        const resp = await fetch('/api/v3/crash-dump', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: p, dump_path: p }),
+        });
+        state.crashDumpReport = await resp.json();
+        showToast(`💥 CRASH DUMP ANALYSÉ : ${state.crashDumpReport?.exception_type || state.crashDumpReport?.signal || 'EXC_BAD_ACCESS'}`);
+      } catch (e) {
+        state.crashDumpReport = { error: String(e) };
+      }
+      if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
+    }
+
+    async function observeNativeCallsAction() {
+      playChirp(1010, 0.08);
+      const binPath = state.overview?.file_path || 'samples/ultron_objc_sample';
+      const bps = Array.from(state.breakpoints);
+      showToast(`🐞 LLDB LIVE OBSERVER : Capture d'appels natifs sur ${binPath.split('/').pop()}…`);
+      try {
+        const resp = await fetch('/api/v3/observe-calls', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            path: binPath,
+            breakpoints: bps,
+            duration_ms: 1500,
+          }),
+        });
+        state.observedCallsReport = await resp.json();
+        const cnt = (state.observedCallsReport?.observed_calls || state.observedCallsReport?.calls || state.observedCallsReport?.events || []).length;
+        showToast(`🐞 LLDB LIVE OBSERVER : ${cnt} APPELS NATIFS CAPTURÉS`);
+      } catch (e) {
+        state.observedCallsReport = { error: String(e) };
+      }
+      if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
+    }
+
+    async function listMcpToolsAction() {
+      playChirp(1060, 0.07);
+      showToast('🔌 INTERROGATION DU SERVEUR MCP JSON-RPC 2.0 (tools/list)…');
+      try {
+        const resp = await fetch('/api/mcp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'tools/list',
+            params: {},
+          }),
+        });
+        state.mcpToolsReport = await resp.json();
+        const tools = state.mcpToolsReport?.result?.tools || state.mcpToolsReport?.tools || [];
+        showToast(`🔌 SERVEUR MCP ACTIF : ${tools.length} OUTILS REA-COMPATIBLES PRÊTS`);
+      } catch (e) {
+        state.mcpToolsReport = { error: String(e) };
+      }
+      if (state.mode === 'omniv3') await renderOmniV3(document.getElementById('centerContent'), state.currentDossier);
+    }
+
+    async function renderOmniV3(container, d) {
+      if (!container) container = document.getElementById('centerContent');
+      // Auto-load Global Call Graph on first visit
+      if (!state.globalCallGraph) {
+        await loadGlobalCallGraph(true);
+      }
+
+      const defaultTargetAddr = state.symbolicSolveResult?.target_address || state.selectedAddress || state.selectedProcedure || state.overview?.entry_point || '0x100000000';
+      const sym = state.symbolicSolveResult;
+      const ai = state.aiRewriteData;
+
+      // ── QUADRANT 1: Z3 SYMBOLIC SOLVER & AI REWRITER ──
+      let symHtml = `<div style="color:var(--text-mid);font-size:11px;padding:6px;">Entrez une adresse cible et cliquez sur <strong>🔮 RÉSOUDRE CHEMIN SYMBOLIQUE</strong> pour calculer le plus court chemin CFG (BFS), extraire les contraintes algébriques, résoudre les entrées concrètes (<code>arg0</code>, <code>arg1</code>) et générer le modèle formel <strong>SMT-LIB2 (Z3)</strong>.</div>`;
+      if (sym && !sym.error) {
+        const bfsPath = sym.bfs_path || sym.cfg_path || sym.path || sym.basic_blocks_path || [];
+        const pathStr = Array.isArray(bfsPath)
+          ? bfsPath.map(n => typeof n === 'object' ? (n.id || n.block || n.address || JSON.stringify(n)) : String(n)).join(' → ')
+          : String(bfsPath || 'BB_0 → TARGET');
+        const constraints = sym.path_constraints || sym.constraints || sym.algebraic_constraints || [];
+        const solvedInputs = sym.solved_inputs || sym.concrete_inputs || sym.inputs || {};
+        const arg0Info = solvedInputs.arg0 || solvedInputs.x0 || solvedInputs.rdi || sym.arg0 || null;
+        const arg1Info = solvedInputs.arg1 || solvedInputs.x1 || solvedInputs.rsi || sym.arg1 || null;
+        const smtModel = sym.smt_lib2 || sym.smt2 || sym.smt_model || sym.z3_script || '';
+
+        const fmtInputVal = (val, keyName) => {
+          if (!val) return '';
+          if (typeof val === 'object') {
+            return `${keyName}: hex=${val.hex || val.value || '-'} | dec=${val.dec ?? val.decimal ?? '-'} | ascii="${val.ascii || val.string || ''}"`;
+          }
+          return `${keyName}: ${String(val)}`;
+        };
+        const solvedBadges = [];
+        if (arg0Info) solvedBadges.push(fmtInputVal(arg0Info, 'arg0 (x0/rdi)'));
+        if (arg1Info) solvedBadges.push(fmtInputVal(arg1Info, 'arg1 (x1/rsi)'));
+        if (solvedBadges.length === 0 && typeof solvedInputs === 'object') {
+          Object.entries(solvedInputs).forEach(([k, v]) => solvedBadges.push(fmtInputVal(v, k)));
+        }
+
+        symHtml = `
+          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(0,255,157,0.28);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="color:var(--emerald);font-weight:700;">◈ Z3 SOLVER STATUS : ${escapeHtml(String(sym.status || (sym.satisfiable !== false ? 'SATISFIABLE' : 'UNSAT')))}</span>
+              <span class="hud-tag">${escapeHtml(String(sym.target_address || defaultTargetAddr))}</span>
+            </div>
+            <div><span style="color:var(--text-mid);">BFS CFG PATH :</span> <strong style="color:var(--secondary);">${escapeHtml(pathStr)}</strong></div>
+            <div>
+              <span style="color:var(--text-mid);">PATH CONSTRAINTS (${constraints.length}) :</span>
+              <div style="margin-top:3px;display:flex;gap:5px;flex-wrap:wrap;">
+                ${constraints.map(c => `<span class="hud-tag" style="border-color:var(--tertiary);color:var(--tertiary);background:rgba(255,158,0,0.12);">${escapeHtml(typeof c === 'object' ? (c.expression || c.constraint || JSON.stringify(c)) : String(c))}</span>`).join('') || '<span style="color:var(--text-lo);">Unconstrained direct path</span>'}
+              </div>
+            </div>
+            <div>
+              <span style="color:var(--text-mid);">SOLVED CONCRETE INPUTS :</span>
+              <div style="margin-top:3px;display:flex;gap:6px;flex-wrap:wrap;">
+                ${solvedBadges.map(b => `<span class="hud-tag" style="border-color:var(--emerald);color:#fff;background:rgba(0,255,157,0.18);">${escapeHtml(b)}</span>`).join('') || '<span style="color:var(--emerald);">Any input satisfies entry reachability</span>'}
+              </div>
+            </div>
+            ${smtModel ? `
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                  <span style="color:var(--violet);font-family:var(--font-fui);font-size:10px;">MODÈLE FORMEL SMT-LIB2 (Z3 PROVER) :</span>
+                  <button class="fui-btn" style="padding:1px 7px;font-size:9px;" onclick="copyReSuiteText('omniSmtPre', 'MODÈLE SMT-LIB2 Z3')">📋 COPIER SMT2</button>
+                </div>
+                <textarea id="omniSmtPre" class="resuite-code-box" style="min-height:82px;max-height:110px;color:var(--secondary);" readonly>${escapeHtml(smtModel)}</textarea>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      let aiHtml = '';
+      if (ai && !ai.error) {
+        const aiCode = ai.rewritten_code || ai.code || ai.source || '';
+        const semVars = ai.semantic_variables || ai.variable_renames || ai.inferred_variables || [];
+        aiHtml = `
+          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(199,125,255,0.32);padding:8px 10px;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-fui);font-size:10px;">
+              <span style="color:var(--violet);font-weight:700;">🧠 AI IDIOMATIC REWRITE // ${escapeHtml(String(ai.language || state.aiRewriteLang).toUpperCase())}</span>
+              <button class="fui-btn" style="padding:1px 7px;font-size:9px;" onclick="copyReSuiteText('omniAiCodeBox', 'CODE AI REWRITE')">📋 COPIER</button>
+            </div>
+            ${semVars.length > 0 ? `
+              <div style="display:flex;gap:5px;flex-wrap:wrap;font-family:var(--font-code);font-size:10px;">
+                ${semVars.map(v => `<span class="hud-tag" style="border-color:var(--violet);color:#fff;background:rgba(199,125,255,0.2);">${escapeHtml(v.original || v.from || '')} → <strong>${escapeHtml(v.inferred || v.to || v.name || '')}</strong></span>`).join('')}
+              </div>
+            ` : ''}
+            <textarea id="omniAiCodeBox" class="resuite-code-box" style="min-height:105px;color:var(--emerald);" readonly>${escapeHtml(aiCode)}</textarea>
+          </div>
+        `;
+      }
+
+      // ── QUADRANT 2: GLOBAL 3D/2D CALL GRAPH & XREF MATRIX ──
+      const cg = state.globalCallGraph || {};
+      const cgNodes = cg.nodes || cg.procedures || [];
+      const cgEdges = cg.edges || cg.calls || [];
+      const cgCycles = cg.recursion_cycles || cg.cycles || [];
+      const cgHubs = cg.top_hubs || cg.hub_procedures || [...cgNodes].sort((a, b) => ((b.degree ?? ((b.in_degree || 0) + (b.out_degree || 0))) - (a.degree ?? ((a.in_degree || 0) + (a.out_degree || 0))))).slice(0, 12);
+
+      const catColorMap = {
+        ENTRY: '#ff1e38',
+        OBJC_METHOD: '#c77dff',
+        CPP_METHOD: '#00f0ff',
+        CRYPTO_KERNEL: '#ff9e00',
+        SUBROUTINE: '#00ff9d',
+      };
+
+      const svgW = 680, svgH = 210;
+      const nodeCoords = {};
+      const dispNodes = cgNodes.slice(0, 28);
+      dispNodes.forEach((n, idx) => {
+        const key = n.address || n.entry_point || n.id || String(idx);
+        const depth = n.depth ?? n.call_depth ?? (idx % 4);
+        const colCount = Math.max(1, dispNodes.filter((x, j) => (x.depth ?? x.call_depth ?? (j % 4)) === depth).length);
+        const rankInDepth = dispNodes.slice(0, idx).filter((x, j) => (x.depth ?? x.call_depth ?? (j % 4)) === depth).length;
+        const x = 65 + (depth % 5) * 135 + ((idx % 2) * 16);
+        const y = 28 + ((rankInDepth + 0.5) / colCount) * (svgH - 48);
+        nodeCoords[key] = { x: Math.min(svgW - 55, x), y: Math.min(svgH - 22, Math.max(22, y)), n };
+      });
+
+      const cgEdgesSvg = cgEdges.slice(0, 60).map(e => {
+        const srcKey = e.from || e.caller || e.source;
+        const dstKey = e.to || e.callee || e.target;
+        const s = nodeCoords[srcKey];
+        const t = nodeCoords[dstKey];
+        if (!s || !t) return '';
+        const isRec = srcKey === dstKey || e.is_recursive;
+        const col = isRec ? '#ff1e38' : 'rgba(0, 240, 255, 0.48)';
+        return `<line x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}" stroke="${col}" stroke-width="1.4" stroke-dasharray="${isRec ? '3 3' : ''}" />`;
+      }).join('');
+
+      const cgNodesSvg = Object.entries(nodeCoords).map(([addrKey, info]) => {
+        const cat = String(info.n.category || 'SUBROUTINE').toUpperCase();
+        const col = catColorMap[cat] || '#00ff9d';
+        const shortName = String(info.n.demangled || info.n.name || addrKey).slice(0, 16);
+        return `
+          <g style="cursor:pointer;" onclick="playChirp(760,0.05); loadProcedure('${escapeHtml(addrKey)}'); setMode('asm');">
+            <circle cx="${info.x}" cy="${info.y}" r="7" fill="${col}" fill-opacity="0.28" stroke="${col}" stroke-width="1.8" />
+            <text x="${info.x}" y="${info.y - 10}" fill="#f0f8ff" font-size="9" text-anchor="middle" font-family="var(--font-code)">${escapeHtml(shortName)}</text>
+          </g>
+        `;
+      }).join('');
+
+      const hubRowsHtml = cgHubs.slice(0, 10).map(h => {
+        const hAddr = h.address || h.entry_point || h.id || '0x0';
+        const hName = h.demangled || h.name || hAddr;
+        const hCat = String(h.category || 'SUBROUTINE').toUpperCase();
+        const hCol = catColorMap[hCat] || '#00ff9d';
+        const inDeg = h.in_degree ?? h.callers_count ?? 0;
+        const outDeg = h.out_degree ?? h.callees_count ?? 0;
+        const depth = h.depth ?? h.call_depth ?? 0;
+        return `
+          <tr class="asm-row" onclick="loadProcedure('${escapeHtml(String(hAddr))}'); setMode('asm');" title="Cliquer pour charger ${escapeHtml(hName)} (${escapeHtml(String(hAddr))})">
+            <td style="color:${hCol};font-weight:700;font-size:10px;">[${escapeHtml(hCat)}]</td>
+            <td style="color:#fff;font-weight:600;">${escapeHtml(hName)}</td>
+            <td style="color:var(--secondary);font-family:var(--font-fui);">${escapeHtml(String(hAddr))}</td>
+            <td style="color:var(--emerald);font-family:var(--font-fui);">IN:${inDeg} / OUT:${outDeg}</td>
+            <td style="color:var(--tertiary);font-family:var(--font-fui);">DEPTH:${depth}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // ── QUADRANT 3: REA MULTI-ARTIFACT & BYTECODE ANALYZER ──
+      const art = state.artifactReport;
+      const bc = state.bytecodeReport;
+      let reaBodyHtml = `<div style="color:var(--text-mid);font-size:11px;padding:6px;">Sélectionnez un preset REA (<strong>.asar Electron</strong>, <strong>.evm Solidity</strong>, <strong>.dex Android</strong>) ou cliquez sur <strong>📦 INSPECTER ARTEFACT</strong> / <strong>🧬 DÉCODER BYTECODE</strong>.</div>`;
+
+      if (art && !art.error) {
+        const files = art.files || art.file_tree || art.entries || [];
+        const ipcList = art.ipc_channels || art.ipc_handlers || [];
+        const secFlags = art.security_flags || art.electron_security || {};
+        reaBodyHtml = `
+          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(0,240,255,0.28);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong style="color:var(--secondary);">📦 ${escapeHtml(art.format || art.artifact_type || 'ELECTRON ASAR ARCHIVE')}</strong>
+              <span class="hud-tag">${files.length} FILES // ${ipcList.length} IPC CHANNELS</span>
+            </div>
+            ${Object.keys(secFlags).length > 0 ? `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                ${Object.entries(secFlags).map(([k, v]) => `<span class="hud-tag" style="border-color:var(--primary);color:#fff;">${escapeHtml(k)}: <strong>${escapeHtml(String(v))}</strong></span>`).join('')}
+              </div>
+            ` : ''}
+            ${ipcList.length > 0 ? `
+              <div>
+                <div style="color:var(--tertiary);font-size:10px;font-family:var(--font-fui);">IPC CHANNELS (ipcMain.handle / ipcRenderer.invoke) :</div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px;">
+                  ${ipcList.map(ch => `<span class="xref-pill" style="border-color:var(--tertiary);color:var(--tertiary);">${escapeHtml(typeof ch === 'object' ? (ch.channel || ch.name || JSON.stringify(ch)) : String(ch))}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+            <div>
+              <div style="color:var(--emerald);font-size:10px;font-family:var(--font-fui);">EXTRACTED FILE TREE :</div>
+              ${files.slice(0, 20).map(f => {
+                const fPath = typeof f === 'object' ? (f.path || f.name) : String(f);
+                const fSize = typeof f === 'object' && f.size !== undefined ? ` (${f.size}B)` : '';
+                const fPreview = typeof f === 'object' && f.preview ? ` — ${String(f.preview).slice(0, 70)}` : '';
+                return `<div style="padding:2px 0;border-bottom:1px solid rgba(0,240,255,0.08);color:#fff;">📄 <strong>${escapeHtml(fPath)}</strong><span style="color:var(--secondary);">${escapeHtml(fSize)}</span><span style="color:var(--text-mid);font-size:10px;">${escapeHtml(fPreview)}</span></div>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      } else if (bc && !bc.error) {
+        const selectors = bc.selectors || bc.solidity_selectors || bc.functions || [];
+        const dalvikMethods = bc.methods || bc.dalvik_methods || bc.classes || [];
+        const insns = bc.instructions || bc.opcodes || bc.disassembly || [];
+        reaBodyHtml = `
+          <div style="background:rgba(2,6,14,0.88);border:1px solid rgba(199,125,255,0.3);padding:8px 10px;font-family:var(--font-code);font-size:11px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong style="color:var(--violet);">🧬 BYTECODE // ${escapeHtml(bc.format || bc.architecture || 'VM')}</strong>
+              <span class="hud-tag">${insns.length} OPCODES</span>
+            </div>
+            ${selectors.length > 0 ? `
+              <div>
+                <div style="color:var(--tertiary);font-size:10px;font-family:var(--font-fui);">SOLIDITY 4-BYTE FUNCTION SELECTORS / ENTRYPOINTS :</div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px;">
+                  ${selectors.map(s => `<span class="hud-tag" style="border-color:var(--emerald);color:var(--emerald);background:rgba(0,255,157,0.12);">${escapeHtml(typeof s === 'object' ? `${s.selector || s.hash || ''} → ${s.signature || s.name || ''}` : String(s))}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+            ${dalvikMethods.length > 0 ? `
+              <div>
+                <div style="color:var(--secondary);font-size:10px;font-family:var(--font-fui);">DEX DALVIK CLASSES &amp; METHODS :</div>
+                ${dalvikMethods.slice(0, 12).map(m => `<div style="color:#fff;font-size:10.5px;">🤖 ${escapeHtml(typeof m === 'object' ? `${m.class_name || m.class || ''}->${m.method_name || m.name || ''} ${m.descriptor || m.proto || ''}` : String(m))}</div>`).join('')}
+              </div>
+            ` : ''}
+            ${insns.length > 0 ? `
+              <table class="asm-table">
+                <tbody>
+                  ${insns.slice(0, 35).map(i => `
+                    <tr>
+                      <td class="col-addr">${escapeHtml(String(i.offset || i.address || '0x0'))}</td>
+                      <td class="col-bytes">${escapeHtml(String(i.bytes || i.opcode_hex || ''))}</td>
+                      <td class="col-mnem">${escapeHtml(String(i.mnemonic || i.opcode || ''))}</td>
+                      <td class="col-ops">${escapeHtml(String(i.operand || i.operands || i.op_str || ''))}</td>
+                      <td class="col-comment">${escapeHtml(String(i.comment || i.annotation || ''))}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // ── QUADRANT 4: CRASH DUMP FORENSICS, LLDB LIVE OBSERVER & NATIVE MCP SERVER ──
+      const crash = state.crashDumpReport;
+      const obs = state.observedCallsReport;
+      const mcp = state.mcpToolsReport;
+
+      let crashHtml = '';
+      if (crash && !crash.error) {
+        const regs = crash.registers || crash.arm64_registers || crash.thread_state || {};
+        const frames = crash.backtrace || crash.frames || crash.stack_frames || [];
+        crashHtml = `
+          <div style="background:rgba(255,30,56,0.08);border:1px solid rgba(255,30,56,0.4);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="color:var(--primary);">💥 ${escapeHtml(crash.exception_type || crash.signal || 'EXC_BAD_ACCESS (SIGSEGV)')} // THREAD #${crash.faulting_thread ?? 0}</strong>
+              <span class="hud-tag">PC=${escapeHtml(String(regs.pc || crash.pc || '0x0'))} FAR=${escapeHtml(String(regs.far || crash.far || '0x0'))}</span>
+            </div>
+            <div style="color:var(--secondary);margin-bottom:4px;">
+              REGS: ${Object.entries(regs).slice(0, 8).map(([k, v]) => `<strong>${escapeHtml(k)}</strong>=${escapeHtml(String(v))}`).join(' • ')}
+            </div>
+            <div>
+              ${frames.slice(0, 6).map((f, idx) => {
+                const fAddr = f.address || f.pc || '0x0';
+                const fSym = f.symbol || f.function || f.procedure || `frame_${idx}`;
+                return `<div style="cursor:pointer;color:#fff;padding:1px 0;" onclick="loadProcedure('${escapeHtml(String(fAddr))}'); setMode('asm');">#${idx} <span style="color:var(--tertiary);">${escapeHtml(String(fAddr))}</span> → <strong>${escapeHtml(fSym)}</strong></div>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      let obsHtml = '';
+      if (obs && !obs.error) {
+        const calls = obs.observed_calls || obs.calls || obs.events || [];
+        obsHtml = `
+          <div style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.3);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;max-height:95px;overflow-y:auto;">
+            <div style="color:var(--secondary);font-weight:700;margin-bottom:3px;">🐞 LLDB LIVE OBSERVED CALLS (${calls.length}) :</div>
+            ${calls.slice(0, 10).map(c => `
+              <div style="color:#fff;padding:1px 0;">
+                <span style="color:var(--emerald);">[${escapeHtml(String(c.timestamp_ms ?? c.step ?? 'LIVE'))}ms]</span>
+                <strong>${escapeHtml(c.function || c.symbol || c.address || 'call')}</strong>
+                <span style="color:var(--text-mid);">x0=${escapeHtml(String(c.x0 || c.arg0 || (c.registers && c.registers.x0) || '0x0'))} → ret=${escapeHtml(String(c.retval || c.return_value || '0x1'))}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      let mcpHtml = '';
+      if (mcp && !mcp.error) {
+        const tools = mcp.result?.tools || mcp.tools || [];
+        const ledger = mcp.result?.evidence_ledger || mcp.evidence_ledger || [];
+        mcpHtml = `
+          <div style="background:rgba(0,255,157,0.06);border:1px solid rgba(0,255,157,0.32);padding:7px 9px;font-family:var(--font-code);font-size:10.5px;max-height:110px;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="color:var(--emerald);">🔌 MCP JSON-RPC 2.0 ONLINE (${tools.length} TOOLS)</strong>
+              <code style="color:var(--secondary);font-size:9.5px;">ultron-disassemble-rs mcp</code>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              ${tools.map(t => `<span class="hud-tag" style="border-color:var(--secondary);color:var(--secondary);background:rgba(0,240,255,0.1);" title="${escapeHtml(t.description || '')}">${escapeHtml(t.name)}</span>`).join('')}
+            </div>
+            ${ledger.length > 0 ? `<div style="margin-top:4px;color:var(--tertiary);font-size:10px;">EVIDENCE LEDGER: ${ledger.length} cryptographic provenance records</div>` : ''}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="omniv3-grid">
+          <!-- QUADRANT 1: Z3 SYMBOLIC EXECUTION SOLVER & AI SEMANTIC REWRITER -->
+          <div class="omniv3-panel">
+            <div class="fui-module-title">
+              <span>🔮 SOLVEUR D'EXÉCUTION SYMBOLIQUE (Z3 / ANGR) &amp; 🧠 AI REWRITER</span>
+              <span class="hud-tag">Z3 + AI AST</span>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="omniSymbolicTargetInput" class="fui-input" value="${escapeHtml(defaultTargetAddr)}" style="flex:1;min-width:130px;text-transform:none;" placeholder="Adresse cible (ex: 0x100000978)…" />
+              <button class="fui-btn primary-glow" onclick="solveSymbolicPathTo(document.getElementById('omniSymbolicTargetInput')?.value)">🔮 RÉSOUDRE CHEMIN SYMBOLIQUE</button>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="fui-btn cyan-glow" style="flex:1;" onclick="runAiRewrite('c23')">🧠 AI REWRITE -&gt; C23</button>
+              <button class="fui-btn cyan-glow" style="flex:1;" onclick="runAiRewrite('rust')">🦀 AI REWRITE -&gt; RUST</button>
+              <button class="fui-btn cyan-glow" style="flex:1;" onclick="runAiRewrite('swift')">🦅 AI REWRITE -&gt; SWIFT</button>
+            </div>
+            ${symHtml}
+            ${aiHtml}
+          </div>
+
+          <!-- QUADRANT 2: GLOBAL 3D/2D CALL GRAPH & XREF MATRIX -->
+          <div class="omniv3-panel">
+            <div class="fui-module-title">
+              <span>🕸 GRAPHE D'APPELS GLOBAL 3D/2D (GLOBAL CALL GRAPH &amp; XREF MATRIX)</span>
+              <button class="fui-btn primary-glow" style="padding:3px 9px;font-size:9.5px;" onclick="loadGlobalCallGraph(false)">🕸 GÉNÉRER GRAPHE D'APPELS GLOBAL</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-fui);font-size:10px;color:var(--text-mid);flex-wrap:wrap;gap:6px;">
+              <span>NODES: <strong style="color:#fff;">${cgNodes.length}</strong> • EDGES: <strong style="color:var(--secondary);">${cgEdges.length}</strong> • CYCLES: <strong style="color:var(--primary);">${cgCycles.length}</strong></span>
+              <div style="display:flex;gap:6px;">
+                <span style="color:#ff1e38;">● ENTRY</span>
+                <span style="color:#c77dff;">● OBJC_METHOD</span>
+                <span style="color:#00f0ff;">● CPP_METHOD</span>
+                <span style="color:#ff9e00;">● CRYPTO_KERNEL</span>
+                <span style="color:#00ff9d;">● SUBROUTINE</span>
+              </div>
+            </div>
+            <div style="background:rgba(2,5,12,0.92);border:1px solid rgba(0,240,255,0.22);overflow:hidden;">
+              <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}">
+                ${cgEdgesSvg}
+                ${cgNodesSvg}
+              </svg>
+            </div>
+            <div style="max-height:115px;overflow-y:auto;border:1px solid rgba(0,240,255,0.16);">
+              <table class="asm-table">
+                <tbody>
+                  ${hubRowsHtml || '<tr><td colspan="5" style="padding:6px;color:var(--text-mid);">Cliquez sur 🕸 GÉNÉRER GRAPHE D\'APPELS GLOBAL</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- QUADRANT 3: REA MULTI-ARTIFACT (.ASAR, .EVM, .DEX, .NET CIL) -->
+          <div class="omniv3-panel">
+            <div class="fui-module-title">
+              <span>📦 ANALYSEUR MULTI-ARTEFACTS REA (.ASAR ELECTRON, .EVM ETHEREUM, .DEX ANDROID, .NET CIL)</span>
+              <span class="hud-tag">REA OMNI-LOADER</span>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="fui-btn cyan-glow" style="font-size:9.5px;padding:4px 8px;" onclick="selectReaPreset('samples/ultron_electron_app.asar', 'asar')">⚡ Electron App (samples/ultron_electron_app.asar)</button>
+              <button class="fui-btn cyan-glow" style="font-size:9.5px;padding:4px 8px;" onclick="selectReaPreset('samples/ultron_smart_contract.evm', 'evm')">💎 Ethereum Smart Contract (samples/ultron_smart_contract.evm)</button>
+              <button class="fui-btn cyan-glow" style="font-size:9.5px;padding:4px 8px;" onclick="selectReaPreset('samples/ultron_android_classes.dex', 'dex')">🤖 Android Dalvik DEX (samples/ultron_android_classes.dex)</button>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="omniArtifactPathInput" class="fui-input" value="samples/ultron_electron_app.asar" style="flex:1;min-width:150px;text-transform:none;" placeholder="Chemin .asar, .evm, .dex, .ipa, .apk, .dll…" />
+              <button class="fui-btn primary-glow" style="font-size:10px;padding:5px 9px;" onclick="inspectReaArtifact()">📦 INSPECTER ARTEFACT (.ASAR / .IPA / .APK)</button>
+              <button class="fui-btn cyan-glow" style="font-size:10px;padding:5px 9px;" onclick="decodeReaBytecode()">🧬 DÉCODER BYTECODE (EVM / DEX / .NET CIL)</button>
+            </div>
+            ${reaBodyHtml}
+          </div>
+
+          <!-- QUADRANT 4: CRASH DUMP FORENSICS, LLDB LIVE OBSERVER & NATIVE MCP SERVER -->
+          <div class="omniv3-panel">
+            <div class="fui-module-title">
+              <span>💥 CRASH DUMP FORENSICS (.IPS / CORE), LLDB LIVE OBSERVER &amp; SERVEUR MCP NATIF</span>
+              <span class="hud-tag">MCP + LLDB + IPS</span>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="omniCrashPathInput" class="fui-input" value="samples/ultron_crash_report.ips" style="flex:1;min-width:140px;text-transform:none;" placeholder="Chemin du rapport de crash (.ips / ELF core)…" />
+              <button class="fui-btn primary-glow" style="font-size:10px;padding:5px 9px;" onclick="analyzeCrashDumpAction()">💥 ANALYSER CRASH DUMP (.IPS / CORE)</button>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="fui-btn cyan-glow" style="flex:1;font-size:10px;" onclick="observeNativeCallsAction()">🐞 OBSERVER APPELS NATIFS LIVE (LLDB)</button>
+              <button class="fui-btn primary-glow" style="flex:1;font-size:10px;" onclick="listMcpToolsAction()">🔌 LISTER LES 20 OUTILS MCP (REA-COMPATIBLE)</button>
+            </div>
+            ${crashHtml}
+            ${obsHtml}
+            ${mcpHtml}
+            ${(!crashHtml && !obsHtml && !mcpHtml) ? `
+              <div style="color:var(--text-mid);font-size:11px;padding:6px;background:rgba(2,6,14,0.65);border:1px solid rgba(0,240,255,0.15);">
+                <div>• <strong>💥 ANALYSER CRASH DUMP</strong> : Décode les rapports macOS <code>.ips</code> &amp; <code>ELF Core</code> (thread fautif, signal <code>EXC_BAD_ACCESS</code>, registres ARM64 <code>pc/lr/sp/far</code>, backtrace symboliquée).</div>
+                <div style="margin-top:4px;">• <strong>🐞 OBSERVER APPELS NATIFS LIVE</strong> : Trace les appels de fonctions et snapshots de registres en direct via LLDB.</div>
+                <div style="margin-top:4px;">• <strong>🔌 SERVEUR MCP NATIF</strong> : Serveur JSON-RPC 2.0 (<code>ultron-disassemble-rs mcp</code> / <code>POST /api/mcp</code>) exposant 20 outils REA et le grand livre de preuves (Evidence Ledger).</div>
+              </div>
+            ` : ''}
           </div>
         </div>
       `;

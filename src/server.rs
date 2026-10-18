@@ -5,10 +5,17 @@ use crate::assembler::UltronLlvmAssembler;
 use crate::decompiler::{DecompileOptions, UltronDecompiler};
 use crate::disassembler::UltronDisassemblerEngine;
 use crate::loader::UltronBinaryLoader;
+use crate::mcp_server::{handle_mcp_jsonrpc, UltronEvidenceLedger};
 use crate::neural_and_emu::{
     SymbolDemangler, UltronMicroEmulator, UltronNeuralAnalyzer, UltronSecurityAuditor,
 };
 use crate::types::{UltronDisassembledFile, UltronStructDef, UltronStructField};
+use crate::v3_intelligence::{
+    UltronAiDecompiler, UltronGlobalCallGraph, UltronSplitViewMapper, UltronSymbolicSolver,
+};
+use crate::v3_targets::{
+    UltronArtifactAnalyzer, UltronBytecodeDecoder, UltronCrashAndLldbEngine,
+};
 use axum::{
     extract::{Path as AxumPath, Query, State},
     response::{Html, IntoResponse, Json},
@@ -27,12 +34,14 @@ const INDEX_HTML: &str = include_str!("../ultron_disassembler/ui/index.html");
 pub struct AppState {
     pub doc: Mutex<UltronDisassembledFile>,
     pub emulators: Mutex<HashMap<u64, UltronMicroEmulator>>,
+    pub ledger: Mutex<UltronEvidenceLedger>,
 }
 
 pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u16) -> anyhow::Result<()> {
     let shared = Arc::new(AppState {
         doc: Mutex::new(initial_doc),
         emulators: Mutex::new(HashMap::new()),
+        ledger: Mutex::new(UltronEvidenceLedger::new()),
     });
 
     let app = Router::new()
@@ -63,12 +72,21 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/debug/script", get(api_debug_script))
         .route("/api/debug/breakpoint", post(api_debug_breakpoint))
         .route("/api/flirt/scan", post(api_flirt_scan))
+        .route("/api/v3/symbolic-solve", post(api_v3_symbolic_solve))
+        .route("/api/v3/ai-decompile", post(api_v3_ai_decompile))
+        .route("/api/v3/callgraph", get(api_v3_callgraph))
+        .route("/api/v3/split-view", get(api_v3_split_view))
+        .route("/api/v3/inspect-artifact", post(api_v3_inspect_artifact))
+        .route("/api/v3/decode-bytecode", post(api_v3_decode_bytecode))
+        .route("/api/v3/crash-dump", post(api_v3_crash_dump))
+        .route("/api/v3/observe-calls", post(api_v3_observe_calls))
+        .route("/api/mcp", post(api_mcp_rpc))
         .layer(CorsLayer::permissive())
         .with_state(shared);
 
     let bind_addr = format!("{}:{}", host, port);
     println!("╔══════════════════════════════════════════════════════════════════════╗");
-    println!("║  ULTRON DISASSEMBLE v2.3 (NATIVE RUST FULL RE SUITE) ONLINE          ║");
+    println!("║  ULTRON DISASSEMBLE v3.0 (OMNI-CORE RUST + MCP + REA + Z3 + AI)      ║");
     println!("║  URL : http://{:<54}║", bind_addr);
     println!("╚══════════════════════════════════════════════════════════════════════╝");
 
@@ -131,7 +149,7 @@ async fn api_overview(State(state): State<Arc<AppState>>) -> Json<Value> {
 
     Json(json!({
         "open": true,
-        "engine": "Rust Native 2.3 (Full RE Suite: SSA + ObjC/C++/Swift + DWARF + BinDiff + Frida/LLDB)",
+        "engine": "Rust Native 3.0 Omni-Core (MCP + REA + Symbolic Z3 + AI Rewriter + ObjC/C++/Swift/WASM/EVM/DEX/ASAR)",
         "document": doc_name,
         "file_path": doc.file_path,
         "format": doc.format_name,
@@ -162,6 +180,21 @@ fn build_presets_list() -> Vec<Value> {
             "label": "Ultron C++17 VTable + DWARF + Switch (Mach-O)",
             "path": "samples/ultron_cpp_vtable_sample",
             "arch": "arm64"
+        }),
+        json!({
+            "label": "Ultron Ethereum Smart Contract (.evm)",
+            "path": "samples/ultron_smart_contract.evm",
+            "arch": "evm"
+        }),
+        json!({
+            "label": "Ultron Android Dalvik Bytecode (.dex)",
+            "path": "samples/ultron_android_classes.dex",
+            "arch": "dex"
+        }),
+        json!({
+            "label": "Ultron Electron Application Archive (.asar)",
+            "path": "samples/ultron_electron_app.asar",
+            "arch": "asar"
         }),
         json!({
             "label": "Ultron WebAssembly Crypto Module (.wasm)",
@@ -939,4 +972,136 @@ async fn api_flirt_scan(State(state): State<Arc<AppState>>) -> Json<Value> {
         "dwarf_compile_units": doc.dwarf_compile_units,
     }))
 }
+
+#[derive(Deserialize)]
+struct SymbolicSolveReq {
+    proc_address: Option<String>,
+    procedure: Option<String>,
+    target_address: Option<String>,
+    target: Option<String>,
+}
+
+async fn api_v3_symbolic_solve(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<SymbolicSolveReq>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let proc_addr = req
+        .proc_address
+        .or(req.procedure)
+        .and_then(|s| parse_addr(&s))
+        .unwrap_or(doc.entry_point);
+    let target_addr = req
+        .target_address
+        .or(req.target)
+        .and_then(|s| parse_addr(&s))
+        .unwrap_or(proc_addr);
+    Json(UltronSymbolicSolver::solve_symbolic_path(
+        &doc,
+        proc_addr,
+        target_addr,
+    ))
+}
+
+#[derive(Deserialize)]
+struct AiDecompileReq {
+    proc_address: Option<String>,
+    procedure: Option<String>,
+    language: Option<String>,
+}
+
+async fn api_v3_ai_decompile(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<AiDecompileReq>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let proc_addr = req
+        .proc_address
+        .or(req.procedure)
+        .and_then(|s| parse_addr(&s))
+        .unwrap_or(doc.entry_point);
+    let lang = req.language.unwrap_or_else(|| "c23".to_string());
+    Json(UltronAiDecompiler::ai_rewrite_procedure(&doc, proc_addr, &lang))
+}
+
+async fn api_v3_callgraph(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    Json(UltronGlobalCallGraph::build_global_call_graph(&doc))
+}
+
+async fn api_v3_split_view(
+    State(state): State<Arc<AppState>>,
+    Query(params): Query<HashMap<String, String>>,
+) -> Json<Value> {
+    let doc = state.doc.lock().unwrap();
+    let proc_addr = params
+        .get("proc")
+        .or_else(|| params.get("addr"))
+        .and_then(|s| parse_addr(s))
+        .unwrap_or(doc.entry_point);
+    Json(UltronSplitViewMapper::build_split_view_mapping(&doc, proc_addr))
+}
+
+#[derive(Deserialize)]
+struct ArtifactReq {
+    path: Option<String>,
+    artifact_path: Option<String>,
+    dump_path: Option<String>,
+}
+
+async fn api_v3_inspect_artifact(Json(req): Json<ArtifactReq>) -> Json<Value> {
+    let path = req
+        .path
+        .or(req.artifact_path)
+        .unwrap_or_else(|| "samples/ultron_electron_app.asar".to_string());
+    Json(UltronArtifactAnalyzer::inspect_artifact(&path))
+}
+
+async fn api_v3_decode_bytecode(Json(req): Json<ArtifactReq>) -> Json<Value> {
+    let path = req
+        .path
+        .or(req.artifact_path)
+        .unwrap_or_else(|| "samples/ultron_smart_contract.evm".to_string());
+    Json(UltronBytecodeDecoder::decode_bytecode_file(&path))
+}
+
+async fn api_v3_crash_dump(Json(req): Json<ArtifactReq>) -> Json<Value> {
+    let path = req
+        .path
+        .or(req.dump_path)
+        .or(req.artifact_path)
+        .unwrap_or_else(|| "samples/ultron_crash_report.ips".to_string());
+    Json(UltronCrashAndLldbEngine::inspect_crash_dump(&path))
+}
+
+#[derive(Deserialize)]
+struct ObserveCallsReq {
+    path: Option<String>,
+    breakpoints: Option<Vec<String>>,
+    duration_ms: Option<u64>,
+}
+
+async fn api_v3_observe_calls(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<ObserveCallsReq>,
+) -> Json<Value> {
+    let bin_path = req.path.unwrap_or_else(|| {
+        state.doc.lock().unwrap().file_path.clone()
+    });
+    let bps = req.breakpoints.unwrap_or_default();
+    let dur = req.duration_ms.unwrap_or(1500);
+    Json(UltronCrashAndLldbEngine::observe_native_calls(&bin_path, &bps, dur))
+}
+
+async fn api_mcp_rpc(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<Value>,
+) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let mut ledger = state.ledger.lock().unwrap();
+    let resp = handle_mcp_jsonrpc(&mut doc, &mut ledger, &req)
+        .unwrap_or_else(|| json!({ "jsonrpc": "2.0", "result": { "ok": true } }));
+    Json(resp)
+}
+
 

@@ -17,7 +17,7 @@
     NSRect frame = NSMakeRect(0, 0, 1480, 920);
     NSUInteger style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
     self.window = [[NSWindow alloc] initWithContentRect:frame styleMask:style backing:NSBackingStoreBuffered defer:NO];
-    self.window.title = @"Ultron Disassemble — v1.0.0";
+    self.window.title = @"Ultron Disassemble — v3.0.0";
     self.window.backgroundColor = [NSColor colorWithSRGBRed:0.05 green:0.07 blue:0.09 alpha:1.0];
     [self.window center];
 
@@ -64,8 +64,11 @@
     dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)));
 
     if (!alreadyUp) {
+        NSString *relBin = @"/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/target/release/ultron-disassemble-rs";
+        NSString *altBin = @"/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/ultron-disassembler";
+        NSString *binPath = [[NSFileManager defaultManager] isExecutableFileAtPath:relBin] ? relBin : altBin;
         self.serverTask = [[NSTask alloc] init];
-        self.serverTask.executableURL = [NSURL fileURLWithPath:@"/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/ultron-disassembler"];
+        self.serverTask.executableURL = [NSURL fileURLWithPath:binPath];
         self.serverTask.arguments = @[@"ui", @"--port", @"8420"];
         [self.serverTask launchAndReturnError:nil];
     }
@@ -113,7 +116,7 @@
         sub.frame = NSMakeRect(20, 118, 260, 44);
         [cv addSubview:sub];
 
-        NSTextField *ver = [NSTextField labelWithString:@"version 1.0.0"];
+        NSTextField *ver = [NSTextField labelWithString:@"version 3.0.0"];
         ver.font = [NSFont systemFontOfSize:12];
         ver.textColor = [NSColor darkGrayColor];
         ver.alignment = NSTextAlignmentCenter;

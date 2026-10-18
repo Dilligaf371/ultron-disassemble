@@ -67,13 +67,41 @@ impl UltronBinaryLoader {
             return Ok(doc);
         }
 
+        // Check Electron ASAR Archive (.asar) header or extension
+        if display_path.ends_with(".asar")
+            || (raw_bytes.len() > 16 && &raw_bytes[0..4] == &[0x04, 0x00, 0x00, 0x00])
+        {
+            let mut doc = Self::parse_asar(&display_path, &raw_bytes);
+            if doc.string_entries.is_empty() {
+                Self::extract_strings(&mut doc);
+            }
+            if doc.procedures.is_empty() {
+                UltronDisassemblerEngine::analyze(&mut doc);
+            }
+            return Ok(doc);
+        }
+
+        // Check Ethereum EVM Smart Contract Bytecode (.evm)
+        if display_path.ends_with(".evm") {
+            let mut doc = Self::parse_evm(&display_path, &raw_bytes);
+            if doc.string_entries.is_empty() {
+                Self::extract_strings(&mut doc);
+            }
+            if doc.procedures.is_empty() {
+                UltronDisassemblerEngine::analyze(&mut doc);
+            }
+            return Ok(doc);
+        }
+
         // Check Android Dalvik DEX (.dex) magic header: "dex\n"
-        if raw_bytes.len() >= 8 && &raw_bytes[0..4] == b"dex\n" {
+        if display_path.ends_with(".dex") || (raw_bytes.len() >= 8 && &raw_bytes[0..4] == b"dex\n") {
             let mut doc = Self::parse_dex(&display_path, &raw_bytes);
             if doc.string_entries.is_empty() {
                 Self::extract_strings(&mut doc);
             }
-            UltronDisassemblerEngine::analyze(&mut doc);
+            if doc.procedures.is_empty() {
+                UltronDisassemblerEngine::analyze(&mut doc);
+            }
             return Ok(doc);
         }
 
@@ -1865,6 +1893,985 @@ impl UltronBinaryLoader {
         Self::load_wasm(path, raw_bytes)
     }
 
+    fn collect_asar_files(
+        val: &serde_json::Value,
+        prefix: &str,
+        out: &mut Vec<(String, usize, usize)>,
+    ) {
+        if let Some(files_obj) = val.get("files").and_then(|v| v.as_object()) {
+            for (name, entry) in files_obj {
+                let rel = if prefix.is_empty() {
+                    name.clone()
+                } else {
+                    format!("{}/{}", prefix, name)
+                };
+                if entry.get("files").is_some() {
+                    Self::collect_asar_files(entry, &rel, out);
+                } else {
+                    let size = entry
+                        .get("size")
+                        .and_then(|v| v.as_u64())
+                        .unwrap_or(0) as usize;
+                    let offset = entry
+                        .get("offset")
+                        .and_then(|v| {
+                            v.as_str()
+                                .and_then(|s| s.parse::<usize>().ok())
+                                .or_else(|| v.as_u64().map(|n| n as usize))
+                        })
+                        .unwrap_or(0);
+                    out.push((rel, offset, size));
+                }
+            }
+        }
+    }
+
+    fn sanitize_ident(raw: &str) -> String {
+        let mut s = String::new();
+        for c in raw.chars() {
+            if c.is_ascii_alphanumeric() || c == '_' {
+                s.push(c);
+            } else if !s.ends_with('_') {
+                s.push('_');
+            }
+        }
+        s.trim_matches('_').to_string()
+    }
+
+    fn parse_asar(path: &str, raw_bytes: &[u8]) -> UltronDisassembledFile {
+        let mut doc = UltronDisassembledFile::new(path.to_string(), raw_bytes.to_vec(), "arm64");
+        doc.format_name = "Electron ASAR Archive (.asar)".to_string();
+        doc.cpu_family = "Electron V8 / Node.js".to_string();
+        doc.cpu_subfamily = "asar".to_string();
+        doc.address_space_bits = 64;
+        doc.entry_point = 0x1000;
+
+        let mut payload_base = 16usize;
+        let mut files_list: Vec<(String, usize, usize)> = Vec::new();
+
+        if raw_bytes.len() > 16 && &raw_bytes[0..4] == &[0x04, 0x00, 0x00, 0x00] {
+            let header_size = u32::from_le_bytes(raw_bytes[4..8].try_into().unwrap_or([0; 4])) as usize;
+            let json_len = u32::from_le_bytes(raw_bytes[12..16].try_into().unwrap_or([0; 4])) as usize;
+            let json_end = (16 + json_len).min(raw_bytes.len());
+            payload_base = (8 + header_size).max(json_end).min(raw_bytes.len());
+            if let Ok(json_str) = std::str::from_utf8(&raw_bytes[16..json_end]) {
+                if let Ok(json_val) = serde_json::from_str::<serde_json::Value>(json_str.trim_matches('\0')) {
+                    Self::collect_asar_files(&json_val, "", &mut files_list);
+                }
+            }
+        }
+
+        let mut sections = Vec::new();
+        if payload_base > 0 && payload_base <= raw_bytes.len() {
+            sections.push(UltronSection {
+                name: ".asar_header".to_string(),
+                segment_name: "ASAR_ARCHIVE".to_string(),
+                start_address: 0x1000,
+                length: payload_base as u64,
+                file_offset: 0,
+                is_code: false,
+                data: raw_bytes[0..payload_base].to_vec(),
+            });
+        }
+
+        if files_list.is_empty() && raw_bytes.len() > payload_base {
+            files_list.push(("main.js".to_string(), 0, raw_bytes.len() - payload_base));
+        }
+
+        let mut js_sections: Vec<(String, u64, Vec<u8>)> = Vec::new();
+        for (rel_path, f_off, f_size) in &files_list {
+            let abs_start = (payload_base + *f_off).min(raw_bytes.len());
+            let abs_end = (abs_start + *f_size).min(raw_bytes.len());
+            if abs_end <= abs_start {
+                continue;
+            }
+            let slice = raw_bytes[abs_start..abs_end].to_vec();
+            let sec_addr = 0x1000 + abs_start as u64;
+            let is_js = rel_path.ends_with(".js")
+                || rel_path.ends_with(".mjs")
+                || rel_path.ends_with(".cjs");
+            sections.push(UltronSection {
+                name: rel_path.clone(),
+                segment_name: "ASAR_ARCHIVE".to_string(),
+                start_address: sec_addr,
+                length: (abs_end - abs_start) as u64,
+                file_offset: abs_start as u64,
+                is_code: is_js,
+                data: slice.clone(),
+            });
+            if is_js {
+                js_sections.push((rel_path.clone(), sec_addr, slice));
+            }
+        }
+
+        doc.segments.push(UltronSegment {
+            name: "ASAR_ARCHIVE".to_string(),
+            start_address: 0x1000,
+            length: raw_bytes.len() as u64,
+            file_offset: 0,
+            readable: true,
+            writable: false,
+            executable: true,
+            sections,
+            raw_data: raw_bytes.to_vec(),
+        });
+
+        // Extract string literals (IPC channels, URLs, keys) & JS functions/handlers
+        for (rel_path, sec_addr, data) in &js_sections {
+            let text = String::from_utf8_lossy(data);
+            let mut proc_starts: Vec<(usize, String, String)> = Vec::new();
+
+            let mut byte_cursor = 0usize;
+            for line in text.split('\n') {
+                let trimmed = line.trim();
+                let line_off = byte_cursor;
+                byte_cursor += line.len() + 1;
+
+                // Extract quoted strings on this line
+                for quote in ['\'', '"', '`'] {
+                    let mut rem = trimmed;
+                    while let Some(q1) = rem.find(quote) {
+                        let after_q1 = &rem[q1 + 1..];
+                        if let Some(q2) = after_q1.find(quote) {
+                            let lit = &after_q1[..q2];
+                            if lit.len() >= 3 {
+                                let s_addr = *sec_addr + (line_off as u64) + (q1 as u64);
+                                doc.strings_table.entry(s_addr).or_insert_with(|| lit.to_string());
+                                if !doc.string_entries.iter().any(|e| e.value == lit) {
+                                    doc.string_entries.push(UltronStringEntry {
+                                        address: s_addr,
+                                        value: lit.to_string(),
+                                        section: format!("ASAR_ARCHIVE,{}", rel_path),
+                                        length: lit.len(),
+                                        xrefs: vec![*sec_addr + line_off as u64],
+                                    });
+                                }
+                            }
+                            rem = &after_q1[q2 + 1..];
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+                // Detect JS functions and Electron IPC handlers
+                if let Some(idx) = trimmed.find("ipcMain.handle(").or_else(|| trimmed.find("ipcMain.on(")) {
+                    let after = &trimmed[idx..];
+                    let chan = after
+                        .split(['\'', '"'])
+                        .nth(1)
+                        .unwrap_or("channel");
+                    let fn_name = format!("ipc_handler_{}", Self::sanitize_ident(chan));
+                    proc_starts.push((line_off, fn_name.clone(), format!("ipcMain({}, event, ...args)", chan)));
+                } else if let Some(idx) = trimmed.find("ipcRenderer.invoke(").or_else(|| trimmed.find("ipcRenderer.send(")) {
+                    let after = &trimmed[idx..];
+                    let chan = after
+                        .split(['\'', '"'])
+                        .nth(1)
+                        .unwrap_or("channel");
+                    let fn_name = format!("ipc_invoke_{}", Self::sanitize_ident(chan));
+                    proc_starts.push((line_off, fn_name.clone(), format!("ipcRenderer({})", chan)));
+                } else if let Some(idx) = trimmed.find("function ") {
+                    let after = &trimmed[idx + 9..];
+                    let fname: String = after
+                        .chars()
+                        .take_while(|c| c.is_ascii_alphanumeric() || *c == '_')
+                        .collect();
+                    if !fname.is_empty() {
+                        let sig_args = after
+                            .split('(')
+                            .nth(1)
+                            .and_then(|s| s.split(')').next())
+                            .unwrap_or("");
+                        proc_starts.push((line_off, fname.clone(), format!("function {}({})", fname, sig_args)));
+                    }
+                } else if let Some(idx) = trimmed.find("app.on(") {
+                    let after = &trimmed[idx..];
+                    let ev = after.split(['\'', '"']).nth(1).unwrap_or("ready");
+                    let fn_name = format!("app_on_{}", Self::sanitize_ident(ev));
+                    proc_starts.push((line_off, fn_name, format!("app.on('{}')", ev)));
+                }
+            }
+
+            if proc_starts.is_empty() {
+                let mod_name = format!("asar_module_{}", Self::sanitize_ident(rel_path));
+                proc_starts.push((0, mod_name.clone(), format!("module {}()", rel_path)));
+            }
+
+            for (p_idx, (start_off, fn_name, sig)) in proc_starts.iter().enumerate() {
+                let end_off = proc_starts
+                    .get(p_idx + 1)
+                    .map(|(o, _, _)| *o)
+                    .unwrap_or(data.len())
+                    .max(*start_off + 1)
+                    .min(data.len());
+                let entry_addr = *sec_addr + (*start_off as u64);
+                let end_addr = *sec_addr + (end_off as u64);
+                doc.labels.insert(entry_addr, fn_name.clone());
+                doc.exports.insert(entry_addr, fn_name.clone());
+
+                let body_slice = &data[*start_off..end_off];
+                let body_text = String::from_utf8_lossy(body_slice);
+                let mut insns = Vec::new();
+                let mut rel_off = 0usize;
+                let mut str_refs = Vec::new();
+
+                for raw_line in body_text.split('\n') {
+                    let l_len = (raw_line.len() + 1).min(end_off.saturating_sub(*start_off + rel_off)).max(1);
+                    let i_addr = entry_addr + (rel_off as u64);
+                    let trimmed = raw_line.trim();
+                    let raw_end = (*start_off + rel_off + l_len.min(8)).min(data.len());
+                    let b_hex = hex::encode(&data[(*start_off + rel_off).min(raw_end)..raw_end]);
+
+                    if !trimmed.is_empty() {
+                        let (mnem, op_s, is_call, is_ret) = if trimmed.contains("ipcMain.") || trimmed.contains("ipcRenderer.") {
+                            ("js.ipc".to_string(), trimmed.chars().take(48).collect(), true, false)
+                        } else if trimmed.contains("require(") {
+                            ("js.require".to_string(), trimmed.chars().take(48).collect(), true, false)
+                        } else if trimmed.starts_with("return") || trimmed == "}" {
+                            ("js.return".to_string(), trimmed.chars().take(48).collect(), false, true)
+                        } else if trimmed.contains("fetch(") || trimmed.contains("http") {
+                            ("js.net".to_string(), trimmed.chars().take(48).collect(), true, false)
+                        } else if trimmed.contains('(') {
+                            ("js.call".to_string(), trimmed.chars().take(48).collect(), true, false)
+                        } else {
+                            ("js.stmt".to_string(), trimmed.chars().take(48).collect(), false, false)
+                        };
+
+                        let mut s_ref = None;
+                        for quote in ['\'', '"'] {
+                            if let Some(lit) = trimmed.split(quote).nth(1) {
+                                if lit.len() >= 3 {
+                                    s_ref = Some(lit.to_string());
+                                    if !str_refs.contains(&lit.to_string()) {
+                                        str_refs.push(lit.to_string());
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+                        let ins = UltronInstruction {
+                            address: i_addr,
+                            size: l_len,
+                            bytes_hex: b_hex,
+                            mnemonic: mnem,
+                            op_str: op_s,
+                            comment: format!("{}: {}", rel_path, trimmed),
+                            is_branch: false,
+                            is_call,
+                            is_return: is_ret,
+                            branch_target: None,
+                            string_ref: s_ref,
+                            symbol_ref: Some(fn_name.clone()),
+                        };
+                        doc.instructions.insert(i_addr, ins.clone());
+                        insns.push(ins);
+                    }
+                    rel_off += l_len;
+                    if *start_off + rel_off >= end_off {
+                        break;
+                    }
+                }
+
+                if insns.is_empty() {
+                    let ins = UltronInstruction {
+                        address: entry_addr,
+                        size: 4,
+                        bytes_hex: "6a730000".to_string(),
+                        mnemonic: "js.return".to_string(),
+                        op_str: fn_name.clone(),
+                        comment: sig.clone(),
+                        is_branch: false,
+                        is_call: false,
+                        is_return: true,
+                        branch_target: None,
+                        string_ref: None,
+                        symbol_ref: Some(fn_name.clone()),
+                    };
+                    doc.instructions.insert(entry_addr, ins.clone());
+                    insns.push(ins);
+                }
+
+                let bb = UltronBasicBlock {
+                    start_address: entry_addr,
+                    end_address: end_addr,
+                    instructions: insns,
+                    outgoing_edges: Vec::new(),
+                    incoming_edges: Vec::new(),
+                    branch_true: None,
+                    branch_false: None,
+                };
+                doc.procedures.insert(
+                    entry_addr,
+                    UltronProcedure {
+                        name: fn_name.clone(),
+                        entry_point: entry_addr,
+                        end_address: end_addr,
+                        segment_name: "ASAR_ARCHIVE".to_string(),
+                        section_name: rel_path.clone(),
+                        signature: sig.clone(),
+                        basic_blocks: vec![bb],
+                        callers: Vec::new(),
+                        callees: Vec::new(),
+                        strings_referenced: str_refs,
+                        stack_frame_size: 0,
+                        local_variables: BTreeMap::new(),
+                    },
+                );
+            }
+        }
+
+        if let Some(&first_proc) = doc.procedures.keys().next() {
+            doc.entry_point = first_proc;
+        }
+        doc
+    }
+
+    fn known_solidity_selector(sel_hex: &str) -> Option<(&'static str, &'static str)> {
+        match sel_hex {
+            "a9059cbb" => Some(("transfer", "bool transfer(address to, uint256 amount)")),
+            "70a08231" => Some(("balanceOf", "uint256 balanceOf(address account)")),
+            "095ea7b3" => Some(("approve", "bool approve(address spender, uint256 amount)")),
+            "23b872dd" => Some(("transferFrom", "bool transferFrom(address from, address to, uint256 amount)")),
+            "18160ddd" => Some(("totalSupply", "uint256 totalSupply()")),
+            "dd62ed3e" => Some(("allowance", "uint256 allowance(address owner, address spender)")),
+            "06fdde03" => Some(("name", "string name()")),
+            "95d89b41" => Some(("symbol", "string symbol()")),
+            "313ce567" => Some(("decimals", "uint8 decimals()")),
+            "40c10f19" => Some(("mint", "void mint(address to, uint256 amount)")),
+            "42966c68" => Some(("burn", "void burn(uint256 amount)")),
+            "8da5cb5b" => Some(("owner", "address owner()")),
+            "f2fde38b" => Some(("transferOwnership", "void transferOwnership(address newOwner)")),
+            "715018a6" => Some(("renounceOwnership", "void renounceOwnership()")),
+            "3ccfd60b" => Some(("withdraw", "void withdraw()")),
+            "d0e30db0" => Some(("deposit", "void deposit()")),
+            _ => None,
+        }
+    }
+
+    fn parse_evm(path: &str, raw_bytes: &[u8]) -> UltronDisassembledFile {
+        // Support both ASCII hex (.evm with "6080604052..." or "0x6080...") and raw binary EVM bytecode
+        let trimmed_ascii: String = raw_bytes
+            .iter()
+            .filter(|b| !b.is_ascii_whitespace())
+            .map(|&b| b as char)
+            .collect();
+        let clean_hex = trimmed_ascii
+            .strip_prefix("0x")
+            .or_else(|| trimmed_ascii.strip_prefix("0X"))
+            .unwrap_or(&trimmed_ascii);
+        let evm_bytes: Vec<u8> = if clean_hex.len() >= 2
+            && clean_hex.len() % 2 == 0
+            && clean_hex.chars().all(|c| c.is_ascii_hexdigit())
+        {
+            hex::decode(clean_hex).unwrap_or_else(|_| raw_bytes.to_vec())
+        } else {
+            raw_bytes.to_vec()
+        };
+
+        let base_addr = 0x1000u64;
+        let mut doc = UltronDisassembledFile::new(path.to_string(), evm_bytes.clone(), "arm64");
+        doc.format_name = "Ethereum EVM Bytecode (.evm)".to_string();
+        doc.cpu_family = "Ethereum Virtual Machine (EVM)".to_string();
+        doc.cpu_subfamily = "evm".to_string();
+        doc.address_space_bits = 256;
+        doc.entry_point = base_addr;
+
+        let sec = UltronSection {
+            name: ".evm_Runtime".to_string(),
+            segment_name: "EVM_CONTRACT".to_string(),
+            start_address: base_addr,
+            length: evm_bytes.len() as u64,
+            file_offset: 0,
+            is_code: true,
+            data: evm_bytes.clone(),
+        };
+        doc.segments.push(UltronSegment {
+            name: "EVM_CONTRACT".to_string(),
+            start_address: base_addr,
+            length: evm_bytes.len() as u64,
+            file_offset: 0,
+            readable: true,
+            writable: false,
+            executable: true,
+            sections: vec![sec],
+            raw_data: evm_bytes.clone(),
+        });
+
+        let mut pc = 0usize;
+        let mut last_pushed_val: Option<u64> = None;
+        let mut pending_selector: Option<(u64, String, String, String)> = None;
+        let mut selector_targets: BTreeMap<u64, (String, String)> = BTreeMap::new();
+        let mut jumpdest_addrs = std::collections::BTreeSet::new();
+        jumpdest_addrs.insert(base_addr);
+
+        while pc < evm_bytes.len() {
+            let ins_pc = pc;
+            let ins_addr = base_addr + (ins_pc as u64);
+            let op = evm_bytes[pc];
+            pc += 1;
+
+            let mut is_branch = false;
+            let mut is_call = false;
+            let mut is_return = false;
+            let mut branch_target = None;
+            let mut comment = String::new();
+            let mut symbol_ref = None;
+
+            let (mnem, op_str) = match op {
+                0x00 => {
+                    is_return = true;
+                    ("STOP".to_string(), String::new())
+                }
+                0x01 => ("ADD".to_string(), String::new()),
+                0x02 => ("MUL".to_string(), String::new()),
+                0x03 => ("SUB".to_string(), String::new()),
+                0x04 => ("DIV".to_string(), String::new()),
+                0x05 => ("SDIV".to_string(), String::new()),
+                0x06 => ("MOD".to_string(), String::new()),
+                0x07 => ("SMOD".to_string(), String::new()),
+                0x08 => ("ADDMOD".to_string(), String::new()),
+                0x09 => ("MULMOD".to_string(), String::new()),
+                0x0a => ("EXP".to_string(), String::new()),
+                0x10 => ("LT".to_string(), String::new()),
+                0x11 => ("GT".to_string(), String::new()),
+                0x12 => ("SLT".to_string(), String::new()),
+                0x13 => ("SGT".to_string(), String::new()),
+                0x14 => ("EQ".to_string(), String::new()),
+                0x15 => ("ISZERO".to_string(), String::new()),
+                0x16 => ("AND".to_string(), String::new()),
+                0x17 => ("OR".to_string(), String::new()),
+                0x18 => ("XOR".to_string(), String::new()),
+                0x19 => ("NOT".to_string(), String::new()),
+                0x1a => ("BYTE".to_string(), String::new()),
+                0x1b => ("SHL".to_string(), String::new()),
+                0x1c => ("SHR".to_string(), String::new()),
+                0x1d => ("SAR".to_string(), String::new()),
+                0x20 => {
+                    comment = "Keccak-256 hash".to_string();
+                    ("SHA3".to_string(), String::new())
+                }
+                0x30 => ("ADDRESS".to_string(), String::new()),
+                0x31 => ("BALANCE".to_string(), String::new()),
+                0x32 => ("ORIGIN".to_string(), String::new()),
+                0x33 => ("CALLER".to_string(), String::new()),
+                0x34 => {
+                    comment = "msg.value".to_string();
+                    ("CALLVALUE".to_string(), String::new())
+                }
+                0x35 => {
+                    comment = "msg.data[i..i+32]".to_string();
+                    ("CALLDATALOAD".to_string(), String::new())
+                }
+                0x36 => ("CALLDATASIZE".to_string(), String::new()),
+                0x37 => ("CALLDATACOPY".to_string(), String::new()),
+                0x38 => ("CODESIZE".to_string(), String::new()),
+                0x39 => ("CODECOPY".to_string(), String::new()),
+                0x3a => ("GASPRICE".to_string(), String::new()),
+                0x3b => ("EXTCODESIZE".to_string(), String::new()),
+                0x3c => ("EXTCODECOPY".to_string(), String::new()),
+                0x3d => ("RETURNDATASIZE".to_string(), String::new()),
+                0x3e => ("RETURNDATACOPY".to_string(), String::new()),
+                0x3f => ("EXTCODEHASH".to_string(), String::new()),
+                0x40 => ("BLOCKHASH".to_string(), String::new()),
+                0x41 => ("COINBASE".to_string(), String::new()),
+                0x42 => ("TIMESTAMP".to_string(), String::new()),
+                0x43 => ("NUMBER".to_string(), String::new()),
+                0x44 => ("DIFFICULTY".to_string(), String::new()),
+                0x45 => ("GASLIMIT".to_string(), String::new()),
+                0x46 => ("CHAINID".to_string(), String::new()),
+                0x47 => ("SELFBALANCE".to_string(), String::new()),
+                0x48 => ("BASEFEE".to_string(), String::new()),
+                0x50 => ("POP".to_string(), String::new()),
+                0x51 => ("MLOAD".to_string(), String::new()),
+                0x52 => ("MSTORE".to_string(), String::new()),
+                0x53 => ("MSTORE8".to_string(), String::new()),
+                0x54 => {
+                    comment = "storage[key]".to_string();
+                    ("SLOAD".to_string(), String::new())
+                }
+                0x55 => {
+                    comment = "storage[key] = val".to_string();
+                    ("SSTORE".to_string(), String::new())
+                }
+                0x56 => {
+                    is_branch = true;
+                    if let Some(dest_pc) = last_pushed_val {
+                        let t_addr = base_addr + dest_pc;
+                        branch_target = Some(t_addr);
+                        comment = format!("-> 0x{:x}", t_addr);
+                    }
+                    ("JUMP".to_string(), branch_target.map(|a| format!("0x{:x}", a)).unwrap_or_default())
+                }
+                0x57 => {
+                    is_branch = true;
+                    if let Some(dest_pc) = last_pushed_val {
+                        let t_addr = base_addr + dest_pc;
+                        branch_target = Some(t_addr);
+                        if let Some((push4_addr, proc_name, sig, _)) = pending_selector.take() {
+                            if (dest_pc as usize) < evm_bytes.len() {
+                                selector_targets.insert(t_addr, (proc_name.clone(), sig));
+                            } else {
+                                selector_targets.insert(push4_addr, (proc_name.clone(), sig));
+                            }
+                            symbol_ref = Some(proc_name.clone());
+                            comment = format!("dispatch {} -> 0x{:x}", proc_name, t_addr);
+                        } else {
+                            comment = format!("cond -> 0x{:x}", t_addr);
+                        }
+                    }
+                    ("JUMPI".to_string(), branch_target.map(|a| format!("0x{:x}", a)).unwrap_or_default())
+                }
+                0x58 => ("PC".to_string(), String::new()),
+                0x59 => ("MSIZE".to_string(), String::new()),
+                0x5a => ("GAS".to_string(), String::new()),
+                0x5b => {
+                    jumpdest_addrs.insert(ins_addr);
+                    ("JUMPDEST".to_string(), String::new())
+                }
+                0x5f => {
+                    last_pushed_val = Some(0);
+                    ("PUSH0".to_string(), "0x0".to_string())
+                }
+                0x60..=0x7f => {
+                    let push_len = (op - 0x60 + 1) as usize;
+                    let end = (pc + push_len).min(evm_bytes.len());
+                    let imm_slice = &evm_bytes[pc..end];
+                    pc = end;
+                    let imm_hex = hex::encode(imm_slice);
+                    if push_len <= 8 {
+                        let mut v = 0u64;
+                        for &b in imm_slice {
+                            v = (v << 8) | (b as u64);
+                        }
+                        last_pushed_val = Some(v);
+                    } else {
+                        last_pushed_val = None;
+                    }
+                    if push_len == 4 {
+                        let (proc_name, sig) = if let Some((fn_short, fn_sig)) = Self::known_solidity_selector(&imm_hex) {
+                            (format!("evm_selector_{}_{}", imm_hex, fn_short), fn_sig.to_string())
+                        } else {
+                            (format!("evm_selector_{}", imm_hex), format!("function selector_0x{}()", imm_hex))
+                        };
+                        comment = format!("Solidity selector: {}", proc_name);
+                        symbol_ref = Some(proc_name.clone());
+                        pending_selector = Some((ins_addr, proc_name.clone(), sig.clone(), imm_hex.clone()));
+                        doc.strings_table.insert(ins_addr, sig.clone());
+                        doc.string_entries.push(UltronStringEntry {
+                            address: ins_addr,
+                            value: format!("0x{}: {}", imm_hex, sig),
+                            section: "EVM_CONTRACT,.evm_Runtime".to_string(),
+                            length: 4,
+                            xrefs: vec![ins_addr],
+                        });
+                    }
+                    (format!("PUSH{}", push_len), format!("0x{}", imm_hex))
+                }
+                0x80..=0x8f => (format!("DUP{}", op - 0x80 + 1), String::new()),
+                0x90..=0x9f => (format!("SWAP{}", op - 0x90 + 1), String::new()),
+                0xa0..=0xa4 => (format!("LOG{}", op - 0xa0), String::new()),
+                0xf0 => ("CREATE".to_string(), String::new()),
+                0xf1 => {
+                    is_call = true;
+                    ("CALL".to_string(), String::new())
+                }
+                0xf2 => {
+                    is_call = true;
+                    ("CALLCODE".to_string(), String::new())
+                }
+                0xf3 => {
+                    is_return = true;
+                    ("RETURN".to_string(), String::new())
+                }
+                0xf4 => {
+                    is_call = true;
+                    ("DELEGATECALL".to_string(), String::new())
+                }
+                0xf5 => ("CREATE2".to_string(), String::new()),
+                0xfa => {
+                    is_call = true;
+                    ("STATICCALL".to_string(), String::new())
+                }
+                0xfd => {
+                    is_return = true;
+                    ("REVERT".to_string(), String::new())
+                }
+                0xfe => {
+                    is_return = true;
+                    ("INVALID".to_string(), String::new())
+                }
+                0xff => {
+                    is_return = true;
+                    ("SELFDESTRUCT".to_string(), String::new())
+                }
+                _ => (format!("EVM_0x{:02x}", op), String::new()),
+            };
+
+            let ins_slice = &evm_bytes[ins_pc..pc];
+            let ins = UltronInstruction {
+                address: ins_addr,
+                size: ins_slice.len().max(1),
+                bytes_hex: hex::encode(ins_slice),
+                mnemonic: mnem,
+                op_str,
+                comment,
+                is_branch,
+                is_call,
+                is_return,
+                branch_target,
+                string_ref: None,
+                symbol_ref,
+            };
+            doc.instructions.insert(ins_addr, ins);
+        }
+
+        // If any pending selector wasn't consumed by a JUMPI, register it at its PUSH4 address
+        if let Some((push4_addr, proc_name, sig, _)) = pending_selector.take() {
+            selector_targets.entry(push4_addr).or_insert((proc_name, sig));
+        }
+
+        // Determine procedure entry points: entry_point (0x1000) + all selector targets
+        let mut proc_starts: BTreeMap<u64, (String, String)> = BTreeMap::new();
+        proc_starts.insert(
+            base_addr,
+            ("evm_dispatcher_entry".to_string(), "void evm_dispatcher_entry()".to_string()),
+        );
+        for (t_addr, (p_name, p_sig)) in &selector_targets {
+            if doc.instructions.contains_key(t_addr) {
+                proc_starts.insert(*t_addr, (p_name.clone(), p_sig.clone()));
+            }
+        }
+        // Also add JUMPDESTs that immediately follow a terminal instruction (RETURN/REVERT/STOP/JUMP)
+        let all_ins: Vec<UltronInstruction> = doc.instructions.values().cloned().collect();
+        for idx in 0..all_ins.len().saturating_sub(1) {
+            let cur = &all_ins[idx];
+            let nxt = &all_ins[idx + 1];
+            if (cur.is_return || cur.mnemonic == "JUMP") && nxt.mnemonic == "JUMPDEST" {
+                proc_starts.entry(nxt.address).or_insert_with(|| {
+                    (
+                        format!("evm_func_{:x}", nxt.address),
+                        format!("void evm_func_{:x}()", nxt.address),
+                    )
+                });
+            }
+        }
+
+        let proc_keys: Vec<u64> = proc_starts.keys().copied().collect();
+        for (p_idx, &p_start) in proc_keys.iter().enumerate() {
+            let p_end = proc_keys
+                .get(p_idx + 1)
+                .copied()
+                .unwrap_or(base_addr + evm_bytes.len() as u64);
+            let (p_name, p_sig) = proc_starts.get(&p_start).unwrap().clone();
+            doc.labels.insert(p_start, p_name.clone());
+            doc.exports.insert(p_start, p_name.clone());
+
+            let p_insns: Vec<UltronInstruction> = doc
+                .instructions
+                .range(p_start..p_end)
+                .map(|(_, i)| i.clone())
+                .collect();
+            if p_insns.is_empty() {
+                continue;
+            }
+
+            // Split into basic blocks on JUMPDEST (leader) and JUMPI / JUMP / RETURN / REVERT / STOP (terminator)
+            let mut basic_blocks = Vec::new();
+            let mut cur_bb_insns = Vec::new();
+            for (i_idx, ins) in p_insns.iter().enumerate() {
+                if ins.mnemonic == "JUMPDEST" && !cur_bb_insns.is_empty() {
+                    let first_a = cur_bb_insns.first().map(|x: &UltronInstruction| x.address).unwrap_or(p_start);
+                    basic_blocks.push(UltronBasicBlock {
+                        start_address: first_a,
+                        end_address: ins.address,
+                        instructions: std::mem::take(&mut cur_bb_insns),
+                        outgoing_edges: vec![ins.address],
+                        incoming_edges: Vec::new(),
+                        branch_true: Some(ins.address),
+                        branch_false: None,
+                    });
+                }
+                cur_bb_insns.push(ins.clone());
+                let is_term = matches!(
+                    ins.mnemonic.as_str(),
+                    "JUMP" | "JUMPI" | "RETURN" | "REVERT" | "STOP" | "INVALID" | "SELFDESTRUCT"
+                );
+                if is_term || i_idx + 1 == p_insns.len() {
+                    let first_a = cur_bb_insns.first().map(|x| x.address).unwrap_or(p_start);
+                    let end_a = ins.address + ins.size as u64;
+                    let next_a = p_insns.get(i_idx + 1).map(|x| x.address);
+                    let mut out_edges = Vec::new();
+                    let mut b_true = None;
+                    let mut b_false = None;
+                    if ins.mnemonic == "JUMPI" {
+                        b_true = ins.branch_target;
+                        b_false = next_a;
+                        if let Some(t) = b_true {
+                            out_edges.push(t);
+                        }
+                        if let Some(f) = b_false {
+                            out_edges.push(f);
+                        }
+                    } else if ins.mnemonic == "JUMP" {
+                        b_true = ins.branch_target;
+                        if let Some(t) = b_true {
+                            out_edges.push(t);
+                        }
+                    } else if !ins.is_return {
+                        if let Some(n) = next_a {
+                            out_edges.push(n);
+                        }
+                    }
+                    basic_blocks.push(UltronBasicBlock {
+                        start_address: first_a,
+                        end_address: end_a,
+                        instructions: std::mem::take(&mut cur_bb_insns),
+                        outgoing_edges: out_edges,
+                        incoming_edges: Vec::new(),
+                        branch_true: b_true,
+                        branch_false: b_false,
+                    });
+                }
+            }
+
+            doc.procedures.insert(
+                p_start,
+                UltronProcedure {
+                    name: p_name,
+                    entry_point: p_start,
+                    end_address: p_end,
+                    segment_name: "EVM_CONTRACT".to_string(),
+                    section_name: ".evm_Runtime".to_string(),
+                    signature: p_sig,
+                    basic_blocks,
+                    callers: Vec::new(),
+                    callees: Vec::new(),
+                    strings_referenced: Vec::new(),
+                    stack_frame_size: 0,
+                    local_variables: BTreeMap::new(),
+                },
+            );
+        }
+
+        doc
+    }
+
+    fn read_dex_uleb128(bytes: &[u8], pos: &mut usize) -> Option<u32> {
+        let mut result = 0u32;
+        let mut shift = 0u32;
+        loop {
+            if *pos >= bytes.len() {
+                return None;
+            }
+            let b = bytes[*pos];
+            *pos += 1;
+            result |= ((b & 0x7f) as u32) << shift;
+            if (b & 0x80) == 0 || shift >= 28 {
+                break;
+            }
+            shift += 7;
+        }
+        Some(result)
+    }
+
+    fn decode_dalvik_stream(
+        bytes: &[u8],
+        base_addr: u64,
+        dex_strings: &[String],
+        dex_methods: &[String],
+        dex_fields: &[String],
+        doc: &mut UltronDisassembledFile,
+    ) -> (Vec<UltronInstruction>, Vec<u64>, Vec<String>) {
+        let mut insns = Vec::new();
+        let mut callees = Vec::new();
+        let mut str_refs = Vec::new();
+        let mut pc = 0usize;
+
+        while pc + 2 <= bytes.len() {
+            let ins_start = pc;
+            let ins_addr = base_addr + (ins_start as u64);
+            let op = bytes[pc];
+            let reg_byte = bytes[pc + 1];
+
+            let mut is_branch = false;
+            let mut is_call = false;
+            let mut is_return = false;
+            let mut branch_target = None;
+            let mut comment = String::new();
+            let mut string_ref = None;
+            let mut symbol_ref = None;
+
+            let (mnem, op_str, ins_len) = match op {
+                0x00 => ("nop".to_string(), String::new(), 2usize),
+                0x01 => {
+                    let va = reg_byte & 0x0f;
+                    let vb = reg_byte >> 4;
+                    ("move".to_string(), format!("v{}, v{}", va, vb), 2)
+                }
+                0x0a => ("move-result".to_string(), format!("v{}", reg_byte), 2),
+                0x0c => ("move-result-object".to_string(), format!("v{}", reg_byte), 2),
+                0x0e => {
+                    is_return = true;
+                    ("return-void".to_string(), String::new(), 2)
+                }
+                0x0f => {
+                    is_return = true;
+                    ("return".to_string(), format!("v{}", reg_byte), 2)
+                }
+                0x11 => {
+                    is_return = true;
+                    ("return-object".to_string(), format!("v{}", reg_byte), 2)
+                }
+                0x12 => {
+                    let va = reg_byte & 0x0f;
+                    let imm = ((reg_byte as i8) >> 4) as i32;
+                    ("const/4".to_string(), format!("v{}, #{:+}", va, imm), 2)
+                }
+                0x13 if pc + 4 <= bytes.len() => {
+                    let va = reg_byte;
+                    let imm = i16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]);
+                    ("const/16".to_string(), format!("v{}, #0x{:x}", va, imm), 4)
+                }
+                0x1a if pc + 4 <= bytes.len() => {
+                    let va = reg_byte;
+                    let s_idx = u16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]) as usize;
+                    let resolved = dex_strings
+                        .get(s_idx)
+                        .cloned()
+                        .unwrap_or_else(|| format!("string@{:04x}", s_idx));
+                    comment = format!("\"{}\"", resolved);
+                    string_ref = Some(resolved.clone());
+                    if !str_refs.contains(&resolved) {
+                        str_refs.push(resolved.clone());
+                    }
+                    ("const-string".to_string(), format!("v{}, \"{}\"", va, resolved), 4)
+                }
+                0x28 => {
+                    is_branch = true;
+                    let rel_words = (reg_byte as i8) as i64;
+                    let t_addr = ((ins_addr as i64) + rel_words * 2) as u64;
+                    branch_target = Some(t_addr);
+                    ("goto".to_string(), format!("0x{:x}", t_addr), 2)
+                }
+                0x32..=0x37 if pc + 4 <= bytes.len() => {
+                    is_branch = true;
+                    let va = reg_byte & 0x0f;
+                    let vb = reg_byte >> 4;
+                    let rel_words = i16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]) as i64;
+                    let t_addr = ((ins_addr as i64) + rel_words * 2) as u64;
+                    branch_target = Some(t_addr);
+                    let m = match op {
+                        0x32 => "if-eq",
+                        0x33 => "if-ne",
+                        0x34 => "if-lt",
+                        0x35 => "if-ge",
+                        0x36 => "if-gt",
+                        _ => "if-le",
+                    };
+                    (m.to_string(), format!("v{}, v{}, 0x{:x}", va, vb, t_addr), 4)
+                }
+                0x38..=0x3d if pc + 4 <= bytes.len() => {
+                    is_branch = true;
+                    let va = reg_byte;
+                    let rel_words = i16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]) as i64;
+                    let t_addr = ((ins_addr as i64) + rel_words * 2) as u64;
+                    branch_target = Some(t_addr);
+                    let m = match op {
+                        0x38 => "if-eqz",
+                        0x39 => "if-nez",
+                        0x3a => "if-ltz",
+                        0x3b => "if-gez",
+                        0x3c => "if-gtz",
+                        _ => "if-lez",
+                    };
+                    (m.to_string(), format!("v{}, 0x{:x}", va, t_addr), 4)
+                }
+                0x52 | 0x54 if pc + 4 <= bytes.len() => {
+                    let va = reg_byte & 0x0f;
+                    let vb = reg_byte >> 4;
+                    let f_idx = u16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]) as usize;
+                    let f_name = dex_fields
+                        .get(f_idx)
+                        .cloned()
+                        .unwrap_or_else(|| format!("field@{:04x}", f_idx));
+                    comment = f_name.clone();
+                    let m = if op == 0x52 { "iget" } else { "iget-object" };
+                    (m.to_string(), format!("v{}, v{}, {}", va, vb, f_name), 4)
+                }
+                0x62 if pc + 4 <= bytes.len() => {
+                    let va = reg_byte;
+                    let f_idx = u16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]) as usize;
+                    let f_name = dex_fields
+                        .get(f_idx)
+                        .cloned()
+                        .unwrap_or_else(|| format!("field@{:04x}", f_idx));
+                    comment = f_name.clone();
+                    ("sget-object".to_string(), format!("v{}, {}", va, f_name), 4)
+                }
+                0x6e..=0x72 if pc + 6 <= bytes.len() => {
+                    is_call = true;
+                    let argc = (reg_byte >> 4) as usize;
+                    let m_idx = u16::from_le_bytes([bytes[pc + 2], bytes[pc + 3]]) as usize;
+                    let reg_pack = u16::from_le_bytes([bytes[pc + 4], bytes[pc + 5]]);
+                    let mut regs = Vec::new();
+                    for r_i in 0..argc.min(5) {
+                        let r = if r_i < 4 {
+                            (reg_pack >> (r_i * 4)) & 0x0f
+                        } else {
+                            (reg_byte & 0x0f) as u16
+                        };
+                        regs.push(format!("v{}", r));
+                    }
+                    let m_name = dex_methods
+                        .get(m_idx)
+                        .cloned()
+                        .unwrap_or_else(|| format!("method@{:04x}", m_idx));
+                    comment = m_name.clone();
+                    symbol_ref = Some(m_name.clone());
+                    let m = match op {
+                        0x6e => "invoke-virtual",
+                        0x6f => "invoke-super",
+                        0x70 => "invoke-direct",
+                        0x71 => "invoke-static",
+                        _ => "invoke-interface",
+                    };
+                    (m.to_string(), format!("{{{}}}, {}", regs.join(", "), m_name), 6)
+                }
+                _ => (format!("dalvik.op_0x{:02x}", op), format!("0x{:02x}", reg_byte), 2),
+            };
+
+            let end = (pc + ins_len).min(bytes.len());
+            let ins_slice = &bytes[ins_start..end];
+            pc = end;
+
+            let ins = UltronInstruction {
+                address: ins_addr,
+                size: ins_slice.len().max(2),
+                bytes_hex: hex::encode(ins_slice),
+                mnemonic: mnem,
+                op_str,
+                comment,
+                is_branch,
+                is_call,
+                is_return,
+                branch_target,
+                string_ref,
+                symbol_ref,
+            };
+            doc.instructions.insert(ins_addr, ins.clone());
+            insns.push(ins);
+            if let Some(t) = branch_target {
+                if is_call && !callees.contains(&t) {
+                    callees.push(t);
+                }
+            }
+        }
+
+        (insns, callees, str_refs)
+    }
+
     fn parse_dex(path: &str, raw_bytes: &[u8]) -> UltronDisassembledFile {
         let mut doc = UltronDisassembledFile::new(path.to_string(), raw_bytes.to_vec(), "arm64");
         doc.format_name = "Android Dalvik DEX (.dex)".to_string();
@@ -1873,25 +2880,185 @@ impl UltronBinaryLoader {
         doc.address_space_bits = 32;
         doc.entry_point = 0x1000;
 
-        let data_off = if raw_bytes.len() >= 0x70 {
-            u32::from_le_bytes(raw_bytes[0x68..0x6c].try_into().unwrap_or([0; 4])) as usize
-        } else {
-            0
+        let read_u32 = |off: usize| -> u32 {
+            if off + 4 <= raw_bytes.len() {
+                u32::from_le_bytes(raw_bytes[off..off + 4].try_into().unwrap_or([0; 4]))
+            } else {
+                0
+            }
         };
+        let read_u16 = |off: usize| -> u16 {
+            if off + 2 <= raw_bytes.len() {
+                u16::from_le_bytes(raw_bytes[off..off + 2].try_into().unwrap_or([0; 2]))
+            } else {
+                0
+            }
+        };
+
+        let string_ids_size = read_u32(0x38) as usize;
+        let string_ids_off = read_u32(0x3c) as usize;
+        let type_ids_size = read_u32(0x40) as usize;
+        let type_ids_off = read_u32(0x44) as usize;
+        let field_ids_size = read_u32(0x50) as usize;
+        let field_ids_off = read_u32(0x54) as usize;
+        let method_ids_size = read_u32(0x58) as usize;
+        let method_ids_off = read_u32(0x5c) as usize;
+        let class_defs_size = read_u32(0x60) as usize;
+        let class_defs_off = read_u32(0x64) as usize;
+        let data_off = read_u32(0x6c) as usize;
+
+        // 1. Parse string_ids -> dex_strings & doc.string_entries
+        let mut dex_strings = Vec::new();
+        for i in 0..string_ids_size.min(4096) {
+            let slot = string_ids_off + i * 4;
+            if slot + 4 > raw_bytes.len() {
+                break;
+            }
+            let str_data_off = read_u32(slot) as usize;
+            if str_data_off > 0 && str_data_off < raw_bytes.len() {
+                let mut pos = str_data_off;
+                let _utf16_len = Self::read_dex_uleb128(raw_bytes, &mut pos);
+                let start = pos;
+                while pos < raw_bytes.len() && raw_bytes[pos] != 0 {
+                    pos += 1;
+                }
+                let s = String::from_utf8_lossy(&raw_bytes[start..pos]).to_string();
+                let s_addr = 0x1000 + (str_data_off as u64);
+                if !s.is_empty() {
+                    doc.strings_table.insert(s_addr, s.clone());
+                    doc.string_entries.push(UltronStringEntry {
+                        address: s_addr,
+                        value: s.clone(),
+                        section: "DEX_FILE,.dex_strings".to_string(),
+                        length: s.len(),
+                        xrefs: Vec::new(),
+                    });
+                }
+                dex_strings.push(s);
+            } else {
+                dex_strings.push(String::new());
+            }
+        }
+
+        // 2. Parse type_ids
+        let mut dex_types = Vec::new();
+        for i in 0..type_ids_size.min(4096) {
+            let slot = type_ids_off + i * 4;
+            if slot + 4 > raw_bytes.len() {
+                break;
+            }
+            let desc_idx = read_u32(slot) as usize;
+            let t_name = dex_strings.get(desc_idx).cloned().unwrap_or_default();
+            dex_types.push(t_name);
+        }
+
+        // 3. Parse field_ids
+        let mut dex_fields = Vec::new();
+        for i in 0..field_ids_size.min(4096) {
+            let slot = field_ids_off + i * 8;
+            if slot + 8 > raw_bytes.len() {
+                break;
+            }
+            let cls_idx = read_u16(slot) as usize;
+            let name_idx = read_u32(slot + 4) as usize;
+            let cls = dex_types.get(cls_idx).cloned().unwrap_or_default();
+            let fname = dex_strings.get(name_idx).cloned().unwrap_or_else(|| format!("field_{}", i));
+            let full = if cls.is_empty() { fname } else { format!("{}->{}", cls, fname) };
+            dex_fields.push(full);
+        }
+
+        // 4. Parse method_ids
+        let mut dex_methods = Vec::new();
+        for i in 0..method_ids_size.min(4096) {
+            let slot = method_ids_off + i * 8;
+            if slot + 8 > raw_bytes.len() {
+                break;
+            }
+            let cls_idx = read_u16(slot) as usize;
+            let name_idx = read_u32(slot + 4) as usize;
+            let cls = dex_types
+                .get(cls_idx)
+                .map(|c| c.trim_start_matches('L').trim_end_matches(';').replace('/', "."))
+                .unwrap_or_default();
+            let mname = dex_strings.get(name_idx).cloned().unwrap_or_else(|| format!("method_{}", i));
+            let full = if cls.is_empty() { mname } else { format!("{}.{}", cls, mname) };
+            dex_methods.push(full);
+        }
+
+        // 5. Parse class_defs & class_data_item to locate code_item method bodies
+        let mut discovered_methods: Vec<(String, usize, usize)> = Vec::new();
+        for i in 0..class_defs_size.min(1024) {
+            let slot = class_defs_off + i * 32;
+            if slot + 32 > raw_bytes.len() {
+                break;
+            }
+            let cls_idx = read_u32(slot) as usize;
+            let class_data_off = read_u32(slot + 24) as usize;
+            let cls_name = dex_types
+                .get(cls_idx)
+                .map(|c| c.trim_start_matches('L').trim_end_matches(';').replace('/', "."))
+                .unwrap_or_else(|| format!("DexClass_{}", i));
+
+            if class_data_off > 0 && class_data_off < raw_bytes.len() {
+                let mut pos = class_data_off;
+                let static_fields = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0);
+                let instance_fields = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0);
+                let direct_methods = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0);
+                let virtual_methods = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0);
+
+                for _ in 0..(static_fields + instance_fields).min(1024) {
+                    let _ = Self::read_dex_uleb128(raw_bytes, &mut pos);
+                    let _ = Self::read_dex_uleb128(raw_bytes, &mut pos);
+                }
+
+                for count in [direct_methods, virtual_methods] {
+                    let mut m_idx = 0u32;
+                    for _ in 0..count.min(1024) {
+                        let diff = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0);
+                        let _access = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0);
+                        let code_off = Self::read_dex_uleb128(raw_bytes, &mut pos).unwrap_or(0) as usize;
+                        m_idx = m_idx.wrapping_add(diff);
+                        if code_off > 0 && code_off + 16 <= raw_bytes.len() {
+                            let insns_units = read_u32(code_off + 12) as usize;
+                            let byte_len = (insns_units * 2).min(raw_bytes.len().saturating_sub(code_off + 16));
+                            if byte_len > 0 {
+                                let m_name = dex_methods
+                                    .get(m_idx as usize)
+                                    .cloned()
+                                    .unwrap_or_else(|| format!("{}.method_{}", cls_name, m_idx));
+                                discovered_methods.push((m_name, code_off + 16, byte_len));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         let code_start = if data_off > 0 && data_off < raw_bytes.len() {
             data_off
+        } else if raw_bytes.len() > 0x70 {
+            0x70
         } else {
             0
         };
+
+        // Fallback if class_data_off was not populated or compact DEX snippet
+        if discovered_methods.is_empty() && code_start < raw_bytes.len() {
+            let m_name = dex_methods
+                .first()
+                .cloned()
+                .unwrap_or_else(|| "DexMain.onCreate".to_string());
+            discovered_methods.push((m_name, code_start, raw_bytes.len() - code_start));
+        }
 
         let sec = UltronSection {
             name: ".dex_bytecode".to_string(),
             segment_name: "DEX_FILE".to_string(),
             start_address: 0x1000,
-            length: (raw_bytes.len() - code_start) as u64,
-            file_offset: code_start as u64,
+            length: raw_bytes.len() as u64,
+            file_offset: 0,
             is_code: true,
-            data: raw_bytes[code_start..].to_vec(),
+            data: raw_bytes.to_vec(),
         };
         doc.segments.push(UltronSegment {
             name: "DEX_FILE".to_string(),
@@ -1904,6 +3071,107 @@ impl UltronBinaryLoader {
             sections: vec![sec],
             raw_data: raw_bytes.to_vec(),
         });
+
+        for (m_name, ins_off, byte_len) in discovered_methods {
+            let entry_addr = 0x1000 + (ins_off as u64);
+            let end_addr = entry_addr + (byte_len as u64).max(2);
+            doc.labels.insert(entry_addr, m_name.clone());
+            doc.exports.insert(entry_addr, m_name.clone());
+
+            let slice = &raw_bytes[ins_off..(ins_off + byte_len).min(raw_bytes.len())];
+            let (insns, callees, str_refs) = Self::decode_dalvik_stream(
+                slice,
+                entry_addr,
+                &dex_strings,
+                &dex_methods,
+                &dex_fields,
+                &mut doc,
+            );
+            if insns.is_empty() {
+                continue;
+            }
+
+            let mut leader_addrs = std::collections::BTreeSet::new();
+            leader_addrs.insert(entry_addr);
+            for ins in &insns {
+                if let Some(t) = ins.branch_target {
+                    leader_addrs.insert(t);
+                }
+            }
+
+            let mut basic_blocks = Vec::new();
+            let mut cur_bb = Vec::new();
+            for (i_idx, ins) in insns.iter().enumerate() {
+                if leader_addrs.contains(&ins.address) && !cur_bb.is_empty() {
+                    let first_a = cur_bb.first().map(|x: &UltronInstruction| x.address).unwrap_or(entry_addr);
+                    basic_blocks.push(UltronBasicBlock {
+                        start_address: first_a,
+                        end_address: ins.address,
+                        instructions: std::mem::take(&mut cur_bb),
+                        outgoing_edges: vec![ins.address],
+                        incoming_edges: Vec::new(),
+                        branch_true: Some(ins.address),
+                        branch_false: None,
+                    });
+                }
+                cur_bb.push(ins.clone());
+                if ins.is_branch || ins.is_return || i_idx + 1 == insns.len() {
+                    let first_a = cur_bb.first().map(|x| x.address).unwrap_or(entry_addr);
+                    let end_a = ins.address + ins.size as u64;
+                    let next_a = insns.get(i_idx + 1).map(|x| x.address);
+                    let mut out_edges = Vec::new();
+                    let mut b_true = None;
+                    let mut b_false = None;
+                    if ins.is_branch {
+                        b_true = ins.branch_target;
+                        if ins.mnemonic != "goto" {
+                            b_false = next_a;
+                        }
+                        if let Some(t) = b_true {
+                            out_edges.push(t);
+                        }
+                        if let Some(f) = b_false {
+                            out_edges.push(f);
+                        }
+                    } else if !ins.is_return {
+                        if let Some(n) = next_a {
+                            out_edges.push(n);
+                        }
+                    }
+                    basic_blocks.push(UltronBasicBlock {
+                        start_address: first_a,
+                        end_address: end_a,
+                        instructions: std::mem::take(&mut cur_bb),
+                        outgoing_edges: out_edges,
+                        incoming_edges: Vec::new(),
+                        branch_true: b_true,
+                        branch_false: b_false,
+                    });
+                }
+            }
+
+            doc.procedures.insert(
+                entry_addr,
+                UltronProcedure {
+                    name: m_name.clone(),
+                    entry_point: entry_addr,
+                    end_address: end_addr,
+                    segment_name: "DEX_FILE".to_string(),
+                    section_name: ".dex_bytecode".to_string(),
+                    signature: format!("void {}()", m_name),
+                    basic_blocks,
+                    callers: Vec::new(),
+                    callees,
+                    strings_referenced: str_refs,
+                    stack_frame_size: 0,
+                    local_variables: BTreeMap::new(),
+                },
+            );
+        }
+
+        if let Some(&first_proc) = doc.procedures.keys().next() {
+            doc.entry_point = first_proc;
+        }
         doc
     }
 

@@ -1,0 +1,207 @@
+{"app_name": "ultron-sentinel-daemon", "timestamp": "2026-10-18 11:10:00.00 +0000", "app_version": "3.0.0", "slice_uuid": "d9d800f6-5d78-466a-8d00-0ca8e9087c57", "build_version": "300.1", "platform": 1, "bundleID": "io.ultron.sentinel.daemon", "share_with_app_devs": 0, "is_first_party": 0, "bug_type": "309", "os_version": "macOS 15.1 (24B83)", "roots_installed": 0, "name": "ultron-sentinel-daemon", "incident_id": "A1B2C3D4-E5F6-4789-9012-3456789ABCDE"}
+{
+  "uptime": 84210,
+  "procRole": "Foreground",
+  "version": 2,
+  "userID": 501,
+  "deployVersion": 210,
+  "modelCode": "Mac15,6",
+  "coalitionID": 4192,
+  "osVersion": {
+    "train": "macOS 15.1",
+    "build": "24B83",
+    "releaseType": "User"
+  },
+  "captureTime": "2026-10-18 11:10:00.1234 +0000",
+  "incident": "A1B2C3D4-E5F6-4789-9012-3456789ABCDE",
+  "pid": 42198,
+  "translated": false,
+  "cpuType": "ARM-64",
+  "procName": "ultron-sentinel-daemon",
+  "procPath": "/Applications/Ultron Disassemble.app/Contents/MacOS/ultron-sentinel-daemon",
+  "exception": {
+    "codes": "0x0000000000000001, 0x00000000deadbeef",
+    "rawCodes": [
+      1,
+      3735928559
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x00000000deadbeef"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 42198
+  },
+  "faultingThread": 0,
+  "threads": [
+    {
+      "triggered": true,
+      "id": 918273,
+      "threadState": {
+        "flavor": "arm_THREAD_STATE64",
+        "x": [
+          {
+            "value": 3735928559
+          },
+          {
+            "value": 4294967552
+          },
+          {
+            "value": 4294967808
+          },
+          {
+            "value": 4294968064
+          },
+          {
+            "value": 4294968320
+          },
+          {
+            "value": 4294968576
+          },
+          {
+            "value": 4294968832
+          },
+          {
+            "value": 4294969088
+          },
+          {
+            "value": 4294969344
+          },
+          {
+            "value": 4294969600
+          },
+          {
+            "value": 4294969856
+          },
+          {
+            "value": 4294970112
+          },
+          {
+            "value": 4294970368
+          },
+          {
+            "value": 4294970624
+          },
+          {
+            "value": 4294970880
+          },
+          {
+            "value": 4294971136
+          },
+          {
+            "value": 4294971392
+          },
+          {
+            "value": 4294971648
+          },
+          {
+            "value": 4294971904
+          },
+          {
+            "value": 4294972160
+          },
+          {
+            "value": 4294972416
+          },
+          {
+            "value": 4294972672
+          },
+          {
+            "value": 4294972928
+          },
+          {
+            "value": 4294973184
+          },
+          {
+            "value": 4294973440
+          },
+          {
+            "value": 4294973696
+          },
+          {
+            "value": 4294973952
+          },
+          {
+            "value": 4294974208
+          },
+          {
+            "value": 4294974464
+          }
+        ],
+        "fp": {
+          "value": 6171915296
+        },
+        "lr": {
+          "value": 4294983064
+        },
+        "sp": {
+          "value": 6171915232
+        },
+        "pc": {
+          "value": 4294982724
+        },
+        "cpsr": {
+          "value": 1610616832
+        },
+        "far": {
+          "value": 3735928559
+        },
+        "esr": {
+          "value": 2449473542,
+          "description": "(Data Abort) byte read Translation fault"
+        }
+      },
+      "frames": [
+        {
+          "imageOffset": 15428,
+          "symbol": "UltronCryptoVault::decryptBlock(unsigned char const*, unsigned long)",
+          "symbolLocation": 68,
+          "imageIndex": 0
+        },
+        {
+          "imageOffset": 15768,
+          "symbol": "UltronPacketDispatcher::handleIncomingFrame(UltronFrame*)",
+          "symbolLocation": 144,
+          "imageIndex": 0
+        },
+        {
+          "imageOffset": 16120,
+          "symbol": "main",
+          "symbolLocation": 92,
+          "imageIndex": 0
+        },
+        {
+          "imageOffset": 25204,
+          "symbol": "start",
+          "symbolLocation": 2360,
+          "imageIndex": 1
+        }
+      ]
+    }
+  ],
+  "usedImages": [
+    {
+      "source": "P",
+      "arch": "arm64",
+      "base": 4294967296,
+      "size": 65536,
+      "uuid": "d9d800f6-5d78-466a-8d00-0ca8e9087c57",
+      "path": "/Applications/Ultron Disassemble.app/Contents/MacOS/ultron-sentinel-daemon",
+      "name": "ultron-sentinel-daemon"
+    },
+    {
+      "source": "P",
+      "arch": "arm64e",
+      "base": 6849126400,
+      "size": 607948,
+      "uuid": "a1b2c3d4-1111-2222-3333-444455556666",
+      "path": "/usr/lib/dyld",
+      "name": "dyld"
+    }
+  ]
+}

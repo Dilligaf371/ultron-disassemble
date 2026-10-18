@@ -3,22 +3,30 @@ mod assembler;
 mod decompiler;
 mod disassembler;
 mod loader;
+mod mcp_server;
 mod neural_and_emu;
 mod server;
 mod types;
+mod v3_intelligence;
+mod v3_targets;
 
 use crate::advanced_re::{UltronBinDiffEngine, UltronDynamicDebugBridge, UltronFlirtEngine};
 use crate::assembler::UltronLlvmAssembler;
 use crate::decompiler::{DecompileOptions, UltronDecompiler};
 use crate::loader::UltronBinaryLoader;
+use crate::mcp_server::run_mcp_stdio_server;
 use crate::neural_and_emu::{SymbolDemangler, UltronSecurityAuditor};
+use crate::v3_intelligence::{UltronAiDecompiler, UltronSymbolicSolver};
+use crate::v3_targets::{
+    UltronArtifactAnalyzer, UltronBytecodeDecoder, UltronCrashAndLldbEngine,
+};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(
     name = "ultron-disassemble-rs",
-    version = "2.3.0",
-    about = "ULTRON DISASSEMBLE v2.3 (Native Rust Edition) — Avengers-Class Binary Disassembler, SSA Decompiler, ObjC/C++/Swift/DWARF Reconstructor, BinDiff & Frida/LLDB Bridge"
+    version = "3.0.0",
+    about = "ULTRON DISASSEMBLE v3.0 (Omni-Core Native Rust Edition) — Disassembler, SSA & AI Decompiler, Z3 Symbolic Solver, REA Multi-Targets (.asar/EVM/DEX/CIL/Crash) & MCP Server"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -88,6 +96,41 @@ enum Commands {
     },
     /// Scan binary with FLIRT/WARP static library function signatures
     Flirt {
+        path: String,
+        #[arg(long, default_value = "arm64")]
+        arch: String,
+    },
+    /// Run Z3 / SMT-LIB2 Symbolic Execution Path Solver to a target address
+    Solve {
+        path: String,
+        #[arg(long)]
+        proc: Option<String>,
+        #[arg(long)]
+        target: Option<String>,
+        #[arg(long, default_value = "arm64")]
+        arch: String,
+    },
+    /// Rewrite procedure into idiomatic C23, Rust, or Swift using the Neural AST Synthesizer
+    AiDecompile {
+        path: String,
+        #[arg(long)]
+        proc: Option<String>,
+        #[arg(long, default_value = "rust")]
+        lang: String,
+        #[arg(long, default_value = "arm64")]
+        arch: String,
+    },
+    /// Inspect Electron .asar, mobile bundles (.ipa/.apk/.dmg), or EVM/DEX/CIL bytecode
+    Artifact {
+        path: String,
+    },
+    /// Analyze macOS .ips crash report or Linux ELF core dump
+    Crash {
+        path: String,
+    },
+    /// Launch the built-in Model Context Protocol (MCP) JSON-RPC 2.0 Server over stdio (REA-compatible)
+    Mcp {
+        #[arg(default_value = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample")]
         path: String,
         #[arg(long, default_value = "arm64")]
         arch: String,
@@ -276,6 +319,77 @@ async fn main() -> anyhow::Result<()> {
             let matches = UltronFlirtEngine::scan_and_apply_flirt(&mut doc);
             println!("═══ ULTRON FLIRT/WARP SIGNATURE MATCHES ({}) ═══", matches.len());
             println!("{}", serde_json::to_string_pretty(&matches)?);
+        }
+        Commands::Solve {
+            path,
+            proc,
+            target,
+            arch,
+        } => {
+            let doc = UltronBinaryLoader::load(&path, &arch)?;
+            let proc_addr = proc
+                .as_ref()
+                .and_then(|q| {
+                    doc.procedures
+                        .values()
+                        .find(|p| p.name.contains(q) || format!("0x{:x}", p.entry_point) == *q)
+                        .map(|p| p.entry_point)
+                })
+                .unwrap_or(doc.entry_point);
+            let target_addr = target
+                .as_ref()
+                .and_then(|t| {
+                    let s = t.trim().trim_start_matches("0x");
+                    u64::from_str_radix(s, 16).ok()
+                })
+                .unwrap_or_else(|| {
+                    doc.procedures
+                        .get(&proc_addr)
+                        .and_then(|p| p.basic_blocks.last().map(|bb| bb.start_address))
+                        .unwrap_or(proc_addr)
+                });
+            let res = UltronSymbolicSolver::solve_symbolic_path(&doc, proc_addr, target_addr);
+            println!("{}", serde_json::to_string_pretty(&res)?);
+        }
+        Commands::AiDecompile {
+            path,
+            proc,
+            lang,
+            arch,
+        } => {
+            let doc = UltronBinaryLoader::load(&path, &arch)?;
+            let proc_addr = proc
+                .as_ref()
+                .and_then(|q| {
+                    doc.procedures
+                        .values()
+                        .find(|p| p.name.contains(q) || format!("0x{:x}", p.entry_point) == *q)
+                        .map(|p| p.entry_point)
+                })
+                .unwrap_or(doc.entry_point);
+            let res = UltronAiDecompiler::ai_rewrite_procedure(&doc, proc_addr, &lang);
+            println!(
+                "═══ ULTRON AI IDIOMATIC REWRITER ({}) // {} ═══\n{}",
+                lang.to_uppercase(),
+                res["procedure"].as_str().unwrap_or_default(),
+                res["idiomatic_code"].as_str().unwrap_or_default()
+            );
+        }
+        Commands::Artifact { path } => {
+            let res = if path.ends_with(".evm") || path.ends_with(".dex") || path.ends_with(".dll") {
+                UltronBytecodeDecoder::decode_bytecode_file(&path)
+            } else {
+                UltronArtifactAnalyzer::inspect_artifact(&path)
+            };
+            println!("{}", serde_json::to_string_pretty(&res)?);
+        }
+        Commands::Crash { path } => {
+            let res = UltronCrashAndLldbEngine::inspect_crash_dump(&path);
+            println!("{}", serde_json::to_string_pretty(&res)?);
+        }
+        Commands::Mcp { path, arch } => {
+            let doc = UltronBinaryLoader::load(&path, &arch)?;
+            run_mcp_stdio_server(doc)?;
         }
         Commands::Ui { path, host, port, arch } => {
             let doc = UltronBinaryLoader::load(&path, &arch)?;
