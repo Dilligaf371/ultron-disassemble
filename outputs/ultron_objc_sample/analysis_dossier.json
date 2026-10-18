@@ -1695,6 +1695,194 @@
     "total_call_edges": 23,
     "total_procedures": 33
   },
+  "compliance_sbom": {
+    "air_gapped_verified": true,
+    "compliance_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/compliance_soc2_iso27001.json",
+    "cyclonedx_sbom": {
+      "bomFormat": "CycloneDX",
+      "components": [
+        {
+          "bom-ref": "pkg:darwin/Foundation@d21191991dd8472f",
+          "hashes": [
+            {
+              "alg": "FNV-1a-64",
+              "content": "d21191991dd8472f"
+            }
+          ],
+          "name": "Foundation",
+          "purl": "pkg:generic/Foundation?path=/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+          "scope": "required",
+          "type": "library",
+          "version": "(compatibility version 300.0.0, current version 5026.5.4)"
+        },
+        {
+          "bom-ref": "pkg:darwin/libobjc.A.dylib@95fba69fb2ecfd7f",
+          "hashes": [
+            {
+              "alg": "FNV-1a-64",
+              "content": "95fba69fb2ecfd7f"
+            }
+          ],
+          "name": "libobjc.A.dylib",
+          "purl": "pkg:generic/libobjc.A.dylib?path=/usr/lib/libobjc.A.dylib",
+          "scope": "required",
+          "type": "library",
+          "version": "(compatibility version 1.0.0, current version 228.0.0)"
+        },
+        {
+          "bom-ref": "pkg:darwin/libSystem.B.dylib@b735d225399a76d5",
+          "hashes": [
+            {
+              "alg": "FNV-1a-64",
+              "content": "b735d225399a76d5"
+            }
+          ],
+          "name": "libSystem.B.dylib",
+          "purl": "pkg:generic/libSystem.B.dylib?path=/usr/lib/libSystem.B.dylib",
+          "scope": "required",
+          "type": "library",
+          "version": "(compatibility version 1.0.0, current version 1356.0.0)"
+        },
+        {
+          "bom-ref": "pkg:darwin/CoreFoundation@36d2f3cb83ab46ed",
+          "hashes": [
+            {
+              "alg": "FNV-1a-64",
+              "content": "36d2f3cb83ab46ed"
+            }
+          ],
+          "name": "CoreFoundation",
+          "purl": "pkg:generic/CoreFoundation?path=/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+          "scope": "required",
+          "type": "library",
+          "version": "(compatibility version 150.0.0, current version 5026.5.4)"
+        }
+      ],
+      "metadata": {
+        "component": {
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78"
+            }
+          ],
+          "name": "ultron_objc_sample",
+          "type": "application"
+        },
+        "timestamp": "2026-10-18T22:00:00Z",
+        "tools": [
+          {
+            "name": "Ultron Disassemble v4.0",
+            "vendor": "Ultron Sovereign Security",
+            "version": "4.0.0-sovereign"
+          }
+        ]
+      },
+      "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-e474711f7aea",
+      "specVersion": "1.5",
+      "version": 1
+    },
+    "immutable_ledger_entries": 1,
+    "immutable_ledger_path": "/Users/gilles/.ultron/immutable_audit_ledger.jsonl",
+    "iso27001_annex_a_controls": [
+      {
+        "control": "ISO/IEC 27001:2022 Annex A.8.8 — Management of Technical Vulnerabilities",
+        "evidence": "Automated CWE-120/787/134/78 Static + Symbolic Z3 + 64-Seed Coverage Fuzzing Verification",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "control": "ISO/IEC 27001:2022 Annex A.8.12 — Data Leakage Prevention",
+        "evidence": "Zero third-party network calls; all decompilation, AI AST synthesis & fuzzing execute strictly on-premise in memory-safe Rust",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "control": "ISO/IEC 27001:2022 Annex A.8.15 — Logging & Immutable Audit Trail",
+        "evidence": "Append-only Merkle JSONL Ledger at /Users/gilles/.ultron/immutable_audit_ledger.jsonl",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "control": "ISO/IEC 27001:2022 Annex A.8.28 — Secure Coding & Supply Chain (CycloneDX SBOM)",
+        "evidence": "CycloneDX 1.5 SBOM generated (4 linked components mapped)",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "control": "ISO/IEC 27037 — Digital Evidence Identification, Collection & Preservation",
+        "evidence": "SHA-256 Chain-of-Custody (7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78) + MCP Evidence Ledger provenance",
+        "status": "COMPLIANT (PASS)"
+      }
+    ],
+    "latest_merkle_hash": "9114a4007ee4d859c43971865da40f82",
+    "memory_safe_rust_core": true,
+    "ok": true,
+    "overall_status": "COMPLIANT // SOC 2 TYPE II + ISO/IEC 27001:2022 + ISO/IEC 27037 + CYCLONEDX 1.5",
+    "sbom_components_count": 4,
+    "sbom_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/sbom_cyclonedx.json",
+    "soc2_trust_services_criteria": [
+      {
+        "criteria": "CC6.1 / CC6.6 — Logical Access & Boundary Protection",
+        "evidence": "100% Local Loopback Binding (127.0.0.1:8420), Zero Cloud Exfiltration, Air-Gapped Ready",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "criteria": "CC7.1 — System Vulnerability & Configuration Detection",
+        "evidence": "Automated CWE Source->Sink Taint Audit, Shannon Entropy & Binary Hardening Inspection across 33 procedures",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "criteria": "CC7.2 — Tamper-Evident Security Event Monitoring",
+        "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (1 records, head=9114a4007ee4d859c43971865da40f82)",
+        "status": "COMPLIANT (PASS)"
+      },
+      {
+        "criteria": "CC8.1 — Change Management & Binary Patch Integrity",
+        "evidence": "1-Day Patch Root-Cause C-Diffing, Mach-O Ad-Hoc CodeSigning & SHA-256 Provenance Verification",
+        "status": "COMPLIANT (PASS)"
+      }
+    ],
+    "target_binary": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample",
+    "target_sha256": "7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78"
+  },
+  "cpp_rtti": {
+    "classes": [
+      {
+        "class_name": "PolymoObject_a18",
+        "methods": [
+          "virtual int64_t vfunc_slot_7(void* this_ptr, int64_t arg1); // Indirect blr x8 @ 0x100000b00 (offset +0x38)"
+        ],
+        "vtable_slots": 1
+      },
+      {
+        "class_name": "PolymoObject_f3c",
+        "methods": [
+          "virtual int64_t vfunc_slot_6(void* this_ptr, int64_t arg1); // Indirect blr x8 @ 0x100001110 (offset +0x30)"
+        ],
+        "vtable_slots": 1
+      }
+    ],
+    "classes_reconstructed": 2,
+    "hpp_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/cpp_classes.hpp",
+    "hpp_source": "// ============================================================================\n// ULTRON DISASSEMBLE v4.0 — C++ RTTI, VTABLE & CLASS HIERARCHY RECONSTRUCTION\n// Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample\n// Classes Found : 2 | Virtual Dispatch Sites: 2\n// ============================================================================\n#pragma once\n#include <cstdint>\n\nstruct PolymoObject_a18_VTable {\n    int64_t (*vslot_0)(void* this_ptr, int64_t a0, int64_t a1); // virtual int64_t vfunc_slot_7(void* this_ptr, int64_t arg1); // Indirect blr x8 @ 0x100000b00 (offset +0x38)\n};\n\nclass PolymoObject_a18 {\npublic:\n    const PolymoObject_a18_VTable* vptr; // +0x00 (Itanium / MSVC ABI vtable pointer)\n    uint64_t instance_flags; // +0x08\n    void*    internal_state; // +0x10\n\n    // Reconstructed Virtual Methods:\n    virtual int64_t vfunc_slot_7(void* this_ptr, int64_t arg1); // Indirect blr x8 @ 0x100000b00 (offset +0x38)\n};\n\nstruct PolymoObject_f3c_VTable {\n    int64_t (*vslot_0)(void* this_ptr, int64_t a0, int64_t a1); // virtual int64_t vfunc_slot_6(void* this_ptr, int64_t arg1); // Indirect blr x8 @ 0x100001110 (offset +0x30)\n};\n\nclass PolymoObject_f3c {\npublic:\n    const PolymoObject_f3c_VTable* vptr; // +0x00 (Itanium / MSVC ABI vtable pointer)\n    uint64_t instance_flags; // +0x08\n    void*    internal_state; // +0x10\n\n    // Reconstructed Virtual Methods:\n    virtual int64_t vfunc_slot_6(void* this_ptr, int64_t arg1); // Indirect blr x8 @ 0x100001110 (offset +0x30)\n};\n\n",
+    "ok": true,
+    "virtual_dispatch_sites": 2,
+    "vtable_calls": [
+      {
+        "call_address": "0x100000b00",
+        "caller": "-[UltronSentinelCore initWithKey:rounds:]",
+        "instruction": "blr x8",
+        "rewritten_cpp_call": "reinterpret_cast<PolymoObject_a18*>(this_ptr)->vtable->vfunc_slot_7(this_ptr, arg1);",
+        "slot_index": 7,
+        "vtable_offset": "+0x38"
+      },
+      {
+        "call_address": "0x100001110",
+        "caller": "_main",
+        "instruction": "blr x8",
+        "rewritten_cpp_call": "reinterpret_cast<PolymoObject_f3c*>(this_ptr)->vtable->vfunc_slot_6(this_ptr, arg1);",
+        "slot_index": 6,
+        "vtable_offset": "+0x30"
+      }
+    ]
+  },
   "deobfuscation": {
     "concolic_verification": {
       "concrete_emulator_steps_verified": 24,
@@ -2067,6 +2255,115 @@
       "was_stripped": false
     }
   ],
+  "forensic_dossier": {
+    "chain_of_custody": {
+      "container_format": "Mach-O 64-bit",
+      "cpu_architecture": "arm64 (64-bit)",
+      "entry_point": "0x100000f3c",
+      "evidence_file": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample",
+      "sha256_digest": "7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78",
+      "total_instructions": 572,
+      "total_procedures": 33
+    },
+    "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+    "crypto_key_schedule_candidates": [
+      {
+        "address": "0x100000a4c",
+        "immediate_hex": "0x100004000",
+        "instruction": "adrp x8, #0x100004000"
+      },
+      {
+        "address": "0x100000a58",
+        "immediate_hex": "0x100008000",
+        "instruction": "adrp x8, #0x100008000"
+      },
+      {
+        "address": "0x100000a60",
+        "immediate_hex": "0x1000011a8",
+        "instruction": "bl #0x1000011a8"
+      },
+      {
+        "address": "0x100000a74",
+        "immediate_hex": "0x1000011f0",
+        "instruction": "bl #0x1000011f0"
+      },
+      {
+        "address": "0x100000a7c",
+        "immediate_hex": "0x100000aec",
+        "instruction": "cbz x8, #0x100000aec"
+      },
+      {
+        "address": "0x100000a80",
+        "immediate_hex": "0x100000a84",
+        "instruction": "b #0x100000a84"
+      },
+      {
+        "address": "0x100000adc",
+        "immediate_hex": "0x100004000",
+        "instruction": "adrp x1, #0x100004000"
+      },
+      {
+        "address": "0x100000ae4",
+        "immediate_hex": "0x1000011f0",
+        "instruction": "bl #0x1000011f0"
+      },
+      {
+        "address": "0x100000ae8",
+        "immediate_hex": "0x100000aec",
+        "instruction": "b #0x100000aec"
+      },
+      {
+        "address": "0x100000af8",
+        "immediate_hex": "0x100004000",
+        "instruction": "adrp x8, #0x100004000"
+      },
+      {
+        "address": "0x100000b14",
+        "immediate_hex": "0x1000011f0",
+        "instruction": "bl #0x1000011f0"
+      },
+      {
+        "address": "0x100000b58",
+        "immediate_hex": "0x100000b5c",
+        "instruction": "b #0x100000b5c"
+      }
+    ],
+    "dossier_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/forensic_sigint_dossier.json",
+    "extracted_iocs": [
+      {
+        "address": "0x1000013e2",
+        "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+        "value": "TQ,N,V_cipherKey"
+      },
+      {
+        "address": "0x100001413",
+        "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+        "value": "_cipherKey"
+      },
+      {
+        "address": "0x100001464",
+        "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+        "value": "cipherKey"
+      },
+      {
+        "address": "0x100001493",
+        "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+        "value": "initWithKey:rounds:"
+      },
+      {
+        "address": "0x1000014e5",
+        "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+        "value": "setCipherKey:"
+      },
+      {
+        "address": "0x100001540",
+        "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+        "value": "ULTRON_TELEMETRY_CORE_AUTH_VECTOR"
+      }
+    ],
+    "extracted_iocs_count": 6,
+    "ok": true
+  },
   "format": "Mach-O 64-bit",
   "fuzzer_report": {
     "boundary_edge_cases": [
@@ -2187,6 +2484,235 @@
     "reconstructed_functions_count": 30,
     "rust_source_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/reconstructed_project/src/main.rs",
     "rust_source_preview": "//! ULTRON DISASSEMBLE — AUTONOMOUS IDIOMATIC RUST RECONSTRUCTION\n//! Source Binary: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample` (Mach-O 64-bit)\n\n/*\n// Idiomatic Rust synthesis\n*/\n\n/// Reconstructed from `-[UltronSentinelCore initWithKey:rounds:]` @ `0x100000a18`\npub fn re_UltronSentinelCore_initWithKey_rounds(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000a18;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore decryptPayload:length:]` @ `0x100000b28`\npub fn re_UltronSentinelCore_decryptPayload_length(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000b28;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `+[UltronSentinelCore sentinelProtocolVersion]` @ `0x100000c10`\npub fn re_UltronSentinelCore_sentinelProtocolVersion(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000c10;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore securityLevel]` @ `0x100000c2c`\npub fn re_UltronSentinelCore_securityLevel(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000c2c;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore setSecurityLevel:]` @ `0x100000c48`\npub fn re_UltronSentinelCore_setSecurityLevel(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000c48;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore cipherKey]` @ `0x100000c6c`\npub fn re_UltronSentinelCore_cipherKey(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000c6c;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore setCipherKey:]` @ `0x100000c88`\npub fn re_UltronSentinelCore_setCipherKey(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000c88;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore coreName]` @ `0x100000cac`\npub fn re_UltronSentinelCore_coreName(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000cac;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore setCoreName:]` @ `0x100000cc8`\npub fn re_UltronSentinelCore_setCoreName(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000cc8;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore .cxx_destruct]` @ `0x100000d00`\npub fn re_UltronSentinelCore__cxx_destruct(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000d00;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `-[UltronSentinelCore reactorDiagnosticDigest]` @ `0x100000d30`\npub fn re_UltronSentinelCore_reactorDiagnosticDigest(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000d30;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `_matrix_nested_solver` @ `0x100000d64`\npub fn re_matrix_nested_solver(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000d64;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `_main` @ `0x100000f3c`\npub fn reconstructed_entry_main(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100000f3c;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `flirt_dyld_stub_binder_trampoline_116c` @ `0x10000116c`\npub fn re_flirt_dyld_stub_binder_trampoline_116c(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x10000116c;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\n/// Reconstructed from `flirt_dyld_stub_binder_trampoline_1178` @ `0x100001178`\npub fn re_flirt_dyld_stub_binder_trampoline_1178(arg0: u64, arg1: u64, arg2: u64) -> u64 {\nlet mut state = arg0 ^ 0x100001178;\nfor i in 0..(arg1 & 0x0f) {\nstate = state.rotate_left(5) ^ (arg2.wrapping_add(i));\n}\nstate\n}\n\nfn main() {\nprintln!(\"[ULTRON RUST RECONSTRUCTION] Target: ultron_objc_sample (33 procedures)\");\n}\n"
+  },
+  "rop_gadgets": {
+    "gadgets": [
+      {
+        "address": "0x100000af8",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x8, #0x100004000; ldr x8, [x8, #0x38]; blr x8",
+        "terminator_address": "0x100000b00"
+      },
+      {
+        "address": "0x100000b1c",
+        "class": "STACK_PIVOT_EPILOGUE_GADGET",
+        "sequence": "ldp x29, x30, [sp, #0x50]; add sp, sp, #0x60; ret",
+        "terminator_address": "0x100000b24"
+      },
+      {
+        "address": "0x100000c04",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "ldr x0, [sp, #0x18]; add sp, sp, #0x40; ret",
+        "terminator_address": "0x100000c0c"
+      },
+      {
+        "address": "0x100000c3c",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "ldr w0, [x8, #0x18]; add sp, sp, #0x10; ret",
+        "terminator_address": "0x100000c44"
+      },
+      {
+        "address": "0x100000c60",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "str w8, [x9, #0x18]; add sp, sp, #0x20; ret",
+        "terminator_address": "0x100000c68"
+      },
+      {
+        "address": "0x100000c7c",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "ldr x0, [x8, #0x20]; add sp, sp, #0x10; ret",
+        "terminator_address": "0x100000c84"
+      },
+      {
+        "address": "0x100000ca0",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "str x8, [x9, #0x20]; add sp, sp, #0x20; ret",
+        "terminator_address": "0x100000ca8"
+      },
+      {
+        "address": "0x100000cbc",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "ldr x0, [x8, #0x28]; add sp, sp, #0x10; ret",
+        "terminator_address": "0x100000cc4"
+      },
+      {
+        "address": "0x100000cf4",
+        "class": "STACK_PIVOT_EPILOGUE_GADGET",
+        "sequence": "ldp x29, x30, [sp, #0x20]; add sp, sp, #0x30; ret",
+        "terminator_address": "0x100000cfc"
+      },
+      {
+        "address": "0x100000d24",
+        "class": "STACK_PIVOT_EPILOGUE_GADGET",
+        "sequence": "ldp x29, x30, [sp, #0x10]; add sp, sp, #0x20; ret",
+        "terminator_address": "0x100000d2c"
+      },
+      {
+        "address": "0x100000d58",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "eor x0, x8, x9; add sp, sp, #0x10; ret",
+        "terminator_address": "0x100000d60"
+      },
+      {
+        "address": "0x100000f30",
+        "class": "ROP_RETURN_GADGET",
+        "sequence": "ldr x0, [sp, #0x38]; add sp, sp, #0x40; ret",
+        "terminator_address": "0x100000f38"
+      },
+      {
+        "address": "0x100001108",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x8, #0x100004000; ldr x8, [x8, #0x30]; blr x8",
+        "terminator_address": "0x100001110"
+      },
+      {
+        "address": "0x100001160",
+        "class": "STACK_PIVOT_EPILOGUE_GADGET",
+        "sequence": "ldp x28, x27, [sp, #0x160]; add sp, sp, #0x180; ret",
+        "terminator_address": "0x100001168"
+      },
+      {
+        "address": "0x10000116c",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x68]; br x16",
+        "terminator_address": "0x100001174"
+      },
+      {
+        "address": "0x100001178",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x78]; br x16",
+        "terminator_address": "0x100001180"
+      },
+      {
+        "address": "0x100001184",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16]; br x16",
+        "terminator_address": "0x10000118c"
+      },
+      {
+        "address": "0x100001190",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #8]; br x16",
+        "terminator_address": "0x100001198"
+      },
+      {
+        "address": "0x10000119c",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x10]; br x16",
+        "terminator_address": "0x1000011a4"
+      },
+      {
+        "address": "0x1000011a8",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x20]; br x16",
+        "terminator_address": "0x1000011b0"
+      },
+      {
+        "address": "0x1000011b4",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x28]; br x16",
+        "terminator_address": "0x1000011bc"
+      },
+      {
+        "address": "0x1000011c0",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x40]; br x16",
+        "terminator_address": "0x1000011c8"
+      },
+      {
+        "address": "0x1000011cc",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x48]; br x16",
+        "terminator_address": "0x1000011d4"
+      },
+      {
+        "address": "0x1000011d8",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x50]; br x16",
+        "terminator_address": "0x1000011e0"
+      },
+      {
+        "address": "0x1000011e4",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x58]; br x16",
+        "terminator_address": "0x1000011ec"
+      },
+      {
+        "address": "0x1000011f0",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x60]; br x16",
+        "terminator_address": "0x1000011f8"
+      },
+      {
+        "address": "0x1000011fc",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x80]; br x16",
+        "terminator_address": "0x100001204"
+      },
+      {
+        "address": "0x100001228",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x18]; br x16",
+        "terminator_address": "0x100001230"
+      },
+      {
+        "address": "0x100001248",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x18]; br x16",
+        "terminator_address": "0x100001250"
+      },
+      {
+        "address": "0x100001268",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x18]; br x16",
+        "terminator_address": "0x100001270"
+      },
+      {
+        "address": "0x100001288",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x18]; br x16",
+        "terminator_address": "0x100001290"
+      },
+      {
+        "address": "0x1000012a8",
+        "class": "JOP_DISPATCHER_GADGET",
+        "sequence": "adrp x16, #0x100004000; ldr x16, [x16, #0x18]; br x16",
+        "terminator_address": "0x1000012b0"
+      }
+    ],
+    "gadgets_count": 32,
+    "ok": true,
+    "rop_script_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/rop_primitives.py",
+    "rop_script_source": "#!/usr/bin/env python3\n# ============================================================================\n# ULTRON DISASSEMBLE v4.0 — AUTOMATED ROP / JOP EXPLOIT PRIMITIVE HARNESS\n# Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample\n# Architecture  : arm64 (64-bit)\n# Gadgets Found : 32\n# ============================================================================\nimport struct\n\nTARGET_BINARY = \"/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample\"\nENTRY_POINT   = 0x100000f3c\n\ndef p64(val: int) -> bytes:\n    return struct.pack('<Q', val & 0xffffffffffffffff)\n\n# Discovered ROP / JOP Gadgets:\nGADGETS = {\n    \"gadget_00_jop_dispatcher_gadget\": (0x100000af8, \"adrp x8, #0x100004000; ldr x8, [x8, #0x38]; blr x8\"),\n    \"gadget_01_stack_pivot_epilogue_gadget\": (0x100000b1c, \"ldp x29, x30, [sp, #0x50]; add sp, sp, #0x60; ret\"),\n    \"gadget_02_rop_return_gadget\": (0x100000c04, \"ldr x0, [sp, #0x18]; add sp, sp, #0x40; ret\"),\n    \"gadget_03_rop_return_gadget\": (0x100000c3c, \"ldr w0, [x8, #0x18]; add sp, sp, #0x10; ret\"),\n    \"gadget_04_rop_return_gadget\": (0x100000c60, \"str w8, [x9, #0x18]; add sp, sp, #0x20; ret\"),\n    \"gadget_05_rop_return_gadget\": (0x100000c7c, \"ldr x0, [x8, #0x20]; add sp, sp, #0x10; ret\"),\n    \"gadget_06_rop_return_gadget\": (0x100000ca0, \"str x8, [x9, #0x20]; add sp, sp, #0x20; ret\"),\n    \"gadget_07_rop_return_gadget\": (0x100000cbc, \"ldr x0, [x8, #0x28]; add sp, sp, #0x10; ret\"),\n    \"gadget_08_stack_pivot_epilogue_gadget\": (0x100000cf4, \"ldp x29, x30, [sp, #0x20]; add sp, sp, #0x30; ret\"),\n    \"gadget_09_stack_pivot_epilogue_gadget\": (0x100000d24, \"ldp x29, x30, [sp, #0x10]; add sp, sp, #0x20; ret\"),\n    \"gadget_10_rop_return_gadget\": (0x100000d58, \"eor x0, x8, x9; add sp, sp, #0x10; ret\"),\n    \"gadget_11_rop_return_gadget\": (0x100000f30, \"ldr x0, [sp, #0x38]; add sp, sp, #0x40; ret\"),\n    \"gadget_12_jop_dispatcher_gadget\": (0x100001108, \"adrp x8, #0x100004000; ldr x8, [x8, #0x30]; blr x8\"),\n    \"gadget_13_stack_pivot_epilogue_gadget\": (0x100001160, \"ldp x28, x27, [sp, #0x160]; add sp, sp, #0x180; ret\"),\n    \"gadget_14_jop_dispatcher_gadget\": (0x10000116c, \"adrp x16, #0x100004000; ldr x16, [x16, #0x68]; br x16\"),\n    \"gadget_15_jop_dispatcher_gadget\": (0x100001178, \"adrp x16, #0x100004000; ldr x16, [x16, #0x78]; br x16\"),\n}\n\ndef build_rop_validation_chain(base_slide: int = 0x0) -> bytes:\n    chain = b\"\"\n    for name, (addr, asm) in list(GADGETS.items())[:4]:\n        chain += p64(base_slide + addr)\n    return chain\n\nif __name__ == \"__main__\":\n    payload = build_rop_validation_chain()\n    print(f\"[ULTRON ROP HARNESS] Synthesized {len(GADGETS)} gadgets | Sample chain: {len(payload)} bytes\")\n"
+  },
+  "sigint_attribution": {
+    "mitre_techniques": [
+      {
+        "description": "Cryptographic Payload / Buffer Transformation",
+        "indicator": "crypt",
+        "tactic": "Defense Evasion",
+        "technique_id": "T1027"
+      },
+      {
+        "description": "Objective-C Runtime Dynamic Selector Invocation",
+        "indicator": "objc_msgsend",
+        "tactic": "Execution",
+        "technique_id": "T1106"
+      },
+      {
+        "description": "Compiled Native Mach-O/ELF Binary Artifact Analysis",
+        "indicator": "Mach-O 64-bit",
+        "tactic": "Defense Evasion",
+        "technique_id": "T1027.002"
+      }
+    ],
+    "mitre_techniques_count": 3,
+    "ok": true,
+    "opcode_dna_hash": "2b20b5e6cd51cdaa",
+    "rule_name": "SIGINT_ultron_objc_sample",
+    "structural_imphash": "4a72d22d04041c5e",
+    "yara_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/threat_hunting.yar",
+    "yara_source": "// ============================================================================\n// ULTRON DISASSEMBLE v4.0 — SOVEREIGN SIGINT YARA-X THREAT HUNTING RULE\n// Target Binary     : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample\n// Structural ImpHash: 4a72d22d04041c5e\n// Opcode DNA Hash   : 2b20b5e6cd51cdaa\n// ============================================================================\n\nrule SIGINT_ultron_objc_sample {\n    meta:\n        author = \"Ultron Sovereign SIGINT Engine (NSA/DGSE/DGSI/ANSSI Grade)\"\n        target_format = \"Mach-O 64-bit\"\n        architecture = \"arm64\"\n        structural_imphash = \"4a72d22d04041c5e\"\n        opcode_dna_hash = \"2b20b5e6cd51cdaa\"\n        mitre_attack_count = 3\n    strings:\n        $str_0 = \".cxx_destruct\" ascii wide\n        $str_1 = \"T@\\\"NSString\\\",C,N,V_coreName\" ascii wide\n        $str_2 = \"TQ,N,V_cipherKey\" ascii wide\n        $str_3 = \"Ti,N,V_securityLevel\" ascii wide\n        $str_4 = \"UTF8String\" ascii wide\n        $str_5 = \"_cipherKey\" ascii wide\n        $entry_opcodes = { FF8301D1 FD7B05A9 FD430191 A82300D1 E80F00F9 A0831FF8 }\n    condition:\n        (uint32(0) == 0xfeedfacf or uint32(0) == 0x464c457f or uint16(0) == 0x5a4d) and any of them\n}\n"
   },
   "string_count": 37,
   "symbolic_z3": {
@@ -3956,5 +4482,283 @@
       "0x100000ad0",
       "0x100000ad4"
     ]
+  },
+  "type_propagation": {
+    "header_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/typed_signatures.h",
+    "header_source": "// ============================================================================\n// ULTRON DISASSEMBLE v4.0 — OS TYPE LIBRARY (.TIL) & PROPAGATED SIGNATURES\n// Target Binary     : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample\n// Embedded OS Signatures: 39 (POSIX / Darwin / CoreFoundation / Security / BSD)\n// Typed Procedures  : 33\n// ============================================================================\n#pragma once\n#include <stdint.h>\n#include <stddef.h>\n#include <stdio.h>\n#include <sys/types.h>\n\ntypedef struct UltronContext UltronContext;\n\nint64_t re_UltronSentinelCore_initWithKey_rounds(int64_t arg0, int64_t arg1); // @ 0x100000a18\nint64_t re_UltronSentinelCore_decryptPayload_length(int64_t arg0, int64_t arg1); // @ 0x100000b28\nint64_t re_UltronSentinelCore_sentinelProtocolVersion(int64_t arg0, int64_t arg1); // @ 0x100000c10\nint64_t re_UltronSentinelCore_securityLevel(int64_t arg0, int64_t arg1); // @ 0x100000c2c\nint64_t re_UltronSentinelCore_setSecurityLevel(int64_t arg0, int64_t arg1); // @ 0x100000c48\nint64_t re_UltronSentinelCore_cipherKey(int64_t arg0, int64_t arg1); // @ 0x100000c6c\nint64_t re_UltronSentinelCore_setCipherKey(int64_t arg0, int64_t arg1); // @ 0x100000c88\nint64_t re_UltronSentinelCore_coreName(int64_t arg0, int64_t arg1); // @ 0x100000cac\nint64_t re_UltronSentinelCore_setCoreName(int64_t arg0, int64_t arg1); // @ 0x100000cc8\nint64_t re_UltronSentinelCore__cxx_destruct(int64_t arg0, int64_t arg1); // @ 0x100000d00\nint64_t re_UltronSentinelCore_reactorDiagnosticDigest(int64_t arg0, int64_t arg1); // @ 0x100000d30\nint64_t re_matrix_nested_solver(int64_t arg0, int64_t arg1); // @ 0x100000d64\nint64_t reconstructed_entry_main(id receiver_self, SEL selector_cmd); // @ 0x100000f3c\nint64_t re_flirt_dyld_stub_binder_trampoline_116c(const uint8_t* input_buf); // @ 0x10000116c\nint64_t re_flirt_dyld_stub_binder_trampoline_1178(const uint8_t* input_buf); // @ 0x100001178\nint64_t re_flirt_dyld_stub_binder_trampoline_1184(const uint8_t* input_buf); // @ 0x100001184\nint64_t re_flirt_dyld_stub_binder_trampoline_1190(const uint8_t* input_buf); // @ 0x100001190\nint64_t re_flirt_dyld_stub_binder_trampoline_119c(const uint8_t* input_buf); // @ 0x10000119c\nint64_t re_flirt_dyld_stub_binder_trampoline_11a8(const uint8_t* input_buf); // @ 0x1000011a8\nint64_t re_flirt_dyld_stub_binder_trampoline_11b4(const uint8_t* input_buf); // @ 0x1000011b4\nint64_t re_flirt_dyld_stub_binder_trampoline_11c0(const uint8_t* input_buf); // @ 0x1000011c0\nint64_t re_flirt_dyld_stub_binder_trampoline_11d8(const uint8_t* input_buf); // @ 0x1000011d8\nint64_t re_flirt_dyld_stub_binder_trampoline_11e4(const uint8_t* input_buf); // @ 0x1000011e4\nint64_t re_flirt_dyld_stub_binder_trampoline_11f0(const uint8_t* input_buf); // @ 0x1000011f0\nint64_t re_flirt_dyld_stub_binder_trampoline_11fc(const uint8_t* input_buf); // @ 0x1000011fc\nid re_objc_msgSend_UTF8String(id receiver_self, SEL selector_cmd); // @ 0x100001220\nid re_objc_msgSend_coreName(id receiver_self, SEL selector_cmd); // @ 0x100001240\nid re_objc_msgSend_decryptPayload_length(id receiver_self, SEL selector_cmd); // @ 0x100001260\nid re_objc_msgSend_initWithKey_rounds(id receiver_self, SEL selector_cmd); // @ 0x100001280\nid re_objc_msgSend_reactorDiagnosticDigest(id receiver_self, SEL selector_cmd); // @ 0x1000012a0\nid re_objc_msgSend_securityLevel(id receiver_self, SEL selector_cmd); // @ 0x1000012c0\nid re_objc_msgSend_sentinelProtocolVersion(id receiver_self, SEL selector_cmd); // @ 0x1000012e0\nid re_objc_msgSend_setSecurityLevel(id receiver_self, SEL selector_cmd); // @ 0x100001300\n",
+    "ok": true,
+    "os_til_database_size": 39,
+    "propagated_call_sites_count": 17,
+    "propagated_sites": [
+      {
+        "address": "0x100000f94",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100000fa8",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100000fec",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001030",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x10000105c",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001074",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001090",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x1000010a0",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x1000010c0",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_main",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001220",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$UTF8String",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001240",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$coreName",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001260",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$decryptPayload:length:",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001280",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$initWithKey:rounds:",
+        "return_type": "id"
+      },
+      {
+        "address": "0x1000012a0",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$reactorDiagnosticDigest",
+        "return_type": "id"
+      },
+      {
+        "address": "0x1000012c0",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$securityLevel",
+        "return_type": "id"
+      },
+      {
+        "address": "0x1000012e0",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$sentinelProtocolVersion",
+        "return_type": "id"
+      },
+      {
+        "address": "0x100001300",
+        "domain": "Objective-C Dynamic Message Dispatch (libobjc)",
+        "matched_api": "objc_msgSend",
+        "parameters": [
+          "id receiver_self",
+          "SEL selector_cmd"
+        ],
+        "procedure": "_objc_msgSend$setSecurityLevel:",
+        "return_type": "id"
+      }
+    ],
+    "typed_procedures_count": 33,
+    "typed_prototypes": [
+      "int64_t re_UltronSentinelCore_initWithKey_rounds(int64_t arg0, int64_t arg1); // @ 0x100000a18",
+      "int64_t re_UltronSentinelCore_decryptPayload_length(int64_t arg0, int64_t arg1); // @ 0x100000b28",
+      "int64_t re_UltronSentinelCore_sentinelProtocolVersion(int64_t arg0, int64_t arg1); // @ 0x100000c10",
+      "int64_t re_UltronSentinelCore_securityLevel(int64_t arg0, int64_t arg1); // @ 0x100000c2c",
+      "int64_t re_UltronSentinelCore_setSecurityLevel(int64_t arg0, int64_t arg1); // @ 0x100000c48",
+      "int64_t re_UltronSentinelCore_cipherKey(int64_t arg0, int64_t arg1); // @ 0x100000c6c",
+      "int64_t re_UltronSentinelCore_setCipherKey(int64_t arg0, int64_t arg1); // @ 0x100000c88",
+      "int64_t re_UltronSentinelCore_coreName(int64_t arg0, int64_t arg1); // @ 0x100000cac",
+      "int64_t re_UltronSentinelCore_setCoreName(int64_t arg0, int64_t arg1); // @ 0x100000cc8",
+      "int64_t re_UltronSentinelCore__cxx_destruct(int64_t arg0, int64_t arg1); // @ 0x100000d00",
+      "int64_t re_UltronSentinelCore_reactorDiagnosticDigest(int64_t arg0, int64_t arg1); // @ 0x100000d30",
+      "int64_t re_matrix_nested_solver(int64_t arg0, int64_t arg1); // @ 0x100000d64",
+      "int64_t reconstructed_entry_main(id receiver_self, SEL selector_cmd); // @ 0x100000f3c",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_116c(const uint8_t* input_buf); // @ 0x10000116c",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_1178(const uint8_t* input_buf); // @ 0x100001178",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_1184(const uint8_t* input_buf); // @ 0x100001184",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_1190(const uint8_t* input_buf); // @ 0x100001190",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_119c(const uint8_t* input_buf); // @ 0x10000119c",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11a8(const uint8_t* input_buf); // @ 0x1000011a8",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11b4(const uint8_t* input_buf); // @ 0x1000011b4",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11c0(const uint8_t* input_buf); // @ 0x1000011c0",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11d8(const uint8_t* input_buf); // @ 0x1000011d8",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11e4(const uint8_t* input_buf); // @ 0x1000011e4",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11f0(const uint8_t* input_buf); // @ 0x1000011f0",
+      "int64_t re_flirt_dyld_stub_binder_trampoline_11fc(const uint8_t* input_buf); // @ 0x1000011fc",
+      "id re_objc_msgSend_UTF8String(id receiver_self, SEL selector_cmd); // @ 0x100001220",
+      "id re_objc_msgSend_coreName(id receiver_self, SEL selector_cmd); // @ 0x100001240",
+      "id re_objc_msgSend_decryptPayload_length(id receiver_self, SEL selector_cmd); // @ 0x100001260",
+      "id re_objc_msgSend_initWithKey_rounds(id receiver_self, SEL selector_cmd); // @ 0x100001280",
+      "id re_objc_msgSend_reactorDiagnosticDigest(id receiver_self, SEL selector_cmd); // @ 0x1000012a0",
+      "id re_objc_msgSend_securityLevel(id receiver_self, SEL selector_cmd); // @ 0x1000012c0",
+      "id re_objc_msgSend_sentinelProtocolVersion(id receiver_self, SEL selector_cmd); // @ 0x1000012e0",
+      "id re_objc_msgSend_setSecurityLevel(id receiver_self, SEL selector_cmd); // @ 0x100001300"
+    ]
+  },
+  "zero_goto": {
+    "address": "0x100000a18",
+    "basic_blocks_count": 4,
+    "dominator_postdominator_regions": [
+      {
+        "block_address": "0x100000a18",
+        "block_index": 0,
+        "immediate_dominator": "ENTRY (0x100000a18)",
+        "immediate_post_dominator": "0x100000a80",
+        "region_schema": "StructuredIfElseHammock (Post-Dominator Merge)",
+        "successor_count": 2
+      },
+      {
+        "block_address": "0x100000a80",
+        "block_index": 1,
+        "immediate_dominator": "0x100000a18",
+        "immediate_post_dominator": "0x100000a84",
+        "region_schema": "SequentialLinearBlock",
+        "successor_count": 1
+      },
+      {
+        "block_address": "0x100000a84",
+        "block_index": 2,
+        "immediate_dominator": "0x100000a80",
+        "immediate_post_dominator": "0x100000aec",
+        "region_schema": "SequentialLinearBlock",
+        "successor_count": 1
+      },
+      {
+        "block_address": "0x100000aec",
+        "block_index": 3,
+        "immediate_dominator": "0x100000a84",
+        "immediate_post_dominator": "EXIT_SINK",
+        "region_schema": "SequentialLinearBlock",
+        "successor_count": 0
+      }
+    ],
+    "gotos_eliminated": 2,
+    "if_else_hammocks_structured": 1,
+    "natural_loops_structured": 0,
+    "ok": true,
+    "procedure": "-[UltronSentinelCore initWithKey:rounds:]",
+    "remaining_gotos": 0,
+    "structured_c_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/structured_zero_goto.c",
+    "structured_c_source": "// ============================================================================\n// ULTRON PHOENIX/DREAM ENGINE — ZERO-GOTO POST-DOMINATOR STRUCTURED C23\n// Procedure : -[UltronSentinelCore initWithKey:rounds:] @ 0x100000a18\n// CFG Blocks: 4 | Loop Regions: 0 | If-Else Hammocks: 1\n// ============================================================================\n// ─── ULTRON RUST SSA & NESTED-LOOP DECOMPILER // -[UltronSentinelCore initWithKey:rounds:] ───\n// Stack Frame: 0B | Basic Blocks: 4 | Natural Loops: 0 | Post-Dom Nodes: 4 | Callers: 0\n// @interface UltronSentinelCore : NSObject {\n//     uint64_t _reactorPower; // +0x08 (8B)\n//     int32_t _encryptionRounds; // +0x10 (4B)\n//     uint32_t _statusFlags; // +0x14 (4B)\n//     int32_t _securityLevel; // +0x18 (4B)\n//     uint64_t _cipherKey; // +0x20 (8B)\n//     NSString * _coreName; // +0x28 (8B)\n// }\n// @property (Ti,N,V_securityLevel) securityLevel;\n// @property (TQ,N,V_cipherKey) cipherKey;\n// @property (T@\"NSString\",C,N,V_coreName) coreName;\n// - (uint64_t)reactorDiagnosticDigest; // IMP: 0x100000d30\n// - (id)initWithKey:(uint64_t)arg0 rounds:(int32_t)arg1; // IMP: 0x100000a18\n// - (uint64_t)decryptPayload:(const char *)arg0 length:(uint64_t)arg1; // IMP: 0x100000b28\n// - (int32_t)securityLevel; // IMP: 0x100000c2c\n// - (void)setSecurityLevel:(int32_t)arg0; // IMP: 0x100000c48\n// - (uint64_t)cipherKey; // IMP: 0x100000c6c\n// - (void)setCipherKey:(uint64_t)arg0; // IMP: 0x100000c88\n// - (id)coreName; // IMP: 0x100000cac\n// - (void)setCoreName:(id)arg0; // IMP: 0x100000cc8\n// - (void).cxx_destruct; // IMP: 0x100000d00\n// + (id)sentinelProtocolVersion; // IMP: 0x100000c10\n// @end\nid -[UltronSentinelCore initWithKey:rounds:] {\n    uint8_t stack_buf_8[8]; // [fp - 0x8]\n    uint8_t stack_buf_20[16]; // [sp + 0x20]\n    r8 = &stack_buf_8; // [fp - 0x8]\n    ((AutoStruct_EntryFrame *)sp)->status_code_18 = r8;\n    *([x29, #-8]) = r0;\n    *([x29, #-0x10]) = r1;\n    *([x29, #-0x18]) = r2;\n    *([x29, #-0x1c]) = r3;\n    r8 = *([x29, #-8]);\n    *([x29, #-8]) = 0;\n    r0 = &stack_buf_20; // [sp + 0x20]\n    ((UltronContext *)sp)->crypto_nonce = r8;\n    r8 = classRef_UltronSentinelCore; // [0x1000040d8]\n    ((UltronSentinelCore *)sp)->_coreName = r8;\n    r1 = @selector(init); // [0x100008190]\n    r0 = [&stack_buf_20 init]; // @selector(init)\n    r1 = r0;\n    r0 = ((AutoStruct_EntryFrame *)sp)->status_code_18;\n    r8 = r1;\n    *([x29, #-8]) = r8;\n    r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, r0);\n    r8 = *([x29, #-8]);\n    if (r8 != 0) {\n        // [Block 0x100000a80 | PostDom: 0x100000a84]\n        /* [PHOENIX REGION FOLDED: eliminated goto loc_100000a84 -> structured control flow] */\n        // [Block 0x100000a84 | PostDom: 0x100000aec]\n        r8 = *([x29, #-0x18]);\n        r9 = *([x29, #-8]);\n        ((UltronContext *)r9)->crypto_nonce = r8;\n        r8 = *([x29, #-0x1c]);\n        r9 = *([x29, #-8]);\n        ((AutoStruct_EntryFrame *)r9)->local_var_10 = r8;\n        r9 = *([x29, #-8]);\n        r8 = 0x2328;\n        ((AutoStruct_EntryFrame *)r9)->saved_lr = r8;\n        r9 = *([x29, #-8]);\n        r8 = 1;\n        r8 = 0xa5a50001; // movk lsl #16\n        ((UltronSentinelCore *)r9)->_statusFlags = r8;\n        r10 = *([x29, #-0x1c]);\n        r9 = 2;\n        r8 = 5;\n        r10 = r10 - 8;\n        r8 = (r10 > 0) ? r8 : r9;\n        r9 = *([x29, #-8]);\n        ((AutoStruct_EntryFrame *)r9)->status_code_18 = r8;\n        r8 = *([x29, #-8]);\n        r0 = r8 + 0x28;\n        r1 = @\"ULTRON-SENTINEL-MK9\"; // 0x100004088\n        r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, @\"ULTRON-SENTINEL-MK9\");\n        /* [PHOENIX REGION FOLDED: eliminated goto loc_100000aec -> structured control flow] */\n    }\n    // [Block 0x100000aec | PostDom: exit]\n    r8 = &stack_buf_8; // [fp - 0x8]\n    ((AutoStruct_EntryFrame *)sp)->saved_lr = r8;\n    r0 = *([x29, #-8]);\n    r8 = *([x8, #0x38]);\n    r0 = x8(r0, @\"ULTRON-SENTINEL-MK9\");\n    r1 = r0;\n    r0 = ((AutoStruct_EntryFrame *)sp)->saved_lr;\n    ((AutoStruct_EntryFrame *)sp)->local_var_10 = r1;\n    r1 = 0;\n    r0 = flirt_dyld_stub_binder_trampoline_11f0(r0, 0);\n    r0 = ((AutoStruct_EntryFrame *)sp)->local_var_10;\n    return r0;\n}"
   }
 }

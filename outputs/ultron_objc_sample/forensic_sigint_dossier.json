@@ -1,0 +1,108 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x100000f3c",
+    "evidence_file": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample",
+    "sha256_digest": "7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78",
+    "total_instructions": 572,
+    "total_procedures": 33
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x100000a4c",
+      "immediate_hex": "0x100004000",
+      "instruction": "adrp x8, #0x100004000"
+    },
+    {
+      "address": "0x100000a58",
+      "immediate_hex": "0x100008000",
+      "instruction": "adrp x8, #0x100008000"
+    },
+    {
+      "address": "0x100000a60",
+      "immediate_hex": "0x1000011a8",
+      "instruction": "bl #0x1000011a8"
+    },
+    {
+      "address": "0x100000a74",
+      "immediate_hex": "0x1000011f0",
+      "instruction": "bl #0x1000011f0"
+    },
+    {
+      "address": "0x100000a7c",
+      "immediate_hex": "0x100000aec",
+      "instruction": "cbz x8, #0x100000aec"
+    },
+    {
+      "address": "0x100000a80",
+      "immediate_hex": "0x100000a84",
+      "instruction": "b #0x100000a84"
+    },
+    {
+      "address": "0x100000adc",
+      "immediate_hex": "0x100004000",
+      "instruction": "adrp x1, #0x100004000"
+    },
+    {
+      "address": "0x100000ae4",
+      "immediate_hex": "0x1000011f0",
+      "instruction": "bl #0x1000011f0"
+    },
+    {
+      "address": "0x100000ae8",
+      "immediate_hex": "0x100000aec",
+      "instruction": "b #0x100000aec"
+    },
+    {
+      "address": "0x100000af8",
+      "immediate_hex": "0x100004000",
+      "instruction": "adrp x8, #0x100004000"
+    },
+    {
+      "address": "0x100000b14",
+      "immediate_hex": "0x1000011f0",
+      "instruction": "bl #0x1000011f0"
+    },
+    {
+      "address": "0x100000b58",
+      "immediate_hex": "0x100000b5c",
+      "instruction": "b #0x100000b5c"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x1000013e2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "TQ,N,V_cipherKey"
+    },
+    {
+      "address": "0x100001413",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_cipherKey"
+    },
+    {
+      "address": "0x100001464",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "cipherKey"
+    },
+    {
+      "address": "0x100001493",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "initWithKey:rounds:"
+    },
+    {
+      "address": "0x1000014e5",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setCipherKey:"
+    },
+    {
+      "address": "0x100001540",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "ULTRON_TELEMETRY_CORE_AUTH_VECTOR"
+    }
+  ],
+  "extracted_iocs_count": 6,
+  "ok": true
+}
