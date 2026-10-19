@@ -1,0 +1,193 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x10000f830",
+    "evidence_file": "/Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor",
+    "sha256_digest": "80f8d92ff563538fe9cf0d8d6d093dc16b7dcbfa1a087f5d541642501de9d73b",
+    "total_instructions": 22371,
+    "total_procedures": 726
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x100001320",
+      "immediate_hex": "0x100017000",
+      "instruction": "adrp x0, #0x100017000"
+    },
+    {
+      "address": "0x100001348",
+      "immediate_hex": "0x100016ce0",
+      "instruction": "bl #0x100016ce0"
+    },
+    {
+      "address": "0x100001384",
+      "immediate_hex": "0x100016db8",
+      "instruction": "bl #0x100016db8"
+    },
+    {
+      "address": "0x1000013dc",
+      "immediate_hex": "0x100016cc8",
+      "instruction": "bl #0x100016cc8"
+    },
+    {
+      "address": "0x1000013e8",
+      "immediate_hex": "0x100001400",
+      "instruction": "bl #0x100001400"
+    },
+    {
+      "address": "0x1000013f0",
+      "immediate_hex": "0x100016d1c",
+      "instruction": "bl #0x100016d1c"
+    },
+    {
+      "address": "0x100001418",
+      "immediate_hex": "0x100001444",
+      "instruction": "cbz x8, #0x100001444"
+    },
+    {
+      "address": "0x10000141c",
+      "immediate_hex": "0x100001420",
+      "instruction": "b #0x100001420"
+    },
+    {
+      "address": "0x100001440",
+      "immediate_hex": "0x100001460",
+      "instruction": "b #0x100001460"
+    },
+    {
+      "address": "0x10000145c",
+      "immediate_hex": "0x100001460",
+      "instruction": "b #0x100001460"
+    },
+    {
+      "address": "0x1000014a0",
+      "immediate_hex": "0x100016cc8",
+      "instruction": "bl #0x100016cc8"
+    },
+    {
+      "address": "0x1000014ac",
+      "immediate_hex": "0x1000014cc",
+      "instruction": "bl #0x1000014cc"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x100017600",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NativeKeyHotkeyMonitor"
+    },
+    {
+      "address": "0x100017c05",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "BareModifierKey"
+    },
+    {
+      "address": "0x100017c20",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "DoubleModifierKey"
+    },
+    {
+      "address": "0x1000182d0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "raycastGlobalHotkey"
+    },
+    {
+      "address": "0x100018330",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "kHISymbolicHotKeyEnabled"
+    },
+    {
+      "address": "0x100018350",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "kHISymbolicHotKeyCode"
+    },
+    {
+      "address": "0x100018370",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "kHISymbolicHotKeyModifiers"
+    },
+    {
+      "address": "0x1000184b0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "--read-quick-chat-hotkey-conflicts"
+    },
+    {
+      "address": "0x100018551",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "--release-key"
+    },
+    {
+      "address": "0x100018594",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "--key"
+    },
+    {
+      "address": "0x100018760",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_TtC4main22NativeKeyHotkeyMonitor"
+    },
+    {
+      "address": "0x1000187f4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "consumedKey"
+    },
+    {
+      "address": "0x1000188bf",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyCode"
+    },
+    {
+      "address": "0x100018974",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyDownMonitor"
+    },
+    {
+      "address": "0x100018983",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyTap"
+    },
+    {
+      "address": "0x10001898a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyTapSource"
+    },
+    {
+      "address": "0x100018df4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyDownMonitor"
+    },
+    {
+      "address": "0x100018fa2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "consumedKey"
+    },
+    {
+      "address": "0x100019008",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyCode"
+    },
+    {
+      "address": "0x100019018",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyTap"
+    },
+    {
+      "address": "0x10001901f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyTapSource"
+    },
+    {
+      "address": "0x1000190a6",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyCodes"
+    },
+    {
+      "address": "0x100019112",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "nativeKeyHotkey"
+    }
+  ],
+  "extracted_iocs_count": 23,
+  "ok": true
+}

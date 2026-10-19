@@ -41,7 +41,8 @@ pub struct AppState {
     pub ledger: Mutex<UltronEvidenceLedger>,
 }
 
-pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u16) -> anyhow::Result<()> {
+pub async fn run_server(mut initial_doc: UltronDisassembledFile, host: &str, port: u16) -> anyhow::Result<()> {
+    let _ = execute_autonomous_sme_pipeline(&mut initial_doc);
     let shared = Arc::new(AppState {
         doc: Mutex::new(initial_doc),
         emulators: Mutex::new(HashMap::new()),
@@ -106,6 +107,7 @@ pub async fn run_server(initial_doc: UltronDisassembledFile, host: &str, port: u
         .route("/api/v4/rop-gadgets", post(api_v4_rop_gadgets))
         .route("/api/v4/forensic-dossier", post(api_v4_forensic_dossier))
         .route("/api/v4/compliance-sbom", post(api_v4_compliance_sbom))
+        .route("/api/v4/sme-playbook", post(api_v4_sme_playbook))
         .route("/api/mcp", post(api_mcp_rpc))
         .route("/api/ultron-voice", get(api_ultron_voice))
         .route("/api/voice/ultron-active.mp3", get(api_voice_active))
@@ -716,7 +718,8 @@ async fn api_open(
 ) -> Json<Value> {
     let (resolved_path, arch) = resolve_and_detect_target(&req.path, req.arch.as_deref());
     match UltronBinaryLoader::load(&resolved_path, &arch) {
-        Ok(new_doc) => {
+        Ok(mut new_doc) => {
+            let sme_pipeline = execute_autonomous_sme_pipeline(&mut new_doc);
             let p_count = new_doc.procedures.len();
             let i_count = new_doc.instructions.len();
             let file_path = new_doc.file_path.clone();
@@ -728,6 +731,7 @@ async fn api_open(
                 "arch": arch,
                 "procedure_count": p_count,
                 "instruction_count": i_count,
+                "auto_pipeline": sme_pipeline,
             }))
         }
         Err(e) => Json(json!({ "error": e.to_string() })),
@@ -789,7 +793,8 @@ async fn api_upload_binary(
     let dest_str = dest_path.to_string_lossy().to_string();
     let (resolved_path, arch) = resolve_and_detect_target(&dest_str, req.arch.as_deref());
     match UltronBinaryLoader::load(&resolved_path, &arch) {
-        Ok(new_doc) => {
+        Ok(mut new_doc) => {
+            let sme_pipeline = execute_autonomous_sme_pipeline(&mut new_doc);
             let p_count = new_doc.procedures.len();
             let i_count = new_doc.instructions.len();
             let file_path = new_doc.file_path.clone();
@@ -801,6 +806,7 @@ async fn api_upload_binary(
                 "arch": arch,
                 "procedure_count": p_count,
                 "instruction_count": i_count,
+                "auto_pipeline": sme_pipeline,
             }))
         }
         Err(e) => Json(json!({ "error": e.to_string() })),
@@ -1327,9 +1333,13 @@ async fn api_auto_pipeline(
         }
     }
 
-    // Stage 2: Demangle Symbols & Run FLIRT/WARP Static Library Signature Recognition
     let mut doc = state.doc.lock().unwrap();
-    let flirt_matches = UltronFlirtEngine::scan_and_apply_flirt(&mut doc);
+    Json(execute_autonomous_sme_pipeline(&mut doc))
+}
+
+pub fn execute_autonomous_sme_pipeline(doc: &mut UltronDisassembledFile) -> Value {
+    // Stage 2: Demangle Symbols & Run FLIRT/WARP Static Library Signature Recognition
+    let flirt_matches = UltronFlirtEngine::scan_and_apply_flirt(doc);
 
     let file_path = doc.file_path.clone();
     let doc_name = Path::new(&file_path)
@@ -1342,8 +1352,22 @@ async fn api_auto_pipeline(
         .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
         .collect();
 
+    let out_dir = Path::new("outputs").join(if safe_slug.is_empty() {
+        "target"
+    } else {
+        &safe_slug
+    });
+    let _ = std::fs::create_dir_all(&out_dir);
+    let abs_out_dir = std::fs::canonicalize(&out_dir).unwrap_or_else(|_| out_dir.clone());
+
+    // Pre-Enrich Document via God-Tier SME Orchestrator, Neural Vault, Auto-Structs & C++ RTTI
+    let neural_vault = UltronLegendEngine::sync_neural_symbol_vault(doc);
+    let auto_structs = UltronLegendEngine::recover_auto_structs(doc, &abs_out_dir);
+    let cpp_rtti = UltronLegendEngine::reconstruct_cpp_rtti_and_vtables(doc, &abs_out_dir);
+    let sme_playbook = UltronLegendEngine::synthesize_god_tier_sme_playbook(doc, &abs_out_dir);
+
     // Stage 3: Security & Vulnerability Audit
-    let audit = UltronSecurityAuditor::audit_document(&doc);
+    let audit = UltronSecurityAuditor::audit_document(doc);
 
     // Stage 4: Entry & Top Procedures Decompilation + AI Semantic Rewriting + Symbolic Z3 + Call Graph + Frida/LLDB
     let entry_addr = doc
@@ -1361,8 +1385,8 @@ async fn api_auto_pipeline(
         remove_stack_prologue: true,
     };
 
-    let ai_rewrite_c23 = UltronAiDecompiler::ai_rewrite_procedure(&doc, entry_addr, "c23");
-    let ai_rewrite_rust = UltronAiDecompiler::ai_rewrite_procedure(&doc, entry_addr, "rust");
+    let ai_rewrite_c23 = UltronAiDecompiler::ai_rewrite_procedure(doc, entry_addr, "c23");
+    let ai_rewrite_rust = UltronAiDecompiler::ai_rewrite_procedure(doc, entry_addr, "rust");
 
     // Pick a branch/exit instruction inside the entry procedure for symbolic solving
     let target_sym_addr = doc
@@ -1376,20 +1400,11 @@ async fn api_auto_pipeline(
         })
         .unwrap_or(entry_addr);
 
-    let symbolic = UltronSymbolicSolver::solve_symbolic_path(&doc, entry_addr, target_sym_addr);
-    let callgraph = UltronGlobalCallGraph::build_global_call_graph(&doc);
+    let symbolic = UltronSymbolicSolver::solve_symbolic_path(doc, entry_addr, target_sym_addr);
+    let callgraph = UltronGlobalCallGraph::build_global_call_graph(doc);
     let debug_scripts =
-        UltronDynamicDebugBridge::generate_debug_scripts(&doc, entry_addr, &doc.breakpoints);
+        UltronDynamicDebugBridge::generate_debug_scripts(doc, entry_addr, &doc.breakpoints);
     let artifact_report = UltronArtifactAnalyzer::inspect_artifact(&file_path);
-
-    // Stage 5: Build Output Files on Disk (outputs/<safe_slug>/)
-    let out_dir = Path::new("outputs").join(if safe_slug.is_empty() {
-        "target"
-    } else {
-        &safe_slug
-    });
-    let _ = std::fs::create_dir_all(&out_dir);
-    let abs_out_dir = std::fs::canonicalize(&out_dir).unwrap_or_else(|_| out_dir.clone());
 
     // 5a. Complete Disassembly Listing (disassembly.asm)
     let mut asm_buf = String::new();
@@ -1450,7 +1465,7 @@ async fn api_auto_pipeline(
         file_path, doc.format_name, doc.cpu_subfamily
     ));
     for proc in doc.procedures.values().take(40) {
-        let decomp = UltronDecompiler::decompile(&doc, proc, &decomp_opts);
+        let decomp = UltronDecompiler::decompile(doc, proc, &decomp_opts);
         c_buf.push_str(&format!(
             "// ── {} @ 0x{:x} ({} basic blocks) ──\n{}\n\n",
             SymbolDemangler::demangle(&proc.name),
@@ -1495,7 +1510,7 @@ async fn api_auto_pipeline(
     let _ = std::fs::write(&lldb_path, lldb_code);
 
     // 5d. Save .ultron Project Database
-    let _ = UltronProjectManager::save_project(&doc, &safe_slug, &doc.breakpoints);
+    let _ = UltronProjectManager::save_project(doc, &safe_slug, &doc.breakpoints);
 
     // 5e. Build Comprehensive Markdown Report (REPORT.md)
     let risk_score = audit
@@ -1603,21 +1618,18 @@ async fn api_auto_pipeline(
     }
 
     // Stage 6 (Legendary, Final Boss, God-Tier, Compiler, Sovereign SIGINT & SOC2/ISO27001 Engines)
-    let neural_vault = UltronLegendEngine::sync_neural_symbol_vault(&mut doc);
-    let auto_structs = UltronLegendEngine::recover_auto_structs(&mut doc, &abs_out_dir);
-    let cpp_rtti = UltronLegendEngine::reconstruct_cpp_rtti_and_vtables(&mut doc, &abs_out_dir);
-    let type_propagation = UltronLegendEngine::propagate_os_type_signatures(&doc, &abs_out_dir);
-    let zero_goto = UltronLegendEngine::decompile_zero_goto_structured(&doc, Some(entry_addr), &abs_out_dir);
-    let sigint_attribution = UltronLegendEngine::generate_sigint_threat_attribution(&doc, &abs_out_dir);
-    let rop_gadgets = UltronLegendEngine::synthesize_rop_jop_gadgets(&doc, &abs_out_dir);
-    let forensic_dossier = UltronLegendEngine::extract_c2_crypto_and_chain_of_custody(&doc, &abs_out_dir);
-    let compliance_sbom = UltronLegendEngine::generate_soc2_iso27001_and_sbom(&doc, &abs_out_dir);
-    let taint_audit = UltronLegendEngine::run_interprocedural_taint_audit(&doc);
-    let reconstruction = UltronLegendEngine::reconstruct_compilable_project(&doc, &abs_out_dir);
-    let deobfuscation = UltronLegendEngine::deobfuscate_and_verify(&doc);
-    let time_travel_trace = UltronLegendEngine::build_time_travel_trace(&doc, Some(entry_addr));
-    let fuzzer_report = UltronLegendEngine::run_coverage_guided_fuzzer(&doc, Some(entry_addr), 64);
-    let protocol_grammar = UltronLegendEngine::synthesize_protocol_grammar(&doc, &abs_out_dir);
+    let type_propagation = UltronLegendEngine::propagate_os_type_signatures(doc, &abs_out_dir);
+    let zero_goto = UltronLegendEngine::decompile_zero_goto_structured(doc, Some(entry_addr), &abs_out_dir);
+    let sigint_attribution = UltronLegendEngine::generate_sigint_threat_attribution(doc, &abs_out_dir);
+    let rop_gadgets = UltronLegendEngine::synthesize_rop_jop_gadgets(doc, &abs_out_dir);
+    let forensic_dossier = UltronLegendEngine::extract_c2_crypto_and_chain_of_custody(doc, &abs_out_dir);
+    let compliance_sbom = UltronLegendEngine::generate_soc2_iso27001_and_sbom(doc, &abs_out_dir);
+    let taint_audit = UltronLegendEngine::run_interprocedural_taint_audit(doc);
+    let reconstruction = UltronLegendEngine::reconstruct_compilable_project(doc, &abs_out_dir);
+    let deobfuscation = UltronLegendEngine::deobfuscate_and_verify(doc);
+    let time_travel_trace = UltronLegendEngine::build_time_travel_trace(doc, Some(entry_addr));
+    let fuzzer_report = UltronLegendEngine::run_coverage_guided_fuzzer(doc, Some(entry_addr), 64);
+    let protocol_grammar = UltronLegendEngine::synthesize_protocol_grammar(doc, &abs_out_dir);
 
     let compiled_ok = reconstruction
         .get("compiled_ok")
@@ -1679,9 +1691,19 @@ async fn api_auto_pipeline(
         .get("sbom_components_count")
         .and_then(|v| v.as_u64())
         .unwrap_or(0);
+    let sme_verdict = sme_playbook
+        .get("executive_verdict")
+        .and_then(|v| v.as_str())
+        .unwrap_or("AUTONOMOUS GOD-TIER SME VERIFIED");
+    let sme_notes_count = sme_playbook
+        .get("inline_sme_annotations_count")
+        .and_then(|v| v.as_u64())
+        .unwrap_or(0);
 
     report_md.push_str(&format!(
-        "\n## 6. Autonomous Compilable Reconstruction, Sovereign SIGINT & SOC2/ISO27001 Telemetry\n\n\
+        "\n## 6. Autonomous Compilable Reconstruction, Sovereign SIGINT, SOC2/ISO27001 & God-Tier SME Playbook\n\n\
+         - **God-Tier SME Executive Verdict**: `{}`\n\
+         - **Autonomous SME Inline Annotations**: `{} expert assembly annotations injected`\n\
          - **Project Directory**: `{}`\n\
          - **Clang Compilation (`clang -O2 -std=c17`)**: **{}** ({} bytes)\n\
          - **Live Binary Execution Verification**: `{}`\n\
@@ -1697,6 +1719,8 @@ async fn api_auto_pipeline(
          - **Protocol & File Grammar (`protocol_grammar.hexpat` + `wireshark_dissector.lua`)**: `Magic {}`\n\
          - **Inter-Procedural Taint Chains (`Source -> Sink`)**: `{} data-flow paths audited`\n\
          - **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `{} structural fingerprints indexed`\n",
+        sme_verdict,
+        sme_notes_count,
         reconstruction
             .get("project_dir")
             .and_then(|v| v.as_str())
@@ -1732,6 +1756,7 @@ async fn api_auto_pipeline(
         "procedure_count": doc.procedures.len(),
         "instruction_count": doc.instructions.len(),
         "string_count": doc.string_entries.len(),
+        "sme_playbook": sme_playbook,
         "audit": audit,
         "flirt_matches": flirt_matches,
         "ai_rewrite_c23": ai_rewrite_c23,
@@ -1761,6 +1786,7 @@ async fn api_auto_pipeline(
         serde_json::to_string_pretty(&dossier_json).unwrap_or_default(),
     );
 
+    let sme_playbook_path = abs_out_dir.join("SME_PLAYBOOK.md");
     let recon_c_path = abs_out_dir.join("reconstructed_project").join("reconstructed.c");
     let recon_bin_path = abs_out_dir.join("reconstructed_project").join("reconstructed_bin");
     let recon_rs_path = abs_out_dir.join("reconstructed_project").join("src").join("main.rs");
@@ -1777,8 +1803,9 @@ async fn api_auto_pipeline(
     let lua_path = abs_out_dir.join("wireshark_dissector.lua");
 
     let output_files = vec![
+        json!({ "name": "SME_PLAYBOOK.md", "label": "Autonomous God-Tier SME Playbook & HVT Ranking", "path": sme_playbook_path.to_string_lossy(), "bytes": std::fs::metadata(&sme_playbook_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "REPORT.md", "label": "Executive & Technical Report (Markdown)", "path": report_path.to_string_lossy(), "bytes": report_md.len() }),
-        json!({ "name": "disassembly.asm", "label": "Full Annotated Assembly Listing", "path": asm_path.to_string_lossy(), "bytes": asm_buf.len() }),
+        json!({ "name": "disassembly.asm", "label": "Full SME-Annotated Assembly Listing", "path": asm_path.to_string_lossy(), "bytes": asm_buf.len() }),
         json!({ "name": "decompiled.c", "label": "Optimizing SSA & AI C23/Rust Source", "path": c_path.to_string_lossy(), "bytes": c_buf.len() }),
         json!({ "name": "structured_zero_goto.c", "label": "Phoenix Post-Dominator Zero-Goto C23", "path": zero_goto_path.to_string_lossy(), "bytes": std::fs::metadata(&zero_goto_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "reconstructed.c", "label": "Compilable C17/C23 Project Source", "path": recon_c_path.to_string_lossy(), "bytes": std::fs::metadata(&recon_c_path).map(|m| m.len()).unwrap_or(0) }),
@@ -1799,7 +1826,7 @@ async fn api_auto_pipeline(
         json!({ "name": "lldb_trace.py", "label": "Automated LLDB Trace Script", "path": lldb_path.to_string_lossy(), "bytes": lldb_code.len() }),
     ];
 
-    Json(json!({
+    json!({
         "ok": true,
         "target": file_path,
         "document": doc_name,
@@ -1811,6 +1838,7 @@ async fn api_auto_pipeline(
         "output_dir": abs_out_dir.to_string_lossy(),
         "output_files": output_files,
         "report_markdown": report_md,
+        "sme_playbook": sme_playbook,
         "audit": audit,
         "flirt": {
             "ok": true,
@@ -1838,7 +1866,7 @@ async fn api_auto_pipeline(
         "neural_vault": neural_vault,
         "fuzzer_report": fuzzer_report,
         "protocol_grammar": protocol_grammar,
-    }))
+    })
 }
 
 #[derive(Deserialize)]
@@ -2045,6 +2073,13 @@ async fn api_v4_compliance_sbom(State(state): State<Arc<AppState>>) -> Json<Valu
     let abs_out_dir = current_output_dir_for_doc(&doc);
     Json(UltronLegendEngine::generate_soc2_iso27001_and_sbom(&doc, &abs_out_dir))
 }
+
+async fn api_v4_sme_playbook(State(state): State<Arc<AppState>>) -> Json<Value> {
+    let mut doc = state.doc.lock().unwrap();
+    let abs_out_dir = current_output_dir_for_doc(&doc);
+    Json(UltronLegendEngine::synthesize_god_tier_sme_playbook(&mut doc, &abs_out_dir))
+}
+
 
 
 

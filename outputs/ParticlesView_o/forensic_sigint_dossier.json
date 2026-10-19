@@ -1,0 +1,583 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x0",
+    "evidence_file": "/Users/gilles/Library/Developer/Xcode/DerivedData/Aleria-emykibufzydxzdapgegdbbeupnon/Build/Intermediates.noindex/Aleria.build/Debug/Aleria.build/Objects-normal/arm64/ParticlesView.o",
+    "sha256_digest": "ad38b2610f48780975d41ea5a1ee90916f3e49e29ded7277eaa33e4c7daab859",
+    "total_instructions": 20393,
+    "total_procedures": 2136
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x1018",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x11f0",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x1380",
+      "immediate_hex": "0xfffffffffffffffe",
+      "instruction": "and x0, x8, #0xfffffffffffffffe"
+    },
+    {
+      "address": "0x38a8",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x7094",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x10, x9, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x7348",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x75f0",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x10, x9, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x7cc0",
+      "immediate_hex": "0xffffffffffffffe0",
+      "instruction": "and sp, x9, #0xffffffffffffffe0"
+    },
+    {
+      "address": "0x801c",
+      "immediate_hex": "0x3333333333333333",
+      "instruction": "orr x8, xzr, #0x3333333333333333"
+    },
+    {
+      "address": "0x824c",
+      "immediate_hex": "0x3333333333333333",
+      "instruction": "orr x8, xzr, #0x3333333333333333"
+    },
+    {
+      "address": "0x8260",
+      "immediate_hex": "0x3333333333333333",
+      "instruction": "orr x8, xzr, #0x3333333333333333"
+    },
+    {
+      "address": "0x99ac",
+      "immediate_hex": "0x9999999999999999",
+      "instruction": "orr x8, xzr, #0x9999999999999999"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x141a0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV"
+    },
+    {
+      "address": "0x141f0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "ParticlesRendersStillsKey"
+    },
+    {
+      "address": "0x14dfa",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s7SwiftUI14EnvironmentKeyP"
+    },
+    {
+      "address": "0x1dd9f",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/Aleria-emykibufzydxzdapgegdbbeupnon/Build/Intermediates.noindex/Aleria.build/Debug/Aleria.build/Objects-normal/arm64/Aleria.swiftmodule"
+    },
+    {
+      "address": "0x1df60",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV12defaultValueSbvpZ"
+    },
+    {
+      "address": "0x1e107",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Foundation.framework/Modules/Foundation.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1e334",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVD"
+    },
+    {
+      "address": "0x1e382",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$sSDy6Aleria19ParticlesStillCacheO3KeyVSo10CGImageRefaGD"
+    },
+    {
+      "address": "0x1e3bb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO6images33_B7E286589AABE3DFB6F60C603D4029DCLLSDyAC3KeyVSo10CGImageRefaGvpZ"
+    },
+    {
+      "address": "0x1e48c",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/SwiftUI.framework/Modules/SwiftUI.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1e679",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV12defaultValue_WZ"
+    },
+    {
+      "address": "0x1e6d5",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV12defaultValueSbvau"
+    },
+    {
+      "address": "0x1e755",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "ParticlesRendersStillsKey"
+    },
+    {
+      "address": "0x1e76f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLVD"
+    },
+    {
+      "address": "0x1e7bb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV12defaultValueSbvgZ"
+    },
+    {
+      "address": "0x1e82a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLVXMtD"
+    },
+    {
+      "address": "0x1e879",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV7SwiftUI011EnvironmentE0AaeFP12defaultValue0R0QzvgZTW"
+    },
+    {
+      "address": "0x1e8f9",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLVXMTD"
+    },
+    {
+      "address": "0x1e948",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "EnvironmentKey"
+    },
+    {
+      "address": "0x1e957",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s7SwiftUI14EnvironmentKey_pD"
+    },
+    {
+      "address": "0x1e975",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLV7SwiftUI011EnvironmentE0AaeFP12_valuesEqualySb5ValueQz_AJtFZTW"
+    },
+    {
+      "address": "0x1ea9b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLVAD7SwiftUI011EnvironmentE0AAWl"
+    },
+    {
+      "address": "0x25233",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV5state5level4time12reduceMotion0I12Transparency6pixelsAeA0B5StateO_S2fS2bSitcfC"
+    },
+    {
+      "address": "0x252a7",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVXMtD"
+    },
+    {
+      "address": "0x252d0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO5imageySo10CGImageRefaSgAC3KeyVFZ"
+    },
+    {
+      "address": "0x2577c",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV5stateAA0B5StateOvg"
+    },
+    {
+      "address": "0x257b4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV5levelSivg"
+    },
+    {
+      "address": "0x257e3",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV4timeSivg"
+    },
+    {
+      "address": "0x25811",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV12reduceMotionSbvg"
+    },
+    {
+      "address": "0x25848",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV18reduceTransparencySbvg"
+    },
+    {
+      "address": "0x25885",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV6pixelsSivg"
+    },
+    {
+      "address": "0x258c0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV23__derived_struct_equalsySbAE_AEtFZ"
+    },
+    {
+      "address": "0x25921",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV4hash4intoys6HasherVz_tF"
+    },
+    {
+      "address": "0x25977",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyV9hashValueSivg"
+    },
+    {
+      "address": "0x259b8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVSHAASH9hashValueSivgTW"
+    },
+    {
+      "address": "0x259f3",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVSHAASH4hash4intoys6HasherVz_tFTW"
+    },
+    {
+      "address": "0x25a49",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVSHAASH13_rawHashValue4seedS2i_tFTW"
+    },
+    {
+      "address": "0x25a9e",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVSQAASQ2eeoiySbx_xtFZTW"
+    },
+    {
+      "address": "0x25ad9",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVXMTD"
+    },
+    {
+      "address": "0x25b51",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO6images33_B7E286589AABE3DFB6F60C603D4029DCLLSDyAC3KeyVSo10CGImageRefaGvau"
+    },
+    {
+      "address": "0x25bba",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO6images33_B7E286589AABE3DFB6F60C603D4029DCLLSDyAC3KeyVSo10CGImageRefaGvgZ"
+    },
+    {
+      "address": "0x25c2e",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO6images33_B7E286589AABE3DFB6F60C603D4029DCLLSDyAC3KeyVSo10CGImageRefaGvsZ"
+    },
+    {
+      "address": "0x28a49",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVAESHAAWl"
+    },
+    {
+      "address": "0x28c46",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVSHAASQWb"
+    },
+    {
+      "address": "0x28c73",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVAESQAAWl"
+    },
+    {
+      "address": "0x28ca0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria25ParticlesRendersStillsKey33_B7E286589AABE3DFB6F60C603D4029DCLLVMa"
+    },
+    {
+      "address": "0x29139",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVwCP"
+    },
+    {
+      "address": "0x29161",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVwet"
+    },
+    {
+      "address": "0x29189",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVwst"
+    },
+    {
+      "address": "0x291b1",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "$s6Aleria19ParticlesStillCacheO3KeyVMa"
+    },
+    {
+      "address": "0x29f3d",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/SwiftUICore.framework/Modules/SwiftUICore.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2a0c0",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/AppKit.framework/Modules/AppKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2a7a5",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/CryptoKit.framework/Modules/CryptoKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2a876",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Modules/CoreGraphics.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2a95d",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Combine.framework/Modules/Combine.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2aae3",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "LocalAuthentication"
+    },
+    {
+      "address": "0x2aaf7",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/LocalAuthentication.framework/Modules/LocalAuthentication.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2ad5f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_AuthenticationServices_SwiftUI"
+    },
+    {
+      "address": "0x2ad7f",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/_AuthenticationServices_SwiftUI.framework/Modules/_AuthenticationServices_SwiftUI.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2af38",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Speech.framework/Modules/Speech.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2b00c",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/EventKit.framework/Modules/EventKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2b1ac",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Network.framework/Modules/Network.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2b3fa",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/PDFKit.framework/Modules/PDFKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2b4cc",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Vision.framework/Modules/Vision.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2b5c3",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Modules/AudioToolbox.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2b763",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/DeveloperToolsSupport.framework/Modules/DeveloperToolsSupport.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2c0ba",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Foundation-A39JCEMO1KXRWZJ5IJLBJ1EL3.pcm"
+    },
+    {
+      "address": "0x2c129",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreGraphics-6RUBAGZK8FHN0U7WEB1KJDR3B.pcm"
+    },
+    {
+      "address": "0x2c19a",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreFoundation-2MFEZDQ10TH6MGLTK0TSID2S7.pcm"
+    },
+    {
+      "address": "0x2c20d",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Metal-7QHOKZF7S82XU08YU6NB8QN28.pcm"
+    },
+    {
+      "address": "0x2c277",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AppKit-3IBIFPPZ2JCYF3R4WVAY9LYMR.pcm"
+    },
+    {
+      "address": "0x2c2e2",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MetalKit-34GDDBMF6059H79ZV1YJC1IKP.pcm"
+    },
+    {
+      "address": "0x2c34f",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUI-D2GOQKI7LFXTI87LOABRK3ZWU.pcm"
+    },
+    {
+      "address": "0x2c3bb",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os-13WDBM8X86UINFNO4MISCEEDE.pcm"
+    },
+    {
+      "address": "0x2c422",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ObjectiveC-9RP2Y69IJGOXCEK3IJ9ULGNN3.pcm"
+    },
+    {
+      "address": "0x2c491",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_SwiftConcurrencyShims-6NDMWGCAH4Z5OMRM1M865Y7CX.pcm"
+    },
+    {
+      "address": "0x2c50c",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ImageIO-CA5SPJG2D0GLW1OHBK13WHEFV.pcm"
+    },
+    {
+      "address": "0x2c578",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVFoundation-DDDUFTOO6QUBTVCMWEWGW5D7R.pcm"
+    },
+    {
+      "address": "0x2c5e9",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/LocalAuthentication-549JZEZUEQOOSP7F4YPOAVSGA.pcm"
+    },
+    {
+      "address": "0x2c661",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Darwin-4NWQJ8GM2FGZHXIB5BJYNXVD5.pcm"
+    },
+    {
+      "address": "0x2c6cc",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UniformTypeIdentifiers-5C3FLTZZPOY6U77RKT4265V9C.pcm"
+    },
+    {
+      "address": "0x2c747",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Security-BVDV0M3UR3CFR7JP1U9S353FF.pcm"
+    },
+    {
+      "address": "0x2c7b4",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Accelerate-5UZFOGI03NOPBL4OMVL24P9EV.pcm"
+    },
+    {
+      "address": "0x2c823",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Speech-5KJ26UYBXHFWCMMLQ9MKSZB11.pcm"
+    },
+    {
+      "address": "0x2c88e",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/EventKit-CWTP0TKPFDDXVI6XINCYYNUIA.pcm"
+    },
+    {
+      "address": "0x2c8fb",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/QuartzCore-C6TRGGDUMHUHMKBREXDHWDC3O.pcm"
+    },
+    {
+      "address": "0x2c96a",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ApplicationServices-1JB3QI8ZC4KIPB5TZBZ7K9W4Q.pcm"
+    },
+    {
+      "address": "0x2c9e2",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Network-BCHZPZ8DGV8LB6TLJADMR97CH.pcm"
+    },
+    {
+      "address": "0x2ca4e",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreServices-87G1EUQUW7EKI4CWO09CX4EMS.pcm"
+    },
+    {
+      "address": "0x2cabf",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreImage-CNW7O9ZIWG9A7CJMQ3XFPJ0ZY.pcm"
+    },
+    {
+      "address": "0x2cb2d",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/simd-8SBLZD52UCRJ1LJNODS3NHSKL.pcm"
+    },
+    {
+      "address": "0x2cb96",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/PDFKit-2DKJ3TQZX2PAELHV5YDJ75AAH.pcm"
+    },
+    {
+      "address": "0x2cc01",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Vision-4M4OPGI32DE5R71KR14S0X0L6.pcm"
+    },
+    {
+      "address": "0x2cc6c",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ServiceManagement-63C486YHD9G1R1SLR3HL3QTS5.pcm"
+    },
+    {
+      "address": "0x2cce2",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CommonCrypto-4QX2QLRVD7BFOI8QE22V9YRDY.pcm"
+    },
+    {
+      "address": "0x2cd53",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AudioToolbox-2UWOMZZKXRSCFI1R8JZKLMK00.pcm"
+    },
+    {
+      "address": "0x2cdc4",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreAudio-3Z08BY005IX1GQNOWZ2FZ47N7.pcm"
+    },
+    {
+      "address": "0x2ce32",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DeveloperToolsSupport-CVDD1F8GNQP9MYNWQHRNQN9V7.pcm"
+    },
+    {
+      "address": "0x2ceac",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftShims-B8PMFVRIV6N2I6RRC2CAW12PG.pcm"
+    },
+    {
+      "address": "0x3aaa0",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Metal.framework/Headers"
+    },
+    {
+      "address": "0x3ac7a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "LocalAuthentication"
+    }
+  ],
+  "extracted_iocs_count": 101,
+  "ok": true
+}

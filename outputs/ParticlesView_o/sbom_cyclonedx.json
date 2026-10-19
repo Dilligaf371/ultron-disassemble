@@ -1,0 +1,36 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "pkg:darwin/libSystem.B.dylib",
+      "name": "libSystem.B.dylib",
+      "purl": "pkg:generic/libSystem.B.dylib?path=/usr/lib/libSystem.B.dylib",
+      "scope": "required",
+      "type": "library",
+      "version": "1345.100.2"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "ad38b2610f48780975d41ea5a1ee90916f3e49e29ded7277eaa33e4c7daab859"
+        }
+      ],
+      "name": "ParticlesView.o",
+      "type": "application"
+    },
+    "timestamp": "2026-10-18T22:00:00Z",
+    "tools": [
+      {
+        "name": "Ultron Disassemble v4.0",
+        "vendor": "Ultron Sovereign Security",
+        "version": "4.0.0-sovereign"
+      }
+    ]
+  },
+  "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-f0e78c8e28d9",
+  "specVersion": "1.5",
+  "version": 1
+}

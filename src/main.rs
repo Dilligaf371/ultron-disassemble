@@ -147,6 +147,14 @@ enum Commands {
         #[arg(long, default_value = "arm64")]
         arch: String,
     },
+    /// Execute the Autonomous God-Tier SME 8-Phase Workflow (19 Engines -> 21 Artifacts + SME_PLAYBOOK.md)
+    #[command(visible_alias = "sme", visible_alias = "pipeline")]
+    Auto {
+        #[arg(default_value = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample")]
+        path: String,
+        #[arg(long, default_value = "arm64")]
+        arch: String,
+    },
 }
 
 #[tokio::main]
@@ -395,6 +403,56 @@ async fn main() -> anyhow::Result<()> {
         Commands::Ui { path, host, port, arch } => {
             let doc = UltronBinaryLoader::load(&path, &arch)?;
             server::run_server(doc, &host, port).await?;
+        }
+        Commands::Auto { path, arch } => {
+            let mut doc = UltronBinaryLoader::load(&path, &arch)?;
+            let res = server::execute_autonomous_sme_pipeline(&mut doc);
+            println!("╔══════════════════════════════════════════════════════════════════════════════╗");
+            println!("║  ULTRON DISASSEMBLE v3.0 // AUTONOMOUS GOD-TIER SME WORKFLOW (8 PHASES)      ║");
+            println!("╚══════════════════════════════════════════════════════════════════════════════╝");
+            println!("Target      : {} ({} / {})", res["target"].as_str().unwrap_or(&path), res["format"].as_str().unwrap_or(""), res["arch"].as_str().unwrap_or(""));
+            println!("Procedures  : {} | Instructions: {} | Strings: {}", res["procedure_count"], res["instruction_count"], res["string_count"]);
+            println!("Output Dir  : {}", res["output_dir"].as_str().unwrap_or("outputs/"));
+            if let Some(verdict) = res["sme_playbook"]["executive_verdict"].as_str() {
+                println!("\n─── GOD-TIER SME EXECUTIVE VERDICT ───\n  {}", verdict);
+            }
+            if let Some(phases) = res["sme_playbook"]["workflow_phases"].as_array() {
+                println!("\n─── 8-PHASE AUTONOMOUS SME EXECUTION MATRIX ───");
+                for ph in phases {
+                    println!(
+                        "  ✓ {:<54} [{}]\n      └─ {}",
+                        ph["phase"].as_str().unwrap_or(""),
+                        ph["status"].as_str().unwrap_or(""),
+                        ph["summary"].as_str().unwrap_or("")
+                    );
+                }
+            }
+            if let Some(hvts) = res["sme_playbook"]["high_value_targets"].as_array() {
+                println!("\n─── PRIORITIZED HIGH-VALUE TARGETS (TOP HVTs TO INSPECT FIRST) ───");
+                for hvt in hvts.iter().take(8) {
+                    println!(
+                        "  [HVT #{}] {:<12} {:<34} [{}] (Score: {}/100, {} BBs / {} insns)",
+                        hvt["rank"].as_u64().unwrap_or(1),
+                        hvt["address"].as_str().unwrap_or(""),
+                        hvt["demangled"].as_str().unwrap_or(""),
+                        hvt["sme_role"].as_str().unwrap_or(""),
+                        hvt["sme_priority_score"].as_u64().unwrap_or(0),
+                        hvt["basic_blocks"].as_u64().unwrap_or(0),
+                        hvt["instructions"].as_u64().unwrap_or(0),
+                    );
+                }
+            }
+            if let Some(files) = res["output_files"].as_array() {
+                println!("\n─── GENERATED ARTIFACTS ({}) ───", files.len());
+                for f in files {
+                    println!(
+                        "  • {:<32} ({:>6} B) — {}",
+                        f["name"].as_str().unwrap_or(""),
+                        f["bytes"].as_u64().unwrap_or(0),
+                        f["label"].as_str().unwrap_or("")
+                    );
+                }
+            }
         }
     }
 

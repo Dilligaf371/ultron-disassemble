@@ -1,0 +1,356 @@
+{
+  "air_gapped_verified": true,
+  "cyclonedx_sbom": {
+    "bomFormat": "CycloneDX",
+    "components": [
+      {
+        "bom-ref": "pkg:darwin/libSystem.B.dylib@b735d225399a76d5",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "b735d225399a76d5"
+          }
+        ],
+        "name": "libSystem.B.dylib",
+        "purl": "pkg:generic/libSystem.B.dylib?path=/usr/lib/libSystem.B.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 1356.0.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/Accelerate@8f39d89de20d1c25",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "8f39d89de20d1c25"
+          }
+        ],
+        "name": "Accelerate",
+        "purl": "pkg:generic/Accelerate?path=/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 4.0.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/CoreAudio@41e1d211a3769aad",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "41e1d211a3769aad"
+          }
+        ],
+        "name": "CoreAudio",
+        "purl": "pkg:generic/CoreAudio?path=/System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 1.0.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/CoreFoundation@36d2f3cb83ab46ed",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "36d2f3cb83ab46ed"
+          }
+        ],
+        "name": "CoreFoundation",
+        "purl": "pkg:generic/CoreFoundation?path=/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 150.0.0, current version 5026.5.4)"
+      },
+      {
+        "bom-ref": "pkg:darwin/Foundation@d21191991dd8472f",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "d21191991dd8472f"
+          }
+        ],
+        "name": "Foundation",
+        "purl": "pkg:generic/Foundation?path=/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 300.0.0, current version 5026.5.4)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libobjc.A.dylib@95fba69fb2ecfd7f",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "95fba69fb2ecfd7f"
+          }
+        ],
+        "name": "libobjc.A.dylib",
+        "purl": "pkg:generic/libobjc.A.dylib?path=/usr/lib/libobjc.A.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 228.0.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftAccelerate.dylib@82546f0640c9f636",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "82546f0640c9f636"
+          }
+        ],
+        "name": "libswiftAccelerate.dylib",
+        "purl": "pkg:generic/libswiftAccelerate.dylib?path=/usr/lib/swift/libswiftAccelerate.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 77.100.2, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftCore.dylib@a08f16b5369bdb0c",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "a08f16b5369bdb0c"
+          }
+        ],
+        "name": "libswiftCore.dylib",
+        "purl": "pkg:generic/libswiftCore.dylib?path=/usr/lib/swift/libswiftCore.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 0.0.0, current version 0.0.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftCoreAudio.dylib@83e82bf321bec4d6",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "83e82bf321bec4d6"
+          }
+        ],
+        "name": "libswiftCoreAudio.dylib",
+        "purl": "pkg:generic/libswiftCoreAudio.dylib?path=/usr/lib/swift/libswiftCoreAudio.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 411.255.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftCoreFoundation.dylib@e348e95187c16881",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "e348e95187c16881"
+          }
+        ],
+        "name": "libswiftCoreFoundation.dylib",
+        "purl": "pkg:generic/libswiftCoreFoundation.dylib?path=/usr/lib/swift/libswiftCoreFoundation.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 120.100.0, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftDarwin.dylib@4df46308eaa031b0",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "4df46308eaa031b0"
+          }
+        ],
+        "name": "libswiftDarwin.dylib",
+        "purl": "pkg:generic/libswiftDarwin.dylib?path=/usr/lib/swift/libswiftDarwin.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 377.120.8)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftDispatch.dylib@779ac1629884c281",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "779ac1629884c281"
+          }
+        ],
+        "name": "libswiftDispatch.dylib",
+        "purl": "pkg:generic/libswiftDispatch.dylib?path=/usr/lib/swift/libswiftDispatch.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 1542.100.32)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftIOKit.dylib@64c61d7bfb507d4d",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "64c61d7bfb507d4d"
+          }
+        ],
+        "name": "libswiftIOKit.dylib",
+        "purl": "pkg:generic/libswiftIOKit.dylib?path=/usr/lib/swift/libswiftIOKit.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 1.0.0, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftMetal.dylib@6f434bc6847b79ea",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "6f434bc6847b79ea"
+          }
+        ],
+        "name": "libswiftMetal.dylib",
+        "purl": "pkg:generic/libswiftMetal.dylib?path=/usr/lib/swift/libswiftMetal.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 373.2.0, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftObjectiveC.dylib@b14eb4ac66325c67",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "b14eb4ac66325c67"
+          }
+        ],
+        "name": "libswiftObjectiveC.dylib",
+        "purl": "pkg:generic/libswiftObjectiveC.dylib?path=/usr/lib/swift/libswiftObjectiveC.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 951.7.0, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftUniformTypeIdentifiers.dylib@74c475a786c3f0c7",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "74c475a786c3f0c7"
+          }
+        ],
+        "name": "libswiftUniformTypeIdentifiers.dylib",
+        "purl": "pkg:generic/libswiftUniformTypeIdentifiers.dylib?path=/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 877.5.1, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftXPC.dylib@d68a4120f2ed44cc",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "d68a4120f2ed44cc"
+          }
+        ],
+        "name": "libswiftXPC.dylib",
+        "purl": "pkg:generic/libswiftXPC.dylib?path=/usr/lib/swift/libswiftXPC.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 128.120.2, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftos.dylib@2e918d7953c1a45d",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "2e918d7953c1a45d"
+          }
+        ],
+        "name": "libswiftos.dylib",
+        "purl": "pkg:generic/libswiftos.dylib?path=/usr/lib/swift/libswiftos.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 1082.0.0, weak)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libswiftsimd.dylib@b1774bb57aee1f36",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "b1774bb57aee1f36"
+          }
+        ],
+        "name": "libswiftsimd.dylib",
+        "purl": "pkg:generic/libswiftsimd.dylib?path=/usr/lib/swift/libswiftsimd.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 23.0.0, weak)"
+      }
+    ],
+    "metadata": {
+      "component": {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "fed05e9cf9beb01ec72428d0bb8f2ab0c42a839a75e2892ca3f53a7f7c8c5ca2"
+          }
+        ],
+        "name": "system-audio-spectrum",
+        "type": "application"
+      },
+      "timestamp": "2026-10-18T22:00:00Z",
+      "tools": [
+        {
+          "name": "Ultron Disassemble v4.0",
+          "vendor": "Ultron Sovereign Security",
+          "version": "4.0.0-sovereign"
+        }
+      ]
+    },
+    "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-baf02ee3ffbc",
+    "specVersion": "1.5",
+    "version": 1
+  },
+  "immutable_ledger_entries": 17,
+  "immutable_ledger_path": "/Users/gilles/.ultron/immutable_audit_ledger.jsonl",
+  "iso27001_annex_a_controls": [
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.8 — Management of Technical Vulnerabilities",
+      "evidence": "Automated CWE-120/787/134/78 Static + Symbolic Z3 + 64-Seed Coverage Fuzzing Verification",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.12 — Data Leakage Prevention",
+      "evidence": "Zero third-party network calls; all decompilation, AI AST synthesis & fuzzing execute strictly on-premise in memory-safe Rust",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.15 — Logging & Immutable Audit Trail",
+      "evidence": "Append-only Merkle JSONL Ledger at /Users/gilles/.ultron/immutable_audit_ledger.jsonl",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.28 — Secure Coding & Supply Chain (CycloneDX SBOM)",
+      "evidence": "CycloneDX 1.5 SBOM generated (19 linked components mapped)",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27037 — Digital Evidence Identification, Collection & Preservation",
+      "evidence": "SHA-256 Chain-of-Custody (fed05e9cf9beb01ec72428d0bb8f2ab0c42a839a75e2892ca3f53a7f7c8c5ca2) + MCP Evidence Ledger provenance",
+      "status": "COMPLIANT (PASS)"
+    }
+  ],
+  "latest_merkle_hash": "73cb5e177073f0271b4d1c295e2c5e23",
+  "memory_safe_rust_core": true,
+  "ok": true,
+  "overall_status": "COMPLIANT // SOC 2 TYPE II + ISO/IEC 27001:2022 + ISO/IEC 27037 + CYCLONEDX 1.5",
+  "sbom_components_count": 19,
+  "sbom_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/system-audio-spectrum/sbom_cyclonedx.json",
+  "soc2_trust_services_criteria": [
+    {
+      "criteria": "CC6.1 / CC6.6 — Logical Access & Boundary Protection",
+      "evidence": "100% Local Loopback Binding (127.0.0.1:8420), Zero Cloud Exfiltration, Air-Gapped Ready",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC7.1 — System Vulnerability & Configuration Detection",
+      "evidence": "Automated CWE Source->Sink Taint Audit, Shannon Entropy & Binary Hardening Inspection across 247 procedures",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC7.2 — Tamper-Evident Security Event Monitoring",
+      "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (17 records, head=73cb5e177073f0271b4d1c295e2c5e23)",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC8.1 — Change Management & Binary Patch Integrity",
+      "evidence": "1-Day Patch Root-Cause C-Diffing, Mach-O Ad-Hoc CodeSigning & SHA-256 Provenance Verification",
+      "status": "COMPLIANT (PASS)"
+    }
+  ],
+  "target_binary": "/Applications/ChatGPT.app/Contents/Resources/native/system-audio-spectrum",
+  "target_sha256": "fed05e9cf9beb01ec72428d0bb8f2ab0c42a839a75e2892ca3f53a7f7c8c5ca2"
+}

@@ -1,0 +1,5 @@
+[package]
+name = "ultron-reconstructed"
+version = "0.1.0"
+edition = "2021"
+description = "Autonomous Rust reconstruction of sky.node"

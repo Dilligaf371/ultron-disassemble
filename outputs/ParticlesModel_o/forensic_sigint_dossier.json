@@ -1,0 +1,323 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x0",
+    "evidence_file": "/Users/gilles/Library/Developer/Xcode/DerivedData/Aleria-emykibufzydxzdapgegdbbeupnon/Build/Intermediates.noindex/Aleria.build/Debug/Aleria.build/Objects-normal/arm64/ParticlesModel.o",
+    "sha256_digest": "b9e7f70748586cd2e3cad1ca2047927c8238975398ec0bcbf2253d0b92814c7c",
+    "total_instructions": 21223,
+    "total_procedures": 848
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x2fc4",
+      "immediate_hex": "0x3333333333333333",
+      "instruction": "orr x8, xzr, #0x3333333333333333"
+    },
+    {
+      "address": "0x2fe4",
+      "immediate_hex": "0x3333333333333333",
+      "instruction": "orr x8, xzr, #0x3333333333333333"
+    },
+    {
+      "address": "0x3588",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x35fc",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x3634",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x3694",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x9, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x3c6c",
+      "immediate_hex": "0xfffffffffffffffe",
+      "instruction": "and x0, x8, #0xfffffffffffffffe"
+    },
+    {
+      "address": "0x3d64",
+      "immediate_hex": "0xffffffffffffffe0",
+      "instruction": "and sp, x9, #0xffffffffffffffe0"
+    },
+    {
+      "address": "0x495c",
+      "immediate_hex": "0xffffffffffffffe0",
+      "instruction": "and sp, x9, #0xffffffffffffffe0"
+    },
+    {
+      "address": "0x5258",
+      "immediate_hex": "0xffffffffffffffe0",
+      "instruction": "and sp, x9, #0xffffffffffffffe0"
+    },
+    {
+      "address": "0x82a8",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "mov x8, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0x82ac",
+      "immediate_hex": "0xffffffffffffffff",
+      "instruction": "movi v0.2d, #0xffffffffffffffff"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x1a2fa",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/Aleria-emykibufzydxzdapgegdbbeupnon/Build/Intermediates.noindex/Aleria.build/Debug/Aleria.build/Objects-normal/arm64/Aleria.swiftmodule"
+    },
+    {
+      "address": "0x1f411",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Foundation.framework/Modules/Foundation.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1f7e6",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/SwiftUI.framework/Modules/SwiftUI.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1f8bd",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/CryptoKit.framework/Modules/CryptoKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1f995",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/AppKit.framework/Modules/AppKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1fa6d",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Modules/CoreGraphics.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1fb54",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Combine.framework/Modules/Combine.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1fcda",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "LocalAuthentication"
+    },
+    {
+      "address": "0x1fcee",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/LocalAuthentication.framework/Modules/LocalAuthentication.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x1ff56",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_AuthenticationServices_SwiftUI"
+    },
+    {
+      "address": "0x1ff76",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/_AuthenticationServices_SwiftUI.framework/Modules/_AuthenticationServices_SwiftUI.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2012f",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Speech.framework/Modules/Speech.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x20203",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/EventKit.framework/Modules/EventKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x203a3",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Network.framework/Modules/Network.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x2069e",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/PDFKit.framework/Modules/PDFKit.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x20770",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/Vision.framework/Modules/Vision.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x20867",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/AudioToolbox.framework/Modules/AudioToolbox.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x20a07",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk/System/Library/Frameworks/DeveloperToolsSupport.framework/Modules/DeveloperToolsSupport.swiftmodule/arm64e-apple-macos.swiftinterface"
+    },
+    {
+      "address": "0x20d08",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/simd-8SBLZD52UCRJ1LJNODS3NHSKL.pcm"
+    },
+    {
+      "address": "0x20d71",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Foundation-A39JCEMO1KXRWZJ5IJLBJ1EL3.pcm"
+    },
+    {
+      "address": "0x20de0",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_SwiftConcurrencyShims-6NDMWGCAH4Z5OMRM1M865Y7CX.pcm"
+    },
+    {
+      "address": "0x20e5b",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUI-D2GOQKI7LFXTI87LOABRK3ZWU.pcm"
+    },
+    {
+      "address": "0x20ec7",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AppKit-3IBIFPPZ2JCYF3R4WVAY9LYMR.pcm"
+    },
+    {
+      "address": "0x20f32",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreGraphics-6RUBAGZK8FHN0U7WEB1KJDR3B.pcm"
+    },
+    {
+      "address": "0x20fa3",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ImageIO-CA5SPJG2D0GLW1OHBK13WHEFV.pcm"
+    },
+    {
+      "address": "0x2100f",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVFoundation-DDDUFTOO6QUBTVCMWEWGW5D7R.pcm"
+    },
+    {
+      "address": "0x21080",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/LocalAuthentication-549JZEZUEQOOSP7F4YPOAVSGA.pcm"
+    },
+    {
+      "address": "0x210f8",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Darwin-4NWQJ8GM2FGZHXIB5BJYNXVD5.pcm"
+    },
+    {
+      "address": "0x21163",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UniformTypeIdentifiers-5C3FLTZZPOY6U77RKT4265V9C.pcm"
+    },
+    {
+      "address": "0x211de",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Security-BVDV0M3UR3CFR7JP1U9S353FF.pcm"
+    },
+    {
+      "address": "0x2124b",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Accelerate-5UZFOGI03NOPBL4OMVL24P9EV.pcm"
+    },
+    {
+      "address": "0x212ba",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Speech-5KJ26UYBXHFWCMMLQ9MKSZB11.pcm"
+    },
+    {
+      "address": "0x21325",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/EventKit-CWTP0TKPFDDXVI6XINCYYNUIA.pcm"
+    },
+    {
+      "address": "0x21392",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/QuartzCore-C6TRGGDUMHUHMKBREXDHWDC3O.pcm"
+    },
+    {
+      "address": "0x21401",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ApplicationServices-1JB3QI8ZC4KIPB5TZBZ7K9W4Q.pcm"
+    },
+    {
+      "address": "0x21479",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Network-BCHZPZ8DGV8LB6TLJADMR97CH.pcm"
+    },
+    {
+      "address": "0x214e5",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreServices-87G1EUQUW7EKI4CWO09CX4EMS.pcm"
+    },
+    {
+      "address": "0x21556",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreImage-CNW7O9ZIWG9A7CJMQ3XFPJ0ZY.pcm"
+    },
+    {
+      "address": "0x215c4",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MetalKit-34GDDBMF6059H79ZV1YJC1IKP.pcm"
+    },
+    {
+      "address": "0x21631",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os-13WDBM8X86UINFNO4MISCEEDE.pcm"
+    },
+    {
+      "address": "0x21698",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/PDFKit-2DKJ3TQZX2PAELHV5YDJ75AAH.pcm"
+    },
+    {
+      "address": "0x21703",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Vision-4M4OPGI32DE5R71KR14S0X0L6.pcm"
+    },
+    {
+      "address": "0x2176e",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ServiceManagement-63C486YHD9G1R1SLR3HL3QTS5.pcm"
+    },
+    {
+      "address": "0x217e4",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CommonCrypto-4QX2QLRVD7BFOI8QE22V9YRDY.pcm"
+    },
+    {
+      "address": "0x21855",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AudioToolbox-2UWOMZZKXRSCFI1R8JZKLMK00.pcm"
+    },
+    {
+      "address": "0x218c6",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreAudio-3Z08BY005IX1GQNOWZ2FZ47N7.pcm"
+    },
+    {
+      "address": "0x21934",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DeveloperToolsSupport-CVDD1F8GNQP9MYNWQHRNQN9V7.pcm"
+    },
+    {
+      "address": "0x219c1",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/Users/gilles/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation2-2QGE9SAQH7I96UDL63QFQW5MQ.pcm"
+    },
+    {
+      "address": "0x2aa63",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "LocalAuthentication"
+    }
+  ],
+  "extracted_iocs_count": 49,
+  "ok": true
+}

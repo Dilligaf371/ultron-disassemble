@@ -1,0 +1,248 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x1978",
+    "evidence_file": "/Applications/ChatGPT.app/Contents/Resources/native/sky.node",
+    "sha256_digest": "296093f7a49c862159e70871ce202dafd1e8c6098959348e8374bee5a90183ce",
+    "total_instructions": 84906,
+    "total_procedures": 2799
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x2a94",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x10, x10, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0x71ec",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x8, x8, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0xe2fc",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x10, x9, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0xe31c",
+      "immediate_hex": "0xfffffffffffff",
+      "instruction": "mov x9, #0xfffffffffffff"
+    },
+    {
+      "address": "0xe330",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x10, x9, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0xe34c",
+      "immediate_hex": "0xffffffffffffe",
+      "instruction": "orr x8, xzr, #0xffffffffffffe"
+    },
+    {
+      "address": "0xe360",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x10, x9, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0xfff0",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "mov x8, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0x13f48",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x8, x8, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0x140c4",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x8, x8, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0x188d0",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x8, x8, #0x7fffffffffffffff"
+    },
+    {
+      "address": "0x188f0",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "and x8, x8, #0x7fffffffffffffff"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x8ad82",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "CodingKeys"
+    },
+    {
+      "address": "0x8b1d0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "PropertyKey"
+    },
+    {
+      "address": "0x8b1dc",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NNSBitmapImageRepPropertyKey"
+    },
+    {
+      "address": "0x8b69b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "CodingKeys"
+    },
+    {
+      "address": "0x8d1a4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NNSAttributedStringKey"
+    },
+    {
+      "address": "0x8d92d",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "isKeyFrame"
+    },
+    {
+      "address": "0x8eec8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "altKey"
+    },
+    {
+      "address": "0x8f4fe",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://example.invalid"
+    },
+    {
+      "address": "0x90550",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/System/Library/CoreServices/SystemVersion.plist"
+    },
+    {
+      "address": "0x90f90",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "allKeys"
+    },
+    {
+      "address": "0x91170",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyCode"
+    },
+    {
+      "address": "0x92759",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "addAnimation:forKey:"
+    },
+    {
+      "address": "0x929a5",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "animationWithKeyPath:"
+    },
+    {
+      "address": "0x92c03",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "attributeDescriptorForKeyword:"
+    },
+    {
+      "address": "0x936d6",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "dictionaryWithObjects:forKeys:count:"
+    },
+    {
+      "address": "0x93b00",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "hasOrdinaryKey"
+    },
+    {
+      "address": "0x93c75",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "ignoreModifierKeysForDraggingSession:"
+    },
+    {
+      "address": "0x9421d",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "initWithTitle:action:keyEquivalent:"
+    },
+    {
+      "address": "0x944d2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "isKeyWindow"
+    },
+    {
+      "address": "0x9457b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyWindow"
+    },
+    {
+      "address": "0x9458b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keys"
+    },
+    {
+      "address": "0x9486f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "menuHasKeyEquivalent:forEvent:target:action:"
+    },
+    {
+      "address": "0x94bcf",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "objectForKeyedSubscript:"
+    },
+    {
+      "address": "0x95157",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "publishFrameWithPresentationID:videoData:decoderConfiguration:codec:timestamp:isKeyFrame:withReply:"
+    },
+    {
+      "address": "0x95446",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "removeAnimationForKey:"
+    },
+    {
+      "address": "0x954cb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "removeObjectForKey:"
+    },
+    {
+      "address": "0x95b4f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setAttributeDescriptor:forKeyword:"
+    },
+    {
+      "address": "0x961d5",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setKeyEquivalent:"
+    },
+    {
+      "address": "0x96394",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setObject:forKeyedSubscript:"
+    },
+    {
+      "address": "0x963d3",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setParamDescriptor:forKeyword:"
+    },
+    {
+      "address": "0x96805",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setValue:forKey:"
+    },
+    {
+      "address": "0x96816",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setValue:forKeyPath:"
+    },
+    {
+      "address": "0x99ceb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keys"
+    },
+    {
+      "address": "0x99cf0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "hasOrdinaryKey"
+    }
+  ],
+  "extracted_iocs_count": 34,
+  "ok": true
+}

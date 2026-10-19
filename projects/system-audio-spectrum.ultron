@@ -1,0 +1,2581 @@
+{
+  "version": "2.3.0",
+  "name": "system-audio-spectrum",
+  "binary_path": "/Applications/ChatGPT.app/Contents/Resources/native/system-audio-spectrum",
+  "arch": "arm64",
+  "saved_at": "2026-10-19T03:08:16Z",
+  "renames": {
+    "4295018264": "_$sSay8Dispatch0A13WorkItemFlagsVGMd",
+    "4294985364": "___swift_destroy_boxed_opaque_existential_1",
+    "4294992436": "_$sSo13SMPTETimeTypeVMn",
+    "4294990368": "_$sSaySo17OS_dispatch_queueC8DispatchE10AttributesVGMR",
+    "4295017848": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMf",
+    "4295001432": "__swift_FORCE_LOAD_$_swiftCoreAudio_$_main",
+    "4294989184": "_objc_msgSend$UUID",
+    "4295001728": "_$sSo15AudioBufferListVMf",
+    "4294992622": "_symbolic SaySaySfGG",
+    "4294987932": "flirt_dyld_stub_binder_trampoline_509c",
+    "4294988568": "flirt_dyld_stub_binder_trampoline_5318",
+    "4294980472": "___swift_memcpy64_8",
+    "4294989060": "flirt_dyld_stub_binder_trampoline_5504",
+    "4294994300": "_$sSo13SMPTETimeTypeVMB",
+    "4294980492": "_$sSo14AudioTimeStampVwet",
+    "4294980364": "_$sSo15AudioBufferListVwst",
+    "4294986676": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWlTm",
+    "4294988196": "flirt_dyld_stub_binder_trampoline_51a4",
+    "4294988664": "flirt_dyld_stub_binder_trampoline_5378",
+    "4294989376": "_objc_msgSend$lock",
+    "4295017448": "@selector(fileHandleWithStandardInput)",
+    "4295018224": "_$ss15CollectionOfOneVys5UInt8VGMd",
+    "4295018336": "_$ss23_ContiguousArrayStorageCySaySfGGMd",
+    "4294987728": "_block_copy_helper.19",
+    "4294992104": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMn",
+    "4294984972": "sme_runtime_helper_10000450c",
+    "4295017600": "@selector(isProxy)",
+    "4294990032": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC3taps6UInt32VvpWvd",
+    "4294990280": "_$ss15CollectionOfOneVys5UInt8VGMR",
+    "4294987896": "flirt_dyld_stub_binder_trampoline_5078",
+    "4294990328": "_$sSaySDySSypGGMR",
+    "4295018608": "_$s4main7signalsSaySo25OS_dispatch_source_signal_pGvp",
+    "4294990064": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC5queueSo012OS_dispatch_L0CvpWvd",
+    "4295001296": "_block_descriptor.3",
+    "4295018656": "_$s4main16maximumFrequency029_12232F587A4C5CD8B1EEDF696793E2FCLLSdvp.0",
+    "4295017464": "@selector(init)",
+    "4294984652": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSaySfG_Tg5",
+    "4294988052": "flirt_dyld_stub_binder_trampoline_5114",
+    "4294988148": "flirt_dyld_stub_binder_trampoline_5174",
+    "4294988628": "flirt_dyld_stub_binder_trampoline_5354",
+    "4294992786": "_symbolic _____SgXw 4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC",
+    "4294988544": "flirt_dyld_stub_binder_trampoline_5300",
+    "4295017560": "@selector(class)",
+    "4294992530": "_symbolic _____ So27AudioStreamBasicDescriptionV",
+    "4294987120": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwca",
+    "4294986248": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4295001384": "__swift_FORCE_LOAD_$_swift_Builtin_float_$_main",
+    "4294973860": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMa",
+    "4294988076": "flirt_dyld_stub_binder_trampoline_512c",
+    "4294992834": "_symbolic Say_____G So17OS_dispatch_queueC8DispatchE10AttributesV",
+    "4294994240": "_$sSo9SMPTETimeVMB",
+    "4294988952": "flirt_dyld_stub_binder_trampoline_5498",
+    "4294994060": "_$sSo11AudioBufferVMF",
+    "4294988832": "flirt_dyld_stub_binder_trampoline_5420",
+    "4295001856": "_$sSo14AudioTimeStampVMf",
+    "4295018680": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWL",
+    "4294979976": "_block_copy_helper",
+    "4294992372": "_$sSo9SMPTETimeVMn",
+    "4294987520": "_$sSo11AudioBufferVMa",
+    "4294978348": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAsAEP19_getEmbeddedNSErroryXlSgyFTW",
+    "4294987068": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwCPTm",
+    "4295001400": "__swift_FORCE_LOAD_$_swiftCoreFoundation_$_main",
+    "4295018296": "_$ss23_ContiguousArrayStorageCySDySSypGGMd",
+    "4295017424": "@selector(UUID)",
+    "4295001456": "__swift_FORCE_LOAD_$_swiftUniformTypeIdentifiers_$_main",
+    "4294987372": "flirt_byte_memset_loop_4e6c",
+    "4294992480": "_symbolic ___________SPy_____GSPy_____GADSpyAEGADSvSgtXCSg s5Int32V s6UInt32V So14AudioTimeStampV So0C10BufferListV",
+    "4294987776": "flirt_dyld_stub_binder_trampoline_5000",
+    "4294987732": "_block_copy_helper.26",
+    "4294987540": "_$sSo19AudioTimeStampFlagsVMa",
+    "4294986184": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294986528": "flirt_matrix_nested_solver_kernel_4b20",
+    "4295017144": "__OBJC_$_PROTOCOL_REFS_OS_dispatch_source_data_add",
+    "4294988688": "flirt_dyld_stub_binder_trampoline_5390",
+    "4294992668": "_symbolic _____ So19AudioTimeStampFlagsV",
+    "4294988016": "flirt_dyld_stub_binder_trampoline_50f0",
+    "4294978344": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAsAEP9_userInfoyXlSgvgTW",
+    "4294990112": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC6windowSaySfGvpWvd",
+    "4294988256": "flirt_dyld_stub_binder_trampoline_51e0",
+    "4294987968": "flirt_dyld_stub_binder_trampoline_50c0",
+    "4294989568": "_objc_msgSend$setReadabilityHandler:",
+    "4295017800": "_$sSo17OS_dispatch_queueCML",
+    "4294980604": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4295016520": "__IVARS__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987724": "_block_copy_helper.16",
+    "4294994032": "_$sSo19AudioTimeStampFlagsVMF",
+    "4295001392": "__swift_FORCE_LOAD_$_swiftObjectiveC_$_main",
+    "4295017512": "@selector(setPrivate:)",
+    "4294988676": "flirt_dyld_stub_binder_trampoline_5384",
+    "4295018624": "_$s4main7fftLog2029_12232F587A4C5CD8B1EEDF696793E2FCLLSuvp.0",
+    "4294987764": "_$sSo27AudioStreamBasicDescriptionVwCP",
+    "4294984332": "sme_runtime_helper_10000428c",
+    "4294988040": "flirt_dyld_stub_binder_trampoline_5108",
+    "4295018688": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAMcMK",
+    "4294988856": "flirt_dyld_stub_binder_trampoline_5438",
+    "4294987400": "flirt_byte_memset_loop_4e88",
+    "4294988580": "flirt_dyld_stub_binder_trampoline_5324",
+    "4295001464": "__swift_FORCE_LOAD_$_swiftMetal_$_main",
+    "4295002664": "_$sSo14SMPTETimeFlagsVMf",
+    "4294989084": "flirt_dyld_stub_binder_trampoline_551c",
+    "4295002416": "_$sSo11AudioBufferVMf",
+    "4294987720": "_block_copy_helper.10",
+    "4294988400": "flirt_dyld_stub_binder_trampoline_5270",
+    "4294988556": "flirt_dyld_stub_binder_trampoline_530c",
+    "4294987740": "_block_destroy_helper.5",
+    "4295001568": "_$sSo27AudioStreamBasicDescriptionVMf",
+    "4294987056": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwCP",
+    "4294990048": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC8callbacks5Int32Vs6UInt32V_SPySo0C9TimeStampVGSPySo0C10BufferListVGALSpyANGALSvSgtXCSgvpWvd",
+    "4295017536": "@selector(unlock)",
+    "4294992734": "_symbolic Sb",
+    "4295002288": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVMf",
+    "4294985540": "_$sypWOb",
+    "4294988724": "flirt_dyld_stub_binder_trampoline_53b4",
+    "4294987860": "flirt_dyld_stub_binder_trampoline_5054",
+    "4294984976": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294987760": "_block_destroy_helper.27",
+    "4294988424": "flirt_dyld_stub_binder_trampoline_5288",
+    "4294990312": "_$ss5Error_pMR",
+    "4294980524": "_$sSo14AudioTimeStampVwst",
+    "4295018360": "_$sSaySo17OS_dispatch_queueC8DispatchE10AttributesVGMd",
+    "4294988868": "flirt_dyld_stub_binder_trampoline_5444",
+    "4294980312": "___swift_memcpy24_8",
+    "4295001768": "_$sSo14AudioTimeStampVWV",
+    "4294980356": "neural_$s4main22ReleaseModifierMonitorC9pollTimer33_FBBA50E09A10196EED1392F2F03BBA9ELLSo7NSTimerCSgvpfi",
+    "4294989036": "flirt_dyld_stub_binder_trampoline_54ec",
+    "4294989536": "_objc_msgSend$setPrivate:",
+    "4294984608": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSf_Tg5",
+    "4294980684": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC7consumeyySPySo0C10BufferListVGF",
+    "4295017680": "@selector(hash)",
+    "4295002808": "__OBJC_LABEL_PROTOCOL_$_OS_dispatch_source",
+    "4295018672": "_$s4main8spectrum029_12232F587A4C5CD8B1EEDF696793D2FCLLAA19SystemAudioSpectrumACLLCvp",
+    "4294992868": "_symbolic _____ 4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLV",
+    "4295001640": "_$sSo15AudioBufferListVWV",
+    "4294976036": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC5startyyKF",
+    "4295017568": "@selector(self)",
+    "4294988484": "flirt_dyld_stub_binder_trampoline_52c4",
+    "4295018256": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWL",
+    "4294992726": "_symbolic SS_ypt",
+    "4294992652": "_symbolic _____ So14AudioTimeStampV",
+    "4294972120": "_main",
+    "4294992856": "_symbolic _____ So14SMPTETimeFlagsV",
+    "4294988184": "flirt_dyld_stub_binder_trampoline_5198",
+    "4294990304": "_$sSay8Dispatch0A13WorkItemFlagsVGMR",
+    "4295017592": "@selector(performSelector:withObject:withObject:)",
+    "4295018304": "_$sSaySDySSypGGMd",
+    "4294988136": "flirt_dyld_stub_binder_trampoline_5168",
+    "4294980292": "_$sSo27AudioStreamBasicDescriptionVMa",
+    "4294988172": "flirt_dyld_stub_binder_trampoline_518c",
+    "4294981076": "flirt_fast_memcpy_vec_35d4",
+    "4294987436": "___swift_memcpy16_8",
+    "4294987908": "flirt_dyld_stub_binder_trampoline_5084",
+    "4295017480": "@selector(mainRunLoop)",
+    "4294994152": "_$sSo14SMPTETimeFlagsVMF",
+    "4294987620": "_$sSo13SMPTETimeTypeVMa",
+    "4294993908": "_$sSo9SMPTETimeVMF",
+    "4294992634": "_symbolic SaySfG",
+    "4294992796": "_symbolic _____y_____G s16IndexingIteratorV 9CoreAudio013UnsafeMutableD17BufferListPointerV",
+    "4295017640": "@selector(retain)",
+    "4295018328": "_$ss23_ContiguousArrayStorageCySfGMd",
+    "4294987204": "___swift_memcpy20_8",
+    "4294988460": "flirt_dyld_stub_binder_trampoline_52ac",
+    "4294988472": "flirt_dyld_stub_binder_trampoline_52b8",
+    "4295018392": "_$sSo9SMPTETimeVML",
+    "4294988940": "flirt_dyld_stub_binder_trampoline_548c",
+    "4294978340": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAsAEP5_codeSivgTW",
+    "4294988124": "flirt_dyld_stub_binder_trampoline_515c",
+    "4294992272": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVMXX",
+    "4294992658": "_symbolic Sd",
+    "4294986604": "sme_runtime_helper_100004b6c",
+    "4295002464": "_$sSo19AudioTimeStampFlagsVMf",
+    "4294989024": "flirt_dyld_stub_binder_trampoline_54e0",
+    "4295017432": "@selector(availableData)",
+    "4294973968": "_$sSo18OS_dispatch_sourceP8DispatchE15setEventHandler3qos5flags7handleryAC0D3QoSV_AC0D13WorkItemFlagsVyyXBSgtFfA0_",
+    "4295002080": "_block_descriptor.18",
+    "4295002328": "_$sSo11AudioBufferVWV",
+    "4294987848": "flirt_dyld_stub_binder_trampoline_5048",
+    "4295017072": "__DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4295018208": "_$sSo14AudioTimeStampVML",
+    "4295017656": "@selector(autorelease)",
+    "4294990336": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGMR",
+    "4294992308": "_$sSo11AudioBufferVMn",
+    "4294989696": "__OBJC_$_PROTOCOL_INSTANCE_METHODS_NSObject",
+    "4294988700": "flirt_dyld_stub_binder_trampoline_539c",
+    "4294987920": "flirt_dyld_stub_binder_trampoline_5090",
+    "4295018320": "_$s9CoreAudio013UnsafeMutableB17BufferListPointerVACSlAAWL",
+    "4294993644": "_$sSo14AudioTimeStampVMF",
+    "4294980232": "neural_$s4main22ReleaseModifierMonitorC9pollTimer33_FBBA50E09A10196EED1392F2F03BBA9ELLSo7NSTimerCSgvpfi",
+    "4294988928": "flirt_dyld_stub_binder_trampoline_5480",
+    "4294984672": "_$ss15ContiguousArrayV16_createNewBuffer14bufferIsUnique15minimumCapacity13growForAppendySb_SiSbtFSf_Tg5",
+    "4294987224": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwta",
+    "4294989000": "flirt_dyld_stub_binder_trampoline_54c8",
+    "4294990542": "___swift_reflection_version",
+    "4294988820": "flirt_dyld_stub_binder_trampoline_5414",
+    "4294994220": "_$sSo27AudioStreamBasicDescriptionVMB",
+    "4294981660": "_$sSPySo14AudioTimeStampVGSPySo0A10BufferListVGACSpyAEGACIegyyyyy_AcfcgCIeyByyyyy_TR",
+    "4294989312": "_objc_msgSend$fileHandleWithStandardOutput",
+    "4294988640": "flirt_dyld_stub_binder_trampoline_5360",
+    "4295002824": "__OBJC_LABEL_PROTOCOL_$_NSObject",
+    "4294992662": "_symbolic _____ So9SMPTETimeV",
+    "4294992700": "_symbolic _____y_____G s15CollectionOfOneV s5UInt8V",
+    "4294979972": "sme_runtime_helper_100003184",
+    "4294985396": "_$s10Foundation4DataV15_RepresentationOWOe",
+    "4294992820": "_symbolic _____ySaySfGG s23_ContiguousArrayStorageC",
+    "4295018288": "_$sSo16CATapDescriptionCML",
+    "4294983972": "_$sSbIegy_SbIeyBy_TR",
+    "4294987836": "flirt_dyld_stub_binder_trampoline_503c",
+    "4294989408": "_objc_msgSend$mainRunLoop",
+    "4294974848": "_$sSo12NSFileHandleCIeghg_ABIeyBhy_TR",
+    "4295017808": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMm",
+    "4295002704": "_$sSo13SMPTETimeTypeVMf",
+    "4295017664": "@selector(retainCount)",
+    "4294986436": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGWOh",
+    "4294987788": "flirt_dyld_stub_binder_trampoline_500c",
+    "4294987660": "flirt_pthread_mutex_scoped_lock_4f8c",
+    "4295002504": "_$sSo9SMPTETimeVWV",
+    "4294988112": "flirt_dyld_stub_binder_trampoline_5150",
+    "4294988280": "flirt_dyld_stub_binder_trampoline_51f8",
+    "4294988988": "flirt_dyld_stub_binder_trampoline_54bc",
+    "4294988736": "flirt_dyld_stub_binder_trampoline_53c0",
+    "4294989600": "_objc_msgSend$tryLock",
+    "4294992646": "_symbolic _____ s6UInt64V",
+    "4294987420": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVMa",
+    "4294992686": "_symbolic _____ySS_yptG s23_ContiguousArrayStorageC",
+    "4294988532": "flirt_dyld_stub_binder_trampoline_52f4",
+    "4294987944": "flirt_dyld_stub_binder_trampoline_50a8",
+    "4294988364": "flirt_dyld_stub_binder_trampoline_524c",
+    "4294992176": "_$sSo27AudioStreamBasicDescriptionVMn",
+    "4294992642": "_symbolic Si",
+    "4295017704": "@selector(debugDescription)",
+    "4294973924": "_$sIeg_IeyB_TR",
+    "4294994260": "_$sSo19AudioTimeStampFlagsVMB",
+    "4295018248": "_$sSS_yptMd",
+    "4295018368": "_$sSaySo17OS_dispatch_queueC8DispatchE10AttributesVGSayxGSTsWL",
+    "4295017872": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCN",
+    "4294987472": "neural_$s4main22ReleaseModifierMonitorC9pollTimer33_FBBA50E09A10196EED1392F2F03BBA9ELLSo7NSTimerCSgvpfi",
+    "4294987480": "_$sSo11AudioBufferVwst",
+    "4294987716": "_block_copy_helper.7",
+    "4294992594": "_symbolic So6NSLockC",
+    "4294992240": "_$sSo14AudioTimeStampVMn",
+    "4294992850": "_symbolic _____ So13SMPTETimeTypeV",
+    "4294988244": "flirt_dyld_stub_binder_trampoline_51d4",
+    "4294988748": "flirt_dyld_stub_binder_trampoline_53cc",
+    "4294987824": "flirt_dyld_stub_binder_trampoline_5030",
+    "4294987284": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwet",
+    "4294989504": "_objc_msgSend$setName:",
+    "4295018272": "_$sSay8Dispatch0A13WorkItemFlagsVGSayxGSTsWL",
+    "4294992280": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVMn",
+    "4294990040": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC6devices6UInt32VvpWvd",
+    "4294987884": "flirt_dyld_stub_binder_trampoline_506c",
+    "4294989108": "flirt_dyld_stub_binder_trampoline_5534",
+    "4294980240": "_$sSo27AudioStreamBasicDescriptionVwst",
+    "4294973552": "flirt_memmove_overlap_safe_1870",
+    "4294985260": "flirt_swift_bridge_object_retain_462c",
+    "4295002000": "_block_descriptor.12",
+    "4294992096": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMXX",
+    "4294987744": "_block_destroy_helper.8",
+    "4294993744": "_$sSo15AudioBufferListVMF",
+    "4295001336": "_block_descriptor.6",
+    "4294984336": "_$ss22__RawDictionaryStorageC4findys10_HashTableV6BucketV6bucket_Sb5foundtxSHRzlFSS_Tg5",
+    "4294990272": "_$ss23_ContiguousArrayStorageCySS_yptGMR",
+    "4294988880": "flirt_dyld_stub_binder_trampoline_5450",
+    "4294987800": "flirt_dyld_stub_binder_trampoline_5018",
+    "4294986612": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm",
+    "4294992680": "_symbolic _____ So11AudioBufferV",
+    "4295017440": "@selector(dataWithJSONObject:options:error:)",
+    "4295018376": "_$sSo11AudioBufferVML",
+    "4295017552": "@selector(isEqual:)",
+    "4294987712": "_block_copy_helper.4",
+    "4294988352": "flirt_dyld_stub_binder_trampoline_5240",
+    "4295001440": "__swift_FORCE_LOAD_$_swiftAccelerate_$_main",
+    "4295002120": "_block_descriptor.21",
+    "4294992714": "_symbolic _____ySSypG s18_DictionaryStorageC",
+    "4294989144": "flirt_dyld_stub_binder_trampoline_5558",
+    "4294988388": "flirt_dyld_stub_binder_trampoline_5264",
+    "4295002200": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVWV",
+    "4294992748": "_symbolic ______p s5ErrorP",
+    "4294983904": "flirt_objc_retain_release_thunk_40e0",
+    "4295018416": "__OBJC_PROTOCOL_$_OS_dispatch_source",
+    "4294987872": "flirt_dyld_stub_binder_trampoline_5060",
+    "4294990056": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC6formatSo0C22StreamBasicDescriptionVvpWvd",
+    "4294988268": "flirt_dyld_stub_binder_trampoline_51ec",
+    "4294987328": "flirt_string_length_scan_4e40",
+    "4294987708": "_block_copy_helper.1",
+    "4294992772": "_symbolic SaySDySSypGG",
+    "4294994320": "_$sSo14SMPTETimeFlagsVMB",
+    "4294990448": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAMc",
+    "4294980516": "neural_$s4main22ReleaseModifierMonitorC9pollTimer33_FBBA50E09A10196EED1392F2F03BBA9ELLSo7NSTimerCSgvpfi",
+    "4294994200": "_$sSo15AudioBufferListVMB",
+    "4294988808": "flirt_dyld_stub_binder_trampoline_5408",
+    "4294990128": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC9imaginarySaySfGvpWvd",
+    "4294980584": "_$sSo14AudioTimeStampVMa",
+    "4294988208": "flirt_dyld_stub_binder_trampoline_51b0",
+    "4294989072": "flirt_dyld_stub_binder_trampoline_5510",
+    "4294980332": "flirt_string_length_scan_32ec",
+    "4294986200": "flirt_pthread_mutex_scoped_lock_49d8",
+    "4294989120": "flirt_dyld_stub_binder_trampoline_5540",
+    "4295017472": "@selector(lock)",
+    "4295017624": "@selector(conformsToProtocol:)",
+    "4295018312": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGMd",
+    "4295018200": "_$sSo15AudioBufferListVML",
+    "4294992810": "_symbolic _____ySfG s23_ContiguousArrayStorageC",
+    "4294987956": "flirt_dyld_stub_binder_trampoline_50b4",
+    "4294988436": "flirt_dyld_stub_binder_trampoline_5294",
+    "4294989048": "flirt_dyld_stub_binder_trampoline_54f8",
+    "4294988976": "flirt_dyld_stub_binder_trampoline_54b0",
+    "4294989216": "_objc_msgSend$availableData",
+    "4295017488": "@selector(run)",
+    "4295018232": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWL",
+    "4294980188": "___swift_memcpy40_8",
+    "4294973892": "_$s4main6finishyyF",
+    "4294988652": "flirt_dyld_stub_binder_trampoline_536c",
+    "4294988376": "flirt_dyld_stub_binder_trampoline_5258",
+    "4294988904": "flirt_dyld_stub_binder_trampoline_5468",
+    "4295017456": "@selector(fileHandleWithStandardOutput)",
+    "4295017168": "__OBJC_$_PROTOCOL_REFS_OS_dispatch_source",
+    "4294989664": "_objc_msgSend$writeData:",
+    "4294992208": "_$sSo15AudioBufferListVMn",
+    "4294992674": "_symbolic _____ So15AudioBufferListV",
+    "4294992738": "_symbolic Say_____G 8Dispatch0A13WorkItemFlagsV",
+    "4294985556": "flirt_dyld_stub_binder_trampoline_4754",
+    "4294988508": "flirt_dyld_stub_binder_trampoline_52dc",
+    "4294992340": "_$sSo19AudioTimeStampFlagsVMn",
+    "4295001424": "__swift_FORCE_LOAD_$_swiftIOKit_$_main",
+    "4294987736": "_block_destroy_helper.2",
+    "4294992404": "_$sSo14SMPTETimeFlagsVMn",
+    "4295017504": "@selector(setName:)",
+    "4295018384": "_$sSo19AudioTimeStampFlagsVML",
+    "4294993424": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMF",
+    "4294990352": "_$ss23_ContiguousArrayStorageCySaySfGGMR",
+    "4294987748": "_block_destroy_helper.11",
+    "4294981772": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC07publishD0yyF",
+    "4295017496": "@selector(setMuteBehavior:)",
+    "4295017792": "_$sSo18OS_dispatch_sourceCML",
+    "4295018344": "_$sSaySfGMd",
+    "4294988448": "flirt_dyld_stub_binder_trampoline_52a0",
+    "4294984436": "_$ss22__RawDictionaryStorageC4find_9hashValues10_HashTableV6BucketV6bucket_Sb5foundtx_SitSHRzlFSS_Tg5",
+    "4294992164": "_$sSoMXM",
+    "4294984708": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4295018640": "_$s4main9bandCount029_12232F587A4C5CD8B1EEDF696793E2FCLLSivp.0",
+    "4294992844": "_symbolic _____ s5Int16V",
+    "4294992862": "_symbolic SvSg",
+    "4294986312": "flirt_cxx_exception_landing_pad_4a48",
+    "4294992874": "_symbolic SS",
+    "4294976032": "flirt_objc_retain_release_thunk_2220",
+    "4294985236": "sme_runtime_helper_100004614",
+    "4294987448": "_$sSo11AudioBufferVwet",
+    "4294987752": "_block_destroy_helper.17",
+    "4294987992": "flirt_dyld_stub_binder_trampoline_50d8",
+    "4294989096": "flirt_dyld_stub_binder_trampoline_5528",
+    "4294985328": "___swift_project_boxed_opaque_existential_1",
+    "4294985460": "_$sSS_yptWOc",
+    "4295001448": "__swift_FORCE_LOAD_$_swiftsimd_$_main",
+    "4294990144": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC13channelPowersSaySfGvpWvd",
+    "4295017608": "@selector(isKindOfClass:)",
+    "4294994180": "_$sSo14AudioTimeStampVMB",
+    "4294987560": "___swift_memcpy24_4",
+    "4294985572": "_$s4mainySbcfU0_yyScMYccfU_TA",
+    "4294992536": "_symbolic So17OS_dispatch_queueC",
+    "4295001920": "_block_descriptor.9",
+    "4295018408": "_$sSo13SMPTETimeTypeVML",
+    "4295001256": "_block_descriptor",
+    "4294990344": "_$ss23_ContiguousArrayStorageCySfGMR",
+    "4295001416": "__swift_FORCE_LOAD_$_swiftXPC_$_main",
+    "4294988412": "flirt_dyld_stub_binder_trampoline_527c",
+    "4295017528": "@selector(tryLock)",
+    "4295018632": "_$s4main11sampleCount029_12232F587A4C5CD8B1EEDF696793E2FCLLSivp.0",
+    "4294992756": "_symbolic _____ySDySSypGG s23_ContiguousArrayStorageC",
+    "4295018240": "_$ss18_DictionaryStorageCySSypGMd",
+    "4294987600": "_$sSo14SMPTETimeFlagsVMa",
+    "4294987356": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwst",
+    "4295017576": "@selector(performSelector:)",
+    "4294988592": "flirt_dyld_stub_binder_trampoline_5330",
+    "4294980208": "_$sSo27AudioStreamBasicDescriptionVwet",
+    "4294988088": "flirt_dyld_stub_binder_trampoline_5138",
+    "4294990160": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC15lastPublications6UInt64VvpWvd",
+    "4295017192": "__OBJC_$_PROP_LIST_NSObject",
+    "4294990288": "_$ss18_DictionaryStorageCySSypGMR",
+    "4294992474": "_symbolic _____ s6UInt32V",
+    "4295002792": "__OBJC_LABEL_PROTOCOL_$_OS_dispatch_source_data_add",
+    "4295018648": "_$s4main16minimumFrequency029_12232F587A4C5CD8B1EEDF696793E2FCLLSdvp.0",
+    "4294979996": "_block_destroy_helper",
+    "4294988892": "flirt_dyld_stub_binder_trampoline_545c",
+    "4294992878": "_symbolic _____ s5Int32V",
+    "4294978156": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC4stopyyF",
+    "4295016448": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4295018352": "_$sSo17OS_dispatch_queueC8DispatchE10AttributesVAEs10SetAlgebraACWL",
+    "4295018512": "__OBJC_PROTOCOL_$_NSObject",
+    "4294976684": "flirt_fast_memcpy_vec_24ac",
+    "4294990088": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC13pendingLevelsSaySfGSgvpWvd",
+    "4295018216": "_$ss23_ContiguousArrayStorageCySS_yptGMd",
+    "4294988796": "flirt_dyld_stub_binder_trampoline_53fc",
+    "4294988916": "flirt_dyld_stub_binder_trampoline_5474",
+    "4294978352": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCADycfc",
+    "4295017584": "@selector(performSelector:withObject:)",
+    "4295017616": "@selector(isMemberOfClass:)",
+    "4294988496": "flirt_dyld_stub_binder_trampoline_52d0",
+    "4294988028": "flirt_dyld_stub_binder_trampoline_50fc",
+    "4294985244": "___swift_instantiateConcreteTypeFromMangledNameAbstractV2",
+    "4294990104": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC7samplesSaySaySfGGvpWvd",
+    "4294985652": "flirt_fast_memcpy_vec_47b4",
+    "4294994280": "_$sSo11AudioBufferVMB",
+    "4294990120": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC4realSaySfGvpWvd",
+    "4294988340": "flirt_dyld_stub_binder_trampoline_5234",
+    "4294992560": "_symbolic So27OS_dispatch_source_data_add_p",
+    "4294989012": "flirt_dyld_stub_binder_trampoline_54d4",
+    "4295001376": "__swift_FORCE_LOAD_$_swiftFoundation_$_main",
+    "4295017264": "__OBJC_$_PROTOCOL_METHOD_TYPES_NSObject",
+    "4294992084": "_$s4mainMXM",
+    "4294974924": "_$s4mainySbcfU0_",
+    "4294989472": "_objc_msgSend$setMuteBehavior:",
+    "4295017544": "@selector(writeData:)",
+    "4294974164": "_$s4mainySo12NSFileHandleCcfU_",
+    "4294990136": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC6powersSaySfGvpWvd",
+    "4294980004": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCfD",
+    "4295017688": "@selector(superclass)",
+    "4294987640": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4295018280": "_$ss5Error_pMd",
+    "4294987316": "sme_runtime_helper_100004e34",
+    "4294993784": "_$sSo27AudioStreamBasicDescriptionVMF",
+    "4294987060": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwxx",
+    "4294978336": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAsAEP7_domainSSvgTW",
+    "4294988160": "flirt_dyld_stub_binder_trampoline_5180",
+    "4294989344": "_objc_msgSend$init",
+    "4295018400": "_$sSo14SMPTETimeFlagsVML",
+    "4295002160": "_block_descriptor.28",
+    "4294992468": "_symbolic _____ 4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC",
+    "4295017520": "@selector(setReadabilityHandler:)",
+    "4294992606": "_symbolic SaySfGSg",
+    "4295002592": "_$sSo9SMPTETimeVMf",
+    "4294988520": "flirt_dyld_stub_binder_trampoline_52e8",
+    "4294988844": "flirt_dyld_stub_binder_trampoline_542c",
+    "4295001480": "_$sSo27AudioStreamBasicDescriptionVWV",
+    "4294990320": "_$ss23_ContiguousArrayStorageCySDySSypGGMR",
+    "4294989632": "_objc_msgSend$unlock",
+    "4295001472": "__swift_FORCE_LOAD_$_swiftos_$_main",
+    "4294980184": "___swift_noop_void_return",
+    "4294980408": "_$sSo15AudioBufferListVMa",
+    "4294988100": "flirt_dyld_stub_binder_trampoline_5144",
+    "4294988232": "flirt_dyld_stub_binder_trampoline_51c8",
+    "4295001408": "__swift_FORCE_LOAD_$_swiftDispatch_$_main",
+    "4294988616": "flirt_dyld_stub_binder_trampoline_5348",
+    "4294990152": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC6filledSivpWvd",
+    "4295018664": "_$s4main10outputLock029_12232F587A4C5CD8B1EEDF696793E2FCLLSo6NSLockCvp",
+    "4294988004": "flirt_dyld_stub_binder_trampoline_50e4",
+    "4295017672": "@selector(zone)",
+    "4294987980": "flirt_dyld_stub_binder_trampoline_50cc",
+    "4294989132": "flirt_dyld_stub_binder_trampoline_554c",
+    "4294990096": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC3ffts13OpaquePointerVvpWvd",
+    "4294990072": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC12outputSourceSo27OS_dispatch_source_data_add_pvpWvd",
+    "4294990296": "_$sSS_yptMR",
+    "4294989936": "__OBJC_$_PROTOCOL_INSTANCE_METHODS_OPT_NSObject",
+    "4295017632": "@selector(respondsToSelector:)",
+    "4295017696": "@selector(description)",
+    "4294988712": "flirt_dyld_stub_binder_trampoline_53a8",
+    "4294987580": "_$sSo9SMPTETimeVMa",
+    "4295018096": "__OBJC_PROTOCOL_$_OS_dispatch_source_data_add",
+    "4294986264": "flirt_security_audit_command_exec_4a18",
+    "4294988760": "flirt_dyld_stub_binder_trampoline_53d8",
+    "4294989280": "_objc_msgSend$fileHandleWithStandardInput",
+    "4294990080": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC17pendingOutputLockSo6NSLockCvpWvd",
+    "4294994112": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVMF",
+    "4294988964": "flirt_dyld_stub_binder_trampoline_54a4",
+    "4294992616": "_symbolic _____ s13OpaquePointerV",
+    "4294989248": "_objc_msgSend$dataWithJSONObject:options:error:",
+    "4294984032": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSaySfG_Tg5",
+    "4294988604": "flirt_dyld_stub_binder_trampoline_533c",
+    "4294988064": "flirt_dyld_stub_binder_trampoline_5120",
+    "4294990360": "_$sSaySfGMR",
+    "4295018192": "_$sSo27AudioStreamBasicDescriptionVML",
+    "4294987772": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwcp",
+    "4295017648": "@selector(release)",
+    "4294987768": "_$sSo9SMPTETimeVwet",
+    "4294967296": "__mh_execute_header",
+    "4294986348": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC5startyyKFySPySo0C9TimeStampVG_SPySo0C10BufferListVGAHSpyAJGAHtcfU_TA",
+    "4294987812": "flirt_dyld_stub_binder_trampoline_5024",
+    "4294989440": "_objc_msgSend$run",
+    "4294986744": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCADycfcyycfU_TA",
+    "4294987756": "_block_destroy_helper.20",
+    "4294986508": "_$sSTsSL7ElementRpzrlE3maxABSgyFs10ArraySliceVySfG_Tg5Tf4x_n",
+    "4294988220": "flirt_dyld_stub_binder_trampoline_51bc",
+    "4294975468": "_$s4main4emit029_12232F587A4C5CD8B1EEDF696793D2FCLLyySDySSypGF"
+  },
+  "comments": {
+    "4294985968": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294975912": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988148": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294979720": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCADycfcyycfU_TA",
+    "4294983224": "_$s4main16maximumFrequency029_12232F587A4C5CD8B1EEDF696793E2FCLLSdvp.0",
+    "4294987616": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294976288": "objc_msgSend -> -[self setPrivate:] // [SME:OBJC-DISPATCH]",
+    "4294987016": "_$s4main4emit029_12232F587A4C5CD8B1EEDF696793D2FCLLyySDySSypGF",
+    "4294985460": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294977268": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294988664": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978748": "_$sSaySo17OS_dispatch_queueC8DispatchE10AttributesVGMd",
+    "4294980308": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294988544": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978352": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294988964": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987860": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987724": "_block_copy_helper",
+    "4294979192": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987740": "_block_destroy_helper",
+    "4294974044": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm",
+    "4294986396": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294987660": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 96% confidence",
+    "4294984812": "_$ss23_ContiguousArrayStorageCySfGMd",
+    "4294975284": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294982052": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294985896": "_$ss5Error_pMd",
+    "4294987688": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294973860": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294989476": "@selector(setMuteBehavior:)",
+    "4294987328": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294986488": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294988232": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989536": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294987836": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975756": "_$ss15CollectionOfOneVys5UInt8VGMR",
+    "4294979232": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985484": "_$sSS_yptMd",
+    "4294989444": "@selector(run)",
+    "4294985652": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294975304": "_$sSay8Dispatch0A13WorkItemFlagsVGSayxGSTsWL",
+    "4294981592": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC07publishD0yyF",
+    "4294987580": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294987480": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 99% confidence",
+    "4294987624": "_$sSo13SMPTETimeTypeVML",
+    "4294989084": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294977728": "_block_descriptor.18",
+    "4294980836": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294976684": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294986188": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294985912": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294989284": "@selector(fileHandleWithStandardInput)",
+    "4294973924": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294988424": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294976164": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294986644": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987920": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980412": "_$sSo15AudioBufferListVML",
+    "4294986200": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294988712": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974100": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985980": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294972988": "_$sSo18OS_dispatch_sourceP8DispatchE15setEventHandler3qos5flags7handleryAC0D3QoSV_AC0D13WorkItemFlagsVyyXBSgtFfA0_",
+    "4294977576": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4294975936": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294976700": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294975296": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294972692": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294980240": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 99% confidence",
+    "4294978732": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm",
+    "4294973136": "_$s4main7signalsSaySo25OS_dispatch_source_signal_pGvp",
+    "4294973368": "_$s4mainySbcfU0_",
+    "4294989060": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980004": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 99% confidence",
+    "4294985336": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294988100": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974568": "_block_descriptor.21",
+    "4294975796": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979080": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979764": "_block_descriptor.28",
+    "4294986264": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 97% confidence",
+    "4294985908": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294977036": "_$ss23_ContiguousArrayStorageCySDySSypGGMd",
+    "4294988616": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294976036": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294980584": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294988412": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294972432": "_$sSo17OS_dispatch_queueCML",
+    "4294976540": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4294979324": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986676": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294988052": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989248": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294988448": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294981076": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294988796": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975868": "___swift_destroy_boxed_opaque_existential_1",
+    "4294977064": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987720": "_block_copy_helper",
+    "4294979224": "_$sSaySfGMR",
+    "4294973652": "_$ss23_ContiguousArrayStorageCySS_yptGMR",
+    "4294984844": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987744": "_block_destroy_helper",
+    "4294989120": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294979024": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294984436": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294973836": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979604": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987736": "_block_destroy_helper",
+    "4294986312": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294989024": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294985956": "_$ss23_ContiguousArrayStorageCySS_yptGMd",
+    "4294972420": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294986816": "objc_msgSend -> -[self unlock] // [SME:OBJC-DISPATCH]",
+    "4294988580": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975060": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294973320": "\"TCCAccessRequest\"",
+    "4294978908": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294982800": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294977048": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294988088": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980024": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC4stopyyF",
+    "4294988352": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987556": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294983768": "objc_msgSend -> -[self tryLock] // [SME:OBJC-DISPATCH]",
+    "4294972936": "_block_descriptor.3",
+    "4294976372": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4294987968": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989412": "@selector(mainRunLoop)",
+    "4294978716": "_$sSo17OS_dispatch_queueC8DispatchE10AttributesVAEs10SetAlgebraACWL",
+    "4294975192": "_block_descriptor.12",
+    "4294973912": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC4stopyyF",
+    "4294987372": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 98% confidence",
+    "4294977684": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC5startyyKFySPySo0C9TimeStampVG_SPySo0C10BufferListVGAHSpyAJGAHtcfU_TA",
+    "4294974560": "_$sIeg_IeyB_TR",
+    "4294974892": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294976896": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294988076": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980892": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm",
+    "4294975280": "_$sSay8Dispatch0A13WorkItemFlagsVGMR",
+    "4294978680": "\"com.openai.codex.system-audio-spectrum\"",
+    "4294984264": "_$sSaySfGMd",
+    "4294984276": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294984708": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294988724": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989312": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294981532": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSf_Tg5",
+    "4294979872": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294986456": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGMd",
+    "4294975900": "objc_msgSend -> -[self fileHandleWithStandardOutput] // [SME:OBJC-DISPATCH]",
+    "4294987800": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986468": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294988160": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978804": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWlTm",
+    "4294987956": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978648": "_$sSo17OS_dispatch_queueCML",
+    "4294981872": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294988652": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294979856": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294979280": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294972368": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCADycfc",
+    "4294978604": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294988208": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978420": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294981940": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294973892": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294975416": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294986516": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294983792": "objc_msgSend -> -[self unlock] // [SME:OBJC-DISPATCH]",
+    "4294987404": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294977220": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987980": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987992": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989216": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294973396": "_$sSbIegy_SbIeyBy_TR",
+    "4294988760": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294973844": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294974108": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWlTm",
+    "4294987224": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294975272": "_$sSay8Dispatch0A13WorkItemFlagsVGMd",
+    "4294980296": "_$sSo27AudioStreamBasicDescriptionVML",
+    "4294978784": "_$sSaySo17OS_dispatch_queueC8DispatchE10AttributesVGSayxGSTsWL",
+    "4294982420": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294985620": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC5startyyKF",
+    "4294986276": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVs5ErrorAAMc",
+    "4294986296": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWL",
+    "4294987584": "_$sSo9SMPTETimeVML",
+    "4294978156": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294988244": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987056": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwCPTm",
+    "4294986872": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979468": "_$sSaySfGMR",
+    "4294972944": "_$sIeg_IeyB_TR",
+    "4294987760": "_block_destroy_helper",
+    "4294973224": "_$sSo12NSFileHandleCIeghg_ABIeyBhy_TR",
+    "4294988268": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980876": "_$s9CoreAudio013UnsafeMutableB17BufferListPointerVACSlAAWL",
+    "4294974412": "_$s10Foundation4DataV15_RepresentationOWOe",
+    "4294987060": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294988376": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987756": "_block_destroy_helper",
+    "4294978480": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294980996": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294979360": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294977112": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294989380": "@selector(lock)",
+    "4294975968": "objc_msgSend -> -[self unlock] // [SME:OBJC-DISPATCH]",
+    "4294974660": "_$sSay8Dispatch0A13WorkItemFlagsVGMR",
+    "4294980492": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294973500": "objc_msgSend -> -[self run] // [SME:OBJC-DISPATCH]",
+    "4294979068": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294984640": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294987716": "_block_copy_helper",
+    "4294986472": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294977144": "objc_msgSend -> -[self UUID] // [SME:OBJC-DISPATCH]",
+    "4294988004": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986464": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGMR",
+    "4294980944": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294988892": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294972636": "_$sSo18OS_dispatch_sourceP8DispatchE15setEventHandler3qos5flags7handleryAC0D3QoSV_AC0D13WorkItemFlagsVyyXBSgtFfA0_",
+    "4294981036": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294972348": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLCMa",
+    "4294972728": "_$s4main7signalsSaySo25OS_dispatch_source_signal_pGvp",
+    "4294988748": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989036": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987356": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294972740": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294977288": "_$sSS_yptMd",
+    "4294987884": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974056": "_$sSay8Dispatch0A13WorkItemFlagsVGMd",
+    "4294985404": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294975884": "objc_msgSend -> -[self lock] // [SME:OBJC-DISPATCH]",
+    "4294984164": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986804": "objc_msgSend -> -[self lock] // [SME:OBJC-DISPATCH]",
+    "4294976184": "_$sSo16CATapDescriptionCML",
+    "4294987448": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294988508": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989600": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294973668": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986988": "_$sSS_yptMR",
+    "4294983496": "_$sSTsSL7ElementRpzrlE3maxABSgyFs10ArraySliceVySfG_Tg5Tf4x_n",
+    "4294989252": "@selector(dataWithJSONObject:options:error:)",
+    "4294973276": "objc_msgSend -> -[self setReadabilityHandler:] // [SME:OBJC-DISPATCH]",
+    "4294972716": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294980472": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294989664": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294980748": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294977156": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979216": "_$sSaySfGMd",
+    "4294985840": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294989604": "@selector(tryLock)",
+    "4294973948": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294989632": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294977364": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294983972": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294973552": "[FLIRT] memmove_overlap_safe (libsystem_platform.dylib) — 99% confidence",
+    "4294973452": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294986792": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294984132": "_$ss23_ContiguousArrayStorageCySaySfGGMd",
+    "4294980408": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 99% confidence",
+    "4294983744": "_$ss15ContiguousArrayV16_createNewBuffer14bufferIsUnique15minimumCapacity13growForAppendySb_SiSbtFSf_Tg5",
+    "4294984652": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294986348": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294985612": "_$s4main8spectrum029_12232F587A4C5CD8B1EEDF696793D2FCLLAA19SystemAudioSpectrumACLLCvp",
+    "4294973300": "\"/System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC\"",
+    "4294983152": "_$ss15ContiguousArrayV16_createNewBuffer14bufferIsUnique15minimumCapacity13growForAppendySb_SiSbtFSf_Tg5",
+    "4294985844": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979996": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294976032": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 78% confidence",
+    "4294983216": "_$s4main16minimumFrequency029_12232F587A4C5CD8B1EEDF696793E2FCLLSdvp.0",
+    "4294974232": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294978936": "_$sSo18OS_dispatch_sourceCML",
+    "4294985036": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985008": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294974636": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294974924": "[FLIRT] swift_bridge_object_retain (libswiftCore.dylib) — 99% confidence",
+    "4294988688": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294972764": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294984608": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294977044": "_$ss23_ContiguousArrayStorageCySDySSypGGMR",
+    "4294988184": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294985096": "_$ss22__RawDictionaryStorageC4findys10_HashTableV6BucketV6bucket_Sb5foundtxSHRzlFSS_Tg5",
+    "4294984740": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294983024": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSf_Tg5",
+    "4294984336": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 99% confidence",
+    "4294985260": "[FLIRT] swift_bridge_object_retain (libswiftCore.dylib) — 99% confidence",
+    "4294985556": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 92% confidence",
+    "4294989504": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294981772": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294974164": "[FLIRT] memmove_overlap_safe (libsystem_platform.dylib) — 99% confidence",
+    "4294973272": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988832": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974080": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294978664": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294975932": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987728": "_block_copy_helper",
+    "4294984008": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294988496": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974088": "_$sSay8Dispatch0A13WorkItemFlagsVGSayxGSTsWL",
+    "4294985572": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294987544": "_$sSo19AudioTimeStampFlagsVML",
+    "4294989220": "@selector(availableData)",
+    "4294989344": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294975944": "objc_msgSend -> -[self writeData:] // [SME:OBJC-DISPATCH]",
+    "4294988460": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988124": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989048": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987748": "_block_destroy_helper",
+    "4294975804": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWlTm",
+    "4294985248": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294987536": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294973052": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294978796": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294973908": "_$s4main8spectrum029_12232F587A4C5CD8B1EEDF696793D2FCLLAA19SystemAudioSpectrumACLLCvp",
+    "4294974316": "objc_msgSend -> -[self availableData] // [SME:OBJC-DISPATCH]",
+    "4294984280": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979600": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294986132": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294976368": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294986256": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294978768": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294979472": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294989072": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294985964": "_$ss23_ContiguousArrayStorageCySS_yptGMR",
+    "4294980588": "_$sSo14AudioTimeStampVML",
+    "4294987752": "_block_destroy_helper",
+    "4294989012": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975324": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWlTm",
+    "4294986932": "_$sSaySfGMd",
+    "4294975432": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294973404": "_block_descriptor.9",
+    "4294974380": "_$s10Foundation4DataV15_RepresentationOWOe",
+    "4294989184": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294988388": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988952": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294977360": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294984672": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294975748": "_$ss15CollectionOfOneVys5UInt8VGMd",
+    "4294983904": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 78% confidence",
+    "4294980744": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294974664": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986828": "_$ss23_ContiguousArrayStorageCySS_yptGMd",
+    "4294985032": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294981316": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987772": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVwCP",
+    "4294980740": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGMR",
+    "4294987648": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294988064": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988904": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989280": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294982628": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985664": "_$ss23_ContiguousArrayStorageCySS_yptGMR",
+    "4294980424": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294976268": "objc_msgSend -> -[self setName:] // [SME:OBJC-DISPATCH]",
+    "4294984944": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294988604": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986944": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294987708": "_block_copy_helper",
+    "4294977340": "_$sSaySDySSypGGMR",
+    "4294988868": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294973176": "objc_msgSend -> -[self fileHandleWithStandardInput] // [SME:OBJC-DISPATCH]",
+    "4294981928": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294989472": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294988112": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294973840": "_$s4main4emit029_12232F587A4C5CD8B1EEDF696793D2FCLLyySDySSypGF",
+    "4294974488": "_$sSo17OS_dispatch_queueCML",
+    "4294988172": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988940": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988736": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989440": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294976740": "_$ss23_ContiguousArrayStorageCySS_yptGMd",
+    "4294988916": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974700": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294977492": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4294973464": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988820": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989376": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294974460": "_$s10Foundation4DataV15_RepresentationOWOe",
+    "4294986696": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294972592": "_block_descriptor",
+    "4294974064": "_$sSay8Dispatch0A13WorkItemFlagsVGMR",
+    "4294977092": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985492": "_$sSS_yptMR",
+    "4294987824": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294977720": "_$sSPySo14AudioTimeStampVGSPySo0A10BufferListVGACSpyAEGACIegyyyyy_AcfcgCIeyByyyyy_TR",
+    "4294987600": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294984488": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294978772": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988436": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294976228": "\"Codex system audio visualizer\"",
+    "4294974848": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294974112": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294976200": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294972788": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294989188": "@selector(UUID)",
+    "4294981660": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294986744": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294973872": "ClassRef: _TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294981740": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987788": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974680": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294976768": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988532": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987524": "_$sSo11AudioBufferVML",
+    "4294985376": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294978952": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294980208": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294973440": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294973340": "\"kTCCServiceAudioCapture\"",
+    "4294979756": "_$sIeg_IeyB_TR",
+    "4294978808": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294974672": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294978736": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988028": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294984820": "_$ss23_ContiguousArrayStorageCySfGMR",
+    "4294987604": "_$sSo14SMPTETimeFlagsVML",
+    "4294981160": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294978756": "_$sSaySo17OS_dispatch_queueC8DispatchE10AttributesVGMR",
+    "4294976128": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294979460": "_$sSaySfGMd",
+    "4294987068": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294985520": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987520": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294978876": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294975104": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294973656": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294977272": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988808": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987812": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987908": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975620": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294989144": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974612": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWL",
+    "4294975768": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294986852": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988484": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975948": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294981556": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGWOh",
+    "4294986980": "_$sSS_yptMd",
+    "4294989540": "@selector(setPrivate:)",
+    "4294985940": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294988364": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294987596": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294985904": "_$ss5Error_pMR",
+    "4294981128": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294985604": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294987120": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294980188": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294976300": "objc_msgSend -> -[self setMuteBehavior:] // [SME:OBJC-DISPATCH]",
+    "4294975588": "objc_msgSend -> -[self dataWithJSONObject:options:error:] // [SME:OBJC-DISPATCH]",
+    "4294988280": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975980": "_$s10Foundation4DataV15_RepresentationOWOe",
+    "4294976748": "_$ss23_ContiguousArrayStorageCySS_yptGMR",
+    "4294986408": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC7consumeyySPySo0C10BufferListVGF",
+    "4294972900": "_$s4main6finishyyF",
+    "4294983208": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986528": "[FLIRT] matrix_nested_solver_kernel (Accelerate.framework (BLAS)) — 97% confidence",
+    "4294975260": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm",
+    "4294975828": "___swift_project_boxed_opaque_existential_1",
+    "4294973968": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294972772": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294984824": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294977468": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294980684": "[FLIRT] memmove_overlap_safe (libsystem_platform.dylib) — 99% confidence",
+    "4294972404": "_$sSo18OS_dispatch_sourceCML",
+    "4294985020": "_$ss18_DictionaryStorageCySSypGMd",
+    "4294974288": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294984976": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294988976": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974032": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWL",
+    "4294987776": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294972796": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986836": "_$ss23_ContiguousArrayStorageCySS_yptGMR",
+    "4294989572": "@selector(setReadabilityHandler:)",
+    "4294973068": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987540": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294980600": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294989508": "@selector(setName:)",
+    "4294974796": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294978548": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294974712": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294973036": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294989132": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988472": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294973760": "\"permission-unavailable\"",
+    "4294977820": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4294972384": "_$s4main7signalsSaySo25OS_dispatch_source_signal_pGvp",
+    "4294985668": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294984060": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294989316": "@selector(fileHandleWithStandardOutput)",
+    "4294980776": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294972584": "_$sIeg_IeyB_TR",
+    "4294986436": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294975088": "_$sSo17OS_dispatch_queueCML",
+    "4294978124": "_$s4main4emit029_12232F587A4C5CD8B1EEDF696793D2FCLLyySDySSypGF",
+    "4294986964": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294972188": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987384": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294988520": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978088": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294988256": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989636": "@selector(unlock)",
+    "4294987712": "_block_copy_helper",
+    "4294988400": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975148": "_$s4mainySbcfU0_yyScMYccfU_TA",
+    "4294987896": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294977344": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294985048": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987620": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294988988": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986940": "_$sSaySfGMR",
+    "4294974068": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985080": "_$sSS_yptWOc",
+    "4294972540": "_$s4main6finishyyF",
+    "4294988220": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989408": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294975264": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294978912": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985028": "_$ss18_DictionaryStorageCySSypGMR",
+    "4294976788": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987932": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980980": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294986172": "_$s4main19SystemAudioSpectrum029_12232F587A4C5CD8B1EEDF696793F2FCLLC4stopyyF",
+    "4294980636": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294978964": "\"com.openai.codex.system-audio-spectrum.output\"",
+    "4294986712": "___swift_instantiateConcreteTypeFromMangledNameAbstractV2",
+    "4294984032": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294974688": "_$sSay8Dispatch0A13WorkItemFlagsVGSayxGSTsWL",
+    "4294976752": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294977564": "\"unsupported-format\"",
+    "4294980440": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294984144": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294986128": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294986148": "_$s4main4emit029_12232F587A4C5CD8B1EEDF696793D2FCLLyySDySSypGF",
+    "4294988844": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986612": "[FLIRT] pthread_mutex_scoped_lock (libsystem_pthread.dylib) — 98% confidence",
+    "4294974632": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm",
+    "4294986996": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979108": "objc_msgSend -> -[self init] // [SME:OBJC-DISPATCH]",
+    "4294988856": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974364": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294975292": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294982968": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294985500": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979144": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294984272": "_$sSaySfGMR",
+    "4294988040": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988676": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294978864": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985680": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294977496": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294975004": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294987848": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294985860": "_$s4main4emit029_12232F587A4C5CD8B1EEDF696793D2FCLLyySDySSypGF",
+    "4294973644": "_$ss23_ContiguousArrayStorageCySS_yptGMd",
+    "4294977424": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294981508": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSaySfG_Tg5",
+    "4294974644": "_$sSay8Dispatch0A13WorkItemFlagsVGMd",
+    "4294986252": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWL",
+    "4294973232": "_block_descriptor.6",
+    "4294987400": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 99% confidence",
+    "4294986840": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294973100": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985540": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294974472": "objc_msgSend -> -[self setReadabilityHandler:] // [SME:OBJC-DISPATCH]",
+    "4294978196": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294989000": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975184": "_$sIeg_IeyB_TR",
+    "4294977296": "_$sSS_yptMR",
+    "4294984432": "_$ss22__RawDictionaryStorageC4find_9hashValues10_HashTableV6BucketV6bucket_Sb5foundtx_SitSHRzlFSS_Tg5",
+    "4294974048": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985152": "_$sypWOb",
+    "4294977300": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294988628": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294979676": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294972120": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 99% confidence",
+    "4294987732": "_block_copy_helper",
+    "4294972244": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294974524": "_$s4main6finishyyF",
+    "4294975244": "_$s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWL",
+    "4294980524": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 99% confidence",
+    "4294987284": "[FLIRT] matrix_nested_solver_kernel (Accelerate.framework (BLAS)) — 95% confidence",
+    "4294987944": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988136": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989568": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 99% confidence",
+    "4294974076": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294974708": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWlTm",
+    "4294984692": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSf_Tg5Tm",
+    "4294988556": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294980292": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294987872": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986632": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294973824": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294988196": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294986960": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294973484": "objc_msgSend -> -[self mainRunLoop] // [SME:OBJC-DISPATCH]",
+    "4294980364": "[FLIRT] byte_memset_loop (libsystem_c.dylib) — 99% confidence",
+    "4294975784": "_$ss15CollectionOfOneVys5UInt8VGAByxG10Foundation15ContiguousBytesAgDRszlWL",
+    "4294977908": "_$s4main14CaptureFailure029_12232F587A4C5CD8B1EEDF696793E2FCLLVADs5ErrorAAWl",
+    "4294983004": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSf_Tg5",
+    "4294979476": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294973280": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294989348": "@selector(init)",
+    "4294989096": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975328": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294980604": "[FLIRT] swift_bridge_object_retain (libswiftCore.dylib) — 99% confidence",
+    "4294988928": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294973608": "_$s4main7signalsSaySo25OS_dispatch_source_signal_pGvp",
+    "4294975316": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294972336": "objc_msgSend -> -[self init] // [SME:OBJC-DISPATCH]",
+    "4294977304": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294980800": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987332": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294988592": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988700": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974504": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294973820": "_$sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_ypTt0g5Tf4g_n",
+    "4294980332": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294974432": "_$s10Foundation4DataV15_RepresentationOWOe",
+    "4294989668": "@selector(writeData:)",
+    "4294980732": "_$ss16IndexingIteratorVy9CoreAudio013UnsafeMutableD17BufferListPointerVGMd",
+    "4294973564": "_$s4main7signalsSaySo25OS_dispatch_source_signal_pGvp",
+    "4294979432": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294975760": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294985364": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 98% confidence",
+    "4294988016": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294989108": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294975468": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294978760": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294982984": "_$ss12_ArrayBufferV20_consumeAndCreateNewAByxGyFSaySfG_Tg5",
+    "4294984668": "_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSaySfG_Tg5",
+    "4294986992": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294972448": "_$sSo18OS_dispatch_sourceCMaTm",
+    "4294988340": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294977332": "_$sSaySDySSypGGMd",
+    "4294979228": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294988640": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294988568": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294974812": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294979812": "_$sSo18OS_dispatch_sourceP8DispatchE15setEventHandler3qos5flags7handleryAC0D3QoSV_AC0D13WorkItemFlagsVyyXBSgtFfA0_",
+    "4294985496": "___swift_instantiateConcreteTypeFromMangledNameV2",
+    "4294973196": "_$s4mainySo12NSFileHandleCcfU_",
+    "4294979396": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294987636": "_$sSo27AudioStreamBasicDescriptionVMaTm",
+    "4294984140": "_$ss23_ContiguousArrayStorageCySaySfGGMR",
+    "4294980896": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+    "4294979976": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 96% confidence",
+    "4294975876": "_$s4main10outputLock029_12232F587A4C5CD8B1EEDF696793E2FCLLSo6NSLockCvp",
+    "4294985396": "[FLIRT] objc_retain_release_thunk (libobjc.A.dylib) — 98% confidence",
+    "4294988880": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294985656": "_$ss23_ContiguousArrayStorageCySS_yptGMd",
+    "4294973092": "__METACLASS_DATA__TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum"
+  },
+  "custom_structs": [
+    {
+      "name": "AutoStruct____swift_destroy_boxed_opaque_existential_1_100004694",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct____swift_memcpy20_8_100004dc4",
+      "size": 20,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct____swift_memcpy24_4_100004f28",
+      "size": 24,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct____swift_memcpy24_8_1000032d8",
+      "size": 24,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct____swift_memcpy40_8_10000325c",
+      "size": 40,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct____swift_memcpy64_8_100003378",
+      "size": 40,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct__main_1000012d8",
+      "size": 8,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_byte_memset_loop_4e6c_100004e6c",
+      "size": 21,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 20,
+          "name": "field_14_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_byte_memset_loop_4e88_100004e88",
+      "size": 21,
+      "fields": [
+        {
+          "offset": 8,
+          "name": "field_08_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 20,
+          "name": "field_14_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_fast_memcpy_vec_24ac_1000024ac",
+      "size": 128,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 40,
+          "name": "field_28_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 48,
+          "name": "field_30_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 56,
+          "name": "field_38_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 72,
+          "name": "field_48_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 96,
+          "name": "field_60_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_fast_memcpy_vec_35d4_1000035d4",
+      "size": 168,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 112,
+          "name": "field_70_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 160,
+          "name": "field_a0_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_fast_memcpy_vec_47b4_1000047b4",
+      "size": 176,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 48,
+          "name": "field_30_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 72,
+          "name": "field_48_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 104,
+          "name": "field_68_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 136,
+          "name": "field_88_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 144,
+          "name": "field_90_rw",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 168,
+          "name": "field_a8_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_memmove_overlap_safe_1870_100001870",
+      "size": 176,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 48,
+          "name": "field_30_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 72,
+          "name": "field_48_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 104,
+          "name": "field_68_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 136,
+          "name": "field_88_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 168,
+          "name": "field_a8_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_string_length_scan_32ec_1000032ec",
+      "size": 25,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_flirt_string_length_scan_4e40_100004e40",
+      "size": 21,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 20,
+          "name": "field_14_ro",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioBufferList_10000330c",
+      "size": 25,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 8,
+          "name": "field_08_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioBuffer_100004eb8",
+      "size": 17,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioBuffer_100004ed8",
+      "size": 17,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioStreamBasicDescription_100003270",
+      "size": 41,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 40,
+          "name": "field_28_ro",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioStreamBasicDescription_100003290",
+      "size": 41,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 8,
+          "name": "field_08_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 40,
+          "name": "field_28_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioTimeStamp_10000338c",
+      "size": 65,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 64,
+          "name": "field_40_ro",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftAudioTimeStamp_1000033ac",
+      "size": 65,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 8,
+          "name": "field_08_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 40,
+          "name": "field_28_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 56,
+          "name": "field_38_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 64,
+          "name": "field_40_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swift_ArrayBuffer_consumeAndCreateNewbufferIsUniqueminimumCapacitygrowForAppend_100004160",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swift_ArrayBuffer_consumeAndCreateNewbufferIsUniqueminimumCapacitygrowForAppend_100004404",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swift__RawDictionaryStoragefindhashValue_HashTableBucketbucketfound_1000042f4",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 32,
+          "name": "field_20_ro",
+          "field_type": "uint8_t"
+        },
+        {
+          "offset": 48,
+          "name": "field_30_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftdictionaryLiteral_100004510",
+      "size": 728,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 48,
+          "name": "field_30_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 56,
+          "name": "field_38_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 720,
+          "name": "field_2d0_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainCaptureFailure_12232F587A4C5CD8B1EEDF696793FC_100004d3c",
+      "size": 20,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainCaptureFailure_12232F587A4C5CD8B1EEDF696793FC_100004d70",
+      "size": 20,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 8,
+          "name": "field_08_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainCaptureFailure_12232F587A4C5CD8B1EEDF696793FC_100004dd8",
+      "size": 20,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 8,
+          "name": "field_08_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainSystemAudioSpectrum_12232F587A4C5CD8B1EEDF696793FC_100002b30",
+      "size": 496,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 64,
+          "name": "field_40_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 72,
+          "name": "field_48_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 80,
+          "name": "field_50_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 104,
+          "name": "field_68_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 112,
+          "name": "field_70_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 152,
+          "name": "field_98_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 160,
+          "name": "field_a0_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 488,
+          "name": "field_1e8_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainSystemAudioSpectrum_12232F587A4C5CD8B1EEDF696793FC_1000031a4",
+      "size": 160,
+      "fields": [
+        {
+          "offset": 72,
+          "name": "field_48_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 80,
+          "name": "field_50_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 96,
+          "name": "field_60_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 104,
+          "name": "field_68_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 112,
+          "name": "field_70_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 128,
+          "name": "field_80_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 136,
+          "name": "field_88_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 144,
+          "name": "field_90_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 152,
+          "name": "field_98_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainSystemAudioSpectrum_12232F587A4C5CD8B1EEDF696793FC_100004bf8",
+      "size": 128,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 40,
+          "name": "field_28_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 56,
+          "name": "field_38_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 72,
+          "name": "field_48_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 96,
+          "name": "field_60_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainSystemAudioSpectrum_12232F587A4C5CD8B1EEDF696793FCpublish_10000388c",
+      "size": 776,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 80,
+          "name": "field_50_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 96,
+          "name": "field_60_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 104,
+          "name": "field_68_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 112,
+          "name": "field_70_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 120,
+          "name": "field_78_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 128,
+          "name": "field_80_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 136,
+          "name": "field_88_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 144,
+          "name": "field_90_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 152,
+          "name": "field_98_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 168,
+          "name": "field_a8_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 712,
+          "name": "field_2c8_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 768,
+          "name": "field_300_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainSystemAudioSpectrum_12232F587A4C5CD8B1EEDF696793FCstart_100002224",
+      "size": 720,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 48,
+          "name": "field_30_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 56,
+          "name": "field_38_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 64,
+          "name": "field_40_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 76,
+          "name": "field_4c_rw",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 80,
+          "name": "field_50_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 88,
+          "name": "field_58_rw",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 712,
+          "name": "field_2c8_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainSystemAudioSpectrum_12232F587A4C5CD8B1EEDF696793FCstop_100002a6c",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "field_10_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 20,
+          "name": "field_14_ro",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmain_100001dcc",
+      "size": 17,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint8_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct_swiftmainemit_12232F587A4C5CD8B1EEDF696793FC_100001fec",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint8_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "UltronContext",
+      "size": 64,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "isa_vtable",
+          "field_type": "void *"
+        },
+        {
+          "offset": 8,
+          "name": "session_flags",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "target_buffer",
+          "field_type": "char *"
+        },
+        {
+          "offset": 24,
+          "name": "payload_length",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 32,
+          "name": "crypto_nonce",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_0",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_1",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_2",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_3",
+      "size": 72,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        },
+        {
+          "offset": 32,
+          "name": "vfunc_2",
+          "field_type": "void *"
+        },
+        {
+          "offset": 40,
+          "name": "vfunc_3",
+          "field_type": "void *"
+        },
+        {
+          "offset": 48,
+          "name": "vfunc_4",
+          "field_type": "void *"
+        },
+        {
+          "offset": 56,
+          "name": "vfunc_5",
+          "field_type": "void *"
+        },
+        {
+          "offset": 64,
+          "name": "vfunc_6",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_4",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_5",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_6",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_7",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_8",
+      "size": 32,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PolymorphicClass_9",
+      "size": 72,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "vfunc_0",
+          "field_type": "void *"
+        },
+        {
+          "offset": 24,
+          "name": "vfunc_1",
+          "field_type": "void *"
+        },
+        {
+          "offset": 32,
+          "name": "vfunc_2",
+          "field_type": "void *"
+        },
+        {
+          "offset": 40,
+          "name": "vfunc_3",
+          "field_type": "void *"
+        },
+        {
+          "offset": 48,
+          "name": "vfunc_4",
+          "field_type": "void *"
+        },
+        {
+          "offset": 56,
+          "name": "vfunc_5",
+          "field_type": "void *"
+        },
+        {
+          "offset": 64,
+          "name": "vfunc_6",
+          "field_type": "void *"
+        }
+      ]
+    },
+    {
+      "name": "_TtC4mainP33_12232F587A4C5CD8B1EEDF696793A4FC19SystemAudioSpectrum",
+      "size": 176,
+      "fields": [
+        {
+          "offset": 16,
+          "name": "tap",
+          "field_type": "id"
+        },
+        {
+          "offset": 20,
+          "name": "device",
+          "field_type": "id"
+        },
+        {
+          "offset": 24,
+          "name": "callback",
+          "field_type": "id"
+        },
+        {
+          "offset": 32,
+          "name": "format",
+          "field_type": "id"
+        },
+        {
+          "offset": 72,
+          "name": "queue",
+          "field_type": "id"
+        },
+        {
+          "offset": 80,
+          "name": "outputSource",
+          "field_type": "id"
+        },
+        {
+          "offset": 88,
+          "name": "pendingOutputLock",
+          "field_type": "id"
+        },
+        {
+          "offset": 96,
+          "name": "pendingLevels",
+          "field_type": "id"
+        },
+        {
+          "offset": 104,
+          "name": "fft",
+          "field_type": "id"
+        },
+        {
+          "offset": 112,
+          "name": "samples",
+          "field_type": "id"
+        },
+        {
+          "offset": 120,
+          "name": "window",
+          "field_type": "id"
+        },
+        {
+          "offset": 128,
+          "name": "real",
+          "field_type": "id"
+        },
+        {
+          "offset": 136,
+          "name": "imaginary",
+          "field_type": "id"
+        },
+        {
+          "offset": 144,
+          "name": "powers",
+          "field_type": "id"
+        },
+        {
+          "offset": 152,
+          "name": "channelPowers",
+          "field_type": "id"
+        },
+        {
+          "offset": 160,
+          "name": "filled",
+          "field_type": "id"
+        },
+        {
+          "offset": 168,
+          "name": "lastPublication",
+          "field_type": "id"
+        }
+      ]
+    }
+  ],
+  "breakpoints": []
+}

@@ -34,7 +34,7 @@
   0x100000a70:  a8831ff8       stur     x8, [x29, #-8]
   0x100000a74:  df010094       bl       #0x1000011f0
   0x100000a78:  a8835ff8       ldur     x8, [x29, #-8]
-  0x100000a7c:  880300b4       cbz      x8, #0x100000aec
+  0x100000a7c:  880300b4       cbz      x8, #0x100000aec ; [SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate
   0x100000a80:  01000014       b        #0x100000a84
   0x100000a84:  a8835ef8       ldur     x8, [x29, #-0x18]
   0x100000a88:  a9835ff8       ldur     x9, [x29, #-8]
@@ -67,7 +67,7 @@
   0x100000af4:  a0835ff8       ldur     x0, [x29, #-8]
   0x100000af8:  28000090       adrp     x8, #0x100004000
   0x100000afc:  081d40f9       ldr      x8, [x8, #0x38]
-  0x100000b00:  00013fd6       blr      x8
+  0x100000b00:  00013fd6       blr      x8 ; [SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)
   0x100000b04:  e10300aa       mov      x1, x0
   0x100000b08:  e00740f9       ldr      x0, [sp, #8]
   0x100000b0c:  e10b00f9       str      x1, [sp, #0x10]
@@ -89,7 +89,7 @@
   0x100000b40:  081140f9       ldr      x8, [x8, #0x20]
   0x100000b44:  e91f40f9       ldr      x9, [sp, #0x38]
   0x100000b48:  290540f9       ldr      x9, [x9, #8]
-  0x100000b4c:  080109ca       eor      x8, x8, x9
+  0x100000b4c:  080109ca       eor      x8, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000b50:  e80f00f9       str      x8, [sp, #0x18]
   0x100000b54:  ff1700b9       str      wzr, [sp, #0x14]
   0x100000b58:  01000014       b        #0x100000b5c
@@ -97,7 +97,7 @@
   0x100000b60:  e91f40f9       ldr      x9, [sp, #0x38]
   0x100000b64:  291140b9       ldr      w9, [x9, #0x10]
   0x100000b68:  0801096b       subs     w8, w8, w9
-  0x100000b6c:  4a040054       b.ge     #0x100000bf4
+  0x100000b6c:  4a040054       b.ge     #0x100000bf4 ; [SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate
   0x100000b70:  01000014       b        #0x100000b74
   0x100000b74:  ff0700f9       str      xzr, [sp, #8]
   0x100000b78:  01000014       b        #0x100000b7c
@@ -113,13 +113,13 @@
   0x100000ba0:  e91740f9       ldr      x9, [sp, #0x28]
   0x100000ba4:  ea0740f9       ldr      x10, [sp, #8]
   0x100000ba8:  29696a38       ldrb     w9, [x9, x10]
-  0x100000bac:  080109ca       eor      x8, x8, x9
+  0x100000bac:  080109ca       eor      x8, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000bb0:  e91740b9       ldr      w9, [sp, #0x14]
   0x100000bb4:  2a368f52       mov      w10, #0x79b1
   0x100000bb8:  eac6b372       movk     w10, #0x9e37, lsl #16
   0x100000bbc:  297d0a1b       mul      w9, w9, w10
   0x100000bc0:  e903092a       mov      w9, w9
-  0x100000bc4:  080109ca       eor      x8, x8, x9
+  0x100000bc4:  080109ca       eor      x8, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000bc8:  e80f00f9       str      x8, [sp, #0x18]
   0x100000bcc:  01000014       b        #0x100000bd0
   0x100000bd0:  e80740f9       ldr      x8, [sp, #8]
@@ -244,10 +244,10 @@
   0x100000d40:  080540f9       ldr      x8, [x8, #8]
   0x100000d44:  e90740f9       ldr      x9, [sp, #8]
   0x100000d48:  291140f9       ldr      x9, [x9, #0x20]
-  0x100000d4c:  080109ca       eor      x8, x8, x9
+  0x100000d4c:  080109ca       eor      x8, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000d50:  e90740f9       ldr      x9, [sp, #8]
   0x100000d54:  291540b9       ldr      w9, [x9, #0x14]
-  0x100000d58:  000109ca       eor      x0, x8, x9
+  0x100000d58:  000109ca       eor      x0, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000d5c:  ff430091       add      sp, sp, #0x10
   0x100000d60:  c0035fd6       ret      
 
@@ -258,7 +258,7 @@ _matrix_nested_solver:
   0x100000d6c:  e12f00b9       str      w1, [sp, #0x2c]
   0x100000d70:  e22b00b9       str      w2, [sp, #0x28]
   0x100000d74:  e81b40f9       ldr      x8, [sp, #0x30]
-  0x100000d78:  480100b4       cbz      x8, #0x100000da0
+  0x100000d78:  480100b4       cbz      x8, #0x100000da0 ; [SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate
   0x100000d7c:  01000014       b        #0x100000d80
   0x100000d80:  e82f40b9       ldr      w8, [sp, #0x2c]
   0x100000d84:  08010071       subs     w8, w8, #0
@@ -319,7 +319,7 @@ _matrix_nested_solver:
   0x100000e60:  e80740f9       ldr      x8, [sp, #8]
   0x100000e64:  49b58ad2       mov      x9, #0x55aa
   0x100000e68:  49b5aaf2       movk     x9, #0x55aa, lsl #16
-  0x100000e6c:  090109ca       eor      x9, x8, x9
+  0x100000e6c:  090109ca       eor      x9, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000e70:  e81340f9       ldr      x8, [sp, #0x20]
   0x100000e74:  0801098b       add      x8, x8, x9
   0x100000e78:  e81300f9       str      x8, [sp, #0x20]
@@ -330,7 +330,7 @@ _matrix_nested_solver:
   0x100000e8c:  e91780b9       ldrsw    x9, [sp, #0x14]
   0x100000e90:  0901098b       add      x9, x8, x9
   0x100000e94:  e81340f9       ldr      x8, [sp, #0x20]
-  0x100000e98:  080109ca       eor      x8, x8, x9
+  0x100000e98:  080109ca       eor      x8, x8, x9 ; [SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive
   0x100000e9c:  e81300f9       str      x8, [sp, #0x20]
   0x100000ea0:  10000014       b        #0x100000ee0
   0x100000ea4:  e91340f9       ldr      x9, [sp, #0x20]
@@ -396,12 +396,12 @@ _main:
   0x100000f88:  428acaf2       movk     x2, #0x5452, lsl #32
   0x100000f8c:  82a9eaf2       movk     x2, #0x554c, lsl #48
   0x100000f90:  43018052       mov      w3, #0xa
-  0x100000f94:  bb000094       bl       #0x100001280 ; objc_msgSend -> -[UltronSentinelCore initWithKey:rounds:]
+  0x100000f94:  bb000094       bl       #0x100001280 ; objc_msgSend -> -[UltronSentinelCore initWithKey:rounds:] // [SME:OBJC-DISPATCH]
   0x100000f98:  e14f40f9       ldr      x1, [sp, #0x98]
   0x100000f9c:  e05f00f9       str      x0, [sp, #0xb8]
   0x100000fa0:  e05f40f9       ldr      x0, [sp, #0xb8]
   0x100000fa4:  22018052       mov      w2, #9
-  0x100000fa8:  d6000094       bl       #0x100001300 ; objc_msgSend -> -[UltronSentinelCore setSecurityLevel:]
+  0x100000fa8:  d6000094       bl       #0x100001300 ; objc_msgSend -> -[UltronSentinelCore setSecurityLevel:] // [SME:OBJC-DISPATCH]
   0x100000fac:  a0eb00d1       sub      x0, x29, #0x3a
   0x100000fb0:  420480d2       mov      x2, #0x22
   0x100000fb4:  010000b0       adrp     x1, #0x100001000
@@ -412,13 +412,13 @@ _main:
   0x100000fc8:  48000090       adrp     x8, #0x100008000
   0x100000fcc:  01d540f9       ldr      x1, [x8, #0x1a8] ; @selector(decryptPayload:length:)
   0x100000fd0:  79000094       bl       #0x1000011b4
-  0x100000fd4:  20010036       tbz      w0, #0, #0x100000ff8
+  0x100000fd4:  20010036       tbz      w0, #0, #0x100000ff8 ; [SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate
   0x100000fd8:  01000014       b        #0x100000fdc
   0x100000fdc:  e14f40f9       ldr      x1, [sp, #0x98]
   0x100000fe0:  e05f40f9       ldr      x0, [sp, #0xb8]
   0x100000fe4:  a2eb00d1       sub      x2, x29, #0x3a
   0x100000fe8:  230480d2       mov      x3, #0x21
-  0x100000fec:  9d000094       bl       #0x100001260 ; objc_msgSend -> -[UltronSentinelCore decryptPayload:length:]
+  0x100000fec:  9d000094       bl       #0x100001260 ; objc_msgSend -> -[UltronSentinelCore decryptPayload:length:] // [SME:OBJC-DISPATCH]
   0x100000ff0:  e05b00f9       str      x0, [sp, #0xb0]
   0x100000ff4:  01000014       b        #0x100000ff8
   0x100000ff8:  a08302d1       sub      x0, x29, #0xa0
@@ -435,7 +435,7 @@ _main:
   0x100001024:  e05700f9       str      x0, [sp, #0xa8]
   0x100001028:  280000f0       adrp     x8, #0x100008000
   0x10000102c:  00410891       add      x0, x8, #0x210 ; ClassRef: UltronSentinelCore
-  0x100001030:  ac000094       bl       #0x1000012e0 ; objc_msgSend -> -[UltronSentinelCore sentinelProtocolVersion]
+  0x100001030:  ac000094       bl       #0x1000012e0 ; objc_msgSend -> -[UltronSentinelCore sentinelProtocolVersion] // [SME:OBJC-DISPATCH]
   0x100001034:  fd031daa       mov      x29, x29
   0x100001038:  68000094       bl       #0x1000011d8
   0x10000103c:  e8830291       add      x8, sp, #0xa0
@@ -446,24 +446,24 @@ _main:
   0x100001050:  5c000094       bl       #0x1000011c0
   0x100001054:  e02340f9       ldr      x0, [sp, #0x40]
   0x100001058:  e14f40f9       ldr      x1, [sp, #0x98]
-  0x10000105c:  71000094       bl       #0x100001220 ; objc_msgSend -> -[UltronSentinelCore UTF8String]
+  0x10000105c:  71000094       bl       #0x100001220 ; objc_msgSend -> -[UltronSentinelCore UTF8String] // [SME:OBJC-DISPATCH]
   0x100001060:  e14f40f9       ldr      x1, [sp, #0x98]
   0x100001064:  e02700f9       str      x0, [sp, #0x48]
   0x100001068:  e8e30291       add      x8, sp, #0xb8
   0x10000106c:  e84300f9       str      x8, [sp, #0x80]
   0x100001070:  e05f40f9       ldr      x0, [sp, #0xb8]
-  0x100001074:  73000094       bl       #0x100001240 ; objc_msgSend -> -[UltronSentinelCore coreName]
+  0x100001074:  73000094       bl       #0x100001240 ; objc_msgSend -> -[UltronSentinelCore coreName] // [SME:OBJC-DISPATCH]
   0x100001078:  fd031daa       mov      x29, x29
   0x10000107c:  57000094       bl       #0x1000011d8
   0x100001080:  e03b00f9       str      x0, [sp, #0x70]
   0x100001084:  4f000094       bl       #0x1000011c0
   0x100001088:  e03b40f9       ldr      x0, [sp, #0x70]
   0x10000108c:  e14f40f9       ldr      x1, [sp, #0x98]
-  0x100001090:  64000094       bl       #0x100001220 ; objc_msgSend -> -[UltronSentinelCore UTF8String]
+  0x100001090:  64000094       bl       #0x100001220 ; objc_msgSend -> -[UltronSentinelCore UTF8String] // [SME:OBJC-DISPATCH]
   0x100001094:  e14f40f9       ldr      x1, [sp, #0x98]
   0x100001098:  e02b00f9       str      x0, [sp, #0x50]
   0x10000109c:  e05f40f9       ldr      x0, [sp, #0xb8]
-  0x1000010a0:  88000094       bl       #0x1000012c0 ; objc_msgSend -> -[UltronSentinelCore securityLevel]
+  0x1000010a0:  88000094       bl       #0x1000012c0 ; objc_msgSend -> -[UltronSentinelCore securityLevel] // [SME:OBJC-DISPATCH]
   0x1000010a4:  e14f40f9       ldr      x1, [sp, #0x98]
   0x1000010a8:  e05f00b9       str      w0, [sp, #0x5c]
   0x1000010ac:  e85b40f9       ldr      x8, [sp, #0xb0]
@@ -471,7 +471,7 @@ _main:
   0x1000010b4:  e85740f9       ldr      x8, [sp, #0xa8]
   0x1000010b8:  e83700f9       str      x8, [sp, #0x68]
   0x1000010bc:  e05f40f9       ldr      x0, [sp, #0xb8]
-  0x1000010c0:  78000094       bl       #0x1000012a0 ; objc_msgSend -> -[UltronSentinelCore reactorDiagnosticDigest]
+  0x1000010c0:  78000094       bl       #0x1000012a0 ; objc_msgSend -> -[UltronSentinelCore reactorDiagnosticDigest] // [SME:OBJC-DISPATCH]
   0x1000010c4:  ed2740f9       ldr      x13, [sp, #0x48]
   0x1000010c8:  eb2b40f9       ldr      x11, [sp, #0x50]
   0x1000010cc:  ec5f40b9       ldr      w12, [sp, #0x5c]
@@ -492,7 +492,7 @@ _main:
   0x100001104:  e03b40f9       ldr      x0, [sp, #0x70]
   0x100001108:  080000f0       adrp     x8, #0x100004000
   0x10000110c:  081940f9       ldr      x8, [x8, #0x30]
-  0x100001110:  00013fd6       blr      x8
+  0x100001110:  00013fd6       blr      x8 ; [SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)
   0x100001114:  e03f40f9       ldr      x0, [sp, #0x78]
   0x100001118:  010080d2       mov      x1, #0
   0x10000111c:  e14700f9       str      x1, [sp, #0x88]

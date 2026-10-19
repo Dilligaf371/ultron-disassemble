@@ -1,0 +1,738 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x100129abc",
+    "evidence_file": "/Users/gilles/Applications/Aleria ICO.app/Contents/MacOS/aleria",
+    "sha256_digest": "3397966512dc1666e9aa7eaf61fb59a46176f4d2a6c0aacc3e3a3dbca8addec0",
+    "total_instructions": 174602,
+    "total_procedures": 4194
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x100001be4",
+      "immediate_hex": "0x100001c14",
+      "instruction": "b.eq #0x100001c14"
+    },
+    {
+      "address": "0x100001c2c",
+      "immediate_hex": "0x100001c60",
+      "instruction": "b.eq #0x100001c60"
+    },
+    {
+      "address": "0x100001c74",
+      "immediate_hex": "0x1000043bc",
+      "instruction": "b #0x1000043bc"
+    },
+    {
+      "address": "0x100001c80",
+      "immediate_hex": "0x10019a000",
+      "instruction": "adrp x0, #0x10019a000"
+    },
+    {
+      "address": "0x100001c88",
+      "immediate_hex": "0x100167000",
+      "instruction": "adrp x1, #0x100167000"
+    },
+    {
+      "address": "0x100001c90",
+      "immediate_hex": "0x100004420",
+      "instruction": "bl #0x100004420"
+    },
+    {
+      "address": "0x100001c94",
+      "immediate_hex": "0x10019a000",
+      "instruction": "adrp x1, #0x10019a000"
+    },
+    {
+      "address": "0x100001ca0",
+      "immediate_hex": "0x10013b438",
+      "instruction": "b #0x10013b438"
+    },
+    {
+      "address": "0x100001cd4",
+      "immediate_hex": "0x10013aef8",
+      "instruction": "bl #0x10013aef8"
+    },
+    {
+      "address": "0x100001d24",
+      "immediate_hex": "0x10013a9dc",
+      "instruction": "bl #0x10013a9dc"
+    },
+    {
+      "address": "0x100001d2c",
+      "immediate_hex": "0x10013b2f4",
+      "instruction": "bl #0x10013b2f4"
+    },
+    {
+      "address": "0x100001d34",
+      "immediate_hex": "0x10013af1c",
+      "instruction": "bl #0x10013af1c"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x10013ed00",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/.local/bin/claude"
+    },
+    {
+      "address": "0x10013ed20",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/opt/homebrew/bin/claude"
+    },
+    {
+      "address": "0x10013ed40",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/usr/local/bin/claude"
+    },
+    {
+      "address": "0x10013ed60",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/opt/homebrew/bin/codex"
+    },
+    {
+      "address": "0x10013ed80",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/usr/local/bin/codex"
+    },
+    {
+      "address": "0x10013eda0",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/.local/bin/codex"
+    },
+    {
+      "address": "0x10013ee80",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "cache_read_input_tokens"
+    },
+    {
+      "address": "0x10013f050",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "cache_read_tokens"
+    },
+    {
+      "address": "0x10013f880",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "crm-device-token"
+    },
+    {
+      "address": "0x10013f8a0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "mattermost-token"
+    },
+    {
+      "address": "0x10013f8c0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "anthropic-api-key"
+    },
+    {
+      "address": "0x10013fb90",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/opt/homebrew/bin/gh"
+    },
+    {
+      "address": "0x10013fbb0",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/usr/local/bin/gh"
+    },
+    {
+      "address": "0x10013fdc0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "http://127.0.0.1:8787"
+    },
+    {
+      "address": "0x10013fde0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "http://127.0.0.1:3001"
+    },
+    {
+      "address": "0x10013fe00",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "http://127.0.0.1:3001/hermes"
+    },
+    {
+      "address": "0x10013fe20",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://n8n.aleria.com"
+    },
+    {
+      "address": "0x10013fe40",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://chat.aleria.com"
+    },
+    {
+      "address": "0x10013ff70",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://github.com/Dilligaf371/aleria-ICO"
+    },
+    {
+      "address": "0x10013ffd0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://vercel.com/dashboard"
+    },
+    {
+      "address": "0x100140060",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://dashboard.stripe.com"
+    },
+    {
+      "address": "0x1001400a0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://resend.com/emails"
+    },
+    {
+      "address": "0x1001400e0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://www.notion.so"
+    },
+    {
+      "address": "0x100140140",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://app.cal.com/bookings/upcoming"
+    },
+    {
+      "address": "0x100140190",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "rectangle.split.3x1.fill"
+    },
+    {
+      "address": "0x1001401b0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://trello.com"
+    },
+    {
+      "address": "0x100140290",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://web.telegram.org/"
+    },
+    {
+      "address": "0x1001402f0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://web.whatsapp.com/"
+    },
+    {
+      "address": "0x100140380",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://outlook.office.com/mail/"
+    },
+    {
+      "address": "0x1001403d0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://mail.google.com"
+    },
+    {
+      "address": "0x100140410",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://www.washmen.com/"
+    },
+    {
+      "address": "0x1001405d0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://www.careem.com/"
+    },
+    {
+      "address": "0x100140780",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://deliveroo.ae/en/"
+    },
+    {
+      "address": "0x100140940",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://www.uber.com/ae/en/?city=abu-dhabi"
+    },
+    {
+      "address": "0x100140ae0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://music.youtube.com"
+    },
+    {
+      "address": "0x100140c60",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "person.3.sequence.fill"
+    },
+    {
+      "address": "0x100140da0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://console.anthropic.com"
+    },
+    {
+      "address": "0x100140e00",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://aistudio.google.com"
+    },
+    {
+      "address": "0x100140e40",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://platform.openai.com"
+    },
+    {
+      "address": "0x100140ea0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://platform.moonshot.ai"
+    },
+    {
+      "address": "0x100140ec0",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "Local LLM (127.0.0.1:11434)"
+    },
+    {
+      "address": "0x100140ee0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "http://127.0.0.1:11434"
+    },
+    {
+      "address": "0x100140f20",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "http://127.0.0.1:1234"
+    },
+    {
+      "address": "0x100140fa0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://api.anthropic.com/api/oauth/usage"
+    },
+    {
+      "address": "0x100140fd0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "oauth-2025-04-20"
+    },
+    {
+      "address": "0x1001416aa",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/usr/bin/python3 -I \""
+    },
+    {
+      "address": "0x100141cd0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Encrypted with CryptoKit AES-256-GCM (`aleria-mobile-office-v1`). The key stays in the `#fragment` of the QR code and never touches the relay server."
+    },
+    {
+      "address": "0x100141d70",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://office.aleria.work"
+    },
+    {
+      "address": "0x100141db0",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "arrow.triangle.2.circlepath"
+    },
+    {
+      "address": "0x100141e90",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "aleria.modifierTap.key"
+    },
+    {
+      "address": "0x100144069",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "tap key"
+    },
+    {
+      "address": "0x1001442b0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "http://100.119.248.65:8765"
+    },
+    {
+      "address": "0x100144300",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "ws://100.119.248.65:8765/ws"
+    },
+    {
+      "address": "0x1001443f7",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "` stored in KeychainVault)"
+    },
+    {
+      "address": "0x100144420",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Save to Keychain"
+    },
+    {
+      "address": "0x100144820",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "com.aleria.lumio.keychain-io"
+    },
+    {
+      "address": "0x1001448a0",
+      "ioc_type": "C2_URI_ENDPOINT",
+      "value": "https://api.duckduckgo.com/?q="
+    },
+    {
+      "address": "0x100144bc6",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/System/Library/CoreServices/SystemVersion.plist"
+    },
+    {
+      "address": "0x100168c00",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "SFSpeechRecognizerAuthorizationStatus"
+    },
+    {
+      "address": "0x100168c30",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "URLResourceKey"
+    },
+    {
+      "address": "0x100168c3f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NNSURLResourceKey"
+    },
+    {
+      "address": "0x100168e00",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "github-token"
+    },
+    {
+      "address": "0x100168e10",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "vercel-token"
+    },
+    {
+      "address": "0x100168e20",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "n8n-api-key"
+    },
+    {
+      "address": "0x100168e30",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "stripe-api-key"
+    },
+    {
+      "address": "0x100168e40",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "resend-api-key"
+    },
+    {
+      "address": "0x100168e50",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "notion-api-key"
+    },
+    {
+      "address": "0x100168e60",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "calcom-api-key"
+    },
+    {
+      "address": "0x100168e70",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "trello-token"
+    },
+    {
+      "address": "0x100168e80",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "gemini-api-key"
+    },
+    {
+      "address": "0x100168e90",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "openai-api-key"
+    },
+    {
+      "address": "0x100168ea0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "kimi-api-key"
+    },
+    {
+      "address": "0x100169ba8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "CodingKeys"
+    },
+    {
+      "address": "0x10016a068",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "CodingKeys"
+    },
+    {
+      "address": "0x10016a2f0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "URLResourceKey"
+    },
+    {
+      "address": "0x10016a2ff",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NNSURLResourceKey"
+    },
+    {
+      "address": "0x10016a760",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "FileAttributeKey"
+    },
+    {
+      "address": "0x10016a771",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NNSFileAttributeKey"
+    },
+    {
+      "address": "0x10016e240",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "PropertyKey"
+    },
+    {
+      "address": "0x10016e24c",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "NNSBitmapImageRepPropertyKey"
+    },
+    {
+      "address": "0x10016e6c2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "CodingKeys"
+    },
+    {
+      "address": "0x100171abf",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "KeychainVault"
+    },
+    {
+      "address": "0x100171c50",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "SFSpeechRecognizerAuthorizationStatus"
+    },
+    {
+      "address": "0x100173450",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keychainKey"
+    },
+    {
+      "address": "0x10017366f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "lastOAuthFetch"
+    },
+    {
+      "address": "0x100173f4a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_readToken"
+    },
+    {
+      "address": "0x100173f55",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_publishToken"
+    },
+    {
+      "address": "0x100173f63",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_keyBase64URL"
+    },
+    {
+      "address": "0x100173fa0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "symmetricKey"
+    },
+    {
+      "address": "0x100173ff3",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyDown"
+    },
+    {
+      "address": "0x100174140",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "lastToastTrackKey"
+    },
+    {
+      "address": "0x1001744e0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "lastDailyExportDateKey"
+    },
+    {
+      "address": "0x100174504",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "sessionKey"
+    },
+    {
+      "address": "0x1001750d1",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_modifierKey"
+    },
+    {
+      "address": "0x1001750de",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_crmTokenDraft"
+    },
+    {
+      "address": "0x1001751a9",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "secrets"
+    },
+    {
+      "address": "0x1001766d0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_TtC6aleria13KeychainVault"
+    },
+    {
+      "address": "0x100176836",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "application:delegateHandlesKey:"
+    },
+    {
+      "address": "0x100176a6a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "secrets"
+    },
+    {
+      "address": "0x100176b43",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_keyBase64URL"
+    },
+    {
+      "address": "0x100176e3a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyDown"
+    },
+    {
+      "address": "0x100176f4b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setBool:forKey:"
+    },
+    {
+      "address": "0x1001771e5",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_publishToken"
+    },
+    {
+      "address": "0x10017721a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "_readToken"
+    },
+    {
+      "address": "0x10017748b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "addAnimation:forKey:"
+    },
+    {
+      "address": "0x100177566",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "animationWithKeyPath:"
+    },
+    {
+      "address": "0x1001776c8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "application:didRegisterForRemoteNotificationsWithDeviceToken:"
+    },
+    {
+      "address": "0x100177ac6",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "applicationShouldAutomaticallyLocalizeKeyEquivalents:"
+    },
+    {
+      "address": "0x100177dd7",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "boolForKey:"
+    },
+    {
+      "address": "0x100177e20",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "canBecomeKeyWindow"
+    },
+    {
+      "address": "0x100178000",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:"
+    },
+    {
+      "address": "0x1001786de",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "initWithTitle:action:keyEquivalent:"
+    },
+    {
+      "address": "0x100178735",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "integerForKey:"
+    },
+    {
+      "address": "0x100178812",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "keyWindow"
+    },
+    {
+      "address": "0x100178830",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "lastDailyExportDateKey"
+    },
+    {
+      "address": "0x10017885f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "lastOAuthFetch"
+    },
+    {
+      "address": "0x1001788a0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "lastToastTrackKey"
+    },
+    {
+      "address": "0x1001789e8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "makeKeyAndOrderFront:"
+    },
+    {
+      "address": "0x1001789fe",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "makeKeyWindow"
+    },
+    {
+      "address": "0x100178a8f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "menuHasKeyEquivalent:forEvent:target:action:"
+    },
+    {
+      "address": "0x100178b99",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "objectForKey:"
+    },
+    {
+      "address": "0x100178f81",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "removeActionForKey:"
+    },
+    {
+      "address": "0x100178fe4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "removeObjectForKey:"
+    },
+    {
+      "address": "0x100179040",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "requestAuthorization:"
+    },
+    {
+      "address": "0x1001790f7",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "runAction:withKey:"
+    },
+    {
+      "address": "0x1001795ba",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setInteger:forKey:"
+    },
+    {
+      "address": "0x10017967b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "setObject:forKey:"
+    },
+    {
+      "address": "0x100179c75",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "stringArrayForKey:"
+    },
+    {
+      "address": "0x100179ceb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "stringForKey:"
+    },
+    {
+      "address": "0x100179d20",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "symmetricKey"
+    },
+    {
+      "address": "0x10017a194",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "windowDidBecomeKey:"
+    },
+    {
+      "address": "0x10017a388",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "windowDidResignKey:"
+    }
+  ],
+  "extracted_iocs_count": 132,
+  "ok": true
+}

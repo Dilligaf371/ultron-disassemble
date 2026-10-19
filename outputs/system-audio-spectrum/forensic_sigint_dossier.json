@@ -1,0 +1,83 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x1000012d8",
+    "evidence_file": "/Applications/ChatGPT.app/Contents/Resources/native/system-audio-spectrum",
+    "sha256_digest": "fed05e9cf9beb01ec72428d0bb8f2ab0c42a839a75e2892ca3f53a7f7c8c5ca2",
+    "total_instructions": 4387,
+    "total_procedures": 247
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x100001300",
+      "immediate_hex": "0x10000506c",
+      "instruction": "bl #0x10000506c"
+    },
+    {
+      "address": "0x100001314",
+      "immediate_hex": "0x100008000",
+      "instruction": "adrp x16, #0x100008000"
+    },
+    {
+      "address": "0x100001328",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x8, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x100001338",
+      "immediate_hex": "0x100005084",
+      "instruction": "bl #0x100005084"
+    },
+    {
+      "address": "0x10000134c",
+      "immediate_hex": "0x100008000",
+      "instruction": "adrp x16, #0x100008000"
+    },
+    {
+      "address": "0x100001360",
+      "immediate_hex": "0xfffffffffffffff0",
+      "instruction": "and x8, x8, #0xfffffffffffffff0"
+    },
+    {
+      "address": "0x100001370",
+      "immediate_hex": "0x10000c000",
+      "instruction": "adrp x9, #0x10000c000"
+    },
+    {
+      "address": "0x100001378",
+      "immediate_hex": "0x10000c000",
+      "instruction": "adrp x9, #0x10000c000"
+    },
+    {
+      "address": "0x100001380",
+      "immediate_hex": "0x10000c000",
+      "instruction": "adrp x9, #0x10000c000"
+    },
+    {
+      "address": "0x10000138c",
+      "immediate_hex": "0x10000c000",
+      "instruction": "adrp x9, #0x10000c000"
+    },
+    {
+      "address": "0x10000139c",
+      "immediate_hex": "0x10000c000",
+      "instruction": "adrp x9, #0x10000c000"
+    },
+    {
+      "address": "0x1000013a4",
+      "immediate_hex": "0x10000c000",
+      "instruction": "adrp x8, #0x10000c000"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x1000069b0",
+      "ioc_type": "FILESYSTEM_ARTIFACT_PATH",
+      "value": "/System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC"
+    }
+  ],
+  "extracted_iocs_count": 1,
+  "ok": true
+}
