@@ -124,4 +124,4 @@
 - **SOC 2 Type II + ISO/IEC 27001:2022 + CycloneDX 1.5 SBOM (`sbom_cyclonedx.json`)**: `COMPLIANT (4 SBOM components, Merkle Audit Ledger sealed)`
 - **Protocol & File Grammar (`protocol_grammar.hexpat` + `wireshark_dissector.lua`)**: `Magic 0x0000a5a5`
 - **Inter-Procedural Taint Chains (`Source -> Sink`)**: `9 data-flow paths audited`
-- **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `4178 structural fingerprints indexed`
+- **Neural Symbol Vault (`~/.ultron/knowledge_vault.json`)**: `5987 structural fingerprints indexed`

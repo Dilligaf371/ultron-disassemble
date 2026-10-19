@@ -1782,7 +1782,7 @@
       "specVersion": "1.5",
       "version": 1
     },
-    "immutable_ledger_entries": 24,
+    "immutable_ledger_entries": 28,
     "immutable_ledger_path": "/Users/gilles/.ultron/immutable_audit_ledger.jsonl",
     "iso27001_annex_a_controls": [
       {
@@ -1811,7 +1811,7 @@
         "status": "COMPLIANT (PASS)"
       }
     ],
-    "latest_merkle_hash": "aa031d03ec1d4657c43971865da40f82",
+    "latest_merkle_hash": "dda735defce3fd50c43971865da40f82",
     "memory_safe_rust_core": true,
     "ok": true,
     "overall_status": "COMPLIANT // SOC 2 TYPE II + ISO/IEC 27001:2022 + ISO/IEC 27037 + CYCLONEDX 1.5",
@@ -1830,7 +1830,7 @@
       },
       {
         "criteria": "CC7.2 — Tamper-Evident Security Event Monitoring",
-        "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (24 records, head=aa031d03ec1d4657c43971865da40f82)",
+        "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (28 records, head=dda735defce3fd50c43971865da40f82)",
         "status": "COMPLIANT (PASS)"
       },
       {
@@ -2434,7 +2434,7 @@
     "matches": [],
     "ok": true,
     "restored_in_session": 0,
-    "total_vault_signatures": 4178,
+    "total_vault_signatures": 5987,
     "vault_path": "/Users/gilles/.ultron/knowledge_vault.json"
   },
   "procedure_count": 33,

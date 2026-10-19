@@ -1,0 +1,1017 @@
+{
+  "schemaVersion": 1,
+  "settings": {
+    "generatorVersion": 7,
+    "size": 384,
+    "quality": "detailed",
+    "camera": [
+      0,
+      0
+    ],
+    "pose": [
+      0,
+      0,
+      0
+    ],
+    "depth": 0.5,
+    "shape": "circle",
+    "shapeOverrides": {
+      "round_inset": "rounded_head_two_ears"
+    },
+    "color": "pink",
+    "engineLighting": true,
+    "cropPadding": 2,
+    "catalogAssembliesOnly": true,
+    "accessoriesOnly": true
+  },
+  "sourceFingerprint": "87d8d8833517c194a19bb3c9b0ca4f211da150518861ca074fa438d1ae378d27",
+  "rendererSHA256": "e4976c735dd5e3858ea2f49133a3178ab16319bf7a0516e62a55792ae2a73c1f",
+  "files": [
+    {
+      "path": "renders/studio/eyes/swept_lids@3x.png",
+      "case": {
+        "name": "swept_lids",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "swept_lids",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.525,
+          0.3010416666666667,
+          0
+        ]
+      },
+      "sha256": "7b016946c8626524521e629b45df990f9210eab0fdfb725902a477559813fea5",
+      "dimensions": [
+        346,
+        123
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/oval@3x.png",
+      "case": {
+        "name": "oval",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.5,
+          0.20208333333333336,
+          0
+        ]
+      },
+      "sha256": "f1c9c8c8513d3fa24503cea1b5d5db609835542d0857022cffde9e0d89f5a0b3",
+      "dimensions": [
+        240,
+        120
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/sparkle_capsules@3x.png",
+      "case": {
+        "name": "sparkle_capsules",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "sparkle_capsules",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.5716666666666667,
+          0.24375000000000002,
+          0
+        ]
+      },
+      "sha256": "ff83830fff3631445a349e7c3d65203d2965dbedffc1e066042afd8458b8613a",
+      "dimensions": [
+        344,
+        240
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/highlight_capsules@3x.png",
+      "case": {
+        "name": "highlight_capsules",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "highlight_capsules",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.5,
+          0.06145833333333339,
+          0
+        ]
+      },
+      "sha256": "eadc2fe666886dd3f57b71f64fc57c954669cf37cf58daa790f2bb6f273fc554",
+      "dimensions": [
+        328,
+        217
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/dots@3x.png",
+      "case": {
+        "name": "dots",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "dots",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.5,
+          0.19687500000000002,
+          0
+        ]
+      },
+      "sha256": "1a60b2e3143697c4664a76b54f1800781c7898b43efc3f2492519eb09169e568",
+      "dimensions": [
+        284,
+        78
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/double_highlights@3x.png",
+      "case": {
+        "name": "double_highlights",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "double_highlights",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.56,
+          0.2802083333333334,
+          0
+        ]
+      },
+      "sha256": "0d1d154d47c08b5d246bf87bfaca931dfd1c92de1c0ca29bc048fb53967bbca3",
+      "dimensions": [
+        348,
+        148
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/round_inset@3x.png",
+      "case": {
+        "name": "round_inset",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "rounded_head_two_ears",
+          "color": "pink",
+          "eyes": "round_inset",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.7116666666666667,
+          0.47291666666666665,
+          0
+        ]
+      },
+      "sha256": "0d45736b9f4cf029c15f30f49d4332041fd1cc3534db4bce2d590d78350c4113",
+      "dimensions": [
+        346,
+        98
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/crescent_inset@3x.png",
+      "case": {
+        "name": "crescent_inset",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "crescent_inset",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.5716666666666667,
+          0.12395833333333339,
+          0
+        ]
+      },
+      "sha256": "b0d321dc4ab9d301a34c0a6755519ce633d086db13afbd27e4c852cd0dc4edd6",
+      "dimensions": [
+        346,
+        139
+      ]
+    },
+    {
+      "path": "renders/studio/eyes/sleepy_lids@3x.png",
+      "case": {
+        "name": "sleepy_lids",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "sleepy_lids",
+          "eyewear": "none",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.6533333333333333,
+          0.290625,
+          0
+        ]
+      },
+      "sha256": "e11e60e1a7d769cf7e9636aa259a119306f17d5077d971a4e7aa8166496cb1c0",
+      "dimensions": [
+        348,
+        89
+      ]
+    },
+    {
+      "path": "renders/studio/eyewear/monocle@3x.png",
+      "case": {
+        "name": "monocle",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "monocle",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.9916666666666667,
+          0.09791666666666671,
+          0
+        ]
+      },
+      "sha256": "08ec8e66293334ab0b21fcfad32151f52b5d93329b3eb3f8032238f923eac56c",
+      "dimensions": [
+        178,
+        162
+      ]
+    },
+    {
+      "path": "renders/studio/eyewear/tall_oval_frames@3x.png",
+      "case": {
+        "name": "tall_oval_frames",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "tall_oval_frames",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.6883333333333334,
+          0.19687500000000002,
+          0
+        ]
+      },
+      "sha256": "874a544e1c522f2589b21f5159326292362a41b31c0823591f287195b3fe47cf",
+      "dimensions": [
+        341,
+        208
+      ]
+    },
+    {
+      "path": "renders/studio/eyewear/separate_trapezoid_lenses@3x.png",
+      "case": {
+        "name": "separate_trapezoid_lenses",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "separate_trapezoid_lenses",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.9450000000000001,
+          0.19687500000000002,
+          0
+        ]
+      },
+      "sha256": "65efe78f7f004c0db1d5c753f323d3268027ae2421afc777ad124a1d2eb5600f",
+      "dimensions": [
+        346,
+        123
+      ]
+    },
+    {
+      "path": "renders/studio/eyewear/classic_sunglasses@3x.png",
+      "case": {
+        "name": "classic_sunglasses",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "classic_sunglasses",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.9450000000000001,
+          0.20208333333333336,
+          0
+        ]
+      },
+      "sha256": "e0c1cdb2f2aeaaa1962b99923ccf3b3b13a278c85d9254b39d698833d7f8f4d8",
+      "dimensions": [
+        346,
+        117
+      ]
+    },
+    {
+      "path": "renders/studio/eyewear/round_sunglasses@3x.png",
+      "case": {
+        "name": "round_sunglasses",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "round_sunglasses",
+          "accessories": [],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.9450000000000001,
+          0.20208333333333336,
+          0
+        ]
+      },
+      "sha256": "6827c7e72742adf913149d6dca4ba5996ca6a36c0d09d60f4e2daaf542e68fd8",
+      "dimensions": [
+        346,
+        135
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/headphones@3x.png",
+      "case": {
+        "name": "headphones",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "headphones"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          1.5050000000000001,
+          0.3010416666666667,
+          0
+        ]
+      },
+      "sha256": "c8227f1649b28d33002eb1d57290fdc4693292a94c6b41ea4c178e92e4e6eebc",
+      "dimensions": [
+        346,
+        221
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/bow@3x.png",
+      "case": {
+        "name": "bow",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "bow"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.56,
+          -0.9020833333333332,
+          0
+        ]
+      },
+      "sha256": "6cbe56eb3bdfe03d6cf387dfb3c665c23095b33cc11be12906ce01e0a6e98690",
+      "dimensions": [
+        348,
+        145
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/beanie@3x.png",
+      "case": {
+        "name": "beanie",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "beanie"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.8983333333333333,
+          0.9833333333333333,
+          0
+        ]
+      },
+      "sha256": "2fafbcabea5b6f7e2dcd0f67824f06a5e4a1246402a6bc11faeb9dfb03208ca5",
+      "dimensions": [
+        344,
+        208
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/hat@3x.png",
+      "case": {
+        "name": "hat",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "hat"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.805,
+          1.134375,
+          0
+        ]
+      },
+      "sha256": "ec0135754ccbcafa6d1f4f74b993a739ca7fc86008886b5f644d71cb8d636279",
+      "dimensions": [
+        347,
+        273
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/beret@3x.png",
+      "case": {
+        "name": "beret",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "beret"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          1.2366666666666666,
+          0.9416666666666667,
+          0
+        ]
+      },
+      "sha256": "185b170c12dc6cefa2d00bb9fb6ba000ad65d16ccb4da2a7c0bb038385db961d",
+      "dimensions": [
+        272,
+        128
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/orb@3x.png",
+      "case": {
+        "name": "orb",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "orb"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.5,
+          1.2645833333333334,
+          0
+        ]
+      },
+      "sha256": "75173dd3f3fa3da9c0ecbdd32907e359c4348a46bdf9810f8908fc36122ea7e7",
+      "dimensions": [
+        224,
+        225
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/three_lobe@3x.png",
+      "case": {
+        "name": "three_lobe",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "three_lobe"
+          ],
+          "depth": 0.5,
+          "accessoryColors": {
+            "three_lobe": "charcoal"
+          }
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          1.0616666666666668,
+          0.9208333333333333,
+          0
+        ]
+      },
+      "sha256": "40a67667b8642a695aca4c65af94a0a270705a5d7865fc3f9c05da022dd817a2",
+      "dimensions": [
+        162,
+        119
+      ]
+    },
+    {
+      "path": "renders/studio/accessories/crown@3x.png",
+      "case": {
+        "name": "crown",
+        "appearance": {
+          "schemaVersion": 2,
+          "shape": "circle",
+          "color": "pink",
+          "eyes": "oval",
+          "eyewear": "none",
+          "accessories": [
+            "crown"
+          ],
+          "depth": 0.5
+        },
+        "size": 384,
+        "quality": "detailed",
+        "pose": [
+          0,
+          0,
+          0
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "projection": [
+          0.6883333333333334,
+          1.18125,
+          0
+        ]
+      },
+      "sha256": "584ec00e9ea25355cadf10fad272589c9b389c202a9b8df1752c8787742bef73",
+      "dimensions": [
+        348,
+        224
+      ]
+    }
+  ],
+  "revalidation": {
+    "schemaVersion": 2,
+    "sourceFingerprint": "6bc0528ddc6df306da47f79b8c9d274732d5f5615f785219ab1b436c679ebac8",
+    "baselineSourceFingerprint": "87d8d8833517c194a19bb3c9b0ca4f211da150518861ca074fa438d1ae378d27",
+    "baselineRendererSHA256": "e4976c735dd5e3858ea2f49133a3178ab16319bf7a0516e62a55792ae2a73c1f",
+    "rendererSHA256": "442378c03d97bb7e662ce4bba9997dce513514a5ad561e63acd1518fb52e37ce",
+    "renderConfigurationSHA256": "dc5b42fc0b12164a9a083d3751d91ba58bfff33f2631ba3c37014f59207a54ff",
+    "baselineResources": {
+      "manifestSHA256": "fde736a7ff647b3194e8ca56a306313e7601fcee512e17b7a7c85aea0bc8ca62",
+      "geometryRevision": "c39b86a227d49bd0f9d7ef9d3e36b9b57dfecc52a3de9b44171a613571389d92",
+      "meshSourceRevision": "5e03a08029fae0975d7e48259e0e841d5ebd5ac09b0ebbdb3122a1e540cb699b"
+    },
+    "resources": {
+      "manifestSHA256": "fde736a7ff647b3194e8ca56a306313e7601fcee512e17b7a7c85aea0bc8ca62",
+      "geometryRevision": "c39b86a227d49bd0f9d7ef9d3e36b9b57dfecc52a3de9b44171a613571389d92",
+      "meshSourceRevision": "3990403fc12ff864e21a9475d1518ac3d891314fefae8a2261e0631752c79faf"
+    },
+    "files": [
+      {
+        "path": "renders/studio/accessories/beanie@3x.png",
+        "captureSHA256": "2fafbcabea5b6f7e2dcd0f67824f06a5e4a1246402a6bc11faeb9dfb03208ca5",
+        "contentSHA256": "a4f7cd16594f38235fce37455dca7ca5c090ca38455381393a152ac78ba311a0",
+        "baselineRasterSHA256": "c4104349fc7d3be8f12435a327a5a451095bd29058e72079e7f401d6af8fa74b",
+        "rasterSHA256": "c4104349fc7d3be8f12435a327a5a451095bd29058e72079e7f401d6af8fa74b"
+      },
+      {
+        "path": "renders/studio/accessories/beret@3x.png",
+        "captureSHA256": "185b170c12dc6cefa2d00bb9fb6ba000ad65d16ccb4da2a7c0bb038385db961d",
+        "contentSHA256": "a855dd32c9cf3e4deaca751e0e939e2f4e98e9e8c303baf5139678d3e0d1a991",
+        "baselineRasterSHA256": "b921cafb6e3778a955cce3930dfeb88d348c11d14e4a2d035c4f283345facff4",
+        "rasterSHA256": "b921cafb6e3778a955cce3930dfeb88d348c11d14e4a2d035c4f283345facff4"
+      },
+      {
+        "path": "renders/studio/accessories/bow@3x.png",
+        "captureSHA256": "6cbe56eb3bdfe03d6cf387dfb3c665c23095b33cc11be12906ce01e0a6e98690",
+        "contentSHA256": "620e0e822fc4d035d9846c0ee7bb16d5e074fa5ebf7bdf5dd1257400ba5347d3",
+        "baselineRasterSHA256": "52e2faa39b291b88b66b6802e1681b254aa8892ec66833331fe741dc5c69d3b9",
+        "rasterSHA256": "52e2faa39b291b88b66b6802e1681b254aa8892ec66833331fe741dc5c69d3b9"
+      },
+      {
+        "path": "renders/studio/accessories/crown@3x.png",
+        "captureSHA256": "584ec00e9ea25355cadf10fad272589c9b389c202a9b8df1752c8787742bef73",
+        "contentSHA256": "a7ea17bbb64ece3ddee73b9fae49196635503283bad7f21af5f27cf294579d06",
+        "baselineRasterSHA256": "940235edf0069be995c9760a9088a6d36c0e297484b7b11be07dfcabe358bae7",
+        "rasterSHA256": "940235edf0069be995c9760a9088a6d36c0e297484b7b11be07dfcabe358bae7"
+      },
+      {
+        "path": "renders/studio/accessories/hat@3x.png",
+        "captureSHA256": "ec0135754ccbcafa6d1f4f74b993a739ca7fc86008886b5f644d71cb8d636279",
+        "contentSHA256": "8fc5ff323ef7976b59da491f01f2b0c0c435a3db608a74e04805fc43c2bccb9c",
+        "baselineRasterSHA256": "34639ce62109b1df28e1c45361eee0aa822545be9e7ef9f38726d6ff763ff731",
+        "rasterSHA256": "34639ce62109b1df28e1c45361eee0aa822545be9e7ef9f38726d6ff763ff731"
+      },
+      {
+        "path": "renders/studio/accessories/headphones@3x.png",
+        "captureSHA256": "c8227f1649b28d33002eb1d57290fdc4693292a94c6b41ea4c178e92e4e6eebc",
+        "contentSHA256": "f541d0fa7d17bdbcb3c957beb6cc19e20595c2be447ce28ebc37d6251b6e33a9",
+        "baselineRasterSHA256": "bb1469f47599327baa7a87f9a48bb2c0a3e0e3f6ff93548666f3c024b069517d",
+        "rasterSHA256": "bb1469f47599327baa7a87f9a48bb2c0a3e0e3f6ff93548666f3c024b069517d"
+      },
+      {
+        "path": "renders/studio/accessories/orb@3x.png",
+        "captureSHA256": "75173dd3f3fa3da9c0ecbdd32907e359c4348a46bdf9810f8908fc36122ea7e7",
+        "contentSHA256": "1363b7078200b71cd994fdf21b21e6cdaa03c6c3181846b8b7be2b30a380364d",
+        "baselineRasterSHA256": "c2805b769e791aec059f4d2b7eca38c80957b9189ccf9ff7793fcadb279e8cc5",
+        "rasterSHA256": "c2805b769e791aec059f4d2b7eca38c80957b9189ccf9ff7793fcadb279e8cc5"
+      },
+      {
+        "path": "renders/studio/accessories/three_lobe@3x.png",
+        "captureSHA256": "40a67667b8642a695aca4c65af94a0a270705a5d7865fc3f9c05da022dd817a2",
+        "contentSHA256": "1097da889cc8e8da25dda7695bae27dcd3edab4df22f32164a85ce50804b9fd5",
+        "baselineRasterSHA256": "d6ce05b86ab09cb8aabfe8e50e2dec09bfba927cbf450b48e58446bff35b08d5",
+        "rasterSHA256": "d6ce05b86ab09cb8aabfe8e50e2dec09bfba927cbf450b48e58446bff35b08d5"
+      },
+      {
+        "path": "renders/studio/eyes/crescent_inset@3x.png",
+        "captureSHA256": "b0d321dc4ab9d301a34c0a6755519ce633d086db13afbd27e4c852cd0dc4edd6",
+        "contentSHA256": "43028f184782374ab3c1b187fe51c07d7f78bbf20db3826848adf95e526d4e1a",
+        "baselineRasterSHA256": "b5429da85df51632afaa54e169316f23c3a62ec9e78f115e2dd9fe5fe4448f7b",
+        "rasterSHA256": "b5429da85df51632afaa54e169316f23c3a62ec9e78f115e2dd9fe5fe4448f7b"
+      },
+      {
+        "path": "renders/studio/eyes/dots@3x.png",
+        "captureSHA256": "1a60b2e3143697c4664a76b54f1800781c7898b43efc3f2492519eb09169e568",
+        "contentSHA256": "75150077533c8743a3233d707f41b1c699f3d9c0e621469a55a8008cf6d5f1aa",
+        "baselineRasterSHA256": "624122e4de8c8562e549fd8e0ff2dc7b8ba4b579e4f33e032064707943b00de9",
+        "rasterSHA256": "624122e4de8c8562e549fd8e0ff2dc7b8ba4b579e4f33e032064707943b00de9"
+      },
+      {
+        "path": "renders/studio/eyes/double_highlights@3x.png",
+        "captureSHA256": "0d1d154d47c08b5d246bf87bfaca931dfd1c92de1c0ca29bc048fb53967bbca3",
+        "contentSHA256": "ad30b226dd345ca5325b9e90983483ca73a87d776ac9a931cf90828670f82764",
+        "baselineRasterSHA256": "672aa1a92ce819df616f232f3b0ca28de6d18486b468d7dae9ff55de73db95c0",
+        "rasterSHA256": "672aa1a92ce819df616f232f3b0ca28de6d18486b468d7dae9ff55de73db95c0"
+      },
+      {
+        "path": "renders/studio/eyes/highlight_capsules@3x.png",
+        "captureSHA256": "eadc2fe666886dd3f57b71f64fc57c954669cf37cf58daa790f2bb6f273fc554",
+        "contentSHA256": "e485f4bbc95589a848da8488980d1f6b41dee37ef1b9a519286bc1c1709f257e",
+        "baselineRasterSHA256": "24131265c13e8a5dfdf0ad2de14ca1a3b371fed8bb41ed02b46de2e0234a3090",
+        "rasterSHA256": "24131265c13e8a5dfdf0ad2de14ca1a3b371fed8bb41ed02b46de2e0234a3090"
+      },
+      {
+        "path": "renders/studio/eyes/oval@3x.png",
+        "captureSHA256": "f1c9c8c8513d3fa24503cea1b5d5db609835542d0857022cffde9e0d89f5a0b3",
+        "contentSHA256": "82b7eff1ff369fae9dd7d0a22c3d30313e892915c40c4c5f2a80e4485aa0b424",
+        "baselineRasterSHA256": "7de9631a6b401118a7a5798af10f5c1dbf726d6ddf5cfc974fa8b2a487284d37",
+        "rasterSHA256": "7de9631a6b401118a7a5798af10f5c1dbf726d6ddf5cfc974fa8b2a487284d37"
+      },
+      {
+        "path": "renders/studio/eyes/round_inset@3x.png",
+        "captureSHA256": "0d45736b9f4cf029c15f30f49d4332041fd1cc3534db4bce2d590d78350c4113",
+        "contentSHA256": "feb368c0c862e3e163175ab8155d4530ff7b43e60a5989f58bfb86a32e4feff2",
+        "baselineRasterSHA256": "14923ca06048caf593b4f13003640c286367794384a5ad15d6aefdad2b4f995d",
+        "rasterSHA256": "14923ca06048caf593b4f13003640c286367794384a5ad15d6aefdad2b4f995d"
+      },
+      {
+        "path": "renders/studio/eyes/sleepy_lids@3x.png",
+        "captureSHA256": "e11e60e1a7d769cf7e9636aa259a119306f17d5077d971a4e7aa8166496cb1c0",
+        "contentSHA256": "bc4793dc5f3cedaa1aa32bda5c88e7a7afffa48f447c54b72433b3654df99441",
+        "baselineRasterSHA256": "c689230d5bebc50b8a8f97259a11b0ab24dd20c3bd9fa581ea2dfef41d4c9a5e",
+        "rasterSHA256": "c689230d5bebc50b8a8f97259a11b0ab24dd20c3bd9fa581ea2dfef41d4c9a5e"
+      },
+      {
+        "path": "renders/studio/eyes/sparkle_capsules@3x.png",
+        "captureSHA256": "ff83830fff3631445a349e7c3d65203d2965dbedffc1e066042afd8458b8613a",
+        "contentSHA256": "ff501437f178578f892287838b85ad4c9903ed2acc4a32dcb11bca76728462ba",
+        "baselineRasterSHA256": "d3ee00d3ecbe1194698003c354f41938f03f031679f7921d767c60c0ae0d75ba",
+        "rasterSHA256": "d3ee00d3ecbe1194698003c354f41938f03f031679f7921d767c60c0ae0d75ba"
+      },
+      {
+        "path": "renders/studio/eyes/swept_lids@3x.png",
+        "captureSHA256": "7b016946c8626524521e629b45df990f9210eab0fdfb725902a477559813fea5",
+        "contentSHA256": "549192ae97ca7925150d389c5c4180284b25b512e8a1a498694c80d8bcabfd64",
+        "baselineRasterSHA256": "f530f133d52e3c6127596b584d4d952708777bd7c1ab8f6f7bd2cf0d2c9173db",
+        "rasterSHA256": "f530f133d52e3c6127596b584d4d952708777bd7c1ab8f6f7bd2cf0d2c9173db"
+      },
+      {
+        "path": "renders/studio/eyewear/classic_sunglasses@3x.png",
+        "captureSHA256": "e0c1cdb2f2aeaaa1962b99923ccf3b3b13a278c85d9254b39d698833d7f8f4d8",
+        "contentSHA256": "266e86c75cec0dc3622fec7e33425d91b36b4e1a9487d6a73409bbc03e98534d",
+        "baselineRasterSHA256": "23fcb656cb9b6a8c26a5c0c35b89baff7ddbe106e0849bc133810995fbd9bf7a",
+        "rasterSHA256": "23fcb656cb9b6a8c26a5c0c35b89baff7ddbe106e0849bc133810995fbd9bf7a"
+      },
+      {
+        "path": "renders/studio/eyewear/monocle@3x.png",
+        "captureSHA256": "08ec8e66293334ab0b21fcfad32151f52b5d93329b3eb3f8032238f923eac56c",
+        "contentSHA256": "ffe30faaf5dca1a4a927fa9ae3914c202185f033689612e6718ecc4040f328b1",
+        "baselineRasterSHA256": "317598b2c91860ffe483d2528079fc6aac5a6354430fc9014c5371fc03f3ef91",
+        "rasterSHA256": "317598b2c91860ffe483d2528079fc6aac5a6354430fc9014c5371fc03f3ef91"
+      },
+      {
+        "path": "renders/studio/eyewear/round_sunglasses@3x.png",
+        "captureSHA256": "6827c7e72742adf913149d6dca4ba5996ca6a36c0d09d60f4e2daaf542e68fd8",
+        "contentSHA256": "9bfc21f7de9cbe953ac0e2e243542da8022d15fc98a3b53e407142db57e319ef",
+        "baselineRasterSHA256": "9ed175a700011e5d726ed2cd9a5f73f4a749069001508ca6dc06939978fefc4f",
+        "rasterSHA256": "9ed175a700011e5d726ed2cd9a5f73f4a749069001508ca6dc06939978fefc4f"
+      },
+      {
+        "path": "renders/studio/eyewear/separate_trapezoid_lenses@3x.png",
+        "captureSHA256": "65efe78f7f004c0db1d5c753f323d3268027ae2421afc777ad124a1d2eb5600f",
+        "contentSHA256": "4d051cf06a7cf75d931247a270f6072c0f04569303dd9f291526c00f04dc9909",
+        "baselineRasterSHA256": "97ae638f9e69d28890ddb53f3a0dae604f004db9691260545185b35aaefaf5f4",
+        "rasterSHA256": "97ae638f9e69d28890ddb53f3a0dae604f004db9691260545185b35aaefaf5f4"
+      },
+      {
+        "path": "renders/studio/eyewear/tall_oval_frames@3x.png",
+        "captureSHA256": "874a544e1c522f2589b21f5159326292362a41b31c0823591f287195b3fe47cf",
+        "contentSHA256": "e7d5ec3bbfa43e01a34242871bf23cc9d52e497e732285b3ed0c738c64a232b5",
+        "baselineRasterSHA256": "fc85b229fd0c2801509e6500e50e588db4e2146963ee8fe4e9470e69b1e1c5a1",
+        "rasterSHA256": "fc85b229fd0c2801509e6500e50e588db4e2146963ee8fe4e9470e69b1e1c5a1"
+      }
+    ],
+    "receiptSHA256": "e6c62c444cea8a61ced4995799928d70d7e21df6a994fcaf7c8ffcac95e6875d"
+  }
+}

@@ -1,0 +1,568 @@
+{
+  "chain_of_custody": {
+    "container_format": "WebAssembly (.wasm)",
+    "cpu_architecture": "wasm32 (32-bit)",
+    "entry_point": "0x359d",
+    "evidence_file": "/Users/gilles/.gemini/antigravity/brain/9d4f7005-e3a0-4b0b-9c59-b3cebb4935ab/scratch/asar_dot/orbit-characters.wasm",
+    "sha256_digest": "10c43c3139ff0d415a8d95b9a6adb22dd2bfc7f7a0dc5eca3a1edf8ede8e11d3",
+    "total_instructions": 1420795,
+    "total_procedures": 2062
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x3dd7",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "i64.const 0x7fffffffffffffff"
+    },
+    {
+      "address": "0x3e09",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "i64.const 0x7fffffffffffffff"
+    },
+    {
+      "address": "0x4087",
+      "immediate_hex": "0xffffffffffff",
+      "instruction": "i64.const 0xffffffffffff"
+    },
+    {
+      "address": "0x40a7",
+      "immediate_hex": "0xffffffffffff",
+      "instruction": "i64.const 0xffffffffffff"
+    },
+    {
+      "address": "0x40f5",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "i64.const 0x7fffffffffffffff"
+    },
+    {
+      "address": "0x4136",
+      "immediate_hex": "0x7fffffffffffffff",
+      "instruction": "i64.const 0x7fffffffffffffff"
+    },
+    {
+      "address": "0x4220",
+      "immediate_hex": "0xffffffffffff",
+      "instruction": "i64.const 0xffffffffffff"
+    },
+    {
+      "address": "0x426f",
+      "immediate_hex": "0xffffffffffff",
+      "instruction": "i64.const 0xffffffffffff"
+    },
+    {
+      "address": "0x430e",
+      "immediate_hex": "0xffffffff",
+      "instruction": "i64.const 0xffffffff"
+    },
+    {
+      "address": "0x4319",
+      "immediate_hex": "0xffffffff",
+      "instruction": "i64.const 0xffffffff"
+    },
+    {
+      "address": "0x4337",
+      "immediate_hex": "0xffff8000",
+      "instruction": "i64.const 0xffff8000"
+    },
+    {
+      "address": "0x4359",
+      "immediate_hex": "0xffffffff",
+      "instruction": "i64.const 0xffffffff"
+    }
+  ],
+  "extracted_iocs": [
+    {
+      "address": "0x2cda6c",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Invalid fitted accessory payload size or key"
+    },
+    {
+      "address": "0x2cda99",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Invalid retained character key"
+    },
+    {
+      "address": "0x2cdab8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Invalid, duplicate or unsorted resolved face key"
+    },
+    {
+      "address": "0x2cdae9",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Invalid expected resolved face key"
+    },
+    {
+      "address": "0x2ce0b7",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Unknown authored headwear surface layout"
+    },
+    {
+      "address": "0x2ce0e0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Headwear style does not match its authored surface layout"
+    },
+    {
+      "address": "0x2ce11a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Headwear source UVs or topology do not match its authored surface layout"
+    },
+    {
+      "address": "0x2ce163",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Headwear changed its authored surface layout"
+    },
+    {
+      "address": "0x2ce78b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Unknown authored body variant"
+    },
+    {
+      "address": "0x2ce7a9",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Empty authored eyewear variant"
+    },
+    {
+      "address": "0x2ce7c8",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Unknown authored eyewear variant"
+    },
+    {
+      "address": "0x2ceaeb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored-beret"
+    },
+    {
+      "address": "0x2cf055",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored-hat"
+    },
+    {
+      "address": "0x2cf359",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored eye placement does not permit frame-driven adjustments"
+    },
+    {
+      "address": "0x2cf649",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Fitted accessory content key differs"
+    },
+    {
+      "address": "0x2cf91a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Fixed body eye mounting requires two authored eye transforms"
+    },
+    {
+      "address": "0x2cfd9a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "The authored eyewear variant requires round sunglasses"
+    },
+    {
+      "address": "0x2d0fc3",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "A fitted catalog frame cannot replace authored hero eyewear"
+    },
+    {
+      "address": "0x2d13d1",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored-crown"
+    },
+    {
+      "address": "0x2d1960",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Headwear exterior overlaps the full body outside its authored contact region"
+    },
+    {
+      "address": "0x2d1d77",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Headwear fitting requires a body and authored shell"
+    },
+    {
+      "address": "0x2d2757",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored placement has no supported attachment patch"
+    },
+    {
+      "address": "0x2d30f7",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "; eye %u origin (%.6g, %.6g) scale %.6g"
+    },
+    {
+      "address": "0x2d3717",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored marketing hero pose"
+    },
+    {
+      "address": "0x2d37a9",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Canonical opaque lenses overlap after their authored pose"
+    },
+    {
+      "address": "0x2d381f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Crescent eye source must contain its authored concave aperture"
+    },
+    {
+      "address": "0x2d433f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Rigid eyewear requires a uniform authored scale"
+    },
+    {
+      "address": "0x2d43d7",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored-beanie"
+    },
+    {
+      "address": "0x2d44dd",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Headphone band radius is outside the authoring range"
+    },
+    {
+      "address": "0x2d49e0",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "The authored upper attachment region has no body surface"
+    },
+    {
+      "address": "0x2d4a19",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "The authored face attachment region has no body surface"
+    },
+    {
+      "address": "0x2d4aa4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "The authored eye position is outside the body surface"
+    },
+    {
+      "address": "0x2d505e",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "unordered_map::at: key not found"
+    },
+    {
+      "address": "0x2d507f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "map::at:  key not found"
+    },
+    {
+      "address": "0x2d53f2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Crown fitting requires a body and an authored open band"
+    },
+    {
+      "address": "0x2d554d",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "does not support authored offset, rotation, or scale because its body joins cannot be refitted"
+    },
+    {
+      "address": "0x2d55f4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Authored eye variants are no longer supported"
+    },
+    {
+      "address": "0x2d630a",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "{\"keys\":"
+    },
+    {
+      "address": "0x2d6aa4",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "Preset page limit must be an integer in 1...100"
+    },
+    {
+      "address": "0x2d7d7d",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "Body lobes need finite centers in [-10, 10], positive radii in [0.0001, 10], and strengths in [-0.75, 4]."
+    },
+    {
+      "address": "0x2d7f9f",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored-"
+    },
+    {
+      "address": "0x2d805b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "{\"keys\":[\""
+    },
+    {
+      "address": "0x2d8100",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Missing authored depth for"
+    },
+    {
+      "address": "0x2d8406",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "authored placement:"
+    },
+    {
+      "address": "0x2d841c",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Unknown authored body variant:"
+    },
+    {
+      "address": "0x2d874b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "No authored attachment regions for shape:"
+    },
+    {
+      "address": "0x428276",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "layout(location=6) in vec2 authoredResponse;"
+    },
+    {
+      "address": "0x4283c4",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "vec4 cameraPosition, keyDirectionIntensity, fillDirectionIntensity;"
+    },
+    {
+      "address": "0x428bf0",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float alpha = min(1.,sqrt(materialAlpha*materialAlpha+.20*.20)), a2 = alpha*alpha;"
+    },
+    {
+      "address": "0x428d85",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec3 fresnel = metalF0+(1.-metalF0)*pow(1.-vh,5.);"
+    },
+    {
+      "address": "0x428e31",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float fresnel = f0+(1.-f0)*pow(1.-vh,5.);"
+    },
+    {
+      "address": "0x4290f5",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float len=length(ff);return max((len*len+ff.z)/(len+1.),0.);"
+    },
+    {
+      "address": "0x42997b",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "vec3 key=normalize(vec3(-5,7,6));"
+    },
+    {
+      "address": "0x4299f2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "vec3 diffuse=(1.8+hemi)/PI+vec3(1./PI*max(dot(n,key),0.)*1.85+area.x);"
+    },
+    {
+      "address": "0x429a3d",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "float specular=felipeSpecular(n,view,key,roughness)*1.85+area.y;"
+    },
+    {
+      "address": "0x429dc4",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float part=paletteGeometry.w;vec4 seed=paletteGeometry;seed.w=1.;"
+    },
+    {
+      "address": "0x42a12f",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float facing=dot(transformedNormal,view),rim=1.-smoothstep(.12,.6,abs(facing));"
+    },
+    {
+      "address": "0x42a2fa",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "world-=transformedNormal*worldScale*min(scale*.0015,len*.12)*(1.-t)*rim;"
+    },
+    {
+      "address": "0x42a62d",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "furNormal=vec3(.9+.2*seed.x,fade,rim);"
+    },
+    {
+      "address": "0x42a97a",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if (d.coverage.z > .5) {"
+    },
+    {
+      "address": "0x42a997",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "mat4 deformation = skin.joints[skinJoints.x] * skinWeights.x"
+    },
+    {
+      "address": "0x42abe1",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "n = (d.normalMatrix*vec4(n,0.0)).xyz;"
+    },
+    {
+      "address": "0x42af34",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "responseGains = d.referencePose.w == -34.0 ? world.xy : authoredResponse;"
+    },
+    {
+      "address": "0x42af82",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec3 paintPosition = d.paletteReference.x > .5 ? position+delta1 : p;"
+    },
+    {
+      "address": "0x42b2eb",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "vec4 cameraPosition, keyDirectionIntensity, fillDirectionIntensity;"
+    },
+    {
+      "address": "0x42b6fe",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "length(worldFromDepth(uv+vec2(f.viewport.z,0.),centerDepth)-p),"
+    },
+    {
+      "address": "0x42b746",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "length(worldFromDepth(uv+vec2(0.,f.viewport.w),centerDepth)-p));"
+    },
+    {
+      "address": "0x42bdd5",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float t = clamp((float(step)-.5+jitter)/float(stepCount-1),0.,1.);"
+    },
+    {
+      "address": "0x42c458",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec2 worldPerPixel=units.xy*f.viewport.zw;"
+    },
+    {
+      "address": "0x42c63e",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if(left>=.99999 && right>=.99999)dzx=0.;"
+    },
+    {
+      "address": "0x42c66b",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if(down>=.99999 && up>=.99999)dzy=0.;"
+    },
+    {
+      "address": "0x42ce0b",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float t = clamp((float(step)-.5+jitter)/float(stepCount-1),0.,1.);"
+    },
+    {
+      "address": "0x42d4cd",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if(left>=.99999 && right>=.99999) sx=0.;"
+    },
+    {
+      "address": "0x42d4fa",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if(down>=.99999 && up>=.99999) sy=0.;"
+    },
+    {
+      "address": "0x42d733",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "length(f.inverseViewProjection[1].xyz)/float(size.y));"
+    },
+    {
+      "address": "0x42d787",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if(f.cameraPosition.w!=0.) {"
+    },
+    {
+      "address": "0x42d7d2",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "footprint=max(length(worldFromDepth(uv+vec2(1./float(size.x),0.),center)-p),"
+    },
+    {
+      "address": "0x42d827",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "length(worldFromDepth(uv+vec2(0.,1./float(size.y)),center)-p));"
+    },
+    {
+      "address": "0x436992",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "vec4 cameraPosition, keyDirectionIntensity, fillDirectionIntensity;"
+    },
+    {
+      "address": "0x43734a",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "dot(point.xy,point.xy) <= 1.00002) {"
+    },
+    {
+      "address": "0x43775f",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "return clamp(.5*(rs*rs+rp*rp),0.,1.);"
+    },
+    {
+      "address": "0x437972",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec3 center = vec3(0.,0.,sign*(thickness*.5-curvature));"
+    },
+    {
+      "address": "0x437b7b",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float discriminant = b*b-a*(dot(origin.xy,origin.xy)-1.);"
+    },
+    {
+      "address": "0x437fd7",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec3 offset = (camera.origin-centerRadius.xyz)/centerRadius.w;"
+    },
+    {
+      "address": "0x438067",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec3 direction = normalize(vec3(dot(camera.direction,right),dot(camera.direction,up),dot(camera.direction,normal)));"
+    },
+    {
+      "address": "0x438f78",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "if (length(searchSceneWorld(coordinate,nearestDepth)-searchSceneWorld(coordinate,farthestDepth)) > f.searchLensCenterRadius.w*.12)"
+    },
+    {
+      "address": "0x4391a9",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "vec3 start = lens.origin+lens.direction*(radius*.0001);"
+    },
+    {
+      "address": "0x43a10e",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "f.searchLensOptics.x == 1.) discard;"
+    },
+    {
+      "address": "0x43a13b",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "SearchCameraRay camera = searchCameraRay(texCoord*2.-1.,f.inverseViewProjection);"
+    },
+    {
+      "address": "0x43a47f",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "float resolvedCoverage = lens.aperture*(1.-missingSurface)*hit.resolved;"
+    },
+    {
+      "address": "0x43a4cc",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "outputColor = hit.resolved > 0. ? mix(original,hit.color,resolvedCoverage) : original;"
+    },
+    {
+      "address": "0x43a66e",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "float studio = pow(max(dot(reflected,normalize(f.keyDirectionIntensity.xyz)),0.),48.);"
+    },
+    {
+      "address": "0x43a79e",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "outputColor.rgb = reflectedColor*shine+outputColor.rgb*(1.-shine);"
+    },
+    {
+      "address": "0x43a7e5",
+      "ioc_type": "NETWORK_IPV4_OR_VERSION",
+      "value": "outputColor.a = shine+outputColor.a*(1.-shine);"
+    },
+    {
+      "address": "0x652cf2",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Required key not available"
+    },
+    {
+      "address": "0x652d0d",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Key has expired"
+    },
+    {
+      "address": "0x652d1d",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Key has been revoked"
+    },
+    {
+      "address": "0x652d32",
+      "ioc_type": "CRYPTO_OR_AUTH_MATERIAL",
+      "value": "Key was rejected by service"
+    }
+  ],
+  "extracted_iocs_count": 98,
+  "ok": true
+}

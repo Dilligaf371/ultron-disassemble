@@ -1959,9 +1959,10 @@
         <span style="font-family:var(--font-fui);font-size:9.5px;font-weight:700;color:var(--neon-cyan);letter-spacing:1.2px;">⚡ SME NEON PIPELINE</span>
         <span class="hud-tag" id="smeDockStepCounterTag" style="font-size:8.5px;">8/8 LOCKED</span>
       </div>
-      <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
+      <div style="display:flex;align-items:center;gap:5px;margin-top:2px;flex-wrap:wrap;">
         <button class="fui-btn primary-glow" style="padding:2px 6px;font-size:8.5px;" onclick="openCinemaWorkflowTheatre(true)" title="Replay Cinema Mise-en-Scene & Ultron Voice Briefing">🎬 CINEMA BRIEFING</button>
         <button class="fui-btn" style="padding:2px 6px;font-size:8.5px;" onclick="speakUltronCinemaOverview()" title="Ultron Voice: Explain required steps & telemetry">🔊 VOICE</button>
+        <button class="fui-btn" style="padding:2px 6px;font-size:8.5px;border-color:rgba(0,240,255,0.45);color:var(--neon-cyan);" onclick="openElevenLabsModal()" title="ElevenLabs Instant Voice Clone & TTS Studio">🎙 ELEVENLABS TTS</button>
       </div>
     </div>
     <div class="sme-nodes-track" id="smeDockNodesTrack"></div>
@@ -1981,8 +1982,9 @@
           </div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <button class="fui-btn primary-glow" onclick="replayCinemaWorkflowSequence()">🔊 REPLAY CINEMA SEQUENCE &amp; VOICE</button>
+        <button class="fui-btn" style="border-color:rgba(0,240,255,0.55);color:var(--neon-cyan);" onclick="openElevenLabsModal()">🎙 ELEVENLABS TTS</button>
         <button class="fui-btn" onclick="openAutoReportModal(); closeCinemaWorkflowTheatre();">📄 21 ARTIFACTS DOSSIER</button>
         <button class="fui-btn" onclick="closeCinemaWorkflowTheatre()">✕ ENTER WORKSPACE [ESC]</button>
       </div>
@@ -2017,6 +2019,106 @@
     <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1.4px;">
       <span>CLICK ANY NEON PHASE NODE TO INSPECT LIVE ARTIFACTS &amp; HEAR ULTRON PHASE BRIEFING</span>
       <span id="cinemaBottomSummaryMetrics" style="color:var(--emerald);font-weight:600;">ZERO-CLICK SME PIPELINE READY</span>
+    </div>
+  </div>
+
+  <!-- ─── ELEVENLABS VOICE CLONE & TTS STUDIO MODAL ─── -->
+  <div class="modal-backdrop" id="elevenLabsModal">
+    <div class="modal" style="width: 720px; max-width: 95vw; border-color: rgba(0, 240, 255, 0.55); box-shadow: 0 0 42px rgba(0, 240, 255, 0.22), 0 24px 60px rgba(0, 0, 0, 0.92);">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(0, 240, 255, 0.28);">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="beacon-dot" style="background:var(--neon-cyan);box-shadow:0 0 10px var(--neon-cyan);"></span>
+          <span>🎙 ELEVENLABS VOICE CLONE &amp; TTS STUDIO // ULTRON VOCAL ENGINE</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="hud-tag" id="elevenLabsStatusBadge" style="color:var(--neon-cyan);border-color:rgba(0,240,255,0.45);">VOICE SAMPLES READY (3/3)</span>
+          <button class="fui-btn" onclick="closeModal('elevenLabsModal')">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" style="gap: 14px; max-height: 82vh; overflow-y: auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.28);border-radius:3px;">
+          <div style="font-size:11.5px;color:var(--text-hi);line-height:1.45;">
+            Instant-clone Ultron's voice directly from your <strong>3 authentic reference vocal MP3s</strong> via ElevenLabs REST API, or open the ElevenLabs Text-to-Speech Studio in your browser.
+          </div>
+          <a href="https://elevenlabs.io/app/speech-synthesis/text-to-speech" target="_blank" rel="noopener noreferrer" class="fui-btn primary-glow" style="text-decoration:none;white-space:nowrap;padding:6px 12px;font-size:10px;">
+            ↗ OPEN ELEVENLABS STUDIO
+          </a>
+        </div>
+
+        <!-- 3 Reference Vocal MP3 Cards -->
+        <div class="fui-module" style="padding:10px 12px;">
+          <div class="fui-module-title">
+            <span>AUTHENTIC ULTRON REFERENCE VOCAL SAMPLES (3 MP3 FILES)</span>
+            <button class="fui-btn" style="padding:2px 8px;font-size:9px;" onclick="playThreeReferenceVocalsSequence()">▶ PLAY ALL 3 IN SEQUENCE</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-top:6px;">
+            <div style="padding:8px 10px;background:rgba(4,6,10,0.85);border:1px solid rgba(0,240,255,0.25);border-radius:3px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;">
+              <div>
+                <div style="font-family:var(--font-code);font-size:10.5px;color:var(--neon-cyan);font-weight:600;">01 // ultron_active.mp3</div>
+                <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:2px;">"ULTRON ACTIVE"</div>
+              </div>
+              <button class="fui-btn" style="width:100%;font-size:9.5px;padding:4px 8px;" onclick="playSingleVoiceClip('/api/voice/ultron-active.mp3')">▶ PLAY SAMPLE</button>
+            </div>
+            <div style="padding:8px 10px;background:rgba(4,6,10,0.85);border:1px solid rgba(0,240,255,0.25);border-radius:3px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;">
+              <div>
+                <div style="font-family:var(--font-code);font-size:10.5px;color:var(--neon-cyan);font-weight:600;">02 // rea_protocol_ready.mp3</div>
+                <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:2px;">"REA PROTOCOL READY TO PROCEED"</div>
+              </div>
+              <button class="fui-btn" style="width:100%;font-size:9.5px;padding:4px 8px;" onclick="playSingleVoiceClip('/api/voice/rea-ready.mp3')">▶ PLAY SAMPLE</button>
+            </div>
+            <div style="padding:8px 10px;background:rgba(4,6,10,0.85);border:1px solid rgba(0,240,255,0.25);border-radius:3px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;">
+              <div>
+                <div style="font-family:var(--font-code);font-size:10.5px;color:var(--neon-cyan);font-weight:600;">03 // ultron_disassemble.mp3</div>
+                <div style="font-family:var(--font-fui);font-size:9.5px;color:var(--text-mid);margin-top:2px;">"ULTRON, DISASSEMBLE"</div>
+              </div>
+              <button class="fui-btn" style="width:100%;font-size:9.5px;padding:4px 8px;" onclick="playSingleVoiceClip('/api/voice/ultron-disassemble.mp3')">▶ PLAY SAMPLE</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ElevenLabs API Configuration & Instant Voice Cloning -->
+        <div class="fui-module" style="padding:12px;">
+          <div class="fui-module-title">
+            <span>ELEVENLABS INSTANT VOICE CLONE (IVC) &amp; NEURAL TTS CONFIGURATION</span>
+            <span id="elevenLabsClonedVoiceTag" style="font-family:var(--font-code);font-size:9.5px;color:var(--emerald);">AUTO-CLONE READY</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
+            <div>
+              <label style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1px;display:block;margin-bottom:4px;">
+                ELEVENLABS API KEY (<code>xi-api-key</code>)
+              </label>
+              <input type="password" id="elevenLabsApiKeyInput" class="fui-input" style="width:100%;text-transform:none;" placeholder="xi-api-key (e.g. sk_...)" autocomplete="off" />
+            </div>
+            <div style="display:grid;grid-template-columns:1.3fr 0.7fr;gap:10px;">
+              <div>
+                <label style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1px;display:block;margin-bottom:4px;">
+                  ELEVENLABS VOICE ID (OPTIONAL — LEAVE BLANK TO AUTO-CLONE FROM 3 MP3S)
+                </label>
+                <input type="text" id="elevenLabsVoiceIdInput" class="fui-input" style="width:100%;text-transform:none;" placeholder="Auto-cloned from ultron_active + rea_protocol_ready + ultron_disassemble" />
+              </div>
+              <div>
+                <label style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1px;display:block;margin-bottom:4px;">
+                  MODEL ID
+                </label>
+                <select id="elevenLabsModelSelect" class="fui-select" style="width:100%;padding:6px 10px;">
+                  <option value="eleven_multilingual_v2">eleven_multilingual_v2</option>
+                  <option value="eleven_turbo_v2_5">eleven_turbo_v2_5</option>
+                  <option value="eleven_monolingual_v1">eleven_monolingual_v1</option>
+                </select>
+              </div>
+            </div>
+            <div id="elevenLabsStatusDetailBox" style="padding:8px 10px;background:#040507;border:1px solid var(--border-hairline);font-family:var(--font-code);font-size:10.5px;color:var(--text-mid);">
+              STATUS: Ready to clone 3 reference vocal files (ultron_active.mp3, rea_protocol_ready.mp3, ultron_disassemble.mp3) into an ElevenLabs Voice ID.
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px;">
+              <button class="fui-btn" onclick="speakUltronCinemaOverview()">🔊 TEST LIVE CINEMA NARRATION</button>
+              <button class="fui-btn primary-glow" id="elevenLabsCloneSubmitBtn" onclick="saveAndCloneElevenLabsVoice()" style="padding:7px 14px;font-size:10.5px;">
+                ⚡ CLONE 3 REFERENCE VOCALS &amp; ACTIVATE ELEVENLABS TTS
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -4021,6 +4123,7 @@ if proc:
     }
 
     function clearCinemaSequenceTimers() {
+      cinemaVoiceState.sequenceRunId = (cinemaVoiceState.sequenceRunId || 0) + 1;
       cinemaVoiceState.sequenceTimerIds.forEach(id => clearTimeout(id));
       cinemaVoiceState.sequenceTimerIds = [];
     }
@@ -4044,11 +4147,42 @@ if proc:
       renderSmeDynamicWorkflowDock(8);
     }
 
-    function replayCinemaWorkflowSequence() {
+    async function playThreeReferenceVocalsSequence() {
+      const refSteps = [
+        {
+          url: '/api/voice/ultron-active.mp3',
+          subtitle: 'ULTRON ACTIVE',
+          pulse: 1.45,
+          label: 'ULTRON ACTIVE (ultron_active.mp3)'
+        },
+        {
+          url: '/api/voice/rea-ready.mp3',
+          subtitle: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED.',
+          pulse: 1.65,
+          label: 'REA PROTOCOL READY (rea_protocol_ready.mp3)'
+        },
+        {
+          url: '/api/voice/ultron-disassemble.mp3',
+          subtitle: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE',
+          pulse: 1.85,
+          label: 'ULTRON, DISASSEMBLE (ultron_disassemble.mp3)'
+        }
+      ];
+      cinemaVoiceState.speaking = true;
+      for (const item of refSteps) {
+        setCinemaSubtitleText(item.subtitle);
+        triggerNeuralActivity(item.pulse, item.label);
+        const ok = await playSingleVoiceClip(item.url);
+        if (!ok) break;
+      }
+      cinemaVoiceState.speaking = false;
+    }
+
+    async function replayCinemaWorkflowSequence() {
       clearCinemaSequenceTimers();
+      const myRunId = cinemaVoiceState.sequenceRunId || 1;
       const m = getCinemaLiveMetricsObj();
       const introText = `Target ${m.target} acquired. Eight sequential phases and nineteen analytical engines are required. Executing forensic triage, C plus plus RTTI recovery, zero-goto AST restructuring, protocol grammar inference, Z3 symbolic taint auditing, vector vault indexing, inline assembly annotation, and generating ${m.files} forensic artifacts.`;
-      speakUltronCinemaLine(introText, introText, 'sequence');
 
       for (let step = 1; step <= 8; step++) {
         const tid = setTimeout(() => {
@@ -4058,6 +4192,157 @@ if proc:
           triggerNeuralActivity(1.35 + step * 0.08, `CINEMA PHASE 0${step}/08`);
         }, (step - 1) * 520);
         cinemaVoiceState.sequenceTimerIds.push(tid);
+      }
+
+      // 1. Sequence the user's 3 authentic MP3 reference vocals (ultron-active.mp3 -> rea-ready.mp3 -> ultron-disassemble.mp3)
+      const openingVocals = [
+        {
+          url: '/api/voice/ultron-active.mp3',
+          subtitle: 'ULTRON ACTIVE // AUTHENTIC VOCAL SAMPLE 01',
+          pulse: 1.45,
+          label: 'ULTRON ACTIVE'
+        },
+        {
+          url: '/api/voice/rea-ready.mp3',
+          subtitle: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED.',
+          pulse: 1.65,
+          label: 'REA PROTOCOL READY TO PROCEED'
+        },
+        {
+          url: '/api/voice/ultron-disassemble.mp3',
+          subtitle: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE',
+          pulse: 1.85,
+          label: 'ULTRON, DISASSEMBLE'
+        }
+      ];
+
+      cinemaVoiceState.speaking = true;
+      for (const clip of openingVocals) {
+        if ((cinemaVoiceState.sequenceRunId || 1) !== myRunId) {
+          cinemaVoiceState.speaking = false;
+          return;
+        }
+        setCinemaSubtitleText(clip.subtitle);
+        triggerNeuralActivity(clip.pulse, clip.label);
+        const ok = await playSingleVoiceClip(clip.url);
+        if (!ok) break;
+      }
+
+      if ((cinemaVoiceState.sequenceRunId || 1) !== myRunId) {
+        cinemaVoiceState.speaking = false;
+        return;
+      }
+
+      // 2. Seamlessly transition to the dynamic 8-phase / 19-engine ElevenLabs TTS narration
+      await speakUltronCinemaLine(introText, introText, 'sequence');
+    }
+
+    async function refreshElevenLabsVoiceStatus() {
+      try {
+        const resp = await fetch('/api/voice/elevenlabs-status');
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const badge = document.getElementById('elevenLabsStatusBadge');
+        const tag = document.getElementById('elevenLabsClonedVoiceTag');
+        const detail = document.getElementById('elevenLabsStatusDetailBox');
+        const vidInput = document.getElementById('elevenLabsVoiceIdInput');
+        const modelSel = document.getElementById('elevenLabsModelSelect');
+
+        if (data.voice_id && vidInput && !vidInput.value) {
+          vidInput.value = data.voice_id;
+        }
+        if (data.model_id && modelSel) {
+          modelSel.value = data.model_id;
+        }
+        if (badge) {
+          badge.textContent = data.configured
+            ? `ELEVENLABS ACTIVE // ${(data.voice_id || 'CLONED').slice(0, 10)}`
+            : 'VOICE SAMPLES READY (3/3)';
+          badge.style.color = data.configured ? 'var(--emerald)' : 'var(--neon-cyan)';
+        }
+        if (tag) {
+          tag.textContent = data.voice_id
+            ? `VOICE ID: ${data.voice_id}`
+            : 'AUTO-CLONE READY (3 MP3 SAMPLES)';
+        }
+        if (detail && data.status_message) {
+          detail.textContent = `STATUS: ${data.status_message}`;
+        }
+      } catch (e) {}
+    }
+
+    function openElevenLabsModal() {
+      playChirp(760, 0.05);
+      openModal('elevenLabsModal');
+      refreshElevenLabsVoiceStatus();
+    }
+
+    async function saveAndCloneElevenLabsVoice() {
+      const apiKey = (document.getElementById('elevenLabsApiKeyInput')?.value || '').trim();
+      const voiceId = (document.getElementById('elevenLabsVoiceIdInput')?.value || '').trim();
+      const modelId = document.getElementById('elevenLabsModelSelect')?.value || 'eleven_multilingual_v2';
+      const detail = document.getElementById('elevenLabsStatusDetailBox');
+      const badge = document.getElementById('elevenLabsStatusBadge');
+      const tag = document.getElementById('elevenLabsClonedVoiceTag');
+      const btn = document.getElementById('elevenLabsCloneSubmitBtn');
+
+      playChirp(880, 0.06);
+      if (detail) {
+        detail.style.color = 'var(--neon-cyan)';
+        detail.textContent = 'CLONING 3 REFERENCE VOCALS (ultron_active.mp3, rea_protocol_ready.mp3, ultron_disassemble.mp3) VIA ELEVENLABS IVC…';
+      }
+      if (btn) btn.disabled = true;
+
+      try {
+        const resp = await fetch('/api/voice/elevenlabs-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            api_key: apiKey,
+            voice_id: voiceId,
+            model_id: modelId,
+            auto_clone: true
+          })
+        });
+        const data = await resp.json();
+        if (btn) btn.disabled = false;
+
+        if (data.error) {
+          if (detail) {
+            detail.style.color = '#ef4444';
+            detail.textContent = `ERROR: ${data.error}`;
+          }
+          showToast(`ELEVENLABS ERROR: ${data.error}`);
+          return;
+        }
+
+        const activeVoiceId = data.voice_id || voiceId || 'ULTRON-IVC-CLONE';
+        const vidInput = document.getElementById('elevenLabsVoiceIdInput');
+        if (vidInput && data.voice_id) {
+          vidInput.value = data.voice_id;
+        }
+        if (badge) {
+          badge.textContent = `CLONED // ${activeVoiceId.slice(0, 12)}`;
+          badge.style.color = 'var(--emerald)';
+        }
+        if (tag) {
+          tag.textContent = `VOICE ID: ${activeVoiceId}`;
+        }
+        if (detail) {
+          detail.style.color = 'var(--emerald)';
+          detail.textContent = data.message || `SUCCESS: Instant Voice Clone active (voice_id: ${activeVoiceId}, model: ${modelId}). Playing test narration…`;
+        }
+        showToast(`🎙 ELEVENLABS VOICE ACTIVE: ${activeVoiceId}`);
+
+        // Immediately play a test Cinema Workflow narration via ElevenLabs
+        await speakUltronCinemaOverview();
+      } catch (e) {
+        if (btn) btn.disabled = false;
+        if (detail) {
+          detail.style.color = '#ef4444';
+          detail.textContent = `NETWORK / CONFIG NOTICE: ${e.message}. Falling back to local Ultron Cinema Vocal Synthesizer.`;
+        }
+        await speakUltronCinemaOverview();
       }
     }
 

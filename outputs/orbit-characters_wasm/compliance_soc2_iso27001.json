@@ -1,0 +1,98 @@
+{
+  "air_gapped_verified": true,
+  "cyclonedx_sbom": {
+    "bomFormat": "CycloneDX",
+    "components": [
+      {
+        "bom-ref": "pkg:darwin/libSystem.B.dylib",
+        "name": "libSystem.B.dylib",
+        "purl": "pkg:generic/libSystem.B.dylib?path=/usr/lib/libSystem.B.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "1345.100.2"
+      }
+    ],
+    "metadata": {
+      "component": {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "10c43c3139ff0d415a8d95b9a6adb22dd2bfc7f7a0dc5eca3a1edf8ede8e11d3"
+          }
+        ],
+        "name": "orbit-characters.wasm",
+        "type": "application"
+      },
+      "timestamp": "2026-10-18T22:00:00Z",
+      "tools": [
+        {
+          "name": "Ultron Disassemble v4.0",
+          "vendor": "Ultron Sovereign Security",
+          "version": "4.0.0-sovereign"
+        }
+      ]
+    },
+    "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-f19ab383af8a",
+    "specVersion": "1.5",
+    "version": 1
+  },
+  "immutable_ledger_entries": 25,
+  "immutable_ledger_path": "/Users/gilles/.ultron/immutable_audit_ledger.jsonl",
+  "iso27001_annex_a_controls": [
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.8 — Management of Technical Vulnerabilities",
+      "evidence": "Automated CWE-120/787/134/78 Static + Symbolic Z3 + 64-Seed Coverage Fuzzing Verification",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.12 — Data Leakage Prevention",
+      "evidence": "Zero third-party network calls; all decompilation, AI AST synthesis & fuzzing execute strictly on-premise in memory-safe Rust",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.15 — Logging & Immutable Audit Trail",
+      "evidence": "Append-only Merkle JSONL Ledger at /Users/gilles/.ultron/immutable_audit_ledger.jsonl",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.28 — Secure Coding & Supply Chain (CycloneDX SBOM)",
+      "evidence": "CycloneDX 1.5 SBOM generated (1 linked components mapped)",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27037 — Digital Evidence Identification, Collection & Preservation",
+      "evidence": "SHA-256 Chain-of-Custody (10c43c3139ff0d415a8d95b9a6adb22dd2bfc7f7a0dc5eca3a1edf8ede8e11d3) + MCP Evidence Ledger provenance",
+      "status": "COMPLIANT (PASS)"
+    }
+  ],
+  "latest_merkle_hash": "9d2df1beac1bc700264ade0a632c45fa",
+  "memory_safe_rust_core": true,
+  "ok": true,
+  "overall_status": "COMPLIANT // SOC 2 TYPE II + ISO/IEC 27001:2022 + ISO/IEC 27037 + CYCLONEDX 1.5",
+  "sbom_components_count": 1,
+  "sbom_path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/orbit-characters_wasm/sbom_cyclonedx.json",
+  "soc2_trust_services_criteria": [
+    {
+      "criteria": "CC6.1 / CC6.6 — Logical Access & Boundary Protection",
+      "evidence": "100% Local Loopback Binding (127.0.0.1:8420), Zero Cloud Exfiltration, Air-Gapped Ready",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC7.1 — System Vulnerability & Configuration Detection",
+      "evidence": "Automated CWE Source->Sink Taint Audit, Shannon Entropy & Binary Hardening Inspection across 2062 procedures",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC7.2 — Tamper-Evident Security Event Monitoring",
+      "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (25 records, head=9d2df1beac1bc700264ade0a632c45fa)",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC8.1 — Change Management & Binary Patch Integrity",
+      "evidence": "1-Day Patch Root-Cause C-Diffing, Mach-O Ad-Hoc CodeSigning & SHA-256 Provenance Verification",
+      "status": "COMPLIANT (PASS)"
+    }
+  ],
+  "target_binary": "/Users/gilles/.gemini/antigravity/brain/9d4f7005-e3a0-4b0b-9c59-b3cebb4935ab/scratch/asar_dot/orbit-characters.wasm",
+  "target_sha256": "10c43c3139ff0d415a8d95b9a6adb22dd2bfc7f7a0dc5eca3a1edf8ede8e11d3"
+}
