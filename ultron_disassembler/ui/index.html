@@ -1553,6 +1553,215 @@
         inset 0 0 18px rgba(var(--neon-cyan-rgb), 0.45) !important;
       transition: none !important;
     }
+
+    /* ─── DYNAMIC NEON WORKFLOW MATRIX (DeWcAumKuR1 LASER CONDUIT & CINEMA STAGE) ─── */
+    @keyframes conduitPhotonStream {
+      0% { transform: translateX(-100%); opacity: 0; }
+      25% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { transform: translateX(220%); opacity: 0; }
+    }
+
+    @keyframes cinemaNodeExecuting {
+      0%, 100% {
+        border-color: var(--neon-cyan);
+        box-shadow:
+          0 0 14px rgba(var(--neon-cyan-rgb), 0.75),
+          0 0 34px rgba(var(--neon-cyan-rgb), 0.35),
+          inset 0 0 18px rgba(var(--neon-cyan-rgb), 0.28);
+      }
+      50% {
+        border-color: #ffffff;
+        box-shadow:
+          0 0 22px #ffffff,
+          0 0 48px rgba(var(--neon-cyan-rgb), 0.85),
+          inset 0 0 24px rgba(var(--neon-cyan-rgb), 0.48);
+      }
+    }
+
+    #smeDynamicWorkflowDock {
+      position: relative;
+      z-index: 11;
+      background: linear-gradient(180deg, rgba(4, 6, 10, 0.96) 0%, rgba(8, 11, 16, 0.92) 100%);
+      border-bottom: 1px solid rgba(var(--neon-cyan-rgb), 0.32);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .sme-dock-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-right: 10px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      min-width: 158px;
+      flex-shrink: 0;
+    }
+
+    .sme-nodes-track {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sme-phase-node {
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+      min-width: 115px;
+      background: rgba(10, 12, 16, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      padding: 5px 8px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    .sme-phase-node::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      background: radial-gradient(
+        110px circle at var(--mx) var(--my),
+        rgba(var(--neon-cyan-rgb), 0.28),
+        transparent 75%
+      );
+    }
+
+    .sme-phase-node:hover::before {
+      opacity: 1;
+    }
+
+    .sme-phase-node::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 55%;
+      pointer-events: none;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(var(--neon-cyan-rgb), 0.35) 45%,
+        rgba(255, 255, 255, 0.85) 50%,
+        rgba(var(--neon-cyan-rgb), 0.35) 55%,
+        transparent 100%
+      );
+      transform: translateX(-150%) skewX(-22deg);
+      opacity: 0;
+    }
+
+    .sme-phase-node:hover::after,
+    .sme-phase-node.phase-executing::after {
+      animation: neonSweepLine 0.75s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    .sme-phase-node:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 14px rgba(var(--neon-cyan-rgb), 0.48),
+        inset 0 0 12px rgba(var(--neon-cyan-rgb), 0.18);
+    }
+
+    .sme-phase-node.phase-executing {
+      animation: cinemaNodeExecuting 1.1s infinite ease-in-out;
+      background: rgba(var(--neon-cyan-rgb), 0.16);
+      transform: translateY(-1px) scale(1.015);
+    }
+
+    .sme-phase-node.phase-completed {
+      border-color: rgba(var(--neon-cyan-rgb), 0.52);
+      background: linear-gradient(135deg, rgba(var(--neon-cyan-rgb), 0.11) 0%, rgba(16, 185, 129, 0.07) 100%);
+      box-shadow:
+        0 0 10px rgba(var(--neon-cyan-rgb), 0.18),
+        inset 0 0 8px rgba(var(--neon-cyan-rgb), 0.08);
+    }
+
+    .sme-neon-conduit {
+      width: 18px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .sme-neon-conduit.conduit-active {
+      background: rgba(var(--neon-cyan-rgb), 0.45);
+      box-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    .sme-neon-conduit.conduit-active::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 60%;
+      background: linear-gradient(90deg, transparent, #ffffff, var(--neon-cyan), transparent);
+      animation: conduitPhotonStream 1.15s infinite linear;
+    }
+
+    /* Cinema Mise-en-Scene Full Overlay */
+    #cinemaWorkflowModal {
+      position: fixed;
+      inset: 0;
+      z-index: 985;
+      background: radial-gradient(circle at 50% 35%, rgba(8, 16, 26, 0.94) 0%, rgba(2, 3, 5, 0.98) 75%);
+      backdrop-filter: blur(14px);
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 32px;
+      overflow-y: auto;
+    }
+
+    .cinema-phase-card {
+      position: relative;
+      overflow: hidden;
+      background: rgba(8, 10, 15, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    .cinema-phase-card.phase-executing {
+      animation: cinemaNodeExecuting 1.0s infinite ease-in-out;
+      background: linear-gradient(135deg, rgba(var(--neon-cyan-rgb), 0.22) 0%, rgba(245, 158, 11, 0.12) 100%);
+      transform: translateY(-2px) scale(1.015);
+    }
+
+    .cinema-phase-card.phase-completed {
+      border-color: var(--neon-cyan);
+      background: linear-gradient(135deg, rgba(var(--neon-cyan-rgb), 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+      box-shadow:
+        0 0 16px rgba(var(--neon-cyan-rgb), 0.25),
+        inset 0 0 12px rgba(var(--neon-cyan-rgb), 0.1);
+    }
+
+    .cinema-phase-card:hover {
+      border-color: #ffffff;
+      box-shadow:
+        0 0 20px rgba(var(--neon-cyan-rgb), 0.65),
+        inset 0 0 16px rgba(var(--neon-cyan-rgb), 0.25);
+    }
   </style>
 </head>
 <body>
@@ -1715,6 +1924,7 @@
       <button class="fui-btn" onclick="toggleBreakpoint(state.selectedAddr || state.selectedAddress)" title="Toggle breakpoint at selected address (B)">BP [B]</button>
       <button class="fui-btn" onclick="demangleAllAction()" title="Demangle all C++ / Swift / Rust symbols">DEMANGLE</button>
       <button class="fui-btn" onclick="openAssemblerModal()" title="Live LLVM Assembler & Patcher (A)">LLVM [A]</button>
+      <button class="fui-btn primary-glow" onclick="openCinemaWorkflowTheatre(true)" id="cinemaWorkflowTopBtn" title="Launch Dynamic Neon 8-Phase Cinema Workflow & Ultron Voice Briefing [Shortcut: W]">🎬 CINEMA WORKFLOW [W]</button>
       <button class="fui-btn primary-glow" onclick="openAutoReportModal()" id="reportOutputsBtn" title="View Autonomous Reverse Engineering Report & Generated Output Files [Shortcut: R]">📄 REPORT &amp; OUTPUTS</button>
       <button class="fui-btn cyan-glow" onclick="toggleTimeTravelDock()" id="timeTravelTopBtn" title="Toggle Time-Travel Execution Scrubber & Live Neon CFG Coverage Lighthouse [Shortcut: L]">⏱ TIME-TRAVEL [L]</button>
       <button class="fui-btn" onclick="exportPatchedBinaryAction()" title="Export patched binary to disk">EXPORT</button>
@@ -1730,16 +1940,84 @@
     </div>
   </header>
 
-  <!-- ─── AUTONOMOUS 5-STAGE DISASSEMBLY PIPELINE PROGRESS BANNER ─── -->
+  <!-- ─── AUTONOMOUS 8-PHASE DISASSEMBLY PIPELINE PROGRESS BANNER ─── -->
   <div id="autoPipelineBanner" style="display:none;position:relative;z-index:12;background:rgba(0,240,255,0.08);border-bottom:1px solid var(--neon-cyan);padding:6px 16px;font-family:var(--font-fui);font-size:10.5px;color:#ffffff;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 0 20px rgba(0,240,255,0.2);">
     <div style="display:flex;align-items:center;gap:10px;">
       <span class="beacon-dot" style="background:var(--neon-cyan);box-shadow:0 0 8px var(--neon-cyan);"></span>
-      <strong id="autoPipelineStageText" style="letter-spacing:1.2px;color:#ffffff;">[1/5] AUTONOMOUS PIPELINE INITIALIZING…</strong>
+      <strong id="autoPipelineStageText" style="letter-spacing:1.2px;color:#ffffff;">[1/8] AUTONOMOUS PIPELINE INITIALIZING…</strong>
     </div>
     <div style="flex:1;max-width:420px;height:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(0,240,255,0.4);border-radius:2px;overflow:hidden;">
       <div id="autoPipelineProgressBar" style="width:15%;height:100%;background:var(--neon-cyan);box-shadow:0 0 12px var(--neon-cyan);transition:width 0.22s ease;"></div>
     </div>
     <span id="autoPipelineDetailText" style="color:var(--neon-cyan);font-size:10px;letter-spacing:0.8px;">REA PROTOCOL // FULL AUTOMATION</span>
+  </div>
+
+  <!-- ─── DYNAMIC 8-PHASE NEON WORKFLOW CIRCUIT DOCK (DeWcAumKuR1 STYLE) ─── -->
+  <div id="smeDynamicWorkflowDock">
+    <div class="sme-dock-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span style="font-family:var(--font-fui);font-size:9.5px;font-weight:700;color:var(--neon-cyan);letter-spacing:1.2px;">⚡ SME NEON PIPELINE</span>
+        <span class="hud-tag" id="smeDockStepCounterTag" style="font-size:8.5px;">8/8 LOCKED</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
+        <button class="fui-btn primary-glow" style="padding:2px 6px;font-size:8.5px;" onclick="openCinemaWorkflowTheatre(true)" title="Replay Cinema Mise-en-Scene & Ultron Voice Briefing">🎬 CINEMA BRIEFING</button>
+        <button class="fui-btn" style="padding:2px 6px;font-size:8.5px;" onclick="speakUltronCinemaOverview()" title="Ultron Voice: Explain required steps & telemetry">🔊 VOICE</button>
+      </div>
+    </div>
+    <div class="sme-nodes-track" id="smeDockNodesTrack"></div>
+  </div>
+
+  <!-- ─── FULL-SCREEN CINEMA MISE-EN-SCENE WORKFLOW STAGE & ULTRON VOICE BRIEFING ─── -->
+  <div id="cinemaWorkflowModal">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,240,255,0.28);padding-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="beacon-dot" style="background:var(--neon-cyan);box-shadow:0 0 12px var(--neon-cyan);width:9px;height:9px;"></span>
+        <div>
+          <div style="font-family:var(--font-display);font-size:15px;font-weight:700;letter-spacing:3px;color:#ffffff;">
+            ULTRON // AUTONOMOUS GOD-TIER SME CINEMA SEQUENCER
+          </div>
+          <div style="font-family:var(--font-fui);font-size:10px;color:var(--neon-cyan);letter-spacing:1.8px;" id="cinemaTargetMetaSub">
+            PROTOCOL REA // 08 SEQUENTIAL PHASES • 19 ANALYTICAL ENGINES • 21 FORENSIC ARTIFACTS
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="fui-btn primary-glow" onclick="replayCinemaWorkflowSequence()">🔊 REPLAY CINEMA SEQUENCE &amp; VOICE</button>
+        <button class="fui-btn" onclick="openAutoReportModal(); closeCinemaWorkflowTheatre();">📄 21 ARTIFACTS DOSSIER</button>
+        <button class="fui-btn" onclick="closeCinemaWorkflowTheatre()">✕ ENTER WORKSPACE [ESC]</button>
+      </div>
+    </div>
+
+    <!-- Center Hero: Live Voice Oscilloscope + Required Step Count Cinema Announcement -->
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;margin:12px 0;">
+      <div style="position:relative;width:100%;max-width:760px;height:110px;background:rgba(4,6,10,0.85);border:1px solid rgba(0,240,255,0.35);border-radius:4px;overflow:hidden;box-shadow:0 0 28px rgba(0,240,255,0.16), inset 0 0 18px rgba(0,240,255,0.1);">
+        <canvas id="cinemaVoiceOscCanvas" width="760" height="110" style="width:100%;height:100%;display:block;"></canvas>
+        <div style="position:absolute;top:8px;left:12px;font-family:var(--font-fui);font-size:9.5px;color:var(--neon-cyan);letter-spacing:1.5px;">
+          ULTRON VOCAL SYNTHESIS // CYBERNETIC BARITONE + SUB-OCTAVE RESONATOR
+        </div>
+        <div style="position:absolute;top:8px;right:12px;font-family:var(--font-code);font-size:10px;color:#ffffff;font-weight:600;" id="cinemaActivePhaseCounter">
+          PHASE 08 / 08 // 19 ENGINES ACTIVE
+        </div>
+      </div>
+
+      <div id="cinemaStepRequirementBanner" style="font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:2.4px;color:#ffffff;text-align:center;text-shadow:0 0 14px rgba(0,240,255,0.75);">
+        REQUIRED PROTOCOL DEPTH: 08 SEQUENTIAL PHASES &bull; 19 SPECIALIZED ENGINES &bull; 21 ARTIFACTS
+      </div>
+
+      <!-- Live Voice Subtitle Readout Box -->
+      <div style="width:100%;max-width:920px;min-height:46px;padding:10px 18px;background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.45);border-radius:3px;font-family:var(--font-code);font-size:12.5px;color:#ffffff;text-align:center;letter-spacing:0.8px;line-height:1.5;box-shadow:0 0 22px rgba(0,240,255,0.18);" id="cinemaVoiceSubtitleText">
+        "TARGET BINARY ACQUIRED. EIGHT SEQUENTIAL PHASES AND NINETEEN ANALYTICAL ENGINES ARE REQUIRED FOR TOTAL STRUCTURAL DECONSTRUCTION."
+      </div>
+    </div>
+
+    <!-- 8-Phase Dynamic Neon Matrix Grid (2 rows x 4 columns connected by laser conduits) -->
+    <div id="cinemaPhaseNodesGrid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;width:100%;max-width:1280px;margin:0 auto;"></div>
+
+    <!-- Bottom Cinema Telemetry Footer -->
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1.4px;">
+      <span>CLICK ANY NEON PHASE NODE TO INSPECT LIVE ARTIFACTS &amp; HEAR ULTRON PHASE BRIEFING</span>
+      <span id="cinemaBottomSummaryMetrics" style="color:var(--emerald);font-weight:600;">ZERO-CLICK SME PIPELINE READY</span>
+    </div>
   </div>
 
   <!-- ─── TELEMETRY & ENTROPY HORIZON BAR ─── -->
@@ -2438,7 +2716,7 @@ if proc:
 
     /* ─── NEON ITEM ACTION & CURSOR SPOTLIGHT CONTROLLER ─── */
     (function setupNeonItemInteractions() {
-      const NEON_SELECTOR = '.fui-btn, .reticle-tab, .nav-matrix-tab, .list-item, .asm-row, .target-deck-card, .launch-ignite-btn, .xref-pill, .emu-reg-card, .mitigation-card, .fui-module, .resuite-panel, .omniv3-panel, .reactor-pod, .decomp-line';
+      const NEON_SELECTOR = '.fui-btn, .reticle-tab, .nav-matrix-tab, .list-item, .asm-row, .target-deck-card, .launch-ignite-btn, .xref-pill, .emu-reg-card, .mitigation-card, .fui-module, .resuite-panel, .omniv3-panel, .reactor-pod, .decomp-line, .sme-phase-node, .cinema-phase-card';
 
       // Track mouse coordinates inside interactive items for radial neon border/surface spotlight
       window.addEventListener('pointermove', (e) => {
@@ -3229,6 +3507,8 @@ if proc:
     async function initApp() {
       startFuiCanvasEngine();
       startLaunchPortalEngine();
+      startCinemaVoiceOscilloscope();
+      renderSmeDynamicWorkflowDock(8);
       await refreshAllData();
       renderLaunchTargetDeck();
       // Automatically run the full 8-Phase God-Tier SME Autonomous Workflow on initial load
@@ -3238,6 +3518,12 @@ if proc:
         if (portal && !portal.classList.contains('portal-hidden') && e.key === 'Enter') {
           e.preventDefault();
           igniteUltronWorkspace();
+          return;
+        }
+        const cinemaModal = document.getElementById('cinemaWorkflowModal');
+        if (cinemaModal && cinemaModal.style.display === 'flex' && e.key === 'Escape') {
+          e.preventDefault();
+          closeCinemaWorkflowTheatre();
           return;
         }
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -3253,6 +3539,7 @@ if proc:
         if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAssemblerModal(); }
         if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleBreakpoint(state.selectedAddr || state.selectedAddress); }
         if (e.key === 'o' || e.key === 'O') { e.preventDefault(); pickFileToDisassemble('workspace'); }
+        if (e.key === 'w' || e.key === 'W') { e.preventDefault(); openCinemaWorkflowTheatre(true); }
         if (e.key === 'r' || e.key === 'R') { e.preventDefault(); openAutoReportModal(); }
         if (e.key === 'l' || e.key === 'L') { e.preventDefault(); toggleTimeTravelDock(); }
         if (e.key === 'v' || e.key === 'V') { e.preventDefault(); toggleSplitViewMode(); }
@@ -3350,6 +3637,430 @@ if proc:
       }
     }
 
+    /* ─── DYNAMIC 8-PHASE NEON WORKFLOW DOCK & CINEMA MISE-EN-SCENE DIRECTOR ─── */
+    const SME_CINEMA_PHASES = [
+      {
+        phase: 1,
+        code: 'PHASE 01',
+        title: 'FORENSIC & CUSTODY',
+        subtitle: 'SHA-256 • BLAKE3 • MERKLE • ENTROPY',
+        targetMode: 'audit',
+        engines: ['Forensic Triage', 'Merkle Ledger', 'SOC2/ISO27001'],
+        voiceSummary: (m) => `Phase One: Forensic Triage and Chain of Custody. Computing SHA-256 and BLAKE3 Merkle hashes across ${m.procs} procedures and verifying section Shannon entropy.`,
+      },
+      {
+        phase: 2,
+        code: 'PHASE 02',
+        title: 'C++ RTTI & TIL ABI',
+        subtitle: 'VTABLES • DWARF • POSIX/DARWIN .TIL',
+        targetMode: 'pseudo',
+        engines: ['FLIRT/WARP', 'C++ RTTI/VTables', 'OS .TIL Binder'],
+        voiceSummary: (m) => `Phase Two: Type and Class Recovery. Reconstructing ${m.classes} polymorphic C plus plus classes, DWARF compile units, and ${m.typed} operating system type library call sites.`,
+      },
+      {
+        phase: 3,
+        code: 'PHASE 03',
+        title: 'ZERO-GOTO & DEOBF',
+        subtitle: 'MBA ALGEBRA • CFF • 0-GOTO AST',
+        targetMode: 'pseudo',
+        engines: ['MBA Simplifier', 'CFF Unflattener', 'Zero-Goto AST'],
+        voiceSummary: (m) => `Phase Three: De-Obfuscation and Zero-Goto AST Restructuring. Simplifying ${m.deobf} mixed boolean-arithmetic expressions and eliminating unstructured goto jumps.`,
+      },
+      {
+        phase: 4,
+        code: 'PHASE 04',
+        title: 'CRYPTO & PROTOCOL',
+        subtitle: 'S-BOX • TLV GRAMMAR • LUA DISSECTOR',
+        targetMode: 'omniv3',
+        engines: ['Crypto Hunter', 'Protocol Grammar', 'Clang -O2 Recompile'],
+        voiceSummary: (m) => `Phase Four: Cryptographic S-Box Hunter and Network Protocol Extractor. Recovering binary packet framing with magic header ${m.magic} and generating a Wireshark Lua dissector.`,
+      },
+      {
+        phase: 5,
+        code: 'PHASE 05',
+        title: 'Z3 SMT & ROP/FUZZ',
+        subtitle: 'TAINT • Z3 SOLVER • LIBFUZZER • ROP',
+        targetMode: 'audit',
+        engines: ['Z3 SMT Solver', 'Taint Auditor', 'ROP/JOP & Fuzzer'],
+        voiceSummary: (m) => `Phase Five: Vulnerability Discovery and Exploit Synthesis. Auditing ${m.taint} source-to-sink taint paths, solving Z3 branch constraints, and indexing ${m.rop} ROP and JOP gadgets.`,
+      },
+      {
+        phase: 6,
+        code: 'PHASE 06',
+        title: 'BCSD VECTOR VAULT',
+        subtitle: '16-D COSINE • TIME-TRAVEL • 1-DAY DIFF',
+        targetMode: 'cfg',
+        engines: ['16-D BCSD Vault', 'Time-Travel Trace'],
+        voiceSummary: (m) => `Phase Six: Cross-Architecture BCSD Vector Vault and Time-Travel Trace. Indexing ${m.vault} 16-dimensional embeddings and recording instruction execution coverage.`,
+      },
+      {
+        phase: 7,
+        code: 'PHASE 07',
+        title: 'INLINE SME NOTES',
+        subtitle: 'ASM ANNOTATIONS • SEMANTIC RENAME',
+        targetMode: 'asm',
+        engines: ['SME Inline Annotator', 'Semantic Renamer'],
+        voiceSummary: (m) => `Phase Seven: Autonomous SME Inline Assembly Annotations. Injecting ${m.smeNotes} architectural and cryptographic analyst notes directly into the disassembly listing.`,
+      },
+      {
+        phase: 8,
+        code: 'PHASE 08',
+        title: 'HVT & 21 ARTIFACTS',
+        subtitle: 'HVT RANKING • SME_PLAYBOOK.MD',
+        targetMode: 'report',
+        engines: ['HVT Ranker (0-100)', 'SME_PLAYBOOK.md'],
+        voiceSummary: (m) => `Phase Eight: High-Value Target Prioritization and Dossier Export. Ranking ${m.hvts} high-value targets and writing ${m.files} forensic artifacts to disk.`,
+      },
+    ];
+
+    const cinemaVoiceState = {
+      speaking: false,
+      activePhase: 8,
+      sequenceTimerIds: [],
+      subtitleIntervalId: null,
+      oscStarted: false,
+    };
+
+    function getCinemaLiveMetricsObj() {
+      const rpt = state.lastAutoPipelineReport || {};
+      const pb = state.smePlaybook || rpt.sme_playbook || {};
+      return {
+        target: (rpt.target_binary || state.overview?.document || 'target_binary').split('/').pop(),
+        arch: (rpt.arch || state.overview?.arch || 'arm64').toUpperCase(),
+        procs: rpt.procedure_count ?? state.procedures?.length ?? 8,
+        insns: rpt.instruction_count ?? 120,
+        classes: state.cppRttiReport?.classes_recovered ?? rpt.cpp_rtti?.classes_recovered ?? 2,
+        typed: state.tilReport?.resolved_call_sites_count ?? rpt.type_propagation?.resolved_call_sites_count ?? 12,
+        deobf: state.deobfuscationReport?.mba_simplified_count ?? rpt.deobfuscation?.mba_simplified_count ?? 4,
+        magic: state.protocolGrammar?.magic_bytes_hex ?? rpt.protocol_grammar?.magic_bytes_hex ?? '0x554C5452',
+        rop: state.ropReport?.total_gadgets ?? rpt.rop_gadgets?.total_gadgets ?? 18,
+        taint: state.taintAudit?.taint_chains_count ?? rpt.taint_audit?.taint_chains_count ?? 3,
+        vault: state.neuralVault?.indexed_procedures ?? rpt.neural_vault?.indexed_procedures ?? 8,
+        smeNotes: pb.auto_annotations_applied ?? ((pb.inline_annotations || []).length || 14),
+        hvts: (pb.high_value_targets || []).length || 6,
+        files: (rpt.output_files || []).length || 21,
+      };
+    }
+
+    function getPhaseDynamicMetric(phaseNum) {
+      const m = getCinemaLiveMetricsObj();
+      switch (phaseNum) {
+        case 1: return `${m.procs} PROCS • MERKLE ✓`;
+        case 2: return `${m.classes} RTTI • ${m.typed} TIL`;
+        case 3: return `0 GOTOS • ${m.deobf} DEOBF`;
+        case 4: return `MAGIC ${m.magic}`;
+        case 5: return `${m.rop} ROP • ${m.taint} TAINT`;
+        case 6: return `${m.vault} 16-D VECTORS`;
+        case 7: return `${m.smeNotes} SME NOTES`;
+        case 8: return `${m.hvts} HVTs • ${m.files} FILES`;
+        default: return 'READY';
+      }
+    }
+
+    function renderSmeDynamicWorkflowDock(activePhase = 8) {
+      cinemaVoiceState.activePhase = activePhase;
+      const track = document.getElementById('smeDockNodesTrack');
+      const tag = document.getElementById('smeDockStepCounterTag');
+      if (tag) {
+        tag.textContent = activePhase >= 8 ? '8/8 LOCKED • 19 ENGINES' : `PHASE ${activePhase}/8 ACTIVE`;
+      }
+      if (!track) return;
+
+      const htmlParts = [];
+      SME_CINEMA_PHASES.forEach((p, idx) => {
+        const isCompleted = p.phase < activePhase || activePhase >= 8;
+        const isExecuting = p.phase === activePhase && activePhase < 8;
+        const stateCls = isExecuting ? 'phase-executing' : (isCompleted ? 'phase-completed' : '');
+        const badgeMetric = getPhaseDynamicMetric(p.phase);
+        const dotColor = isExecuting ? '#f59e0b' : (isCompleted ? '#00f0ff' : '#4b5563');
+
+        htmlParts.push(`
+          <div class="sme-phase-node ${stateCls}" onclick="onClickSmePhaseNode(${p.phase})" title="Click for Ultron Voice Briefing &amp; Jump to ${p.title}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:2px;">
+              <span style="font-family:var(--font-fui);font-size:8.5px;font-weight:700;color:var(--neon-cyan);letter-spacing:0.8px;">${p.code}</span>
+              <span style="width:6px;height:6px;border-radius:50%;background:${dotColor};box-shadow:0 0 6px ${dotColor};display:inline-block;"></span>
+            </div>
+            <div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:#ffffff;letter-spacing:0.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              ${escapeHtml(p.title)}
+            </div>
+            <div style="font-family:var(--font-code);font-size:8.5px;color:var(--emerald);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;">
+              ${escapeHtml(badgeMetric)}
+            </div>
+          </div>
+        `);
+
+        if (idx < SME_CINEMA_PHASES.length - 1) {
+          const conduitOn = p.phase < activePhase || activePhase >= 8;
+          htmlParts.push(`<div class="sme-neon-conduit ${conduitOn ? 'conduit-active' : ''}"></div>`);
+        }
+      });
+
+      track.innerHTML = htmlParts.join('');
+    }
+
+    function renderCinemaPhaseNodesGrid(activePhase = 8) {
+      const grid = document.getElementById('cinemaPhaseNodesGrid');
+      const m = getCinemaLiveMetricsObj();
+      const counterEl = document.getElementById('cinemaActivePhaseCounter');
+      if (counterEl) {
+        counterEl.textContent = `PHASE 0${Math.min(8, activePhase)} / 08 // 19 ENGINES • ${m.files} ARTIFACTS`;
+      }
+      const reqBanner = document.getElementById('cinemaStepRequirementBanner');
+      if (reqBanner) {
+        reqBanner.innerHTML = `TARGET <span style="color:var(--neon-cyan);">${escapeHtml(m.target)}</span> (${escapeHtml(m.arch)}) // REQUIRED DEPTH: <span style="color:var(--neon-cyan);">08 PHASES</span> &bull; <span style="color:var(--emerald);">19 ENGINES</span> &bull; <span style="color:#f59e0b;">${m.files} ARTIFACTS</span>`;
+      }
+      const subMeta = document.getElementById('cinemaTargetMetaSub');
+      if (subMeta) {
+        subMeta.textContent = `PROTOCOL REA // ${m.procs} PROCEDURES • ${m.insns} INSTRUCTIONS • ${m.smeNotes} INLINE SME NOTES • ${m.hvts} HIGH-VALUE TARGETS`;
+      }
+      const bottomSum = document.getElementById('cinemaBottomSummaryMetrics');
+      if (bottomSum) {
+        bottomSum.textContent = activePhase >= 8
+          ? `ALL 08 PHASES LOCKED // ${m.files} ARTIFACTS WRITTEN TO DISK`
+          : `EXECUTING PHASE 0${activePhase} OF 08…`;
+      }
+      if (!grid) return;
+
+      grid.innerHTML = SME_CINEMA_PHASES.map((p) => {
+        const isExecuting = p.phase === activePhase && activePhase < 8;
+        const isCompleted = p.phase < activePhase || activePhase >= 8;
+        const cls = isExecuting ? 'phase-executing' : (isCompleted ? 'phase-completed' : '');
+        const statusText = isExecuting ? 'EXECUTING // NEON PULSE' : (isCompleted ? 'LOCKED ✓' : 'QUEUED');
+        const statusColor = isExecuting ? '#f59e0b' : (isCompleted ? 'var(--emerald)' : 'var(--text-lo)');
+        const liveMetric = getPhaseDynamicMetric(p.phase);
+
+        const enginePills = p.engines.map(eng => `
+          <span style="padding:2px 6px;background:rgba(0,240,255,0.09);border:1px solid rgba(0,240,255,0.32);font-family:var(--font-fui);font-size:8.5px;color:#e5e7eb;border-radius:2px;">
+            ${escapeHtml(eng)}
+          </span>
+        `).join('');
+
+        return `
+          <div class="cinema-phase-card ${cls}" onclick="onClickSmePhaseNode(${p.phase}, true)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-family:var(--font-fui);font-size:10px;font-weight:700;color:var(--neon-cyan);letter-spacing:1.4px;">${p.code} // 0${p.phase}</span>
+              <span style="font-family:var(--font-code);font-size:9px;font-weight:700;color:${statusColor};">${statusText}</span>
+            </div>
+            <div style="font-family:var(--font-display);font-size:13.5px;font-weight:700;color:#ffffff;letter-spacing:1.2px;margin-bottom:3px;">
+              ${escapeHtml(p.title)}
+            </div>
+            <div style="font-family:var(--font-fui);font-size:9px;color:var(--text-mid);letter-spacing:0.8px;margin-bottom:8px;">
+              ${escapeHtml(p.subtitle)}
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px;">
+              ${enginePills}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:6px;font-family:var(--font-code);font-size:10px;">
+              <span style="color:var(--emerald);font-weight:700;">${escapeHtml(liveMetric)}</span>
+              <span style="color:var(--neon-cyan);font-size:9px;">🔊 BRIEFING →</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function startCinemaVoiceOscilloscope() {
+      if (cinemaVoiceState.oscStarted) return;
+      cinemaVoiceState.oscStarted = true;
+      let phaseTick = 0;
+
+      function renderOscFrame() {
+        phaseTick += 0.085;
+        const canvas = document.getElementById('cinemaVoiceOscCanvas');
+        const modal = document.getElementById('cinemaWorkflowModal');
+        if (canvas && modal && modal.style.display === 'flex') {
+          const ctx = canvas.getContext('2d');
+          const w = canvas.width;
+          const h = canvas.height;
+          ctx.clearRect(0, 0, w, h);
+
+          // Subtle horizontal grid lines
+          ctx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, h * 0.5);
+          ctx.lineTo(w, h * 0.5);
+          ctx.stroke();
+
+          const activeAmp = cinemaVoiceState.speaking
+            ? 28 + Math.sin(phaseTick * 1.9) * 12
+            : 5 + (neuralCloudState.energy || 0.2) * 8;
+
+          // Vertical Neon Frequency Bars across bottom
+          const numBars = 64;
+          const barW = w / numBars;
+          for (let i = 0; i < numBars; i++) {
+            const norm = Math.abs(Math.sin(phaseTick * 1.4 + i * 0.37) * Math.cos(phaseTick * 0.8 - i * 0.19));
+            const barH = Math.max(3, norm * activeAmp * 1.45);
+            ctx.fillStyle = i % 3 === 0 ? 'rgba(245, 158, 11, 0.35)' : 'rgba(0, 240, 255, 0.38)';
+            ctx.fillRect(i * barW + 2, h - barH, Math.max(2, barW - 4), barH);
+          }
+
+          // Primary Neon Cyan Sine-Harmonic Waveform
+          ctx.save();
+          ctx.strokeStyle = '#00f0ff';
+          ctx.lineWidth = 2.2;
+          ctx.shadowColor = '#00f0ff';
+          ctx.shadowBlur = 12;
+          ctx.beginPath();
+          for (let x = 0; x < w; x += 4) {
+            const env = Math.sin((x / w) * Math.PI);
+            const y = h * 0.5
+              + Math.sin(x * 0.028 + phaseTick * 2.4) * activeAmp * env
+              + Math.cos(x * 0.065 - phaseTick * 3.8) * (activeAmp * 0.42) * env;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          // Secondary Sub-Octave Amber Harmonics
+          ctx.strokeStyle = 'rgba(245, 158, 11, 0.85)';
+          ctx.lineWidth = 1.3;
+          ctx.shadowColor = '#f59e0b';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          for (let x = 0; x < w; x += 5) {
+            const env = Math.sin((x / w) * Math.PI);
+            const y = h * 0.5
+              + Math.cos(x * 0.019 - phaseTick * 1.7) * (activeAmp * 0.65) * env;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+        requestAnimationFrame(renderOscFrame);
+      }
+      requestAnimationFrame(renderOscFrame);
+    }
+
+    function setCinemaSubtitleText(text) {
+      const box = document.getElementById('cinemaVoiceSubtitleText');
+      if (!box) return;
+      if (cinemaVoiceState.subtitleIntervalId) {
+        clearInterval(cinemaVoiceState.subtitleIntervalId);
+      }
+      const clean = `"${text.toUpperCase()}"`;
+      let i = 0;
+      box.textContent = '';
+      cinemaVoiceState.subtitleIntervalId = setInterval(() => {
+        i += 2;
+        box.textContent = clean.slice(0, i);
+        if (i >= clean.length) {
+          clearInterval(cinemaVoiceState.subtitleIntervalId);
+          cinemaVoiceState.subtitleIntervalId = null;
+        }
+      }, 18);
+    }
+
+    function speakFallbackWebSpeechCustom(text) {
+      try {
+        if (!('speechSynthesis' in window)) return false;
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-US';
+        utter.pitch = 0.48;
+        utter.rate = 0.92;
+        utter.volume = 1.0;
+        const voices = window.speechSynthesis.getVoices() || [];
+        const preferred = voices.find(v => /Daniel|Alex|Fred|Aaron|Arthur|Google UK English Male|Reed/i.test(v.name) && /en/i.test(v.lang))
+          || voices.find(v => /en/i.test(v.lang));
+        if (preferred) utter.voice = preferred;
+        utter.onstart = () => { cinemaVoiceState.speaking = true; };
+        utter.onend = () => { cinemaVoiceState.speaking = false; };
+        utter.onerror = () => { cinemaVoiceState.speaking = false; };
+        window.speechSynthesis.speak(utter);
+        return true;
+      } catch (e) {
+        cinemaVoiceState.speaking = false;
+        return false;
+      }
+    }
+
+    async function speakUltronCinemaLine(spokenText, subtitleText, phaseParam = null) {
+      setCinemaSubtitleText(subtitleText || spokenText);
+      triggerNeuralActivity(1.75, 'ULTRON CINEMA VOICE');
+      cinemaVoiceState.speaking = true;
+
+      const url = phaseParam
+        ? `/api/voice/cinema-narration?phase=${encodeURIComponent(phaseParam)}&text=${encodeURIComponent(spokenText)}`
+        : `/api/voice/cinema-narration?text=${encodeURIComponent(spokenText)}`;
+
+      const ok = await playSingleVoiceClip(url);
+      if (!ok) {
+        speakFallbackWebSpeechCustom(spokenText);
+      } else {
+        cinemaVoiceState.speaking = false;
+      }
+    }
+
+    async function speakUltronCinemaOverview() {
+      const m = getCinemaLiveMetricsObj();
+      const spoken = `Target ${m.target} acquired. Architecture ${m.arch}. Eight sequential phases and nineteen specialized engines are required. ${m.procs} procedures and ${m.insns} instructions deconstructed. ${m.smeNotes} inline analyst annotations applied, ${m.hvts} high-value targets ranked, and ${m.files} forensic artifacts written to disk.`;
+      await speakUltronCinemaLine(spoken, spoken, 'overview');
+    }
+
+    async function onClickSmePhaseNode(phaseNum, insideCinema = false) {
+      playChirp(680 + phaseNum * 45, 0.06);
+      const phaseObj = SME_CINEMA_PHASES.find(p => p.phase === phaseNum) || SME_CINEMA_PHASES[0];
+      const m = getCinemaLiveMetricsObj();
+      renderSmeDynamicWorkflowDock(phaseNum);
+      renderCinemaPhaseNodesGrid(phaseNum);
+
+      const spoken = phaseObj.voiceSummary(m);
+      showToast(`⚡ ${phaseObj.code}: ${phaseObj.title} // ${getPhaseDynamicMetric(phaseNum)}`);
+      speakUltronCinemaLine(spoken, spoken, `phase${phaseNum}`);
+
+      if (!insideCinema) {
+        if (phaseObj.targetMode === 'report') {
+          openAutoReportModal();
+        } else if (phaseObj.targetMode) {
+          setMode(phaseObj.targetMode);
+        }
+      }
+    }
+
+    function clearCinemaSequenceTimers() {
+      cinemaVoiceState.sequenceTimerIds.forEach(id => clearTimeout(id));
+      cinemaVoiceState.sequenceTimerIds = [];
+    }
+
+    function openCinemaWorkflowTheatre(autoPlaySequence = true) {
+      const modal = document.getElementById('cinemaWorkflowModal');
+      if (!modal) return;
+      playChirp(820, 0.07);
+      modal.style.display = 'flex';
+      if (autoPlaySequence) {
+        replayCinemaWorkflowSequence();
+      } else {
+        renderCinemaPhaseNodesGrid(8);
+      }
+    }
+
+    function closeCinemaWorkflowTheatre() {
+      const modal = document.getElementById('cinemaWorkflowModal');
+      if (modal) modal.style.display = 'none';
+      clearCinemaSequenceTimers();
+      renderSmeDynamicWorkflowDock(8);
+    }
+
+    function replayCinemaWorkflowSequence() {
+      clearCinemaSequenceTimers();
+      const m = getCinemaLiveMetricsObj();
+      const introText = `Target ${m.target} acquired. Eight sequential phases and nineteen analytical engines are required. Executing forensic triage, C plus plus RTTI recovery, zero-goto AST restructuring, protocol grammar inference, Z3 symbolic taint auditing, vector vault indexing, inline assembly annotation, and generating ${m.files} forensic artifacts.`;
+      speakUltronCinemaLine(introText, introText, 'sequence');
+
+      for (let step = 1; step <= 8; step++) {
+        const tid = setTimeout(() => {
+          playChirp(520 + step * 55, 0.045);
+          renderSmeDynamicWorkflowDock(step);
+          renderCinemaPhaseNodesGrid(step);
+          triggerNeuralActivity(1.35 + step * 0.08, `CINEMA PHASE 0${step}/08`);
+        }, (step - 1) * 520);
+        cinemaVoiceState.sequenceTimerIds.push(tid);
+      }
+    }
+
     function setPipelineBannerStage(stepIdx, total, stageTitle, detail) {
       const banner = document.getElementById('autoPipelineBanner');
       const stEl = document.getElementById('autoPipelineStageText');
@@ -3359,6 +4070,8 @@ if proc:
       if (stEl) stEl.textContent = `[${stepIdx}/${total}] ${stageTitle}`;
       if (barEl) barEl.style.width = `${Math.round((stepIdx / total) * 100)}%`;
       if (dtEl && detail) dtEl.textContent = detail;
+      renderSmeDynamicWorkflowDock(stepIdx);
+      renderCinemaPhaseNodesGrid(stepIdx);
     }
 
     function hidePipelineBanner() {
@@ -3444,11 +4157,13 @@ if proc:
         }
         const totalFiles = (data.output_files || []).length;
         setPipelineBannerStage(8, 8, `GOD-TIER SME WORKFLOW COMPLETE // ${data.procedure_count} PROCS • ${data.instruction_count} INSTRS • ${totalFiles} ARTIFACTS READY`, data.output_dir || 'outputs/');
+        renderSmeDynamicWorkflowDock(8);
+        renderCinemaPhaseNodesGrid(8);
         setTimeout(() => hidePipelineBanner(), 2400);
 
         showToast(`⚡ GOD-TIER SME WORKFLOW COMPLETE: ${data.procedure_count} PROCS • ${totalFiles} ARTIFACTS + SME PLAYBOOK READY`);
         if (showModalOnComplete) {
-          openAutoReportModal();
+          openCinemaWorkflowTheatre(true);
         }
       } catch (e) {
         hidePipelineBanner();

@@ -113,6 +113,7 @@ pub async fn run_server(mut initial_doc: UltronDisassembledFile, host: &str, por
         .route("/api/voice/ultron-active.mp3", get(api_voice_active))
         .route("/api/voice/rea-ready.mp3", get(api_voice_rea_ready))
         .route("/api/voice/ultron-disassemble.mp3", get(api_voice_disassemble))
+        .route("/api/voice/cinema-narration", get(api_voice_cinema_narration))
         .layer(CorsLayer::permissive())
         .with_state(shared);
 
@@ -1300,6 +1301,182 @@ async fn api_voice_disassemble() -> impl IntoResponse {
         [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
         VOICE_DISASSEMBLE_MP3,
     )
+}
+
+#[derive(Deserialize)]
+struct CinemaVoiceQuery {
+    text: Option<String>,
+    phase: Option<u8>,
+}
+
+static CINEMA_VOICE_CACHE: std::sync::OnceLock<Mutex<HashMap<String, Vec<u8>>>> =
+    std::sync::OnceLock::new();
+
+async fn api_voice_cinema_narration(
+    State(state): State<Arc<AppState>>,
+    Query(q): Query<CinemaVoiceQuery>,
+) -> impl IntoResponse {
+    let spoken_text = if let Some(custom) = q.text.as_ref().map(|s| s.trim()).filter(|s| !s.is_empty()) {
+        custom.chars().take(360).collect::<String>()
+    } else {
+        let doc = state.doc.lock().unwrap();
+        let proc_count = doc.procedures.len();
+        let instr_count = doc.instructions.len();
+        match q.phase.unwrap_or(0) {
+            1 => format!(
+                "Phase One and Two. Sealing cryptographic chain of custody, reconstructing C plus plus virtual tables, and binding operating system type signatures across {} procedures.",
+                proc_count
+            ),
+            2 => format!(
+                "Phase Three and Four. Eliminating obfuscation layers, synthesizing Zero-Goto abstract syntax trees across {} instructions, and extracting cryptographic and network grammars.",
+                instr_count
+            ),
+            3 => "Phase Five and Six. Solving symbolic execution paths with Z3, mapping exploit primitives, and indexing sixteen-dimensional structural fingerprints.".to_string(),
+            4 => "Phase Seven and Eight. Injecting inline assembly annotations, ranking high-value targets, and sealing twenty-one forensic artifacts. Disassembly complete.".to_string(),
+            _ => format!(
+                "Target binary acquired. Eight sequential phases and nineteen analytical engines are required to deconstruct {} procedures and {} instructions.",
+                proc_count, instr_count
+            ),
+        }
+    };
+
+    let cache = CINEMA_VOICE_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+    if let Some(cached) = cache.lock().unwrap().get(&spoken_text).cloned() {
+        return ([(axum::http::header::CONTENT_TYPE, "audio/wav")], cached);
+    }
+
+    let wav_bytes = synthesize_ultron_cinema_wav(&spoken_text);
+    cache.lock().unwrap().insert(spoken_text, wav_bytes.clone());
+    ([(axum::http::header::CONTENT_TYPE, "audio/wav")], wav_bytes)
+}
+
+fn synthesize_ultron_cinema_wav(text: &str) -> Vec<u8> {
+    let sample_rate: u32 = 22050;
+    let mut raw_samples: Vec<f32> = Vec::new();
+
+    // Generate base speech via macOS /usr/bin/say into a temporary 16-bit LE PCM WAV
+    let tmp_path = std::env::temp_dir().join(format!(
+        "ultron_cinema_tts_{}_{}.wav",
+        std::process::id(),
+        text.bytes().fold(0u64, |acc, b| acc.wrapping_mul(131).wrapping_add(b as u64))
+    ));
+
+    let status = std::process::Command::new("/usr/bin/say")
+        .args([
+            "-v",
+            "Daniel",
+            "-r",
+            "154",
+            "--data-format=LEI16@22050",
+            "-o",
+            tmp_path.to_str().unwrap_or("/tmp/ultron_cinema.wav"),
+            text,
+        ])
+        .status();
+
+    if status.map(|s| s.success()).unwrap_or(false) {
+        if let Ok(bytes) = std::fs::read(&tmp_path) {
+            let _ = std::fs::remove_file(&tmp_path);
+            // Locate 'data' chunk or skip 44-byte WAV header
+            let mut data_offset = 44usize.min(bytes.len());
+            for i in 12..bytes.len().saturating_sub(8) {
+                if &bytes[i..i + 4] == b"data" {
+                    data_offset = i + 8;
+                    break;
+                }
+            }
+            for chunk in bytes[data_offset..].chunks_exact(2) {
+                let s = i16::from_le_bytes([chunk[0], chunk[1]]) as f32 / 32768.0;
+                raw_samples.push(s);
+            }
+        }
+    }
+
+    if raw_samples.is_empty() {
+        // Fallback procedural cybernetic telemetry sequence if TTS unavailable
+        let fallback_len = (sample_rate as usize) * 2;
+        for i in 0..fallback_len {
+            let t = i as f32 / sample_rate as f32;
+            let env = (1.0 - t / 2.0).max(0.0);
+            let sig = (t * 72.0 * std::f32::consts::TAU).sin() * 0.35
+                + (t * 144.0 * std::f32::consts::TAU).sin() * 0.2;
+            raw_samples.push(sig * env);
+        }
+    }
+
+    // Cinema Cybernetic Ultron Vocal DSP Pipeline:
+    // 1. Deep Baritone Pitch Shift (0.83x resampling) + Sub-Octave Layer (0.415x) + Chorus Detune (0.836x)
+    let pitch_ratio = 0.835f32;
+    let out_len = ((raw_samples.len() as f32) / pitch_ratio) as usize;
+    let mut pitched = vec![0.0f32; out_len];
+    let n_in = raw_samples.len();
+
+    let sample_lerp = |pos: f32| -> f32 {
+        let idx = pos as usize;
+        if idx + 1 >= n_in {
+            return *raw_samples.last().unwrap_or(&0.0);
+        }
+        let frac = pos - (idx as f32);
+        raw_samples[idx] * (1.0 - frac) + raw_samples[idx + 1] * frac
+    };
+
+    for i in 0..out_len {
+        let pos_main = (i as f32) * pitch_ratio;
+        let pos_detune = (i as f32) * (pitch_ratio * 1.006);
+        let main_v = sample_lerp(pos_main);
+        let detune_v = sample_lerp(pos_detune);
+        // Sub-octave harmonic tracker via half-index fold + ring-modulated chest resonance
+        let t = (i as f32) / (sample_rate as f32);
+        let ring_mod = (t * 58.0 * std::f32::consts::TAU).cos();
+        let sub_v = main_v * ring_mod * 0.34;
+        pitched[i] = main_v * 0.72 + detune_v * 0.28 + sub_v;
+    }
+
+    // 2. Dual Metallic Chassis Comb Resonator (11.8ms & 17.6ms delay lines) + Soft Tube Saturation
+    let delay1 = 260usize; // ~11.8ms @ 22050Hz
+    let delay2 = 388usize; // ~17.6ms @ 22050Hz
+    let mut comb1 = vec![0.0f32; out_len];
+    let mut comb2 = vec![0.0f32; out_len];
+    for i in 0..out_len {
+        let fb1 = if i >= delay1 { comb1[i - delay1] * 0.34 } else { 0.0 };
+        let fb2 = if i >= delay2 { comb2[i - delay2] * 0.28 } else { 0.0 };
+        comb1[i] = pitched[i] + fb1;
+        comb2[i] = pitched[i] - fb2;
+    }
+
+    // 3. Mix dry baritone + metallic resonators + Cinematic Sub-Bass Intro Boom & Telemetry Lock Pulse
+    let mut final_pcm = Vec::with_capacity(out_len * 2 + 44);
+    let data_bytes_len = (out_len * 2) as u32;
+    let riff_size = 36 + data_bytes_len;
+
+    // Write standard 44-byte RIFF WAVE header (Mono, 16-bit LE, 22050 Hz)
+    final_pcm.extend_from_slice(b"RIFF");
+    final_pcm.extend_from_slice(&riff_size.to_le_bytes());
+    final_pcm.extend_from_slice(b"WAVEfmt ");
+    final_pcm.extend_from_slice(&16u32.to_le_bytes());
+    final_pcm.extend_from_slice(&1u16.to_le_bytes()); // PCM
+    final_pcm.extend_from_slice(&1u16.to_le_bytes()); // 1 channel
+    final_pcm.extend_from_slice(&sample_rate.to_le_bytes());
+    final_pcm.extend_from_slice(&(sample_rate * 2).to_le_bytes());
+    final_pcm.extend_from_slice(&2u16.to_le_bytes());
+    final_pcm.extend_from_slice(&16u16.to_le_bytes());
+    final_pcm.extend_from_slice(b"data");
+    final_pcm.extend_from_slice(&data_bytes_len.to_le_bytes());
+
+    for i in 0..out_len {
+        let t = (i as f32) / (sample_rate as f32);
+        // Subtle cinema sub-bass impact swell over first 0.45s
+        let boom_env = (1.0 - (t / 0.45)).max(0.0).powi(2);
+        let boom_freq = 54.0 - 18.0 * (t / 0.45).min(1.0);
+        let sub_boom = (t * boom_freq * std::f32::consts::TAU).sin() * boom_env * 0.16;
+
+        let voice_mix = pitched[i] * 0.64 + comb1[i] * 0.22 + comb2[i] * 0.14;
+        let saturated = ((voice_mix * 1.55).tanh() + sub_boom).clamp(-0.98, 0.98);
+        let pcm_i16 = (saturated * 32767.0) as i16;
+        final_pcm.extend_from_slice(&pcm_i16.to_le_bytes());
+    }
+
+    final_pcm
 }
 
 #[derive(Deserialize)]
