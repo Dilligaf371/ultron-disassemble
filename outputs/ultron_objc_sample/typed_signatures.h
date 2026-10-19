@@ -1,6 +1,6 @@
 // ============================================================================
 // ULTRON DISASSEMBLE v4.0 — OS TYPE LIBRARY (.TIL) & PROPAGATED SIGNATURES
-// Target Binary     : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+// Target Binary     : samples/ultron_objc_sample
 // Embedded OS Signatures: 39 (POSIX / Darwin / CoreFoundation / Security / BSD)
 // Typed Procedures  : 33
 // ============================================================================

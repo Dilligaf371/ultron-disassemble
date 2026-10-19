@@ -1,6 +1,6 @@
 /* ============================================================================
 * ULTRON DISASSEMBLE v3.0 — OPTIMIZING SSA & AI DECOMPILED SOURCE
-* Target : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+* Target : samples/ultron_objc_sample
 * Format : Mach-O 64-bit (arm64)
 * ============================================================================ */
 

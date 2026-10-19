@@ -1,6 +1,6 @@
 /**
  * ULTRON DISASSEMBLE v2.3 — Auto-Generated Frida Objective-C Hook
- * Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+ * Target Binary : samples/ultron_objc_sample
  * Target Method : -[UltronSentinelCore initWithKey:rounds:] @ 0x100000a18 (offset +0xa18)
  * Architecture  : ARM64 (AArch64)
  */

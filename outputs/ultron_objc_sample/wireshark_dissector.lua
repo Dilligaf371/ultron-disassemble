@@ -1,6 +1,6 @@
 -- ============================================================================
 -- ULTRON DISASSEMBLE v4.0 — AUTO-GENERATED WIRESHARK LUA DISSECTOR
--- Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+-- Target Binary : samples/ultron_objc_sample
 -- ============================================================================
 
 local p_ultron = Proto("ultron_objc_sample_proto", "ultron_objc_sample Binary Protocol")

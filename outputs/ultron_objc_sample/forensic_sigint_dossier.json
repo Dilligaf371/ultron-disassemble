@@ -3,7 +3,7 @@
     "container_format": "Mach-O 64-bit",
     "cpu_architecture": "arm64 (64-bit)",
     "entry_point": "0x100000f3c",
-    "evidence_file": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample",
+    "evidence_file": "samples/ultron_objc_sample",
     "sha256_digest": "7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78",
     "total_instructions": 572,
     "total_procedures": 33

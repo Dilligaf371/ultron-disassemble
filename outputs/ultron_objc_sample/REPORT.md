@@ -1,6 +1,6 @@
 # ULTRON DISASSEMBLE v3.0 — AUTONOMOUS REVERSE ENGINEERING REPORT
 
-- **Target Binary**: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample`
+- **Target Binary**: `samples/ultron_objc_sample`
 - **Container Format**: `Mach-O 64-bit`
 - **Architecture**: `ARM64 (AArch64) (arm64)` (64-bit)
 - **Entry Point**: `0x100000f3c`
@@ -105,9 +105,9 @@
 - `0x100001526`: `ULTRON-OBJC-PROTOCOL-v4.2`
 - `0x100001540`: `ULTRON_TELEMETRY_CORE_AUTH_VECTOR`
 
-## 6. Autonomous Compilable Reconstruction, Sovereign SIGINT, SOC2/ISO27001 & God-Tier SME Playbook
+## 6. Autonomous Compilable Reconstruction, Sovereign SIGINT, SOC2/ISO27001 & Autonomous SME Playbook
 
-- **God-Tier SME Executive Verdict**: `AUTONOMOUS GOD-TIER SME VERDICT: Target `ultron_objc_sample` (Mach-O 64-bit ARM64, 33 procs, 572 insns) fully reverse-engineered across all 8 autonomous SME phases. Primary High-Value Target (HVT #1) identified at `0x100000f3c` (`_main`). 22 inline SME annotations and 3 struct layouts injected into live workspace.`
+- **Autonomous SME Executive Verdict**: `AUTONOMOUS SME VERDICT: Target `ultron_objc_sample` (Mach-O 64-bit ARM64, 33 procs, 572 insns) fully reverse-engineered across all 8 autonomous SME phases. Primary High-Value Target (HVT #1) identified at `0x100000f3c` (`_main`). 22 inline SME annotations and 3 struct layouts injected into live workspace.`
 - **Autonomous SME Inline Annotations**: `22 expert assembly annotations injected`
 - **Project Directory**: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/reconstructed_project`
 - **Clang Compilation (`clang -O2 -std=c17`)**: **VERIFIED & COMPILED** (53760 bytes)

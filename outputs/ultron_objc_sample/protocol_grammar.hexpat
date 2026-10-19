@@ -1,6 +1,6 @@
 // ============================================================================
 // ULTRON DISASSEMBLE v4.0 — AUTO-SYNTHESIZED IMHEX BINARY GRAMMAR (.hexpat)
-// Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+// Target Binary : samples/ultron_objc_sample
 // Inferred Magic: 0x0000A5A5
 // ============================================================================
 

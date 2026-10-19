@@ -1,11 +1,11 @@
 # ==============================================================================
 # ULTRON DISASSEMBLE v2.3 — Auto-Generated LLDB Debugger & Python Hook Script
-# Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+# Target Binary : samples/ultron_objc_sample
 # Target Symbol : -[UltronSentinelCore initWithKey:rounds:] @ 0x100000a18 (offset +0xa18)
 # Architecture  : ARM64 (AArch64)
 # ==============================================================================
 
-target create "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample"
+target create "samples/ultron_objc_sample"
 settings set target.disable-aslr true
 
 # Python LLDB telemetry callback

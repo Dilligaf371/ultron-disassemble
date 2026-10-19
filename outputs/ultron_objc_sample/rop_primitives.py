@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # ============================================================================
 # ULTRON DISASSEMBLE v4.0 — AUTOMATED ROP / JOP EXPLOIT PRIMITIVE HARNESS
-# Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+# Target Binary : samples/ultron_objc_sample
 # Architecture  : arm64 (64-bit)
 # Gadgets Found : 32
 # ============================================================================
 import struct
 
-TARGET_BINARY = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample"
+TARGET_BINARY = "samples/ultron_objc_sample"
 ENTRY_POINT   = 0x100000f3c
 
 def p64(val: int) -> bytes:

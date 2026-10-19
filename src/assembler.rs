@@ -21,7 +21,7 @@ impl UltronLlvmAssembler {
     pub fn find_dylib_path() -> Option<PathBuf> {
         let candidates = [
             PathBuf::from("ultron_disassembler/lib/libLLVMServices.dylib"),
-            PathBuf::from("/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/ultron_disassembler/lib/libLLVMServices.dylib"),
+            PathBuf::from("lib/libLLVMServices.dylib"),
         ];
         candidates.into_iter().find(|p| p.exists())
     }

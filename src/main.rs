@@ -131,14 +131,14 @@ enum Commands {
     },
     /// Launch the built-in Model Context Protocol (MCP) JSON-RPC 2.0 Server over stdio (REA-compatible)
     Mcp {
-        #[arg(default_value = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample")]
+        #[arg(default_value = "samples/ultron_objc_sample")]
         path: String,
         #[arg(long, default_value = "arm64")]
         arch: String,
     },
     /// Launch the Minimalist Telemetry Web UI & REST API Server
     Ui {
-        #[arg(default_value = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample")]
+        #[arg(default_value = "samples/ultron_objc_sample")]
         path: String,
         #[arg(long, default_value = "127.0.0.1")]
         host: String,
@@ -147,10 +147,10 @@ enum Commands {
         #[arg(long, default_value = "arm64")]
         arch: String,
     },
-    /// Execute the Autonomous God-Tier SME 8-Phase Workflow (19 Engines -> 21 Artifacts + SME_PLAYBOOK.md)
+    /// Execute the Autonomous SME 8-Phase Workflow (19 Engines -> 21 Artifacts + SME_PLAYBOOK.md)
     #[command(visible_alias = "sme", visible_alias = "pipeline")]
     Auto {
-        #[arg(default_value = "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample")]
+        #[arg(default_value = "samples/ultron_objc_sample")]
         path: String,
         #[arg(long, default_value = "arm64")]
         arch: String,
@@ -408,13 +408,13 @@ async fn main() -> anyhow::Result<()> {
             let mut doc = UltronBinaryLoader::load(&path, &arch)?;
             let res = server::execute_autonomous_sme_pipeline(&mut doc);
             println!("╔══════════════════════════════════════════════════════════════════════════════╗");
-            println!("║  ULTRON DISASSEMBLE v3.0 // AUTONOMOUS GOD-TIER SME WORKFLOW (8 PHASES)      ║");
+            println!("║  ULTRON DISASSEMBLE v3.0 // AUTONOMOUS SME WORKFLOW (8 PHASES)               ║");
             println!("╚══════════════════════════════════════════════════════════════════════════════╝");
             println!("Target      : {} ({} / {})", res["target"].as_str().unwrap_or(&path), res["format"].as_str().unwrap_or(""), res["arch"].as_str().unwrap_or(""));
             println!("Procedures  : {} | Instructions: {} | Strings: {}", res["procedure_count"], res["instruction_count"], res["string_count"]);
             println!("Output Dir  : {}", res["output_dir"].as_str().unwrap_or("outputs/"));
             if let Some(verdict) = res["sme_playbook"]["executive_verdict"].as_str() {
-                println!("\n─── GOD-TIER SME EXECUTIVE VERDICT ───\n  {}", verdict);
+                println!("\n─── AUTONOMOUS SME EXECUTIVE VERDICT ───\n  {}", verdict);
             }
             if let Some(phases) = res["sme_playbook"]["workflow_phases"].as_array() {
                 println!("\n─── 8-PHASE AUTONOMOUS SME EXECUTION MATRIX ───");

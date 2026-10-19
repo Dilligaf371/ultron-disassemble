@@ -1,6 +1,6 @@
-# ULTRON DISASSEMBLE v3.0 — AUTONOMOUS GOD-TIER SME PLAYBOOK
+# ULTRON DISASSEMBLE v3.0 — AUTONOMOUS SME PLAYBOOK
 
-> **AUTONOMOUS GOD-TIER SME VERDICT: Target `ultron_objc_sample` (Mach-O 64-bit ARM64, 33 procs, 572 insns) fully reverse-engineered across all 8 autonomous SME phases. Primary High-Value Target (HVT #1) identified at `0x100000f3c` (`_main`). 22 inline SME annotations and 3 struct layouts injected into live workspace.**
+> **AUTONOMOUS SME VERDICT: Target `ultron_objc_sample` (Mach-O 64-bit ARM64, 33 procs, 572 insns) fully reverse-engineered across all 8 autonomous SME phases. Primary High-Value Target (HVT #1) identified at `0x100000f3c` (`_main`). 22 inline SME annotations and 3 struct layouts injected into live workspace.**
 
 ## 1. Autonomous 8-Phase SME Workflow Execution Matrix
 
@@ -39,14 +39,14 @@
 /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/reconstructed_project/reconstructed_bin
 
 # 2. Launch Dynamic Frida Interceptor on Target
-frida -f "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample" -l "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/frida_hook.js"
+frida -f "samples/ultron_objc_sample" -l "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/frida_hook.js"
 
 # 3. Attach Deterministic LLDB Hardware Tracer
-lldb -s "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/lldb_trace.py" "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample"
+lldb -s "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/lldb_trace.py" "samples/ultron_objc_sample"
 
 # 4. Run Automated ROP/JOP Exploit Chain Generator
 python3 "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/rop_primitives.py"
 
 # 5. Threat Hunt with Sovereign SIGINT YARA-X Rule
-yara "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/threat_hunting.yar" "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample"
+yara "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/outputs/ultron_objc_sample/threat_hunting.yar" "samples/ultron_objc_sample"
 ```

@@ -1,6 +1,6 @@
 // ============================================================================
 // ULTRON DISASSEMBLE v4.0 — C++ RTTI, VTABLE & CLASS HIERARCHY RECONSTRUCTION
-// Target Binary : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+// Target Binary : samples/ultron_objc_sample
 // Classes Found : 2 | Virtual Dispatch Sites: 2
 // ============================================================================
 #pragma once

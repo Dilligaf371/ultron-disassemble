@@ -1123,7 +1123,7 @@ impl UltronLegendEngine {
         })
     }
 
-    /// Pillar 9 (God-Tier 1): In-Memory Coverage-Guided Snapshot Fuzzer & Edge-Case Explorer
+    /// Pillar 9: In-Memory Coverage-Guided Snapshot Fuzzer & Edge-Case Explorer
     pub fn run_coverage_guided_fuzzer(
         doc: &UltronDisassembledFile,
         proc_addr_opt: Option<u64>,
@@ -1262,7 +1262,7 @@ impl UltronLegendEngine {
         })
     }
 
-    /// Pillar 10 (God-Tier 2): 1-Day Security Patch Root-Cause Analyzer (Semantic C Diffing)
+    /// Pillar 10: 1-Day Security Patch Root-Cause Analyzer (Semantic C Diffing)
     pub fn analyze_security_patch_diff(
         doc_a: &UltronDisassembledFile,
         doc_b: &UltronDisassembledFile,
@@ -1344,7 +1344,7 @@ impl UltronLegendEngine {
         })
     }
 
-    /// Pillar 11 (God-Tier 3): Automatic File Format & Network Protocol Grammar Synthesizer (.hexpat + Wireshark Lua)
+    /// Pillar 11: Automatic File Format & Network Protocol Grammar Synthesizer (.hexpat + Wireshark Lua)
     pub fn synthesize_protocol_grammar(
         doc: &UltronDisassembledFile,
         out_base_dir: &Path,
@@ -2443,10 +2443,10 @@ impl UltronLegendEngine {
     }
 
     // ════════════════════════════════════════════════════════════════════════
-    // PILLAR 19: AUTONOMOUS GOD-TIER SME ORCHESTRATOR, INLINE ANNOTATOR,
+    // PILLAR 19: AUTONOMOUS SME ORCHESTRATOR, INLINE ANNOTATOR,
     //            HIGH-VALUE TARGET (HVT) RANKER & SME_PLAYBOOK.MD SYNTHESIZER
     // ════════════════════════════════════════════════════════════════════════
-    pub fn synthesize_god_tier_sme_playbook(
+    pub fn synthesize_autonomous_sme_playbook(
         doc: &mut UltronDisassembledFile,
         out_base_dir: &Path,
     ) -> Value {
@@ -2594,7 +2594,7 @@ impl UltronLegendEngine {
             let complexity_bonus = ((bb_count as u64) * 2 + (branch_count as u64)).min(5);
             let final_score = (base_score + complexity_bonus).min(99);
 
-            // Auto-rename stripped sub_* functions like a God-Tier SME
+            // Auto-rename stripped sub_* functions via autonomous SME heuristics
             let is_stripped_sub = lower_name.starts_with("sub_") || lower_name.starts_with("fn_");
             let final_name = if is_stripped_sub {
                 let role_prefix = match sme_role {
@@ -2708,7 +2708,7 @@ impl UltronLegendEngine {
             .unwrap_or("0x100000000");
 
         let executive_verdict = format!(
-            "AUTONOMOUS GOD-TIER SME VERDICT: Target `{}` ({} {}, {} procs, {} insns) fully reverse-engineered across all 8 autonomous SME phases. \
+            "AUTONOMOUS SME VERDICT: Target `{}` ({} {}, {} procs, {} insns) fully reverse-engineered across all 8 autonomous SME phases. \
              Primary High-Value Target (HVT #1) identified at `{}` (`{}`). {} inline SME annotations and {} struct layouts injected into live workspace.",
             doc.file_path.split('/').last().unwrap_or(&doc.file_path),
             doc.format_name,
@@ -2723,7 +2723,7 @@ impl UltronLegendEngine {
 
         // Build SME_PLAYBOOK.md (21st Artifact)
         let mut md = String::new();
-        md.push_str("# ULTRON DISASSEMBLE v3.0 — AUTONOMOUS GOD-TIER SME PLAYBOOK\n\n");
+        md.push_str("# ULTRON DISASSEMBLE v3.0 — AUTONOMOUS SME PLAYBOOK\n\n");
         md.push_str(&format!("> **{}**\n\n", executive_verdict));
         md.push_str("## 1. Autonomous 8-Phase SME Workflow Execution Matrix\n\n");
         md.push_str("| Phase | Status | Autonomous SME Outcome |\n|---|---|---|\n");
@@ -2766,7 +2766,7 @@ impl UltronLegendEngine {
 
         json!({
             "ok": true,
-            "mode": "GOD-TIER AUTONOMOUS SME ORCHESTRATOR (8 PHASES // 19 ENGINES // 21 ARTIFACTS)",
+            "mode": "AUTONOMOUS SME ORCHESTRATOR (8 PHASES // 19 ENGINES // 21 ARTIFACTS)",
             "executive_verdict": executive_verdict,
             "auto_renamed_procedures_count": auto_renamed_count,
             "inline_sme_annotations_count": inline_annotations_count,

@@ -80,11 +80,11 @@
         }
       ]
     },
-    "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-e474711f7aea",
+    "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-3a21a4f23431",
     "specVersion": "1.5",
     "version": 1
   },
-  "immutable_ledger_entries": 32,
+  "immutable_ledger_entries": 38,
   "immutable_ledger_path": "/Users/gilles/.ultron/immutable_audit_ledger.jsonl",
   "iso27001_annex_a_controls": [
     {
@@ -113,7 +113,7 @@
       "status": "COMPLIANT (PASS)"
     }
   ],
-  "latest_merkle_hash": "3fed811e352a7dacc43971865da40f82",
+  "latest_merkle_hash": "113cecb2a4f0e962c43971865da40f82",
   "memory_safe_rust_core": true,
   "ok": true,
   "overall_status": "COMPLIANT // SOC 2 TYPE II + ISO/IEC 27001:2022 + ISO/IEC 27037 + CYCLONEDX 1.5",
@@ -132,7 +132,7 @@
     },
     {
       "criteria": "CC7.2 — Tamper-Evident Security Event Monitoring",
-      "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (32 records, head=3fed811e352a7dacc43971865da40f82)",
+      "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (38 records, head=113cecb2a4f0e962c43971865da40f82)",
       "status": "COMPLIANT (PASS)"
     },
     {
@@ -141,6 +141,6 @@
       "status": "COMPLIANT (PASS)"
     }
   ],
-  "target_binary": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample",
+  "target_binary": "samples/ultron_objc_sample",
   "target_sha256": "7586baf7ba3a1dc8fb5fed3e2c050738e16bf2e97122e6a0721289d9300f6d78"
 }

@@ -34,19 +34,19 @@ const INDEX_HTML: &str = include_str!("../ultron_disassembler/ui/index.html");
 const VOICE_ACTIVE_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_active.mp3");
 const VOICE_REA_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/rea_protocol_ready.mp3");
 const VOICE_DISASSEMBLE_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_disassemble.mp3");
-const VOICE_CINEMA_PHASE0_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase0.mp3");
-const VOICE_CINEMA_PHASE1_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase1.mp3");
-const VOICE_CINEMA_PHASE2_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase2.mp3");
-const VOICE_CINEMA_PHASE3_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase3.mp3");
-const VOICE_CINEMA_PHASE4_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase4.mp3");
-const VOICE_CINEMA_STEP1_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step1.mp3");
-const VOICE_CINEMA_STEP2_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step2.mp3");
-const VOICE_CINEMA_STEP3_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step3.mp3");
-const VOICE_CINEMA_STEP4_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step4.mp3");
-const VOICE_CINEMA_STEP5_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step5.mp3");
-const VOICE_CINEMA_STEP6_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step6.mp3");
-const VOICE_CINEMA_STEP7_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step7.mp3");
-const VOICE_CINEMA_STEP8_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step8.mp3");
+const VOICE_SEQ_P0_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_p0.mp3");
+const VOICE_SEQ_P1_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_p1.mp3");
+const VOICE_SEQ_P2_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_p2.mp3");
+const VOICE_SEQ_P3_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_p3.mp3");
+const VOICE_SEQ_P4_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_p4.mp3");
+const VOICE_SEQ_S1_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s1.mp3");
+const VOICE_SEQ_S2_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s2.mp3");
+const VOICE_SEQ_S3_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s3.mp3");
+const VOICE_SEQ_S4_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s4.mp3");
+const VOICE_SEQ_S5_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s5.mp3");
+const VOICE_SEQ_S6_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s6.mp3");
+const VOICE_SEQ_S7_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s7.mp3");
+const VOICE_SEQ_S8_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_seq_s8.mp3");
 
 pub struct AppState {
     pub doc: Mutex<UltronDisassembledFile>,
@@ -126,9 +126,7 @@ pub async fn run_server(mut initial_doc: UltronDisassembledFile, host: &str, por
         .route("/api/voice/ultron-active.mp3", get(api_voice_active))
         .route("/api/voice/rea-ready.mp3", get(api_voice_rea_ready))
         .route("/api/voice/ultron-disassemble.mp3", get(api_voice_disassemble))
-        .route("/api/voice/cinema-narration", get(api_voice_cinema_narration))
-        .route("/api/voice/elevenlabs-status", get(api_voice_elevenlabs_status))
-        .route("/api/voice/elevenlabs-config", post(api_voice_elevenlabs_config))
+        .route("/api/voice/seq-audio", get(api_voice_seq_audio))
         .layer(CorsLayer::permissive())
         .with_state(shared);
 
@@ -251,12 +249,12 @@ fn build_presets_list() -> Vec<Value> {
         }),
         json!({
             "label": "Ultron Sample (Mach-O ARM64 Objective-C + C)",
-            "path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_sample_macho",
+            "path": "samples/ultron_sample_macho",
             "arch": "arm64"
         }),
         json!({
             "label": "Ultron Native LLVM Core (libLLVMServices.dylib)",
-            "path": "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/ultron_disassembler/lib/libLLVMServices.dylib",
+            "path": "ultron_disassembler/lib/libLLVMServices.dylib",
             "arch": "arm64"
         }),
         json!({
@@ -1318,387 +1316,43 @@ async fn api_voice_disassemble() -> impl IntoResponse {
     )
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
-struct ElevenLabsConfig {
-    #[serde(default)]
-    api_key: String,
-    #[serde(default)]
-    voice_id: String,
-    #[serde(default = "default_elevenlabs_model")]
-    model_id: String,
-    #[serde(default)]
-    cloned_from_samples: bool,
-}
-
-fn default_elevenlabs_model() -> String {
-    "eleven_multilingual_v2".to_string()
-}
-
-impl Default for ElevenLabsConfig {
-    fn default() -> Self {
-        Self {
-            api_key: String::new(),
-            voice_id: String::new(),
-            model_id: default_elevenlabs_model(),
-            cloned_from_samples: false,
-        }
-    }
-}
-
-fn elevenlabs_config_path() -> std::path::PathBuf {
-    let home = std::env::var("HOME").unwrap_or_else(|_| ".".to_string());
-    let dir = Path::new(&home).join(".ultron");
-    let _ = std::fs::create_dir_all(&dir);
-    dir.join("elevenlabs_config.json")
-}
-
-fn load_elevenlabs_config() -> ElevenLabsConfig {
-    let path = elevenlabs_config_path();
-    let mut cfg: ElevenLabsConfig = std::fs::read_to_string(&path)
-        .ok()
-        .and_then(|s| serde_json::from_str(&s).ok())
-        .unwrap_or_default();
-    if cfg.api_key.trim().is_empty() {
-        if let Ok(env_key) = std::env::var("ELEVENLABS_API_KEY").or_else(|_| std::env::var("XI_API_KEY")) {
-            let trimmed = env_key.trim();
-            if !trimmed.is_empty() {
-                cfg.api_key = trimmed.to_string();
-            }
-        }
-    }
-    if cfg.voice_id.trim().is_empty() {
-        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
-        cfg.cloned_from_samples = true;
-    }
-    if cfg.model_id.trim().is_empty() {
-        cfg.model_id = default_elevenlabs_model();
-    }
-    cfg
-}
-
-fn save_elevenlabs_config(cfg: &ElevenLabsConfig) {
-    let path = elevenlabs_config_path();
-    if let Ok(json_str) = serde_json::to_string_pretty(cfg) {
-        let _ = std::fs::write(path, json_str);
-    }
-}
-
-fn ensure_reference_vocal_files_on_disk() -> (std::path::PathBuf, std::path::PathBuf, std::path::PathBuf) {
-    let assets_dir = Path::new("ultron_disassembler/ui/assets");
-    let p_active = assets_dir.join("ultron_active.mp3");
-    let p_rea = assets_dir.join("rea_protocol_ready.mp3");
-    let p_dis = assets_dir.join("ultron_disassemble.mp3");
-    if p_active.exists() && p_rea.exists() && p_dis.exists() {
-        return (p_active, p_rea, p_dis);
-    }
-    let tmp_dir = std::env::temp_dir().join("ultron_ref_vocals");
-    let _ = std::fs::create_dir_all(&tmp_dir);
-    let t_active = tmp_dir.join("ultron_active.mp3");
-    let t_rea = tmp_dir.join("rea_protocol_ready.mp3");
-    let t_dis = tmp_dir.join("ultron_disassemble.mp3");
-    if !t_active.exists() {
-        let _ = std::fs::write(&t_active, VOICE_ACTIVE_MP3);
-    }
-    if !t_rea.exists() {
-        let _ = std::fs::write(&t_rea, VOICE_REA_MP3);
-    }
-    if !t_dis.exists() {
-        let _ = std::fs::write(&t_dis, VOICE_DISASSEMBLE_MP3);
-    }
-    (t_active, t_rea, t_dis)
-}
-
-fn resolve_or_clone_elevenlabs_voice(cfg: &mut ElevenLabsConfig, force_clone: bool) {
-    let api_key = cfg.api_key.trim().to_string();
-    if api_key.is_empty() {
-        if cfg.voice_id.trim().is_empty() {
-            cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
-            cfg.cloned_from_samples = true;
-        }
-        return;
-    }
-    if !cfg.voice_id.trim().is_empty() && !force_clone {
-        return;
-    }
-
-    let (p_active, p_rea, p_dis) = ensure_reference_vocal_files_on_disk();
-    let header_arg = format!("xi-api-key: {}", api_key);
-    let f1 = format!("files=@{}", p_active.to_string_lossy());
-    let f2 = format!("files=@{}", p_rea.to_string_lossy());
-    let f3 = format!("files=@{}", p_dis.to_string_lossy());
-
-    // 1. Attempt Instant Voice Cloning from the 3 Ultron reference MP3s
-    if let Ok(out) = std::process::Command::new("curl")
-        .args([
-            "-s",
-            "-X",
-            "POST",
-            "https://api.elevenlabs.io/v1/voices/add",
-            "-H",
-            &header_arg,
-            "-F",
-            "name=Ultron-REA-Vocal-Clone",
-            "-F",
-            "description=Cloned from Ultron reference vocals",
-            "-F",
-            &f1,
-            "-F",
-            &f2,
-            "-F",
-            &f3,
-        ])
-        .output()
-    {
-        if let Ok(val) = serde_json::from_slice::<Value>(&out.stdout) {
-            if let Some(vid) = val.get("voice_id").and_then(|v| v.as_str()).filter(|s| !s.is_empty()) {
-                cfg.voice_id = vid.to_string();
-                cfg.cloned_from_samples = true;
-                save_elevenlabs_config(cfg);
-                return;
-            }
-        }
-    }
-
-    // 2. Fallback: Query GET /v1/voices to pick existing Ultron clone or deepest pre-made baritone voice
-    if let Ok(out) = std::process::Command::new("curl")
-        .args([
-            "-s",
-            "https://api.elevenlabs.io/v1/voices",
-            "-H",
-            &header_arg,
-        ])
-        .output()
-    {
-        if let Ok(val) = serde_json::from_slice::<Value>(&out.stdout) {
-            if let Some(voices) = val.get("voices").and_then(|v| v.as_array()) {
-                // First look for an existing Ultron clone
-                for v in voices {
-                    let name = v.get("name").and_then(|n| n.as_str()).unwrap_or("");
-                    if name.to_ascii_lowercase().contains("ultron") {
-                        if let Some(vid) = v.get("voice_id").and_then(|id| id.as_str()) {
-                            cfg.voice_id = vid.to_string();
-                            cfg.cloned_from_samples = true;
-                            save_elevenlabs_config(cfg);
-                            return;
-                        }
-                    }
-                }
-                // Next prefer deep authoritative male voices (Brian, Adam, Daniel, Marcus, George)
-                for pref in ["brian", "adam", "daniel", "marcus", "george", "callum"] {
-                    for v in voices {
-                        let name = v.get("name").and_then(|n| n.as_str()).unwrap_or("");
-                        if name.to_ascii_lowercase().contains(pref) {
-                            if let Some(vid) = v.get("voice_id").and_then(|id| id.as_str()) {
-                                cfg.voice_id = vid.to_string();
-                                cfg.cloned_from_samples = false;
-                                save_elevenlabs_config(cfg);
-                                return;
-                            }
-                        }
-                    }
-                }
-                // Otherwise pick first available voice_id
-                if let Some(vid) = voices
-                    .first()
-                    .and_then(|v| v.get("voice_id"))
-                    .and_then(|id| id.as_str())
-                {
-                    cfg.voice_id = vid.to_string();
-                    cfg.cloned_from_samples = false;
-                    save_elevenlabs_config(cfg);
-                }
-            }
-        }
-    }
-}
-
-async fn api_voice_elevenlabs_status() -> Json<Value> {
-    let mut cfg = load_elevenlabs_config();
-    if cfg.voice_id.trim().is_empty() {
-        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
-    }
-    Json(json!({
-        "configured": true,
-        "has_voice_id": true,
-        "voice_id": cfg.voice_id,
-        "voice_name": "Ultron (ElevenLabs Clone)",
-        "model_id": cfg.model_id,
-        "cloned_from_samples": true,
-        "status_message": format!("ELEVENLABS ULTRON CLONE ACTIVE // VOICE ID: {} (13 CINEMA + 3 REFERENCE VOCALS READY)", cfg.voice_id),
-        "reference_vocals": [
-            "ultron_active.mp3",
-            "rea_protocol_ready.mp3",
-            "ultron_disassemble.mp3"
-        ],
-        "elevenlabs_url": "https://elevenlabs.io/app/speech-synthesis/text-to-speech"
-    }))
-}
-
 #[derive(Deserialize)]
-struct ElevenLabsConfigReq {
-    api_key: Option<String>,
-    voice_id: Option<String>,
-    model_id: Option<String>,
-    auto_clone: Option<bool>,
-}
-
-async fn api_voice_elevenlabs_config(Json(req): Json<ElevenLabsConfigReq>) -> Json<Value> {
-    let mut cfg = load_elevenlabs_config();
-    if let Some(k) = req.api_key {
-        let trimmed = k.trim();
-        if !trimmed.is_empty() {
-            cfg.api_key = trimmed.to_string();
-        }
-    }
-    if let Some(v) = req.voice_id {
-        let trimmed = v.trim();
-        if !trimmed.is_empty() {
-            cfg.voice_id = trimmed.to_string();
-        }
-    }
-    if cfg.voice_id.trim().is_empty() {
-        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
-    }
-    if let Some(m) = req.model_id {
-        let trimmed = m.trim();
-        cfg.model_id = if trimmed.is_empty() {
-            default_elevenlabs_model()
-        } else {
-            trimmed.to_string()
-        };
-    }
-
-    let force_clone = req.auto_clone.unwrap_or(false);
-    if !cfg.api_key.is_empty() && (cfg.voice_id.is_empty() || force_clone) {
-        resolve_or_clone_elevenlabs_voice(&mut cfg, force_clone);
-    } else {
-        cfg.cloned_from_samples = true;
-        save_elevenlabs_config(&cfg);
-    }
-
-    if let Some(cache) = CINEMA_VOICE_CACHE.get() {
-        cache.lock().unwrap().clear();
-    }
-
-    Json(json!({
-        "ok": true,
-        "configured": true,
-        "has_voice_id": true,
-        "voice_id": cfg.voice_id,
-        "voice_name": "Ultron (ElevenLabs Clone)",
-        "model_id": cfg.model_id,
-        "cloned_from_samples": true,
-        "reference_vocals": [
-            "ultron_active.mp3",
-            "rea_protocol_ready.mp3",
-            "ultron_disassemble.mp3"
-        ],
-        "elevenlabs_url": "https://elevenlabs.io/app/speech-synthesis/text-to-speech"
-    }))
-}
-
-#[derive(Deserialize)]
-struct CinemaVoiceQuery {
+struct SeqVoiceQuery {
     text: Option<String>,
     phase: Option<u8>,
     step: Option<u8>,
 }
 
-static CINEMA_VOICE_CACHE: std::sync::OnceLock<Mutex<HashMap<String, (&'static str, Vec<u8>)>>> =
-    std::sync::OnceLock::new();
-
-fn synthesize_elevenlabs_tts_mp3(text: &str, cfg: &mut ElevenLabsConfig) -> Option<Vec<u8>> {
-    if cfg.voice_id.trim().is_empty() {
-        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
-    }
-
-    let text_hash = text
-        .bytes()
-        .fold(0xcbf29ce484222325u64, |acc, b| (acc ^ (b as u64)).wrapping_mul(0x100000001b3));
-    let cache_dir = Path::new("ultron_disassembler/ui/assets/elevenlabs_cache");
-    let _ = std::fs::create_dir_all(cache_dir);
-    let cache_file = cache_dir.join(format!("el_{}_{:016x}.mp3", cfg.voice_id, text_hash));
-
-    if let Ok(existing) = std::fs::read(&cache_file) {
-        if existing.len() > 256 && !existing.starts_with(b"{") {
-            return Some(existing);
-        }
-    }
-
-    // 1. Direct ElevenLabs REST API if API key is present
-    if !cfg.api_key.trim().is_empty() {
-        let url = format!(
-            "https://api.elevenlabs.io/v1/text-to-speech/{}?output_format=mp3_44100_128",
-            cfg.voice_id.trim()
-        );
-        let header_key = format!("xi-api-key: {}", cfg.api_key.trim());
-        let payload = json!({
-            "text": text,
-            "model_id": if cfg.model_id.trim().is_empty() { "eleven_multilingual_v2" } else { cfg.model_id.trim() },
-            "voice_settings": {
-                "stability": 0.58,
-                "similarity_boost": 0.95,
-                "style": 0.35,
-                "use_speaker_boost": true
-            }
-        })
-        .to_string();
-
-        if let Ok(out) = std::process::Command::new("curl")
-            .args([
-                "-s",
-                "-X",
-                "POST",
-                &url,
-                "-H",
-                &header_key,
-                "-H",
-                "Content-Type: application/json",
-                "-d",
-                &payload,
-            ])
-            .output()
-        {
-            if out.status.success() && out.stdout.len() > 256 && !out.stdout.starts_with(b"{") {
-                let _ = std::fs::write(&cache_file, &out.stdout);
-                return Some(out.stdout);
-            }
-        }
-    }
-
-    None
-}
-
-async fn api_voice_cinema_narration(
+async fn api_voice_seq_audio(
     State(_state): State<Arc<AppState>>,
-    Query(q): Query<CinemaVoiceQuery>,
+    Query(q): Query<SeqVoiceQuery>,
 ) -> impl IntoResponse {
-    // 1. Direct step match (1..=8) -> embedded authentic ElevenLabs Ultron MP3
+    // 1. Direct step match (1..=8) -> embedded Ultron sequence MP3
     if let Some(step) = q.step {
         let bytes: &[u8] = match step {
-            1 => VOICE_CINEMA_STEP1_MP3,
-            2 => VOICE_CINEMA_STEP2_MP3,
-            3 => VOICE_CINEMA_STEP3_MP3,
-            4 => VOICE_CINEMA_STEP4_MP3,
-            5 => VOICE_CINEMA_STEP5_MP3,
-            6 => VOICE_CINEMA_STEP6_MP3,
-            7 => VOICE_CINEMA_STEP7_MP3,
-            8 => VOICE_CINEMA_STEP8_MP3,
-            _ => VOICE_CINEMA_STEP1_MP3,
+            1 => VOICE_SEQ_S1_MP3,
+            2 => VOICE_SEQ_S2_MP3,
+            3 => VOICE_SEQ_S3_MP3,
+            4 => VOICE_SEQ_S4_MP3,
+            5 => VOICE_SEQ_S5_MP3,
+            6 => VOICE_SEQ_S6_MP3,
+            7 => VOICE_SEQ_S7_MP3,
+            8 => VOICE_SEQ_S8_MP3,
+            _ => VOICE_SEQ_S1_MP3,
         };
         return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], bytes.to_vec());
     }
 
-    // 2. Direct phase match (0..=4) -> embedded authentic ElevenLabs Ultron MP3
+    // 2. Direct phase match (0..=4) -> embedded Ultron sequence MP3
     if let Some(phase) = q.phase {
         if phase <= 4 {
             let bytes: &[u8] = match phase {
-                0 => VOICE_CINEMA_PHASE0_MP3,
-                1 => VOICE_CINEMA_PHASE1_MP3,
-                2 => VOICE_CINEMA_PHASE2_MP3,
-                3 => VOICE_CINEMA_PHASE3_MP3,
-                4 => VOICE_CINEMA_PHASE4_MP3,
-                _ => VOICE_CINEMA_PHASE0_MP3,
+                0 => VOICE_SEQ_P0_MP3,
+                1 => VOICE_SEQ_P1_MP3,
+                2 => VOICE_SEQ_P2_MP3,
+                3 => VOICE_SEQ_P3_MP3,
+                4 => VOICE_SEQ_P4_MP3,
+                _ => VOICE_SEQ_P0_MP3,
             };
             return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], bytes.to_vec());
         }
@@ -1708,309 +1362,43 @@ async fn api_voice_cinema_narration(
     if custom_text.is_empty() {
         return (
             [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
-            VOICE_CINEMA_PHASE0_MP3.to_vec(),
+            VOICE_SEQ_P0_MP3.to_vec(),
         );
     }
 
-    // 3. Match text prefixes to the 13 pre-synthesized ElevenLabs Ultron MP3s
+    // 3. Match text prefixes to the 13 embedded Ultron sequence MP3s
     let matched_mp3: Option<&[u8]> = if custom_text.starts_with("Phase One:") {
-        Some(VOICE_CINEMA_STEP1_MP3)
+        Some(VOICE_SEQ_S1_MP3)
     } else if custom_text.starts_with("Phase Two:") {
-        Some(VOICE_CINEMA_STEP2_MP3)
+        Some(VOICE_SEQ_S2_MP3)
     } else if custom_text.starts_with("Phase Three:") {
-        Some(VOICE_CINEMA_STEP3_MP3)
+        Some(VOICE_SEQ_S3_MP3)
     } else if custom_text.starts_with("Phase Four:") {
-        Some(VOICE_CINEMA_STEP4_MP3)
+        Some(VOICE_SEQ_S4_MP3)
     } else if custom_text.starts_with("Phase Five:") {
-        Some(VOICE_CINEMA_STEP5_MP3)
+        Some(VOICE_SEQ_S5_MP3)
     } else if custom_text.starts_with("Phase Six:") {
-        Some(VOICE_CINEMA_STEP6_MP3)
+        Some(VOICE_SEQ_S6_MP3)
     } else if custom_text.starts_with("Phase Seven:") {
-        Some(VOICE_CINEMA_STEP7_MP3)
+        Some(VOICE_SEQ_S7_MP3)
     } else if custom_text.starts_with("Phase Eight:") {
-        Some(VOICE_CINEMA_STEP8_MP3)
+        Some(VOICE_SEQ_S8_MP3)
     } else if custom_text.starts_with("Phase One and Two") {
-        Some(VOICE_CINEMA_PHASE1_MP3)
+        Some(VOICE_SEQ_P1_MP3)
     } else if custom_text.starts_with("Phase Three and Four") {
-        Some(VOICE_CINEMA_PHASE2_MP3)
+        Some(VOICE_SEQ_P2_MP3)
     } else if custom_text.starts_with("Phase Five and Six") {
-        Some(VOICE_CINEMA_PHASE3_MP3)
+        Some(VOICE_SEQ_P3_MP3)
     } else if custom_text.starts_with("Phase Seven and Eight") {
-        Some(VOICE_CINEMA_PHASE4_MP3)
-    } else if custom_text.starts_with("Target binary acquired") || custom_text.starts_with("Target ") {
-        Some(VOICE_CINEMA_PHASE0_MP3)
+        Some(VOICE_SEQ_P4_MP3)
     } else {
-        None
+        Some(VOICE_SEQ_P0_MP3)
     };
-
-    if let Some(mp3) = matched_mp3 {
-        return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], mp3.to_vec());
-    }
-
-    let spoken_text = custom_text.chars().take(360).collect::<String>();
-    let cache = CINEMA_VOICE_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
-    if let Some((content_type, cached)) = cache.lock().unwrap().get(&spoken_text).cloned() {
-        return ([(axum::http::header::CONTENT_TYPE, content_type)], cached);
-    }
-
-    // 4. Try synthesizing custom text via ElevenLabs API if configured, otherwise fallback to VOICE_CINEMA_PHASE0_MP3
-    let mut el_cfg = load_elevenlabs_config();
-    if let Some(mp3_bytes) = synthesize_elevenlabs_tts_mp3(&spoken_text, &mut el_cfg) {
-        cache
-            .lock()
-            .unwrap()
-            .insert(spoken_text, ("audio/mpeg", mp3_bytes.clone()));
-        return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], mp3_bytes);
-    }
 
     (
         [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
-        VOICE_CINEMA_PHASE0_MP3.to_vec(),
+        matched_mp3.unwrap_or(VOICE_SEQ_P0_MP3).to_vec(),
     )
-}
-
-/// Cached Reference-Vocal Spectral Envelope extracted via `/usr/bin/afconvert` from `ultron_disassemble.mp3`:
-/// (target_rms, sub_ratio <180Hz, mid_ratio 180..1800Hz, high_ratio >1800Hz)
-static REFERENCE_VOCAL_SPECTRAL_PROFILE: std::sync::OnceLock<(f32, f32, f32, f32)> =
-    std::sync::OnceLock::new();
-
-fn compute_three_band_rms(samples: &[f32], sample_rate: u32) -> (f32, f32, f32, f32) {
-    if samples.is_empty() {
-        return (0.24, 0.42, 0.78, 0.36);
-    }
-    let dt = 1.0 / (sample_rate as f32);
-    let rc_low = 1.0 / (std::f32::consts::TAU * 180.0);
-    let alpha_low = dt / (rc_low + dt);
-    let rc_mid = 1.0 / (std::f32::consts::TAU * 1800.0);
-    let alpha_mid = dt / (rc_mid + dt);
-
-    let mut lp_low = 0.0f32;
-    let mut lp_mid = 0.0f32;
-    let mut sum_total = 0.0f64;
-    let mut sum_sub = 0.0f64;
-    let mut sum_mid = 0.0f64;
-    let mut sum_high = 0.0f64;
-    let mut active_count = 0usize;
-
-    for &x in samples {
-        lp_low += alpha_low * (x - lp_low);
-        lp_mid += alpha_mid * (x - lp_mid);
-        let b_sub = lp_low;
-        let b_mid = lp_mid - lp_low;
-        let b_high = x - lp_mid;
-        if x.abs() > 0.008 {
-            sum_total += (x as f64) * (x as f64);
-            sum_sub += (b_sub as f64) * (b_sub as f64);
-            sum_mid += (b_mid as f64) * (b_mid as f64);
-            sum_high += (b_high as f64) * (b_high as f64);
-            active_count += 1;
-        }
-    }
-
-    let denom = active_count.max(1) as f64;
-    let rms_total = (sum_total / denom).sqrt() as f32;
-    let rms_sub = (sum_sub / denom).sqrt() as f32;
-    let rms_mid = (sum_mid / denom).sqrt() as f32;
-    let rms_high = (sum_high / denom).sqrt() as f32;
-    let norm = (rms_sub + rms_mid + rms_high).max(1e-5);
-    (
-        rms_total.clamp(0.18, 0.36),
-        (rms_sub / norm).clamp(0.15, 0.65),
-        (rms_mid / norm).clamp(0.25, 0.75),
-        (rms_high / norm).clamp(0.08, 0.45),
-    )
-}
-
-fn get_reference_vocal_spectral_profile() -> (f32, f32, f32, f32) {
-    *REFERENCE_VOCAL_SPECTRAL_PROFILE.get_or_init(|| {
-        let (_, _, ref_mp3_path) = ensure_reference_vocal_files_on_disk();
-        let tmp_wav = std::env::temp_dir().join(format!("ultron_ref_profile_{}.wav", std::process::id()));
-        let status = std::process::Command::new("/usr/bin/afconvert")
-            .args([
-                "-f",
-                "WAVE",
-                "-d",
-                "LEI16@22050",
-                "-c",
-                "1",
-                ref_mp3_path.to_str().unwrap_or("ultron_disassembler/ui/assets/ultron_disassemble.mp3"),
-                tmp_wav.to_str().unwrap_or("/tmp/ultron_ref_profile.wav"),
-            ])
-            .status();
-
-        if status.map(|s| s.success()).unwrap_or(false) {
-            if let Ok(bytes) = std::fs::read(&tmp_wav) {
-                let _ = std::fs::remove_file(&tmp_wav);
-                let mut data_offset = 44usize.min(bytes.len());
-                for i in 12..bytes.len().saturating_sub(8) {
-                    if &bytes[i..i + 4] == b"data" {
-                        data_offset = i + 8;
-                        break;
-                    }
-                }
-                let mut ref_samples = Vec::with_capacity(bytes.len() / 2);
-                for chunk in bytes[data_offset..].chunks_exact(2) {
-                    let s = i16::from_le_bytes([chunk[0], chunk[1]]) as f32 / 32768.0;
-                    ref_samples.push(s);
-                }
-                if !ref_samples.is_empty() {
-                    return compute_three_band_rms(&ref_samples, 22050);
-                }
-            }
-        }
-        (0.26, 0.34, 0.48, 0.18)
-    })
-}
-
-fn synthesize_ultron_cinema_wav(text: &str) -> Vec<u8> {
-    let sample_rate: u32 = 22050;
-    let mut raw_samples: Vec<f32> = Vec::new();
-
-    // Generate base speech via macOS /usr/bin/say into a temporary 16-bit LE PCM WAV
-    let tmp_path = std::env::temp_dir().join(format!(
-        "ultron_cinema_tts_{}_{}.wav",
-        std::process::id(),
-        text.bytes().fold(0u64, |acc, b| acc.wrapping_mul(131).wrapping_add(b as u64))
-    ));
-
-    let status = std::process::Command::new("/usr/bin/say")
-        .args([
-            "-v",
-            "Daniel",
-            "-r",
-            "154",
-            "--data-format=LEI16@22050",
-            "-o",
-            tmp_path.to_str().unwrap_or("/tmp/ultron_cinema.wav"),
-            text,
-        ])
-        .status();
-
-    if status.map(|s| s.success()).unwrap_or(false) {
-        if let Ok(bytes) = std::fs::read(&tmp_path) {
-            let _ = std::fs::remove_file(&tmp_path);
-            // Locate 'data' chunk or skip 44-byte WAV header
-            let mut data_offset = 44usize.min(bytes.len());
-            for i in 12..bytes.len().saturating_sub(8) {
-                if &bytes[i..i + 4] == b"data" {
-                    data_offset = i + 8;
-                    break;
-                }
-            }
-            for chunk in bytes[data_offset..].chunks_exact(2) {
-                let s = i16::from_le_bytes([chunk[0], chunk[1]]) as f32 / 32768.0;
-                raw_samples.push(s);
-            }
-        }
-    }
-
-    if raw_samples.is_empty() {
-        // Fallback procedural cybernetic telemetry sequence if TTS unavailable
-        let fallback_len = (sample_rate as usize) * 2;
-        for i in 0..fallback_len {
-            let t = i as f32 / sample_rate as f32;
-            let env = (1.0 - t / 2.0).max(0.0);
-            let sig = (t * 72.0 * std::f32::consts::TAU).sin() * 0.35
-                + (t * 144.0 * std::f32::consts::TAU).sin() * 0.2;
-            raw_samples.push(sig * env);
-        }
-    }
-
-    // Cinema Cybernetic Ultron Vocal DSP Pipeline:
-    // 1. Deep Baritone Pitch Shift (0.835x resampling) + Sub-Octave Layer + Chorus Detune
-    let pitch_ratio = 0.835f32;
-    let out_len = ((raw_samples.len() as f32) / pitch_ratio) as usize;
-    let mut pitched = vec![0.0f32; out_len];
-    let n_in = raw_samples.len();
-
-    let sample_lerp = |pos: f32| -> f32 {
-        let idx = pos as usize;
-        if idx + 1 >= n_in {
-            return *raw_samples.last().unwrap_or(&0.0);
-        }
-        let frac = pos - (idx as f32);
-        raw_samples[idx] * (1.0 - frac) + raw_samples[idx + 1] * frac
-    };
-
-    for i in 0..out_len {
-        let pos_main = (i as f32) * pitch_ratio;
-        let pos_detune = (i as f32) * (pitch_ratio * 1.006);
-        let main_v = sample_lerp(pos_main);
-        let detune_v = sample_lerp(pos_detune);
-        // Sub-octave harmonic tracker via ring-modulated chest resonance
-        let t = (i as f32) / (sample_rate as f32);
-        let ring_mod = (t * 58.0 * std::f32::consts::TAU).cos();
-        let sub_v = main_v * ring_mod * 0.34;
-        pitched[i] = main_v * 0.72 + detune_v * 0.28 + sub_v;
-    }
-
-    // 2. Dual Metallic Chassis Comb Resonator (11.8ms & 17.6ms delay lines)
-    let delay1 = 260usize; // ~11.8ms @ 22050Hz
-    let delay2 = 388usize; // ~17.6ms @ 22050Hz
-    let mut comb1 = vec![0.0f32; out_len];
-    let mut comb2 = vec![0.0f32; out_len];
-    let mut pre_mix = vec![0.0f32; out_len];
-    for i in 0..out_len {
-        let fb1 = if i >= delay1 { comb1[i - delay1] * 0.34 } else { 0.0 };
-        let fb2 = if i >= delay2 { comb2[i - delay2] * 0.28 } else { 0.0 };
-        comb1[i] = pitched[i] + fb1;
-        comb2[i] = pitched[i] - fb2;
-        pre_mix[i] = pitched[i] * 0.64 + comb1[i] * 0.22 + comb2[i] * 0.14;
-    }
-
-    // 3. Reference-Vocal 3-Band Spectral Envelope Transfer from `ultron_disassemble.mp3`
-    let (ref_rms, ref_sub, ref_mid, ref_high) = get_reference_vocal_spectral_profile();
-    let (cur_rms, cur_sub, cur_mid, cur_high) = compute_three_band_rms(&pre_mix, sample_rate);
-    let overall_gain = (ref_rms / cur_rms.max(0.05)).clamp(0.75, 1.85);
-    let g_sub = (ref_sub / cur_sub.max(0.08)).clamp(0.65, 1.65) * overall_gain;
-    let g_mid = (ref_mid / cur_mid.max(0.08)).clamp(0.70, 1.55) * overall_gain;
-    let g_high = (ref_high / cur_high.max(0.05)).clamp(0.65, 1.75) * overall_gain;
-
-    let dt = 1.0 / (sample_rate as f32);
-    let alpha_low = dt / (1.0 / (std::f32::consts::TAU * 180.0) + dt);
-    let alpha_mid = dt / (1.0 / (std::f32::consts::TAU * 1800.0) + dt);
-    let mut lp_low = 0.0f32;
-    let mut lp_mid = 0.0f32;
-
-    // 4. Mix spectral-matched voice + Cinematic Sub-Bass Intro Boom & write 16-bit PCM WAVE
-    let mut final_pcm = Vec::with_capacity(out_len * 2 + 44);
-    let data_bytes_len = (out_len * 2) as u32;
-    let riff_size = 36 + data_bytes_len;
-
-    // Write standard 44-byte RIFF WAVE header (Mono, 16-bit LE, 22050 Hz)
-    final_pcm.extend_from_slice(b"RIFF");
-    final_pcm.extend_from_slice(&riff_size.to_le_bytes());
-    final_pcm.extend_from_slice(b"WAVEfmt ");
-    final_pcm.extend_from_slice(&16u32.to_le_bytes());
-    final_pcm.extend_from_slice(&1u16.to_le_bytes()); // PCM
-    final_pcm.extend_from_slice(&1u16.to_le_bytes()); // 1 channel
-    final_pcm.extend_from_slice(&sample_rate.to_le_bytes());
-    final_pcm.extend_from_slice(&(sample_rate * 2).to_le_bytes());
-    final_pcm.extend_from_slice(&2u16.to_le_bytes());
-    final_pcm.extend_from_slice(&16u16.to_le_bytes());
-    final_pcm.extend_from_slice(b"data");
-    final_pcm.extend_from_slice(&data_bytes_len.to_le_bytes());
-
-    for i in 0..out_len {
-        let t = (i as f32) / (sample_rate as f32);
-        let boom_env = (1.0 - (t / 0.45)).max(0.0).powi(2);
-        let boom_freq = 54.0 - 18.0 * (t / 0.45).min(1.0);
-        let sub_boom = (t * boom_freq * std::f32::consts::TAU).sin() * boom_env * 0.16;
-
-        let x = pre_mix[i];
-        lp_low += alpha_low * (x - lp_low);
-        lp_mid += alpha_mid * (x - lp_mid);
-        let b_sub = lp_low * g_sub;
-        let b_mid = (lp_mid - lp_low) * g_mid;
-        let b_high = (x - lp_mid) * g_high;
-        let spectral_voice = b_sub + b_mid + b_high;
-
-        let saturated = ((spectral_voice * 1.45).tanh() + sub_boom).clamp(-0.98, 0.98);
-        let pcm_i16 = (saturated * 32767.0) as i16;
-        final_pcm.extend_from_slice(&pcm_i16.to_le_bytes());
-    }
-
-    final_pcm
 }
 
 #[derive(Deserialize)]
@@ -2071,11 +1459,11 @@ pub fn execute_autonomous_sme_pipeline(doc: &mut UltronDisassembledFile) -> Valu
     let _ = std::fs::create_dir_all(&out_dir);
     let abs_out_dir = std::fs::canonicalize(&out_dir).unwrap_or_else(|_| out_dir.clone());
 
-    // Pre-Enrich Document via God-Tier SME Orchestrator, Neural Vault, Auto-Structs & C++ RTTI
+    // Pre-Enrich Document via Autonomous SME Orchestrator, Neural Vault, Auto-Structs & C++ RTTI
     let neural_vault = UltronLegendEngine::sync_neural_symbol_vault(doc);
     let auto_structs = UltronLegendEngine::recover_auto_structs(doc, &abs_out_dir);
     let cpp_rtti = UltronLegendEngine::reconstruct_cpp_rtti_and_vtables(doc, &abs_out_dir);
-    let sme_playbook = UltronLegendEngine::synthesize_god_tier_sme_playbook(doc, &abs_out_dir);
+    let sme_playbook = UltronLegendEngine::synthesize_autonomous_sme_playbook(doc, &abs_out_dir);
 
     // Stage 3: Security & Vulnerability Audit
     let audit = UltronSecurityAuditor::audit_document(doc);
@@ -2328,7 +1716,7 @@ pub fn execute_autonomous_sme_pipeline(doc: &mut UltronDisassembledFile) -> Valu
         }
     }
 
-    // Stage 6 (Legendary, Final Boss, God-Tier, Compiler, Sovereign SIGINT & SOC2/ISO27001 Engines)
+    // Stage 6 (Autonomous SME, Compiler, Sovereign SIGINT & SOC2/ISO27001 Engines)
     let type_propagation = UltronLegendEngine::propagate_os_type_signatures(doc, &abs_out_dir);
     let zero_goto = UltronLegendEngine::decompile_zero_goto_structured(doc, Some(entry_addr), &abs_out_dir);
     let sigint_attribution = UltronLegendEngine::generate_sigint_threat_attribution(doc, &abs_out_dir);
@@ -2405,15 +1793,15 @@ pub fn execute_autonomous_sme_pipeline(doc: &mut UltronDisassembledFile) -> Valu
     let sme_verdict = sme_playbook
         .get("executive_verdict")
         .and_then(|v| v.as_str())
-        .unwrap_or("AUTONOMOUS GOD-TIER SME VERIFIED");
+        .unwrap_or("AUTONOMOUS SME VERIFIED");
     let sme_notes_count = sme_playbook
         .get("inline_sme_annotations_count")
         .and_then(|v| v.as_u64())
         .unwrap_or(0);
 
     report_md.push_str(&format!(
-        "\n## 6. Autonomous Compilable Reconstruction, Sovereign SIGINT, SOC2/ISO27001 & God-Tier SME Playbook\n\n\
-         - **God-Tier SME Executive Verdict**: `{}`\n\
+        "\n## 6. Autonomous Compilable Reconstruction, Sovereign SIGINT, SOC2/ISO27001 & Autonomous SME Playbook\n\n\
+         - **Autonomous SME Executive Verdict**: `{}`\n\
          - **Autonomous SME Inline Annotations**: `{} expert assembly annotations injected`\n\
          - **Project Directory**: `{}`\n\
          - **Clang Compilation (`clang -O2 -std=c17`)**: **{}** ({} bytes)\n\
@@ -2514,7 +1902,7 @@ pub fn execute_autonomous_sme_pipeline(doc: &mut UltronDisassembledFile) -> Valu
     let lua_path = abs_out_dir.join("wireshark_dissector.lua");
 
     let output_files = vec![
-        json!({ "name": "SME_PLAYBOOK.md", "label": "Autonomous God-Tier SME Playbook & HVT Ranking", "path": sme_playbook_path.to_string_lossy(), "bytes": std::fs::metadata(&sme_playbook_path).map(|m| m.len()).unwrap_or(0) }),
+        json!({ "name": "SME_PLAYBOOK.md", "label": "Autonomous SME Playbook & HVT Ranking", "path": sme_playbook_path.to_string_lossy(), "bytes": std::fs::metadata(&sme_playbook_path).map(|m| m.len()).unwrap_or(0) }),
         json!({ "name": "REPORT.md", "label": "Executive & Technical Report (Markdown)", "path": report_path.to_string_lossy(), "bytes": report_md.len() }),
         json!({ "name": "disassembly.asm", "label": "Full SME-Annotated Assembly Listing", "path": asm_path.to_string_lossy(), "bytes": asm_buf.len() }),
         json!({ "name": "decompiled.c", "label": "Optimizing SSA & AI C23/Rust Source", "path": c_path.to_string_lossy(), "bytes": c_buf.len() }),
@@ -2788,7 +2176,7 @@ async fn api_v4_compliance_sbom(State(state): State<Arc<AppState>>) -> Json<Valu
 async fn api_v4_sme_playbook(State(state): State<Arc<AppState>>) -> Json<Value> {
     let mut doc = state.doc.lock().unwrap();
     let abs_out_dir = current_output_dir_for_doc(&doc);
-    Json(UltronLegendEngine::synthesize_god_tier_sme_playbook(&mut doc, &abs_out_dir))
+    Json(UltronLegendEngine::synthesize_autonomous_sme_playbook(&mut doc, &abs_out_dir))
 }
 
 

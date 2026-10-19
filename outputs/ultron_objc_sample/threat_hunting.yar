@@ -1,6 +1,6 @@
 // ============================================================================
 // ULTRON DISASSEMBLE v4.0 — SOVEREIGN SIGINT YARA-X THREAT HUNTING RULE
-// Target Binary     : /Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample
+// Target Binary     : samples/ultron_objc_sample
 // Structural ImpHash: 4a72d22d04041c5e
 // Opcode DNA Hash   : 2b20b5e6cd51cdaa
 // ============================================================================

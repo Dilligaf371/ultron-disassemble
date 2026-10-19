@@ -6,8 +6,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-pub const PROJECTS_DIR: &str =
-    "/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/projects";
+pub const PROJECTS_DIR: &str = "projects";
 
 // ============================================================================
 // 1. ULTRON PROJECT FILE & PROJECT MANAGER (.ultron persistence)

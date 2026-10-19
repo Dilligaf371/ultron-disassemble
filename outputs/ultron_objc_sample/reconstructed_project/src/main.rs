@@ -1,5 +1,5 @@
 //! ULTRON DISASSEMBLE — AUTONOMOUS IDIOMATIC RUST RECONSTRUCTION
-//! Source Binary: `/Users/gilles/.gemini/antigravity/scratch/ultron-disassembler/samples/ultron_objc_sample` (Mach-O 64-bit)
+//! Source Binary: `samples/ultron_objc_sample` (Mach-O 64-bit)
 
 /*
 // Idiomatic Rust synthesis
