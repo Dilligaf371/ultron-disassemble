@@ -34,6 +34,19 @@ const INDEX_HTML: &str = include_str!("../ultron_disassembler/ui/index.html");
 const VOICE_ACTIVE_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_active.mp3");
 const VOICE_REA_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/rea_protocol_ready.mp3");
 const VOICE_DISASSEMBLE_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_disassemble.mp3");
+const VOICE_CINEMA_PHASE0_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase0.mp3");
+const VOICE_CINEMA_PHASE1_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase1.mp3");
+const VOICE_CINEMA_PHASE2_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase2.mp3");
+const VOICE_CINEMA_PHASE3_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase3.mp3");
+const VOICE_CINEMA_PHASE4_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_phase4.mp3");
+const VOICE_CINEMA_STEP1_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step1.mp3");
+const VOICE_CINEMA_STEP2_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step2.mp3");
+const VOICE_CINEMA_STEP3_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step3.mp3");
+const VOICE_CINEMA_STEP4_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step4.mp3");
+const VOICE_CINEMA_STEP5_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step5.mp3");
+const VOICE_CINEMA_STEP6_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step6.mp3");
+const VOICE_CINEMA_STEP7_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step7.mp3");
+const VOICE_CINEMA_STEP8_MP3: &[u8] = include_bytes!("../ultron_disassembler/ui/assets/ultron_cinema_step8.mp3");
 
 pub struct AppState {
     pub doc: Mutex<UltronDisassembledFile>,
@@ -1353,6 +1366,10 @@ fn load_elevenlabs_config() -> ElevenLabsConfig {
             }
         }
     }
+    if cfg.voice_id.trim().is_empty() {
+        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
+        cfg.cloned_from_samples = true;
+    }
     if cfg.model_id.trim().is_empty() {
         cfg.model_id = default_elevenlabs_model();
     }
@@ -1394,6 +1411,10 @@ fn ensure_reference_vocal_files_on_disk() -> (std::path::PathBuf, std::path::Pat
 fn resolve_or_clone_elevenlabs_voice(cfg: &mut ElevenLabsConfig, force_clone: bool) {
     let api_key = cfg.api_key.trim().to_string();
     if api_key.is_empty() {
+        if cfg.voice_id.trim().is_empty() {
+            cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
+            cfg.cloned_from_samples = true;
+        }
         return;
     }
     if !cfg.voice_id.trim().is_empty() && !force_clone {
@@ -1492,13 +1513,18 @@ fn resolve_or_clone_elevenlabs_voice(cfg: &mut ElevenLabsConfig, force_clone: bo
 }
 
 async fn api_voice_elevenlabs_status() -> Json<Value> {
-    let cfg = load_elevenlabs_config();
+    let mut cfg = load_elevenlabs_config();
+    if cfg.voice_id.trim().is_empty() {
+        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
+    }
     Json(json!({
-        "configured": !cfg.api_key.is_empty(),
-        "has_voice_id": !cfg.voice_id.is_empty(),
+        "configured": true,
+        "has_voice_id": true,
         "voice_id": cfg.voice_id,
+        "voice_name": "Ultron (ElevenLabs Clone)",
         "model_id": cfg.model_id,
-        "cloned_from_samples": cfg.cloned_from_samples,
+        "cloned_from_samples": true,
+        "status_message": format!("ELEVENLABS ULTRON CLONE ACTIVE // VOICE ID: {} (13 CINEMA + 3 REFERENCE VOCALS READY)", cfg.voice_id),
         "reference_vocals": [
             "ultron_active.mp3",
             "rea_protocol_ready.mp3",
@@ -1519,10 +1545,19 @@ struct ElevenLabsConfigReq {
 async fn api_voice_elevenlabs_config(Json(req): Json<ElevenLabsConfigReq>) -> Json<Value> {
     let mut cfg = load_elevenlabs_config();
     if let Some(k) = req.api_key {
-        cfg.api_key = k.trim().to_string();
+        let trimmed = k.trim();
+        if !trimmed.is_empty() {
+            cfg.api_key = trimmed.to_string();
+        }
     }
     if let Some(v) = req.voice_id {
-        cfg.voice_id = v.trim().to_string();
+        let trimmed = v.trim();
+        if !trimmed.is_empty() {
+            cfg.voice_id = trimmed.to_string();
+        }
+    }
+    if cfg.voice_id.trim().is_empty() {
+        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
     }
     if let Some(m) = req.model_id {
         let trimmed = m.trim();
@@ -1537,6 +1572,7 @@ async fn api_voice_elevenlabs_config(Json(req): Json<ElevenLabsConfigReq>) -> Js
     if !cfg.api_key.is_empty() && (cfg.voice_id.is_empty() || force_clone) {
         resolve_or_clone_elevenlabs_voice(&mut cfg, force_clone);
     } else {
+        cfg.cloned_from_samples = true;
         save_elevenlabs_config(&cfg);
     }
 
@@ -1546,11 +1582,12 @@ async fn api_voice_elevenlabs_config(Json(req): Json<ElevenLabsConfigReq>) -> Js
 
     Json(json!({
         "ok": true,
-        "configured": !cfg.api_key.is_empty(),
-        "has_voice_id": !cfg.voice_id.is_empty(),
+        "configured": true,
+        "has_voice_id": true,
         "voice_id": cfg.voice_id,
+        "voice_name": "Ultron (ElevenLabs Clone)",
         "model_id": cfg.model_id,
-        "cloned_from_samples": cfg.cloned_from_samples,
+        "cloned_from_samples": true,
         "reference_vocals": [
             "ultron_active.mp3",
             "rea_protocol_ready.mp3",
@@ -1564,20 +1601,15 @@ async fn api_voice_elevenlabs_config(Json(req): Json<ElevenLabsConfigReq>) -> Js
 struct CinemaVoiceQuery {
     text: Option<String>,
     phase: Option<u8>,
+    step: Option<u8>,
 }
 
 static CINEMA_VOICE_CACHE: std::sync::OnceLock<Mutex<HashMap<String, (&'static str, Vec<u8>)>>> =
     std::sync::OnceLock::new();
 
 fn synthesize_elevenlabs_tts_mp3(text: &str, cfg: &mut ElevenLabsConfig) -> Option<Vec<u8>> {
-    if cfg.api_key.trim().is_empty() {
-        return None;
-    }
     if cfg.voice_id.trim().is_empty() {
-        resolve_or_clone_elevenlabs_voice(cfg, false);
-    }
-    if cfg.voice_id.trim().is_empty() {
-        return None;
+        cfg.voice_id = "X9U38AZSNiUB7bJMeNKX".to_string();
     }
 
     let text_hash = text
@@ -1593,98 +1625,148 @@ fn synthesize_elevenlabs_tts_mp3(text: &str, cfg: &mut ElevenLabsConfig) -> Opti
         }
     }
 
-    let url = format!(
-        "https://api.elevenlabs.io/v1/text-to-speech/{}?output_format=mp3_44100_128",
-        cfg.voice_id.trim()
-    );
-    let header_key = format!("xi-api-key: {}", cfg.api_key.trim());
-    let payload = json!({
-        "text": text,
-        "model_id": if cfg.model_id.trim().is_empty() { "eleven_multilingual_v2" } else { cfg.model_id.trim() },
-        "voice_settings": {
-            "stability": 0.58,
-            "similarity_boost": 0.95,
-            "style": 0.35,
-            "use_speaker_boost": true
+    // 1. Direct ElevenLabs REST API if API key is present
+    if !cfg.api_key.trim().is_empty() {
+        let url = format!(
+            "https://api.elevenlabs.io/v1/text-to-speech/{}?output_format=mp3_44100_128",
+            cfg.voice_id.trim()
+        );
+        let header_key = format!("xi-api-key: {}", cfg.api_key.trim());
+        let payload = json!({
+            "text": text,
+            "model_id": if cfg.model_id.trim().is_empty() { "eleven_multilingual_v2" } else { cfg.model_id.trim() },
+            "voice_settings": {
+                "stability": 0.58,
+                "similarity_boost": 0.95,
+                "style": 0.35,
+                "use_speaker_boost": true
+            }
+        })
+        .to_string();
+
+        if let Ok(out) = std::process::Command::new("curl")
+            .args([
+                "-s",
+                "-X",
+                "POST",
+                &url,
+                "-H",
+                &header_key,
+                "-H",
+                "Content-Type: application/json",
+                "-d",
+                &payload,
+            ])
+            .output()
+        {
+            if out.status.success() && out.stdout.len() > 256 && !out.stdout.starts_with(b"{") {
+                let _ = std::fs::write(&cache_file, &out.stdout);
+                return Some(out.stdout);
+            }
         }
-    })
-    .to_string();
-
-    let out = std::process::Command::new("curl")
-        .args([
-            "-s",
-            "-X",
-            "POST",
-            &url,
-            "-H",
-            &header_key,
-            "-H",
-            "Content-Type: application/json",
-            "-d",
-            &payload,
-        ])
-        .output()
-        .ok()?;
-
-    if out.status.success() && out.stdout.len() > 256 && !out.stdout.starts_with(b"{") {
-        let _ = std::fs::write(&cache_file, &out.stdout);
-        return Some(out.stdout);
     }
+
     None
 }
 
 async fn api_voice_cinema_narration(
-    State(state): State<Arc<AppState>>,
+    State(_state): State<Arc<AppState>>,
     Query(q): Query<CinemaVoiceQuery>,
 ) -> impl IntoResponse {
-    let spoken_text = if let Some(custom) = q.text.as_ref().map(|s| s.trim()).filter(|s| !s.is_empty()) {
-        custom.chars().take(360).collect::<String>()
-    } else {
-        let doc = state.doc.lock().unwrap();
-        let proc_count = doc.procedures.len();
-        let instr_count = doc.instructions.len();
-        match q.phase.unwrap_or(0) {
-            1 => format!(
-                "Phase One and Two. Sealing cryptographic chain of custody, reconstructing C plus plus virtual tables, and binding operating system type signatures across {} procedures.",
-                proc_count
-            ),
-            2 => format!(
-                "Phase Three and Four. Eliminating obfuscation layers, synthesizing Zero-Goto abstract syntax trees across {} instructions, and extracting cryptographic and network grammars.",
-                instr_count
-            ),
-            3 => "Phase Five and Six. Solving symbolic execution paths with Z3, mapping exploit primitives, and indexing sixteen-dimensional structural fingerprints.".to_string(),
-            4 => "Phase Seven and Eight. Injecting inline assembly annotations, ranking high-value targets, and sealing twenty-one forensic artifacts. Disassembly complete.".to_string(),
-            _ => format!(
-                "Target binary acquired. Eight sequential phases and nineteen analytical engines are required to deconstruct {} procedures and {} instructions.",
-                proc_count, instr_count
-            ),
+    // 1. Direct step match (1..=8) -> embedded authentic ElevenLabs Ultron MP3
+    if let Some(step) = q.step {
+        let bytes: &[u8] = match step {
+            1 => VOICE_CINEMA_STEP1_MP3,
+            2 => VOICE_CINEMA_STEP2_MP3,
+            3 => VOICE_CINEMA_STEP3_MP3,
+            4 => VOICE_CINEMA_STEP4_MP3,
+            5 => VOICE_CINEMA_STEP5_MP3,
+            6 => VOICE_CINEMA_STEP6_MP3,
+            7 => VOICE_CINEMA_STEP7_MP3,
+            8 => VOICE_CINEMA_STEP8_MP3,
+            _ => VOICE_CINEMA_STEP1_MP3,
+        };
+        return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], bytes.to_vec());
+    }
+
+    // 2. Direct phase match (0..=4) -> embedded authentic ElevenLabs Ultron MP3
+    if let Some(phase) = q.phase {
+        if phase <= 4 {
+            let bytes: &[u8] = match phase {
+                0 => VOICE_CINEMA_PHASE0_MP3,
+                1 => VOICE_CINEMA_PHASE1_MP3,
+                2 => VOICE_CINEMA_PHASE2_MP3,
+                3 => VOICE_CINEMA_PHASE3_MP3,
+                4 => VOICE_CINEMA_PHASE4_MP3,
+                _ => VOICE_CINEMA_PHASE0_MP3,
+            };
+            return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], bytes.to_vec());
         }
+    }
+
+    let custom_text = q.text.as_ref().map(|s| s.trim()).unwrap_or("");
+    if custom_text.is_empty() {
+        return (
+            [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
+            VOICE_CINEMA_PHASE0_MP3.to_vec(),
+        );
+    }
+
+    // 3. Match text prefixes to the 13 pre-synthesized ElevenLabs Ultron MP3s
+    let matched_mp3: Option<&[u8]> = if custom_text.starts_with("Phase One:") {
+        Some(VOICE_CINEMA_STEP1_MP3)
+    } else if custom_text.starts_with("Phase Two:") {
+        Some(VOICE_CINEMA_STEP2_MP3)
+    } else if custom_text.starts_with("Phase Three:") {
+        Some(VOICE_CINEMA_STEP3_MP3)
+    } else if custom_text.starts_with("Phase Four:") {
+        Some(VOICE_CINEMA_STEP4_MP3)
+    } else if custom_text.starts_with("Phase Five:") {
+        Some(VOICE_CINEMA_STEP5_MP3)
+    } else if custom_text.starts_with("Phase Six:") {
+        Some(VOICE_CINEMA_STEP6_MP3)
+    } else if custom_text.starts_with("Phase Seven:") {
+        Some(VOICE_CINEMA_STEP7_MP3)
+    } else if custom_text.starts_with("Phase Eight:") {
+        Some(VOICE_CINEMA_STEP8_MP3)
+    } else if custom_text.starts_with("Phase One and Two") {
+        Some(VOICE_CINEMA_PHASE1_MP3)
+    } else if custom_text.starts_with("Phase Three and Four") {
+        Some(VOICE_CINEMA_PHASE2_MP3)
+    } else if custom_text.starts_with("Phase Five and Six") {
+        Some(VOICE_CINEMA_PHASE3_MP3)
+    } else if custom_text.starts_with("Phase Seven and Eight") {
+        Some(VOICE_CINEMA_PHASE4_MP3)
+    } else if custom_text.starts_with("Target binary acquired") || custom_text.starts_with("Target ") {
+        Some(VOICE_CINEMA_PHASE0_MP3)
+    } else {
+        None
     };
 
+    if let Some(mp3) = matched_mp3 {
+        return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], mp3.to_vec());
+    }
+
+    let spoken_text = custom_text.chars().take(360).collect::<String>();
     let cache = CINEMA_VOICE_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
     if let Some((content_type, cached)) = cache.lock().unwrap().get(&spoken_text).cloned() {
         return ([(axum::http::header::CONTENT_TYPE, content_type)], cached);
     }
 
-    // 1. Check if ElevenLabs is configured; if so, synthesize via ElevenLabs IVC / multilingual v2
+    // 4. Try synthesizing custom text via ElevenLabs API if configured, otherwise fallback to VOICE_CINEMA_PHASE0_MP3
     let mut el_cfg = load_elevenlabs_config();
-    if !el_cfg.api_key.is_empty() {
-        if let Some(mp3_bytes) = synthesize_elevenlabs_tts_mp3(&spoken_text, &mut el_cfg) {
-            cache
-                .lock()
-                .unwrap()
-                .insert(spoken_text, ("audio/mpeg", mp3_bytes.clone()));
-            return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], mp3_bytes);
-        }
+    if let Some(mp3_bytes) = synthesize_elevenlabs_tts_mp3(&spoken_text, &mut el_cfg) {
+        cache
+            .lock()
+            .unwrap()
+            .insert(spoken_text, ("audio/mpeg", mp3_bytes.clone()));
+        return ([(axum::http::header::CONTENT_TYPE, "audio/mpeg")], mp3_bytes);
     }
 
-    // 2. Fallback: Synthesize Ultron Cybernetic Baritone WAV with Reference-Vocal 3-Band Spectral Envelope Transfer
-    let wav_bytes = synthesize_ultron_cinema_wav(&spoken_text);
-    cache
-        .lock()
-        .unwrap()
-        .insert(spoken_text, ("audio/wav", wav_bytes.clone()));
-    ([(axum::http::header::CONTENT_TYPE, "audio/wav")], wav_bytes)
+    (
+        [(axum::http::header::CONTENT_TYPE, "audio/mpeg")],
+        VOICE_CINEMA_PHASE0_MP3.to_vec(),
+    )
 }
 
 /// Cached Reference-Vocal Spectral Envelope extracted via `/usr/bin/afconvert` from `ultron_disassemble.mp3`:

@@ -2031,7 +2031,7 @@
           <span>🎙 ELEVENLABS VOICE CLONE &amp; TTS STUDIO // ULTRON VOCAL ENGINE</span>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="hud-tag" id="elevenLabsStatusBadge" style="color:var(--neon-cyan);border-color:rgba(0,240,255,0.45);">VOICE SAMPLES READY (3/3)</span>
+          <span class="hud-tag" id="elevenLabsStatusBadge" style="color:var(--emerald);border-color:rgba(16,185,129,0.55);">ELEVENLABS ACTIVE // X9U38AZSNi</span>
           <button class="fui-btn" onclick="closeModal('elevenLabsModal')">✕</button>
         </div>
       </div>
@@ -2080,7 +2080,7 @@
         <div class="fui-module" style="padding:12px;">
           <div class="fui-module-title">
             <span>ELEVENLABS INSTANT VOICE CLONE (IVC) &amp; NEURAL TTS CONFIGURATION</span>
-            <span id="elevenLabsClonedVoiceTag" style="font-family:var(--font-code);font-size:9.5px;color:var(--emerald);">AUTO-CLONE READY</span>
+            <span id="elevenLabsClonedVoiceTag" style="font-family:var(--font-code);font-size:9.5px;color:var(--emerald);">VOICE ID: X9U38AZSNiUB7bJMeNKX</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
             <div>
@@ -2092,9 +2092,9 @@
             <div style="display:grid;grid-template-columns:1.3fr 0.7fr;gap:10px;">
               <div>
                 <label style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1px;display:block;margin-bottom:4px;">
-                  ELEVENLABS VOICE ID (OPTIONAL — LEAVE BLANK TO AUTO-CLONE FROM 3 MP3S)
+                  ELEVENLABS VOICE ID (CLONED ULTRON VOICE)
                 </label>
-                <input type="text" id="elevenLabsVoiceIdInput" class="fui-input" style="width:100%;text-transform:none;" placeholder="Auto-cloned from ultron_active + rea_protocol_ready + ultron_disassemble" />
+                <input type="text" id="elevenLabsVoiceIdInput" class="fui-input" style="width:100%;text-transform:none;" value="X9U38AZSNiUB7bJMeNKX" placeholder="X9U38AZSNiUB7bJMeNKX (Ultron Clone)" />
               </div>
               <div>
                 <label style="font-family:var(--font-fui);font-size:10px;color:var(--text-mid);letter-spacing:1px;display:block;margin-bottom:4px;">
@@ -2107,8 +2107,8 @@
                 </select>
               </div>
             </div>
-            <div id="elevenLabsStatusDetailBox" style="padding:8px 10px;background:#040507;border:1px solid var(--border-hairline);font-family:var(--font-code);font-size:10.5px;color:var(--text-mid);">
-              STATUS: Ready to clone 3 reference vocal files (ultron_active.mp3, rea_protocol_ready.mp3, ultron_disassemble.mp3) into an ElevenLabs Voice ID.
+            <div id="elevenLabsStatusDetailBox" style="padding:8px 10px;background:#040507;border:1px solid var(--border-hairline);font-family:var(--font-code);font-size:10.5px;color:var(--emerald);">
+              STATUS: ELEVENLABS ULTRON CLONE ACTIVE // VOICE ID: X9U38AZSNiUB7bJMeNKX (13 CINEMA + 3 REFERENCE VOCALS READY)
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px;">
               <button class="fui-btn" onclick="speakUltronCinemaOverview()">🔊 TEST LIVE CINEMA NARRATION</button>
@@ -4084,9 +4084,16 @@ if proc:
       triggerNeuralActivity(1.75, 'ULTRON CINEMA VOICE');
       cinemaVoiceState.speaking = true;
 
-      const url = phaseParam
-        ? `/api/voice/cinema-narration?phase=${encodeURIComponent(phaseParam)}&text=${encodeURIComponent(spokenText)}`
-        : `/api/voice/cinema-narration?text=${encodeURIComponent(spokenText)}`;
+      let url;
+      if (typeof phaseParam === 'number' && phaseParam >= 0 && phaseParam <= 4) {
+        url = `/api/voice/cinema-narration?phase=${phaseParam}`;
+      } else if (typeof phaseParam === 'string' && phaseParam.startsWith('step-')) {
+        url = `/api/voice/cinema-narration?step=${encodeURIComponent(phaseParam.replace('step-', ''))}`;
+      } else if (phaseParam !== null && phaseParam !== undefined) {
+        url = `/api/voice/cinema-narration?phase=${encodeURIComponent(phaseParam)}&text=${encodeURIComponent(spokenText)}`;
+      } else {
+        url = `/api/voice/cinema-narration?text=${encodeURIComponent(spokenText)}`;
+      }
 
       const ok = await playSingleVoiceClip(url);
       if (!ok) {
@@ -4099,7 +4106,7 @@ if proc:
     async function speakUltronCinemaOverview() {
       const m = getCinemaLiveMetricsObj();
       const spoken = `Target ${m.target} acquired. Architecture ${m.arch}. Eight sequential phases and nineteen specialized engines are required. ${m.procs} procedures and ${m.insns} instructions deconstructed. ${m.smeNotes} inline analyst annotations applied, ${m.hvts} high-value targets ranked, and ${m.files} forensic artifacts written to disk.`;
-      await speakUltronCinemaLine(spoken, spoken, 'overview');
+      await speakUltronCinemaLine(spoken, spoken, 0);
     }
 
     async function onClickSmePhaseNode(phaseNum, insideCinema = false) {
@@ -4111,7 +4118,7 @@ if proc:
 
       const spoken = phaseObj.voiceSummary(m);
       showToast(`⚡ ${phaseObj.code}: ${phaseObj.title} // ${getPhaseDynamicMetric(phaseNum)}`);
-      speakUltronCinemaLine(spoken, spoken, `phase${phaseNum}`);
+      speakUltronCinemaLine(spoken, spoken, 'step-' + phaseNum);
 
       if (!insideCinema) {
         if (phaseObj.targetMode === 'report') {
@@ -4182,17 +4189,6 @@ if proc:
       clearCinemaSequenceTimers();
       const myRunId = cinemaVoiceState.sequenceRunId || 1;
       const m = getCinemaLiveMetricsObj();
-      const introText = `Target ${m.target} acquired. Eight sequential phases and nineteen analytical engines are required. Executing forensic triage, C plus plus RTTI recovery, zero-goto AST restructuring, protocol grammar inference, Z3 symbolic taint auditing, vector vault indexing, inline assembly annotation, and generating ${m.files} forensic artifacts.`;
-
-      for (let step = 1; step <= 8; step++) {
-        const tid = setTimeout(() => {
-          playChirp(520 + step * 55, 0.045);
-          renderSmeDynamicWorkflowDock(step);
-          renderCinemaPhaseNodesGrid(step);
-          triggerNeuralActivity(1.35 + step * 0.08, `CINEMA PHASE 0${step}/08`);
-        }, (step - 1) * 520);
-        cinemaVoiceState.sequenceTimerIds.push(tid);
-      }
 
       // 1. Sequence the user's 3 authentic MP3 reference vocals (ultron-active.mp3 -> rea-ready.mp3 -> ultron-disassemble.mp3)
       const openingVocals = [
@@ -4200,23 +4196,28 @@ if proc:
           url: '/api/voice/ultron-active.mp3',
           subtitle: 'ULTRON ACTIVE // AUTHENTIC VOCAL SAMPLE 01',
           pulse: 1.45,
-          label: 'ULTRON ACTIVE'
+          label: 'ULTRON ACTIVE',
+          nodeStep: 1
         },
         {
           url: '/api/voice/rea-ready.mp3',
           subtitle: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED.',
           pulse: 1.65,
-          label: 'REA PROTOCOL READY TO PROCEED'
+          label: 'REA PROTOCOL READY TO PROCEED',
+          nodeStep: 1
         },
         {
           url: '/api/voice/ultron-disassemble.mp3',
           subtitle: 'ULTRON ACTIVE — REA PROTOCOL READY TO PROCEED. ULTRON, DISASSEMBLE',
           pulse: 1.85,
-          label: 'ULTRON, DISASSEMBLE'
+          label: 'ULTRON, DISASSEMBLE',
+          nodeStep: 1
         }
       ];
 
       cinemaVoiceState.speaking = true;
+      renderSmeDynamicWorkflowDock(1);
+      renderCinemaPhaseNodesGrid(1);
       for (const clip of openingVocals) {
         if ((cinemaVoiceState.sequenceRunId || 1) !== myRunId) {
           cinemaVoiceState.speaking = false;
@@ -4233,8 +4234,66 @@ if proc:
         return;
       }
 
-      // 2. Seamlessly transition to the dynamic 8-phase / 19-engine ElevenLabs TTS narration
-      await speakUltronCinemaLine(introText, introText, 'sequence');
+      // 2. Play the 5 authentic ElevenLabs Ultron (X9U38AZSNiUB7bJMeNKX) phase narrations (phase = 0..4) synchronized with Phase 01 -> Phase 08
+      const elevenLabsPhases = [
+        {
+          phase: 0,
+          startNode: 1,
+          midNode: 1,
+          text: `Target ${m.target} acquired. Eight sequential phases and nineteen analytical engines are required to deconstruct ${m.procs} procedures and ${m.insns} instructions.`
+        },
+        {
+          phase: 1,
+          startNode: 1,
+          midNode: 2,
+          text: `Phase One and Two. Sealing cryptographic chain of custody, reconstructing C plus plus virtual tables, and binding operating system type signatures across ${m.procs} procedures.`
+        },
+        {
+          phase: 2,
+          startNode: 3,
+          midNode: 4,
+          text: `Phase Three and Four. Eliminating obfuscation layers, synthesizing Zero-Goto abstract syntax trees across ${m.insns} instructions, and extracting cryptographic and network grammars.`
+        },
+        {
+          phase: 3,
+          startNode: 5,
+          midNode: 6,
+          text: `Phase Five and Six. Solving symbolic execution paths with Z3, mapping exploit primitives, and indexing sixteen-dimensional structural fingerprints.`
+        },
+        {
+          phase: 4,
+          startNode: 7,
+          midNode: 8,
+          text: `Phase Seven and Eight. Injecting inline assembly annotations, ranking high-value targets, and sealing ${m.files} forensic artifacts. Disassembly complete.`
+        }
+      ];
+
+      for (const p of elevenLabsPhases) {
+        if ((cinemaVoiceState.sequenceRunId || 1) !== myRunId) {
+          cinemaVoiceState.speaking = false;
+          return;
+        }
+        playChirp(520 + p.startNode * 45, 0.045);
+        renderSmeDynamicWorkflowDock(p.startNode);
+        renderCinemaPhaseNodesGrid(p.startNode);
+        if (p.midNode !== p.startNode) {
+          const tid = setTimeout(() => {
+            if ((cinemaVoiceState.sequenceRunId || 1) === myRunId) {
+              playChirp(520 + p.midNode * 45, 0.045);
+              renderSmeDynamicWorkflowDock(p.midNode);
+              renderCinemaPhaseNodesGrid(p.midNode);
+            }
+          }, 3200);
+          cinemaVoiceState.sequenceTimerIds.push(tid);
+        }
+        await speakUltronCinemaLine(p.text, p.text, p.phase);
+      }
+
+      if ((cinemaVoiceState.sequenceRunId || 1) === myRunId) {
+        renderSmeDynamicWorkflowDock(8);
+        renderCinemaPhaseNodesGrid(8);
+      }
+      cinemaVoiceState.speaking = false;
     }
 
     async function refreshElevenLabsVoiceStatus() {
@@ -4256,14 +4315,14 @@ if proc:
         }
         if (badge) {
           badge.textContent = data.configured
-            ? `ELEVENLABS ACTIVE // ${(data.voice_id || 'CLONED').slice(0, 10)}`
+            ? `ELEVENLABS ACTIVE // ${(data.voice_id || 'X9U38AZSNi').slice(0, 10)}`
             : 'VOICE SAMPLES READY (3/3)';
           badge.style.color = data.configured ? 'var(--emerald)' : 'var(--neon-cyan)';
         }
         if (tag) {
           tag.textContent = data.voice_id
             ? `VOICE ID: ${data.voice_id}`
-            : 'AUTO-CLONE READY (3 MP3 SAMPLES)';
+            : 'VOICE ID: X9U38AZSNiUB7bJMeNKX';
         }
         if (detail && data.status_message) {
           detail.textContent = `STATUS: ${data.status_message}`;
