@@ -1,0 +1,571 @@
+{
+  "version": "2.3.0",
+  "name": "monday_board_5106608109",
+  "binary_path": "samples/monday_board_5106608109",
+  "arch": "arm64",
+  "saved_at": "2026-10-23T22:35:43Z",
+  "renames": {
+    "4294970072": "__ZNK23SidekickAgentDispatcher19engineSubsystemNameEv",
+    "4294984088": "__ZTV14PulseItemStore",
+    "4294969644": "__ZN17MondayBoardEngine23computeBoardStateDigestEy",
+    "4294968872": "__ZN21BoardGraphQLTransportD1Ev",
+    "4294984304": "__ZTI23SidekickAgentDispatcher",
+    "4294969852": "__ZN14PulseItemStore23computeBoardStateDigestEy",
+    "4294970196": "__ZN24VibeWorkflowOrchestratorD0Ev",
+    "4294969548": "__ZN21ColumnValueAggregatorD1Ev",
+    "4294970064": "__ZN23SidekickAgentDispatcherD1Ev",
+    "4294970012": "__ZN23SidekickAgentDispatcherC2Eyyj",
+    "4294969780": "__ZN14PulseItemStoreC2Eyyj",
+    "4294969764": "__ZN17MondayBoardEngineD0Ev",
+    "4294969132": "__ZN24VibeWorkflowOrchestratorC1Eyyjj",
+    "4294984248": "__ZTV23SidekickAgentDispatcher",
+    "4294969832": "__ZN14PulseItemStoreD1Ev",
+    "4294971384": "__ZTS24VibeWorkflowOrchestrator",
+    "4294984224": "__ZTI21ColumnValueAggregator",
+    "4294968860": "neural_ZNK24VibeWorkflowOrchestrator19engineSubsystemNameEv",
+    "4294970300": "flirt_dyld_stub_binder_trampoline_bbc",
+    "4294969768": "__ZNK17MondayBoardEngine19engineSubsystemNameEv",
+    "4294971334": "__ZTS21ColumnValueAggregator",
+    "4294971297": "__ZTS17MondayBoardEngine",
+    "4294970276": "flirt_dyld_stub_binder_trampoline_ba4",
+    "4294970288": "flirt_dyld_stub_binder_trampoline_bb0",
+    "4294968876": "__Z27instantiate_board_subsystemiyy",
+    "4294969124": "__ZN21ColumnValueAggregatorC1Eyy",
+    "4294970084": "__ZN23SidekickAgentDispatcher23computeBoardStateDigestEy",
+    "4294971273": "__ZTS21BoardGraphQLTransport",
+    "4294968712": "_dispatch_monday_workos_opcode",
+    "4294983936": "__ZTV21BoardGraphQLTransport",
+    "4294969628": "__ZN21BoardGraphQLTransportD0Ev",
+    "4294984328": "__ZTV24VibeWorkflowOrchestrator",
+    "4294970200": "__ZNK24VibeWorkflowOrchestrator19engineSubsystemNameEv",
+    "4294969708": "__ZN17MondayBoardEngine20evaluateColumnMetricEPK15MondayPulseItemm",
+    "4294970068": "__ZN23SidekickAgentDispatcherD0Ev",
+    "4294983720": "__ZL22kBoard5106608109Pulses",
+    "4294984168": "__ZTV21ColumnValueAggregator",
+    "4294968832": "__ZN21BoardGraphQLTransportC1Eyy",
+    "4294984384": "__ZTI24VibeWorkflowOrchestrator",
+    "4294970264": "flirt_dyld_stub_binder_trampoline_b98",
+    "4294969516": "__ZN21ColumnValueAggregator20evaluateColumnMetricEPK15MondayPulseItemm",
+    "4294969128": "__ZN23SidekickAgentDispatcherC1Eyyj",
+    "4294983992": "__ZTI21BoardGraphQLTransport",
+    "4294969632": "__ZNK21BoardGraphQLTransport19engineSubsystemNameEv",
+    "4294969996": "__ZN21ColumnValueAggregatorD0Ev",
+    "4294968836": "__ZNK21BoardGraphQLTransport20resolveEndpointRouteEi",
+    "4294969084": "flirt_cxx_exception_landing_pad_6fc",
+    "4294969120": "__ZN14PulseItemStoreC1Eyyj",
+    "4294969596": "__ZN17MondayBoardEngineC2Eyy",
+    "4294969760": "__ZN17MondayBoardEngineD1Ev",
+    "4294969840": "__ZNK14PulseItemStore19engineSubsystemNameEv",
+    "4294984016": "__ZTI17MondayBoardEngine",
+    "4294969136": "_main",
+    "4294970136": "__ZN24VibeWorkflowOrchestratorC2Eyyjj",
+    "4294969908": "__ZN14PulseItemStore20evaluateColumnMetricEPK15MondayPulseItemm",
+    "4294970000": "__ZNK21ColumnValueAggregator19engineSubsystemNameEv",
+    "4294969948": "__ZN21ColumnValueAggregatorC2Eyy",
+    "4294969552": "__ZN21BoardGraphQLTransportC2Eyy",
+    "4294970192": "__ZN24VibeWorkflowOrchestratorD1Ev",
+    "4294970212": "__ZN24VibeWorkflowOrchestrator20evaluateColumnMetricEPK15MondayPulseItemm",
+    "4294971358": "__ZTS23SidekickAgentDispatcher",
+    "4294967296": "__mh_execute_header",
+    "4294971317": "__ZTS14PulseItemStore",
+    "4294984032": "__ZTV17MondayBoardEngine",
+    "4294969836": "__ZN14PulseItemStoreD0Ev",
+    "4294970312": "GCC_except_table4",
+    "4294984144": "__ZTI14PulseItemStore"
+  },
+  "comments": {
+    "4294968872": "[DWARF CU: monday_board_5106608109.cpp:BoardGraphQLTransport::~BoardGraphQLTransport() [complete dtor]]",
+    "4294969632": "[DWARF CU: monday_board_5106608109.cpp:BoardGraphQLTransport::engineSubsystemName() const]",
+    "4294969656": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive",
+    "4294969892": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive",
+    "4294969908": "[FLIRT] matrix_nested_solver_kernel (Accelerate.framework (BLAS)) — 97% confidence",
+    "4294970288": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294969036": "__ZN14PulseItemStoreC1Eyyj",
+    "4294969772": "\"MondayBoardEngine::WorkOSCore\"",
+    "4294970028": "__ZN17MondayBoardEngineC2Eyy",
+    "4294970164": "__ZTV24VibeWorkflowOrchestrator",
+    "4294969652": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive",
+    "4294969688": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive",
+    "4294970036": "__ZTV23SidekickAgentDispatcher",
+    "4294970012": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 97% confidence",
+    "4294969768": "[DWARF CU: monday_board_5106608109.cpp:MondayBoardEngine::engineSubsystemName() const]",
+    "4294970264": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294968948": "__ZN21ColumnValueAggregatorC1Eyy",
+    "4294969456": "\"[%s] board=%llu groups=(To-do,Termine) cols=%u budget=$%lld.%02lld digest=0x%llx route=0x%llx metric=%lld col0=%s\n\"",
+    "4294969568": "__ZTV21BoardGraphQLTransport",
+    "4294969600": "__ZTV17MondayBoardEngine",
+    "4294970100": "__ZN17MondayBoardEngine23computeBoardStateDigestEy",
+    "4294969084": "[FLIRT] cxx_exception_landing_pad (libc++abi.dylib) — 98% confidence",
+    "4294970064": "[DWARF CU: monday_board_5106608109.cpp:SidekickAgentDispatcher::~SidekickAgentDispatcher() [complete dtor]]",
+    "4294968760": "__ZNK21BoardGraphQLTransport20resolveEndpointRouteEi",
+    "4294969596": "[FLIRT] bzero_page_clear (libsystem_platform.dylib) — 92% confidence",
+    "4294969760": "[DWARF CU: monday_board_5106608109.cpp:MondayBoardEngine::~MondayBoardEngine() [complete dtor]]",
+    "4294968864": "\"/projects/5106608109/subscribers\"",
+    "4294969432": "\"Tâche\"",
+    "4294969476": "__mh_execute_header",
+    "4294969844": "\"PulseItemStore::VulcanReduxSlice\"",
+    "4294970068": "[DWARF CU: monday_board_5106608109.cpp:SidekickAgentDispatcher::~SidekickAgentDispatcher() [deleting dtor]]",
+    "4294969464": "__mh_execute_header",
+    "4294970004": "\"ColumnValueAggregator::MfBoardColumns\"",
+    "4294969260": "__ZL22kBoard5106608109Pulses",
+    "4294969360": "_dispatch_monday_workos_opcode",
+    "4294969708": "[FLIRT] matrix_nested_solver_kernel (Accelerate.framework (BLAS)) — 99% confidence",
+    "4294969712": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294970076": "\"SidekickAgentDispatcher::MfAiAgentsStore\"",
+    "4294970156": "__ZN17MondayBoardEngineC2Eyy",
+    "4294969220": "__Z27instantiate_board_subsystemiyy",
+    "4294968712": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294969548": "[DWARF CU: monday_board_5106608109.cpp:ColumnValueAggregator::~ColumnValueAggregator() [complete dtor]]",
+    "4294969664": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294969948": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 98% confidence",
+    "4294970000": "[DWARF CU: monday_board_5106608109.cpp:ColumnValueAggregator::engineSubsystemName() const]",
+    "4294970196": "[DWARF CU: monday_board_5106608109.cpp:VibeWorkflowOrchestrator::~VibeWorkflowOrchestrator() [deleting dtor]]",
+    "4294969796": "__ZN17MondayBoardEngineC2Eyy",
+    "4294969964": "__ZTV21ColumnValueAggregator",
+    "4294968836": "[FLIRT] matrix_nested_solver_kernel (Accelerate.framework (BLAS)) — 94% confidence",
+    "4294970136": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 97% confidence",
+    "4294968776": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive",
+    "4294970204": "\"VibeWorkflowOrchestrator::LiteBuilderSync\"",
+    "4294969552": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 97% confidence",
+    "4294969300": "__ZN21ColumnValueAggregatorC1Eyy",
+    "4294970084": "[FLIRT] rotl_mix_cipher (libultron_crypto.a) — 99% confidence",
+    "4294969240": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294970300": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294969780": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 97% confidence",
+    "4294969852": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294968748": "__ZN21BoardGraphQLTransportC1Eyy",
+    "4294970212": "[FLIRT] string_length_scan (libsystem_c.dylib) — 99% confidence",
+    "4294968784": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294969136": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294969120": "__ZN14PulseItemStoreC2Eyyj | [DWARF CU: monday_board_5106608109.cpp:PulseItemStore::PulseItemStore(uint64_t, uint64_t, uint32_t)]",
+    "4294969560": "__ZN17MondayBoardEngineC2Eyy",
+    "4294969840": "[DWARF CU: monday_board_5106608109.cpp:PulseItemStore::engineSubsystemName() const]",
+    "4294969764": "[DWARF CU: monday_board_5106608109.cpp:MondayBoardEngine::~MondayBoardEngine() [deleting dtor]]",
+    "4294970200": "[DWARF CU: monday_board_5106608109.cpp:VibeWorkflowOrchestrator::engineSubsystemName() const]",
+    "4294968992": "__ZN24VibeWorkflowOrchestratorC1Eyyjj",
+    "4294969956": "__ZN17MondayBoardEngineC2Eyy",
+    "4294969804": "__ZTV14PulseItemStore",
+    "4294968876": "[FLIRT] security_audit_command_exec (libsystem_c.dylib) — 99% confidence",
+    "4294968860": "[DWARF CU: monday_board_5106608109.cpp:sub_10000061c]",
+    "4294969128": "__ZN23SidekickAgentDispatcherC2Eyyj | [DWARF CU: monday_board_5106608109.cpp:SidekickAgentDispatcher::SidekickAgentDispatcher(uint64_t, uint64_t, uint32_t)]",
+    "4294969276": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294969484": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294969380": "[SME:INDIRECT-CALL] Register-indirect call (VTable / function pointer dispatch)",
+    "4294969868": "__ZN17MondayBoardEngine23computeBoardStateDigestEy",
+    "4294969316": "__ZN21ColumnValueAggregator20evaluateColumnMetricEPK15MondayPulseItemm",
+    "4294969520": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294969628": "[DWARF CU: monday_board_5106608109.cpp:BoardGraphQLTransport::~BoardGraphQLTransport() [deleting dtor]]",
+    "4294968920": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294969832": "[DWARF CU: monday_board_5106608109.cpp:PulseItemStore::~PulseItemStore() [complete dtor]]",
+    "4294969912": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294969836": "[DWARF CU: monday_board_5106608109.cpp:PulseItemStore::~PulseItemStore() [deleting dtor]]",
+    "4294970192": "[DWARF CU: monday_board_5106608109.cpp:VibeWorkflowOrchestrator::~VibeWorkflowOrchestrator() [complete dtor]]",
+    "4294969060": "__ZN23SidekickAgentDispatcherC1Eyyj",
+    "4294970276": "[FLIRT] dyld_stub_binder_trampoline (libdyld.dylib) — 98% confidence",
+    "4294968840": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294968804": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive",
+    "4294969124": "__ZN21ColumnValueAggregatorC2Eyy | [DWARF CU: monday_board_5106608109.cpp:ColumnValueAggregator::ColumnValueAggregator(uint64_t, uint64_t)]",
+    "4294970072": "[DWARF CU: monday_board_5106608109.cpp:SidekickAgentDispatcher::engineSubsystemName() const]",
+    "4294970232": "[SME:BRANCH-GATE] Primary conditional guard — Z3 symbolic solver candidate",
+    "4294969132": "__ZN24VibeWorkflowOrchestratorC2Eyyjj | [DWARF CU: monday_board_5106608109.cpp:VibeWorkflowOrchestrator::VibeWorkflowOrchestrator(uint64_t, uint64_t, uint32_t, uint32_t)]",
+    "4294969012": "__ZN21BoardGraphQLTransportC1Eyy",
+    "4294969644": "[FLIRT] fast_memcpy_vec (libsystem_platform.dylib) — 99% confidence",
+    "4294969996": "[DWARF CU: monday_board_5106608109.cpp:ColumnValueAggregator::~ColumnValueAggregator() [deleting dtor]]",
+    "4294968832": "__ZN21BoardGraphQLTransportC2Eyy | [DWARF CU: monday_board_5106608109.cpp:BoardGraphQLTransport::BoardGraphQLTransport(uint64_t, uint64_t)]",
+    "4294969636": "\"BoardGraphQLTransport::RouterBoardSubset\"",
+    "4294969516": "[FLIRT] matrix_nested_solver_kernel (Accelerate.framework (BLAS)) — 95% confidence",
+    "4294970112": "[SME:CRYPTO] Non-zeroing XOR/EOR bitwise mixing primitive"
+  },
+  "custom_structs": [
+    {
+      "name": "AutoStruct___ZN14PulseItemStoreC2Eyyj_1000009b4",
+      "size": 36,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct___ZN17MondayBoardEngineC2Eyy_1000008fc",
+      "size": 24,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "field_10_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct___ZN21BoardGraphQLTransportC2Eyy_1000008d0",
+      "size": 36,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct___ZN21ColumnValueAggregatorC2Eyy_100000a5c",
+      "size": 40,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct___ZN23SidekickAgentDispatcherC2Eyyj_100000a9c",
+      "size": 36,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct___ZN24VibeWorkflowOrchestratorC2Eyyjj_100000b18",
+      "size": 36,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_rw",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 32,
+          "name": "field_20_rw",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "AutoStruct__main_100000730",
+      "size": 28,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "field_00_ro",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 24,
+          "name": "field_18_ro",
+          "field_type": "uint32_t"
+        }
+      ]
+    },
+    {
+      "name": "UltronContext",
+      "size": 64,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "isa_vtable",
+          "field_type": "void *"
+        },
+        {
+          "offset": 8,
+          "name": "session_flags",
+          "field_type": "uint64_t"
+        },
+        {
+          "offset": 16,
+          "name": "target_buffer",
+          "field_type": "char *"
+        },
+        {
+          "offset": 24,
+          "name": "payload_length",
+          "field_type": "uint32_t"
+        },
+        {
+          "offset": 32,
+          "name": "crypto_nonce",
+          "field_type": "uint64_t"
+        }
+      ]
+    },
+    {
+      "name": "VTable_BoardGraphQLTransport",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "dtor_BoardGraphQLTransport",
+          "field_type": "void * /* BoardGraphQLTransport::~BoardGraphQLTransport() [complete dtor] */"
+        },
+        {
+          "offset": 24,
+          "name": "dtor_BoardGraphQLTransport_1",
+          "field_type": "void * /* BoardGraphQLTransport::~BoardGraphQLTransport() [deleting dtor] */"
+        },
+        {
+          "offset": 32,
+          "name": "engineSubsystemName",
+          "field_type": "void * /* BoardGraphQLTransport::engineSubsystemName() const */"
+        },
+        {
+          "offset": 40,
+          "name": "computeBoardStateDigest",
+          "field_type": "void * /* MondayBoardEngine::computeBoardStateDigest(uint64_t) */"
+        },
+        {
+          "offset": 48,
+          "name": "evaluateColumnMetric",
+          "field_type": "void * /* MondayBoardEngine::evaluateColumnMetric(const void *, double, char, uint64_t, void *, int64_t, int16_t, uint16_t, uint64_t, uint64_t) */"
+        }
+      ]
+    },
+    {
+      "name": "VTable_ColumnValueAggregator",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "dtor_ColumnValueAggregator",
+          "field_type": "void * /* ColumnValueAggregator::~ColumnValueAggregator() [complete dtor] */"
+        },
+        {
+          "offset": 24,
+          "name": "dtor_ColumnValueAggregator_1",
+          "field_type": "void * /* ColumnValueAggregator::~ColumnValueAggregator() [deleting dtor] */"
+        },
+        {
+          "offset": 32,
+          "name": "engineSubsystemName",
+          "field_type": "void * /* ColumnValueAggregator::engineSubsystemName() const */"
+        },
+        {
+          "offset": 40,
+          "name": "computeBoardStateDigest",
+          "field_type": "void * /* MondayBoardEngine::computeBoardStateDigest(uint64_t) */"
+        },
+        {
+          "offset": 48,
+          "name": "evaluateColumnMetric",
+          "field_type": "void * /* ColumnValueAggregator::evaluateColumnMetric(const void *, double, char, uint64_t, void *, int64_t, int16_t, uint16_t, uint64_t, uint64_t) */"
+        }
+      ]
+    },
+    {
+      "name": "VTable_MondayBoardEngine",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "dtor_MondayBoardEngine",
+          "field_type": "void * /* MondayBoardEngine::~MondayBoardEngine() [complete dtor] */"
+        },
+        {
+          "offset": 24,
+          "name": "dtor_MondayBoardEngine_1",
+          "field_type": "void * /* MondayBoardEngine::~MondayBoardEngine() [deleting dtor] */"
+        },
+        {
+          "offset": 32,
+          "name": "engineSubsystemName",
+          "field_type": "void * /* MondayBoardEngine::engineSubsystemName() const */"
+        },
+        {
+          "offset": 40,
+          "name": "computeBoardStateDigest",
+          "field_type": "void * /* MondayBoardEngine::computeBoardStateDigest(uint64_t) */"
+        },
+        {
+          "offset": 48,
+          "name": "evaluateColumnMetric",
+          "field_type": "void * /* MondayBoardEngine::evaluateColumnMetric(const void *, double, char, uint64_t, void *, int64_t, int16_t, uint16_t, uint64_t, uint64_t) */"
+        }
+      ]
+    },
+    {
+      "name": "VTable_PulseItemStore",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "dtor_PulseItemStore",
+          "field_type": "void * /* PulseItemStore::~PulseItemStore() [complete dtor] */"
+        },
+        {
+          "offset": 24,
+          "name": "dtor_PulseItemStore_1",
+          "field_type": "void * /* PulseItemStore::~PulseItemStore() [deleting dtor] */"
+        },
+        {
+          "offset": 32,
+          "name": "engineSubsystemName",
+          "field_type": "void * /* PulseItemStore::engineSubsystemName() const */"
+        },
+        {
+          "offset": 40,
+          "name": "computeBoardStateDigest",
+          "field_type": "void * /* PulseItemStore::computeBoardStateDigest(uint64_t) */"
+        },
+        {
+          "offset": 48,
+          "name": "evaluateColumnMetric",
+          "field_type": "void * /* PulseItemStore::evaluateColumnMetric(const void *, double, char, uint64_t, void *, int64_t, int16_t, uint16_t, uint64_t, uint64_t) */"
+        }
+      ]
+    },
+    {
+      "name": "VTable_SidekickAgentDispatcher",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "dtor_SidekickAgentDispatcher",
+          "field_type": "void * /* SidekickAgentDispatcher::~SidekickAgentDispatcher() [complete dtor] */"
+        },
+        {
+          "offset": 24,
+          "name": "dtor_SidekickAgentDispatcher_1",
+          "field_type": "void * /* SidekickAgentDispatcher::~SidekickAgentDispatcher() [deleting dtor] */"
+        },
+        {
+          "offset": 32,
+          "name": "engineSubsystemName",
+          "field_type": "void * /* SidekickAgentDispatcher::engineSubsystemName() const */"
+        },
+        {
+          "offset": 40,
+          "name": "computeBoardStateDigest",
+          "field_type": "void * /* SidekickAgentDispatcher::computeBoardStateDigest(uint64_t) */"
+        },
+        {
+          "offset": 48,
+          "name": "evaluateColumnMetric",
+          "field_type": "void * /* MondayBoardEngine::evaluateColumnMetric(const void *, double, char, uint64_t, void *, int64_t, int16_t, uint16_t, uint64_t, uint64_t) */"
+        }
+      ]
+    },
+    {
+      "name": "VTable_VibeWorkflowOrchestrator",
+      "size": 56,
+      "fields": [
+        {
+          "offset": 0,
+          "name": "offset_to_top",
+          "field_type": "int64_t"
+        },
+        {
+          "offset": 8,
+          "name": "rtti_typeinfo",
+          "field_type": "const std::type_info *"
+        },
+        {
+          "offset": 16,
+          "name": "dtor_VibeWorkflowOrchestrator",
+          "field_type": "void * /* VibeWorkflowOrchestrator::~VibeWorkflowOrchestrator() [complete dtor] */"
+        },
+        {
+          "offset": 24,
+          "name": "dtor_VibeWorkflowOrchestrator_1",
+          "field_type": "void * /* VibeWorkflowOrchestrator::~VibeWorkflowOrchestrator() [deleting dtor] */"
+        },
+        {
+          "offset": 32,
+          "name": "engineSubsystemName",
+          "field_type": "void * /* VibeWorkflowOrchestrator::engineSubsystemName() const */"
+        },
+        {
+          "offset": 40,
+          "name": "computeBoardStateDigest",
+          "field_type": "void * /* MondayBoardEngine::computeBoardStateDigest(uint64_t) */"
+        },
+        {
+          "offset": 48,
+          "name": "evaluateColumnMetric",
+          "field_type": "void * /* VibeWorkflowOrchestrator::evaluateColumnMetric(const void *, double, char, uint64_t, void *, int64_t, int16_t, uint16_t, uint64_t, uint64_t) */"
+        }
+      ]
+    }
+  ],
+  "breakpoints": []
+}

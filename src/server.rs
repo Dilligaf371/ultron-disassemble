@@ -218,6 +218,16 @@ async fn api_overview(State(state): State<Arc<AppState>>) -> Json<Value> {
 fn build_presets_list() -> Vec<Value> {
     vec![
         json!({
+            "label": "Monday.com Board 5106608109 Engine (Mach-O ARM64 C++17)",
+            "path": "samples/monday_board_5106608109",
+            "arch": "arm64"
+        }),
+        json!({
+            "label": "Monday.com Board 5106608109 Bundle (.asar Electron/Vulcan)",
+            "path": "samples/monday_board_5106608109.asar",
+            "arch": "asar"
+        }),
+        json!({
             "label": "Ultron ObjC 2.0 + Nested Loops (Mach-O)",
             "path": "samples/ultron_objc_sample",
             "arch": "arm64"

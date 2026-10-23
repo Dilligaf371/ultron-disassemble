@@ -1,0 +1,118 @@
+{
+  "air_gapped_verified": true,
+  "cyclonedx_sbom": {
+    "bomFormat": "CycloneDX",
+    "components": [
+      {
+        "bom-ref": "pkg:darwin/libc++.1.dylib@c6016f444b23f812",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "c6016f444b23f812"
+          }
+        ],
+        "name": "libc++.1.dylib",
+        "purl": "pkg:generic/libc++.1.dylib?path=/usr/lib/libc++.1.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 2100.43.0)"
+      },
+      {
+        "bom-ref": "pkg:darwin/libSystem.B.dylib@b735d225399a76d5",
+        "hashes": [
+          {
+            "alg": "FNV-1a-64",
+            "content": "b735d225399a76d5"
+          }
+        ],
+        "name": "libSystem.B.dylib",
+        "purl": "pkg:generic/libSystem.B.dylib?path=/usr/lib/libSystem.B.dylib",
+        "scope": "required",
+        "type": "library",
+        "version": "(compatibility version 1.0.0, current version 1356.0.0)"
+      }
+    ],
+    "metadata": {
+      "component": {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "9fa998830ac7cf140b931b8f998d64b17d418e3ad8ebcf2b255c554ec0c8a0f5"
+          }
+        ],
+        "name": "monday_board_5106608109",
+        "type": "application"
+      },
+      "timestamp": "2026-10-18T22:00:00Z",
+      "tools": [
+        {
+          "name": "Ultron Disassemble v4.0",
+          "vendor": "Ultron Sovereign Security",
+          "version": "4.0.0-sovereign"
+        }
+      ]
+    },
+    "serialNumber": "urn:uuid:247e9fb6-727f-43ef-b3f5-37958fea5e01",
+    "specVersion": "1.5",
+    "version": 1
+  },
+  "immutable_ledger_entries": 45,
+  "immutable_ledger_path": "$HOME/.ultron/immutable_audit_ledger.jsonl",
+  "iso27001_annex_a_controls": [
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.8 — Management of Technical Vulnerabilities",
+      "evidence": "Automated CWE-120/787/134/78 Static + Symbolic Z3 + 64-Seed Coverage Fuzzing Verification",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.12 — Data Leakage Prevention",
+      "evidence": "Zero third-party network calls; all decompilation, AI AST synthesis & fuzzing execute strictly on-premise in memory-safe Rust",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.15 — Logging & Immutable Audit Trail",
+      "evidence": "Append-only Merkle JSONL Ledger at $HOME/.ultron/immutable_audit_ledger.jsonl",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27001:2022 Annex A.8.28 — Secure Coding & Supply Chain (CycloneDX SBOM)",
+      "evidence": "CycloneDX 1.5 SBOM generated (2 linked components mapped)",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "control": "ISO/IEC 27037 — Digital Evidence Identification, Collection & Preservation",
+      "evidence": "SHA-256 Chain-of-Custody (9fa998830ac7cf140b931b8f998d64b17d418e3ad8ebcf2b255c554ec0c8a0f5) + MCP Evidence Ledger provenance",
+      "status": "COMPLIANT (PASS)"
+    }
+  ],
+  "latest_merkle_hash": "320f61b7714f602399e0b86d02577e56",
+  "memory_safe_rust_core": true,
+  "ok": true,
+  "overall_status": "COMPLIANT // SOC 2 TYPE II + ISO/IEC 27001:2022 + ISO/IEC 27037 + CYCLONEDX 1.5",
+  "sbom_components_count": 2,
+  "sbom_path": "$HOME/.gemini/antigravity/scratch/ultron-disassembler/outputs/monday_board_5106608109/sbom_cyclonedx.json",
+  "soc2_trust_services_criteria": [
+    {
+      "criteria": "CC6.1 / CC6.6 — Logical Access & Boundary Protection",
+      "evidence": "100% Local Loopback Binding (127.0.0.1:8420), Zero Cloud Exfiltration, Air-Gapped Ready",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC7.1 — System Vulnerability & Configuration Detection",
+      "evidence": "Automated CWE Source->Sink Taint Audit, Shannon Entropy & Binary Hardening Inspection across 46 procedures",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC7.2 — Tamper-Evident Security Event Monitoring",
+      "evidence": "Cryptographic Merkle Hash-Chained Audit Ledger (45 records, head=320f61b7714f602399e0b86d02577e56)",
+      "status": "COMPLIANT (PASS)"
+    },
+    {
+      "criteria": "CC8.1 — Change Management & Binary Patch Integrity",
+      "evidence": "1-Day Patch Root-Cause C-Diffing, Mach-O Ad-Hoc CodeSigning & SHA-256 Provenance Verification",
+      "status": "COMPLIANT (PASS)"
+    }
+  ],
+  "target_binary": "samples/monday_board_5106608109",
+  "target_sha256": "9fa998830ac7cf140b931b8f998d64b17d418e3ad8ebcf2b255c554ec0c8a0f5"
+}

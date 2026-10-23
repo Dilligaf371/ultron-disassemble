@@ -1,0 +1,77 @@
+{
+  "chain_of_custody": {
+    "container_format": "Mach-O 64-bit",
+    "cpu_architecture": "arm64 (64-bit)",
+    "entry_point": "0x100000730",
+    "evidence_file": "samples/monday_board_5106608109",
+    "sha256_digest": "9fa998830ac7cf140b931b8f998d64b17d418e3ad8ebcf2b255c554ec0c8a0f5",
+    "total_instructions": 400,
+    "total_procedures": 46
+  },
+  "classification": "TLP:AMBER+STRICT // SOVEREIGN SIGINT & FORENSIC DOSSIER",
+  "crypto_key_schedule_candidates": [
+    {
+      "address": "0x1000005ac",
+      "immediate_hex": "0x100000600",
+      "instruction": "bl #0x100000600"
+    },
+    {
+      "address": "0x1000005b8",
+      "immediate_hex": "0x100000604",
+      "instruction": "bl #0x100000604"
+    },
+    {
+      "address": "0x1000005d0",
+      "immediate_hex": "0x1000005f0",
+      "instruction": "cbz w9, #0x1000005f0"
+    },
+    {
+      "address": "0x1000005ec",
+      "immediate_hex": "0x1000005dc",
+      "instruction": "cbnz w9, #0x1000005dc"
+    },
+    {
+      "address": "0x100000600",
+      "immediate_hex": "0x1000008d0",
+      "instruction": "b #0x1000008d0"
+    },
+    {
+      "address": "0x100000608",
+      "immediate_hex": "0x10000061c",
+      "instruction": "b.hi #0x10000061c"
+    },
+    {
+      "address": "0x10000060c",
+      "immediate_hex": "0x100004000",
+      "instruction": "adrp x8, #0x100004000"
+    },
+    {
+      "address": "0x10000064c",
+      "immediate_hex": "0x100000bb0",
+      "instruction": "bl #0x100000bb0"
+    },
+    {
+      "address": "0x100000658",
+      "immediate_hex": "0x10000067c",
+      "instruction": "b.gt #0x10000067c"
+    },
+    {
+      "address": "0x10000065c",
+      "immediate_hex": "0x1000006bc",
+      "instruction": "cbz w22, #0x1000006bc"
+    },
+    {
+      "address": "0x100000664",
+      "immediate_hex": "0x1000006a8",
+      "instruction": "b.ne #0x1000006a8"
+    },
+    {
+      "address": "0x100000674",
+      "immediate_hex": "0x100000724",
+      "instruction": "bl #0x100000724"
+    }
+  ],
+  "extracted_iocs": [],
+  "extracted_iocs_count": 0,
+  "ok": true
+}
